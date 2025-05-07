@@ -3,7 +3,7 @@ import { MatListModule } from '@angular/material/list';
 import { MatIconModule } from '@angular/material/icon';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
-import { ResponsiveService } from '@services/responsive/responsive.service';
+import { ResponsiveService} from '../services/responsive/responsive.service'
 
 interface MenuItem {
   icon: string;

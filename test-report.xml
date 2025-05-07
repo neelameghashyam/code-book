@@ -1,31 +1,409 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <testExecutions version="1">
-  <file path="C:\Angular project-2\codebook\src\app\pages\dashboard\dashboard.component.spec.ts">
-    <testCase name="DashboardComponent should create" duration="437"/>
-  </file>
   <file path="C:\Angular project-2\codebook\src\app\pages\users\users.component.spec.ts">
-    <testCase name="UsersComponent should create" duration="491"/>
+    <testCase name="UsersComponent should create" duration="186"/>
+  </file>
+  <file path="C:\Angular project-2\codebook\src\app\pages\dashboard\dashboard.component.spec.ts">
+    <testCase name="DashboardComponent should create" duration="185"/>
   </file>
   <file path="C:\Angular project-2\codebook\src\app\services\responsive\responsive.service.spec.ts">
-    <testCase name="ResponsiveService should be created" duration="162"/>
-    <testCase name="ResponsiveService constructor should initialize breakpointObserver with all breakpoints" duration="33"/>
-    <testCase name="ResponsiveService constructor should update breakpointState when breakpointObserver emits" duration="17"/>
-    <testCase name="ResponsiveService isMobile should return true when isXSmall is true" duration="15"/>
-    <testCase name="ResponsiveService isMobile should return false when isXSmall is false" duration="13"/>
-    <testCase name="ResponsiveService isTablet should return true when isSmall is true" duration="9"/>
+    <testCase name="ResponsiveService should be created" duration="90"/>
+    <testCase name="ResponsiveService constructor should initialize breakpointObserver with all breakpoints" duration="20"/>
+    <testCase name="ResponsiveService constructor should update breakpointState when breakpointObserver emits" duration="15"/>
+    <testCase name="ResponsiveService isMobile should return true when isXSmall is true" duration="10"/>
+    <testCase name="ResponsiveService isMobile should return false when isXSmall is false" duration="10"/>
+    <testCase name="ResponsiveService isTablet should return true when isSmall is true" duration="7"/>
     <testCase name="ResponsiveService isTablet should return true when isMedium is true" duration="15"/>
-    <testCase name="ResponsiveService isTablet should return false when neither isSmall nor isMedium is true" duration="14"/>
-    <testCase name="ResponsiveService isDesktop should return true when isLarge is true" duration="22"/>
-    <testCase name="ResponsiveService isDesktop should return true when isXLarge is true" duration="17"/>
-    <testCase name="ResponsiveService isDesktop should return false when neither isLarge nor isXLarge is true" duration="13"/>
-    <testCase name="ResponsiveService currentBreakpoint should return &quot;xsmall&quot; when isXSmall is true" duration="22"/>
-    <testCase name="ResponsiveService currentBreakpoint should return &quot;small&quot; when isSmall is true" duration="9"/>
-    <testCase name="ResponsiveService currentBreakpoint should return &quot;medium&quot; when isMedium is true" duration="10"/>
-    <testCase name="ResponsiveService currentBreakpoint should return &quot;large&quot; when isLarge is true" duration="11"/>
-    <testCase name="ResponsiveService currentBreakpoint should return &quot;xlarge&quot; when isXLarge is true or no other breakpoint is active" duration="14"/>
+    <testCase name="ResponsiveService isTablet should return false when neither isSmall nor isMedium is true" duration="8"/>
+    <testCase name="ResponsiveService isDesktop should return true when isLarge is true" duration="12"/>
+    <testCase name="ResponsiveService isDesktop should return true when isXLarge is true" duration="7"/>
+    <testCase name="ResponsiveService isDesktop should return false when neither isLarge nor isXLarge is true" duration="7"/>
+    <testCase name="ResponsiveService currentBreakpoint should return &quot;xsmall&quot; when isXSmall is true" duration="18"/>
+    <testCase name="ResponsiveService currentBreakpoint should return &quot;small&quot; when isSmall is true" duration="7"/>
+    <testCase name="ResponsiveService currentBreakpoint should return &quot;medium&quot; when isMedium is true" duration="9"/>
+    <testCase name="ResponsiveService currentBreakpoint should return &quot;large&quot; when isLarge is true" duration="7"/>
+    <testCase name="ResponsiveService currentBreakpoint should return &quot;xlarge&quot; when isXLarge is true or no other breakpoint is active" duration="11"/>
   </file>
   <file path="C:\Angular project-2\codebook\src\app\custom-sidenav\custom-sidenav.component.spec.ts">
+    <testCase name="CustomSidenavComponent should create" duration="230"/>
+    <testCase name="CustomSidenavComponent Initial state should initialize menuItems with correct values" duration="32"/>
+    <testCase name="CustomSidenavComponent Initial state should initialize sideNavCollapsed as false" duration="27"/>
+    <testCase name="CustomSidenavComponent Input collapsed should update sideNavCollapsed when input changes" duration="26"/>
+    <testCase name="CustomSidenavComponent Template should render menu items" duration="37"/>
+    <testCase name="CustomSidenavComponent Template should show both icon and label when not collapsed on desktop" duration="23"/>
+    <testCase name="CustomSidenavComponent Template should show only icon when collapsed on desktop" duration="29"/>
+    <testCase name="CustomSidenavComponent Template should show both icon and label when on mobile" duration="22"/>
+    <testCase name="CustomSidenavComponent Template should have correct routerLink attributes" duration="41"/>
+    <testCase name="CustomSidenavComponent Responsive behavior should use mobile styling when isMobile returns true" duration="35">
+      <failure message="Error: expect(received).toBe(expected) // Object.is equality"><![CDATA[Error: expect(received).toBe(expected) // Object.is equality
+
+Expected: true
+Received: false
+    at C:\Angular project-2\codebook\src\app\custom-sidenav\custom-sidenav.component.spec.ts:112:65
+    at _ZoneDelegate.invoke (C:\Angular project-2\codebook\node_modules\zone.js\bundles\zone.umd.js:416:32)
+    at ProxyZoneSpec.Object.<anonymous>.ProxyZoneSpec.onInvoke (C:\Angular project-2\codebook\node_modules\zone.js\bundles\zone-testing.umd.js:2177:43)
+    at _ZoneDelegate.invoke (C:\Angular project-2\codebook\node_modules\zone.js\bundles\zone.umd.js:415:38)
+    at ZoneImpl.run (C:\Angular project-2\codebook\node_modules\zone.js\bundles\zone.umd.js:147:47)
+    at Object.wrappedFunc (C:\Angular project-2\codebook\node_modules\zone.js\bundles\zone-testing.umd.js:450:38)
+    at Promise.then.completed (C:\Angular project-2\codebook\node_modules\jest-circus\build\utils.js:298:28)
+    at new Promise (<anonymous>)
+    at callAsyncCircusFn (C:\Angular project-2\codebook\node_modules\jest-circus\build\utils.js:231:10)
+    at _callCircusTest (C:\Angular project-2\codebook\node_modules\jest-circus\build\run.js:316:40)
+    at processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at _runTest (C:\Angular project-2\codebook\node_modules\jest-circus\build\run.js:252:3)
+    at _runTestsForDescribeBlock (C:\Angular project-2\codebook\node_modules\jest-circus\build\run.js:126:9)
+    at _runTestsForDescribeBlock (C:\Angular project-2\codebook\node_modules\jest-circus\build\run.js:121:9)
+    at _runTestsForDescribeBlock (C:\Angular project-2\codebook\node_modules\jest-circus\build\run.js:121:9)
+    at run (C:\Angular project-2\codebook\node_modules\jest-circus\build\run.js:71:3)
+    at runAndTransformResultsToJestFormat (C:\Angular project-2\codebook\node_modules\jest-circus\build\legacy-code-todo-rewrite\jestAdapterInit.js:122:21)]]></failure>
+    </testCase>
+    <testCase name="CustomSidenavComponent Responsive behavior should use desktop collapsed styling when not mobile and collapsed" duration="28"/>
   </file>
   <file path="C:\Angular project-2\codebook\src\app\app.component.spec.ts">
+    <testCase name="AppComponent should create the app" duration="229"/>
+    <testCase name="AppComponent should have title &quot;Code Book&quot;" duration="54"/>
+    <testCase name="AppComponent Initial state should initialize collapsed as false" duration="53"/>
+    <testCase name="AppComponent Initial state should initialize currentLanguage as &quot;English&quot;" duration="45"/>
+    <testCase name="AppComponent toggleFullScreen() should enter fullscreen when not in fullscreen" duration="42">
+      <failure message="TypeError: Cannot read properties of undefined (reading &apos;catch&apos;)"><![CDATA[TypeError: Cannot read properties of undefined (reading 'catch')
+    at AppComponent.toggleFullScreen (C:\Angular project-2\codebook\src\app\app.component.ts:44:51)
+    at C:\Angular project-2\codebook\src\app\app.component.spec.ts:84:17
+    at _ZoneDelegate.invoke (C:\Angular project-2\codebook\node_modules\zone.js\bundles\zone.umd.js:416:32)
+    at ProxyZoneSpec.Object.<anonymous>.ProxyZoneSpec.onInvoke (C:\Angular project-2\codebook\node_modules\zone.js\bundles\zone-testing.umd.js:2177:43)
+    at _ZoneDelegate.invoke (C:\Angular project-2\codebook\node_modules\zone.js\bundles\zone.umd.js:415:38)
+    at ZoneImpl.run (C:\Angular project-2\codebook\node_modules\zone.js\bundles\zone.umd.js:147:47)
+    at Object.wrappedFunc (C:\Angular project-2\codebook\node_modules\zone.js\bundles\zone-testing.umd.js:450:38)
+    at Promise.then.completed (C:\Angular project-2\codebook\node_modules\jest-circus\build\utils.js:298:28)
+    at new Promise (<anonymous>)
+    at callAsyncCircusFn (C:\Angular project-2\codebook\node_modules\jest-circus\build\utils.js:231:10)
+    at _callCircusTest (C:\Angular project-2\codebook\node_modules\jest-circus\build\run.js:316:40)
+    at processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at _runTest (C:\Angular project-2\codebook\node_modules\jest-circus\build\run.js:252:3)
+    at _runTestsForDescribeBlock (C:\Angular project-2\codebook\node_modules\jest-circus\build\run.js:126:9)
+    at _runTestsForDescribeBlock (C:\Angular project-2\codebook\node_modules\jest-circus\build\run.js:121:9)
+    at _runTestsForDescribeBlock (C:\Angular project-2\codebook\node_modules\jest-circus\build\run.js:121:9)
+    at run (C:\Angular project-2\codebook\node_modules\jest-circus\build\run.js:71:3)
+    at runAndTransformResultsToJestFormat (C:\Angular project-2\codebook\node_modules\jest-circus\build\legacy-code-todo-rewrite\jestAdapterInit.js:122:21)]]></failure>
+    </testCase>
+    <testCase name="AppComponent toggleFullScreen() should exit fullscreen when in fullscreen" duration="45"/>
+    <testCase name="AppComponent toggleFullScreen() should handle fullscreen error" duration="42">
+      <failure message="Error: expect(jest.fn()).toHaveBeenCalledWith(...expected)"><![CDATA[Error: expect(jest.fn()).toHaveBeenCalledWith(...expected)
+
+Expected: "Error attempting to enable fullscreen: Fullscreen error"
+
+Number of calls: 0
+    at C:\Angular project-2\codebook\src\app\app.component.spec.ts:104:26
+    at _ZoneDelegate.invoke (C:\Angular project-2\codebook\node_modules\zone.js\bundles\zone.umd.js:416:32)
+    at ProxyZoneSpec.Object.<anonymous>.ProxyZoneSpec.onInvoke (C:\Angular project-2\codebook\node_modules\zone.js\bundles\zone-testing.umd.js:2177:43)
+    at _ZoneDelegate.invoke (C:\Angular project-2\codebook\node_modules\zone.js\bundles\zone.umd.js:415:38)
+    at ZoneImpl.run (C:\Angular project-2\codebook\node_modules\zone.js\bundles\zone.umd.js:147:47)
+    at Object.wrappedFunc (C:\Angular project-2\codebook\node_modules\zone.js\bundles\zone-testing.umd.js:450:38)
+    at Promise.then.completed (C:\Angular project-2\codebook\node_modules\jest-circus\build\utils.js:298:28)
+    at new Promise (<anonymous>)
+    at callAsyncCircusFn (C:\Angular project-2\codebook\node_modules\jest-circus\build\utils.js:231:10)
+    at _callCircusTest (C:\Angular project-2\codebook\node_modules\jest-circus\build\run.js:316:40)
+    at processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at _runTest (C:\Angular project-2\codebook\node_modules\jest-circus\build\run.js:252:3)
+    at _runTestsForDescribeBlock (C:\Angular project-2\codebook\node_modules\jest-circus\build\run.js:126:9)
+    at _runTestsForDescribeBlock (C:\Angular project-2\codebook\node_modules\jest-circus\build\run.js:121:9)
+    at _runTestsForDescribeBlock (C:\Angular project-2\codebook\node_modules\jest-circus\build\run.js:121:9)
+    at run (C:\Angular project-2\codebook\node_modules\jest-circus\build\run.js:71:3)
+    at runAndTransformResultsToJestFormat (C:\Angular project-2\codebook\node_modules\jest-circus\build\legacy-code-todo-rewrite\jestAdapterInit.js:122:21)]]></failure>
+    </testCase>
+    <testCase name="AppComponent setLanguage() should set language to English when &quot;en&quot; is passed" duration="39"/>
+    <testCase name="AppComponent setLanguage() should set language to French when &quot;fr&quot; is passed" duration="41"/>
+    <testCase name="AppComponent setLanguage() should keep current language when unknown code is passed" duration="44">
+      <failure message="Error: expect(received).toBe(expected) // Object.is equality"><![CDATA[Error: expect(received).toBe(expected) // Object.is equality
+
+Expected: "English"
+Received: "French"
+    at C:\Angular project-2\codebook\src\app\app.component.spec.ts:121:43
+    at _ZoneDelegate.invoke (C:\Angular project-2\codebook\node_modules\zone.js\bundles\zone.umd.js:416:32)
+    at ProxyZoneSpec.Object.<anonymous>.ProxyZoneSpec.onInvoke (C:\Angular project-2\codebook\node_modules\zone.js\bundles\zone-testing.umd.js:2177:43)
+    at _ZoneDelegate.invoke (C:\Angular project-2\codebook\node_modules\zone.js\bundles\zone.umd.js:415:38)
+    at ZoneImpl.run (C:\Angular project-2\codebook\node_modules\zone.js\bundles\zone.umd.js:147:47)
+    at Object.wrappedFunc (C:\Angular project-2\codebook\node_modules\zone.js\bundles\zone-testing.umd.js:450:38)
+    at Promise.then.completed (C:\Angular project-2\codebook\node_modules\jest-circus\build\utils.js:298:28)
+    at new Promise (<anonymous>)
+    at callAsyncCircusFn (C:\Angular project-2\codebook\node_modules\jest-circus\build\utils.js:231:10)
+    at _callCircusTest (C:\Angular project-2\codebook\node_modules\jest-circus\build\run.js:316:40)
+    at processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at _runTest (C:\Angular project-2\codebook\node_modules\jest-circus\build\run.js:252:3)
+    at _runTestsForDescribeBlock (C:\Angular project-2\codebook\node_modules\jest-circus\build\run.js:126:9)
+    at _runTestsForDescribeBlock (C:\Angular project-2\codebook\node_modules\jest-circus\build\run.js:121:9)
+    at _runTestsForDescribeBlock (C:\Angular project-2\codebook\node_modules\jest-circus\build\run.js:121:9)
+    at run (C:\Angular project-2\codebook\node_modules\jest-circus\build\run.js:71:3)
+    at runAndTransformResultsToJestFormat (C:\Angular project-2\codebook\node_modules\jest-circus\build\legacy-code-todo-rewrite\jestAdapterInit.js:122:21)]]></failure>
+    </testCase>
+    <testCase name="AppComponent setLanguage() should actually change language in transloco service" duration="42">
+      <failure message="NullInjectorError: R3InjectorError(DynamicTestModule)[_TranslocoService -&gt; InjectionToken TRANSLOCO_LOADER -&gt; _HttpClient -&gt; _HttpClient]: "><![CDATA[NullInjectorError: R3InjectorError(DynamicTestModule)[_TranslocoService -> InjectionToken TRANSLOCO_LOADER -> _HttpClient -> _HttpClient]: 
+  NullInjectorError: No provider for _HttpClient!
+    at NullInjector.get (C:\Angular project-2\codebook\node_modules\@angular\core\fesm2022\core.mjs:1624:27)
+    at R3Injector.get (C:\Angular project-2\codebook\node_modules\@angular\core\fesm2022\core.mjs:2151:33)
+    at R3Injector.get (C:\Angular project-2\codebook\node_modules\@angular\core\fesm2022\core.mjs:2151:33)
+    at injectInjectorOnly (C:\Angular project-2\codebook\node_modules\@angular\core\fesm2022\core.mjs:1119:32)
+    at ɵɵinject (C:\Angular project-2\codebook\node_modules\@angular\core\fesm2022\core.mjs:1125:42)
+    at Object.TranslocoHttpLoader_Factory [as factory] (ng:///TranslocoHttpLoader/ɵfac.js:5:63)
+    at C:\Angular project-2\codebook\node_modules\@angular\core\fesm2022\core.mjs:2274:47
+    at runInInjectorProfilerContext (C:\Angular project-2\codebook\node_modules\@angular\core\fesm2022\core.mjs:880:9)
+    at R3Injector.hydrate (C:\Angular project-2\codebook\node_modules\@angular\core\fesm2022\core.mjs:2273:21)
+    at R3Injector.get (C:\Angular project-2\codebook\node_modules\@angular\core\fesm2022\core.mjs:2141:33)
+    at injectInjectorOnly (C:\Angular project-2\codebook\node_modules\@angular\core\fesm2022\core.mjs:1119:32)
+    at ɵɵinject (C:\Angular project-2\codebook\node_modules\@angular\core\fesm2022\core.mjs:1125:42)
+    at Object._TranslocoService_Factory [as factory] (ng:///_TranslocoService/ɵfac.js:5:61)
+    at C:\Angular project-2\codebook\node_modules\@angular\core\fesm2022\core.mjs:2274:47
+    at runInInjectorProfilerContext (C:\Angular project-2\codebook\node_modules\@angular\core\fesm2022\core.mjs:880:9)
+    at R3Injector.hydrate (C:\Angular project-2\codebook\node_modules\@angular\core\fesm2022\core.mjs:2273:21)
+    at R3Injector.get (C:\Angular project-2\codebook\node_modules\@angular\core\fesm2022\core.mjs:2141:33)
+    at _TestBedImpl.inject (C:\Angular project-2\codebook\node_modules\@angular\core\fesm2022\testing.mjs:1987:52)
+    at Function.inject (C:\Angular project-2\codebook\node_modules\@angular\core\fesm2022\testing.mjs:1829:37)
+    at C:\Angular project-2\codebook\src\app\app.component.spec.ts:125:40
+    at _ZoneDelegate.invoke (C:\Angular project-2\codebook\node_modules\zone.js\bundles\zone.umd.js:416:32)
+    at ProxyZoneSpec.Object.<anonymous>.ProxyZoneSpec.onInvoke (C:\Angular project-2\codebook\node_modules\zone.js\bundles\zone-testing.umd.js:2177:43)
+    at _ZoneDelegate.invoke (C:\Angular project-2\codebook\node_modules\zone.js\bundles\zone.umd.js:415:38)
+    at ZoneImpl.run (C:\Angular project-2\codebook\node_modules\zone.js\bundles\zone.umd.js:147:47)
+    at Object.wrappedFunc (C:\Angular project-2\codebook\node_modules\zone.js\bundles\zone-testing.umd.js:450:38)
+    at Promise.then.completed (C:\Angular project-2\codebook\node_modules\jest-circus\build\utils.js:298:28)
+    at new Promise (<anonymous>)
+    at callAsyncCircusFn (C:\Angular project-2\codebook\node_modules\jest-circus\build\utils.js:231:10)
+    at _callCircusTest (C:\Angular project-2\codebook\node_modules\jest-circus\build\run.js:316:40)
+    at processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at _runTest (C:\Angular project-2\codebook\node_modules\jest-circus\build\run.js:252:3)
+    at _runTestsForDescribeBlock (C:\Angular project-2\codebook\node_modules\jest-circus\build\run.js:126:9)
+    at _runTestsForDescribeBlock (C:\Angular project-2\codebook\node_modules\jest-circus\build\run.js:121:9)
+    at _runTestsForDescribeBlock (C:\Angular project-2\codebook\node_modules\jest-circus\build\run.js:121:9)
+    at run (C:\Angular project-2\codebook\node_modules\jest-circus\build\run.js:71:3)
+    at runAndTransformResultsToJestFormat (C:\Angular project-2\codebook\node_modules\jest-circus\build\legacy-code-todo-rewrite\jestAdapterInit.js:122:21)]]></failure>
+    </testCase>
+    <testCase name="AppComponent toggleSidenav() should toggle collapsed state" duration="43"/>
+    <testCase name="AppComponent computed properties sidenavWidth() should return 280px for mobile" duration="35">
+      <failure message="Error: expect(received).toBe(expected) // Object.is equality"><![CDATA[Error: expect(received).toBe(expected) // Object.is equality
+
+Expected: "280px"
+Received: "200px"
+    at C:\Angular project-2\codebook\src\app\app.component.spec.ts:147:42
+    at _ZoneDelegate.invoke (C:\Angular project-2\codebook\node_modules\zone.js\bundles\zone.umd.js:416:32)
+    at ProxyZoneSpec.Object.<anonymous>.ProxyZoneSpec.onInvoke (C:\Angular project-2\codebook\node_modules\zone.js\bundles\zone-testing.umd.js:2177:43)
+    at _ZoneDelegate.invoke (C:\Angular project-2\codebook\node_modules\zone.js\bundles\zone.umd.js:415:38)
+    at ZoneImpl.run (C:\Angular project-2\codebook\node_modules\zone.js\bundles\zone.umd.js:147:47)
+    at Object.wrappedFunc (C:\Angular project-2\codebook\node_modules\zone.js\bundles\zone-testing.umd.js:450:38)
+    at Promise.then.completed (C:\Angular project-2\codebook\node_modules\jest-circus\build\utils.js:298:28)
+    at new Promise (<anonymous>)
+    at callAsyncCircusFn (C:\Angular project-2\codebook\node_modules\jest-circus\build\utils.js:231:10)
+    at _callCircusTest (C:\Angular project-2\codebook\node_modules\jest-circus\build\run.js:316:40)
+    at processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at _runTest (C:\Angular project-2\codebook\node_modules\jest-circus\build\run.js:252:3)
+    at _runTestsForDescribeBlock (C:\Angular project-2\codebook\node_modules\jest-circus\build\run.js:126:9)
+    at _runTestsForDescribeBlock (C:\Angular project-2\codebook\node_modules\jest-circus\build\run.js:121:9)
+    at _runTestsForDescribeBlock (C:\Angular project-2\codebook\node_modules\jest-circus\build\run.js:121:9)
+    at _runTestsForDescribeBlock (C:\Angular project-2\codebook\node_modules\jest-circus\build\run.js:121:9)
+    at run (C:\Angular project-2\codebook\node_modules\jest-circus\build\run.js:71:3)
+    at runAndTransformResultsToJestFormat (C:\Angular project-2\codebook\node_modules\jest-circus\build\legacy-code-todo-rewrite\jestAdapterInit.js:122:21)]]></failure>
+    </testCase>
+    <testCase name="AppComponent computed properties sidenavWidth() should return 64px when collapsed on desktop" duration="38"/>
+    <testCase name="AppComponent computed properties sidenavWidth() should return 200px when not collapsed on desktop" duration="42"/>
+    <testCase name="AppComponent computed properties sidenavMode() should return &quot;over&quot; for mobile" duration="36">
+      <failure message="Error: expect(received).toBe(expected) // Object.is equality"><![CDATA[Error: expect(received).toBe(expected) // Object.is equality
+
+Expected: "over"
+Received: "side"
+    at C:\Angular project-2\codebook\src\app\app.component.spec.ts:166:41
+    at _ZoneDelegate.invoke (C:\Angular project-2\codebook\node_modules\zone.js\bundles\zone.umd.js:416:32)
+    at ProxyZoneSpec.Object.<anonymous>.ProxyZoneSpec.onInvoke (C:\Angular project-2\codebook\node_modules\zone.js\bundles\zone-testing.umd.js:2177:43)
+    at _ZoneDelegate.invoke (C:\Angular project-2\codebook\node_modules\zone.js\bundles\zone.umd.js:415:38)
+    at ZoneImpl.run (C:\Angular project-2\codebook\node_modules\zone.js\bundles\zone.umd.js:147:47)
+    at Object.wrappedFunc (C:\Angular project-2\codebook\node_modules\zone.js\bundles\zone-testing.umd.js:450:38)
+    at Promise.then.completed (C:\Angular project-2\codebook\node_modules\jest-circus\build\utils.js:298:28)
+    at new Promise (<anonymous>)
+    at callAsyncCircusFn (C:\Angular project-2\codebook\node_modules\jest-circus\build\utils.js:231:10)
+    at _callCircusTest (C:\Angular project-2\codebook\node_modules\jest-circus\build\run.js:316:40)
+    at processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at _runTest (C:\Angular project-2\codebook\node_modules\jest-circus\build\run.js:252:3)
+    at _runTestsForDescribeBlock (C:\Angular project-2\codebook\node_modules\jest-circus\build\run.js:126:9)
+    at _runTestsForDescribeBlock (C:\Angular project-2\codebook\node_modules\jest-circus\build\run.js:121:9)
+    at _runTestsForDescribeBlock (C:\Angular project-2\codebook\node_modules\jest-circus\build\run.js:121:9)
+    at _runTestsForDescribeBlock (C:\Angular project-2\codebook\node_modules\jest-circus\build\run.js:121:9)
+    at run (C:\Angular project-2\codebook\node_modules\jest-circus\build\run.js:71:3)
+    at runAndTransformResultsToJestFormat (C:\Angular project-2\codebook\node_modules\jest-circus\build\legacy-code-todo-rewrite\jestAdapterInit.js:122:21)]]></failure>
+    </testCase>
+    <testCase name="AppComponent computed properties sidenavMode() should return &quot;side&quot; for desktop" duration="40"/>
+    <testCase name="AppComponent computed properties sidenavOpened() should return true for desktop regardless of collapsed state" duration="34"/>
+    <testCase name="AppComponent computed properties sidenavOpened() should return false when collapsed on mobile" duration="36">
+      <failure message="Error: expect(received).toBe(expected) // Object.is equality"><![CDATA[Error: expect(received).toBe(expected) // Object.is equality
+
+Expected: false
+Received: true
+    at C:\Angular project-2\codebook\src\app\app.component.spec.ts:187:43
+    at _ZoneDelegate.invoke (C:\Angular project-2\codebook\node_modules\zone.js\bundles\zone.umd.js:416:32)
+    at ProxyZoneSpec.Object.<anonymous>.ProxyZoneSpec.onInvoke (C:\Angular project-2\codebook\node_modules\zone.js\bundles\zone-testing.umd.js:2177:43)
+    at _ZoneDelegate.invoke (C:\Angular project-2\codebook\node_modules\zone.js\bundles\zone.umd.js:415:38)
+    at ZoneImpl.run (C:\Angular project-2\codebook\node_modules\zone.js\bundles\zone.umd.js:147:47)
+    at Object.wrappedFunc (C:\Angular project-2\codebook\node_modules\zone.js\bundles\zone-testing.umd.js:450:38)
+    at Promise.then.completed (C:\Angular project-2\codebook\node_modules\jest-circus\build\utils.js:298:28)
+    at new Promise (<anonymous>)
+    at callAsyncCircusFn (C:\Angular project-2\codebook\node_modules\jest-circus\build\utils.js:231:10)
+    at _callCircusTest (C:\Angular project-2\codebook\node_modules\jest-circus\build\run.js:316:40)
+    at processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at _runTest (C:\Angular project-2\codebook\node_modules\jest-circus\build\run.js:252:3)
+    at _runTestsForDescribeBlock (C:\Angular project-2\codebook\node_modules\jest-circus\build\run.js:126:9)
+    at _runTestsForDescribeBlock (C:\Angular project-2\codebook\node_modules\jest-circus\build\run.js:121:9)
+    at _runTestsForDescribeBlock (C:\Angular project-2\codebook\node_modules\jest-circus\build\run.js:121:9)
+    at _runTestsForDescribeBlock (C:\Angular project-2\codebook\node_modules\jest-circus\build\run.js:121:9)
+    at run (C:\Angular project-2\codebook\node_modules\jest-circus\build\run.js:71:3)
+    at runAndTransformResultsToJestFormat (C:\Angular project-2\codebook\node_modules\jest-circus\build\legacy-code-todo-rewrite\jestAdapterInit.js:122:21)]]></failure>
+    </testCase>
+    <testCase name="AppComponent computed properties sidenavOpened() should return true when not collapsed on mobile" duration="39"/>
+    <testCase name="AppComponent Template should display the correct title in toolbar" duration="41">
+      <failure message="TypeError: Cannot read properties of null (reading &apos;nativeElement&apos;)"><![CDATA[TypeError: Cannot read properties of null (reading 'nativeElement')
+    at C:\Angular project-2\codebook\src\app\app.component.spec.ts:201:27
+    at _ZoneDelegate.invoke (C:\Angular project-2\codebook\node_modules\zone.js\bundles\zone.umd.js:416:32)
+    at ProxyZoneSpec.Object.<anonymous>.ProxyZoneSpec.onInvoke (C:\Angular project-2\codebook\node_modules\zone.js\bundles\zone-testing.umd.js:2177:43)
+    at _ZoneDelegate.invoke (C:\Angular project-2\codebook\node_modules\zone.js\bundles\zone.umd.js:415:38)
+    at ZoneImpl.run (C:\Angular project-2\codebook\node_modules\zone.js\bundles\zone.umd.js:147:47)
+    at Object.wrappedFunc (C:\Angular project-2\codebook\node_modules\zone.js\bundles\zone-testing.umd.js:450:38)
+    at Promise.then.completed (C:\Angular project-2\codebook\node_modules\jest-circus\build\utils.js:298:28)
+    at new Promise (<anonymous>)
+    at callAsyncCircusFn (C:\Angular project-2\codebook\node_modules\jest-circus\build\utils.js:231:10)
+    at _callCircusTest (C:\Angular project-2\codebook\node_modules\jest-circus\build\run.js:316:40)
+    at processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at _runTest (C:\Angular project-2\codebook\node_modules\jest-circus\build\run.js:252:3)
+    at _runTestsForDescribeBlock (C:\Angular project-2\codebook\node_modules\jest-circus\build\run.js:126:9)
+    at _runTestsForDescribeBlock (C:\Angular project-2\codebook\node_modules\jest-circus\build\run.js:121:9)
+    at _runTestsForDescribeBlock (C:\Angular project-2\codebook\node_modules\jest-circus\build\run.js:121:9)
+    at run (C:\Angular project-2\codebook\node_modules\jest-circus\build\run.js:71:3)
+    at runAndTransformResultsToJestFormat (C:\Angular project-2\codebook\node_modules\jest-circus\build\legacy-code-todo-rewrite\jestAdapterInit.js:122:21)]]></failure>
+    </testCase>
+    <testCase name="AppComponent Template should call toggleSidenav when menu button is clicked" duration="38">
+      <failure message="TypeError: Cannot read properties of null (reading &apos;triggerEventHandler&apos;)"><![CDATA[TypeError: Cannot read properties of null (reading 'triggerEventHandler')
+    at C:\Angular project-2\codebook\src\app\app.component.spec.ts:207:18
+    at _ZoneDelegate.invoke (C:\Angular project-2\codebook\node_modules\zone.js\bundles\zone.umd.js:416:32)
+    at ProxyZoneSpec.Object.<anonymous>.ProxyZoneSpec.onInvoke (C:\Angular project-2\codebook\node_modules\zone.js\bundles\zone-testing.umd.js:2177:43)
+    at _ZoneDelegate.invoke (C:\Angular project-2\codebook\node_modules\zone.js\bundles\zone.umd.js:415:38)
+    at ZoneImpl.run (C:\Angular project-2\codebook\node_modules\zone.js\bundles\zone.umd.js:147:47)
+    at Object.wrappedFunc (C:\Angular project-2\codebook\node_modules\zone.js\bundles\zone-testing.umd.js:450:38)
+    at Promise.then.completed (C:\Angular project-2\codebook\node_modules\jest-circus\build\utils.js:298:28)
+    at new Promise (<anonymous>)
+    at callAsyncCircusFn (C:\Angular project-2\codebook\node_modules\jest-circus\build\utils.js:231:10)
+    at _callCircusTest (C:\Angular project-2\codebook\node_modules\jest-circus\build\run.js:316:40)
+    at processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at _runTest (C:\Angular project-2\codebook\node_modules\jest-circus\build\run.js:252:3)
+    at _runTestsForDescribeBlock (C:\Angular project-2\codebook\node_modules\jest-circus\build\run.js:126:9)
+    at _runTestsForDescribeBlock (C:\Angular project-2\codebook\node_modules\jest-circus\build\run.js:121:9)
+    at _runTestsForDescribeBlock (C:\Angular project-2\codebook\node_modules\jest-circus\build\run.js:121:9)
+    at run (C:\Angular project-2\codebook\node_modules\jest-circus\build\run.js:71:3)
+    at runAndTransformResultsToJestFormat (C:\Angular project-2\codebook\node_modules\jest-circus\build\legacy-code-todo-rewrite\jestAdapterInit.js:122:21)]]></failure>
+    </testCase>
+    <testCase name="AppComponent Template should call toggleFullScreen when fullscreen button is clicked" duration="37">
+      <failure message="TypeError: Cannot read properties of null (reading &apos;triggerEventHandler&apos;)"><![CDATA[TypeError: Cannot read properties of null (reading 'triggerEventHandler')
+    at C:\Angular project-2\codebook\src\app\app.component.spec.ts:214:24
+    at _ZoneDelegate.invoke (C:\Angular project-2\codebook\node_modules\zone.js\bundles\zone.umd.js:416:32)
+    at ProxyZoneSpec.Object.<anonymous>.ProxyZoneSpec.onInvoke (C:\Angular project-2\codebook\node_modules\zone.js\bundles\zone-testing.umd.js:2177:43)
+    at _ZoneDelegate.invoke (C:\Angular project-2\codebook\node_modules\zone.js\bundles\zone.umd.js:415:38)
+    at ZoneImpl.run (C:\Angular project-2\codebook\node_modules\zone.js\bundles\zone.umd.js:147:47)
+    at Object.wrappedFunc (C:\Angular project-2\codebook\node_modules\zone.js\bundles\zone-testing.umd.js:450:38)
+    at Promise.then.completed (C:\Angular project-2\codebook\node_modules\jest-circus\build\utils.js:298:28)
+    at new Promise (<anonymous>)
+    at callAsyncCircusFn (C:\Angular project-2\codebook\node_modules\jest-circus\build\utils.js:231:10)
+    at _callCircusTest (C:\Angular project-2\codebook\node_modules\jest-circus\build\run.js:316:40)
+    at processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at _runTest (C:\Angular project-2\codebook\node_modules\jest-circus\build\run.js:252:3)
+    at _runTestsForDescribeBlock (C:\Angular project-2\codebook\node_modules\jest-circus\build\run.js:126:9)
+    at _runTestsForDescribeBlock (C:\Angular project-2\codebook\node_modules\jest-circus\build\run.js:121:9)
+    at _runTestsForDescribeBlock (C:\Angular project-2\codebook\node_modules\jest-circus\build\run.js:121:9)
+    at run (C:\Angular project-2\codebook\node_modules\jest-circus\build\run.js:71:3)
+    at runAndTransformResultsToJestFormat (C:\Angular project-2\codebook\node_modules\jest-circus\build\legacy-code-todo-rewrite\jestAdapterInit.js:122:21)]]></failure>
+    </testCase>
+    <testCase name="AppComponent Template should contain app-custom-sidenav component" duration="37"/>
+    <testCase name="AppComponent Template should pass collapsed state to custom sidenav" duration="44">
+      <failure message="Error: expect(received).toBe(expected) // Object.is equality"><![CDATA[Error: expect(received).toBe(expected) // Object.is equality
+
+Expected: true
+Received: undefined
+    at C:\Angular project-2\codebook\src\app\app.component.spec.ts:227:60
+    at _ZoneDelegate.invoke (C:\Angular project-2\codebook\node_modules\zone.js\bundles\zone.umd.js:416:32)
+    at ProxyZoneSpec.Object.<anonymous>.ProxyZoneSpec.onInvoke (C:\Angular project-2\codebook\node_modules\zone.js\bundles\zone-testing.umd.js:2177:43)
+    at _ZoneDelegate.invoke (C:\Angular project-2\codebook\node_modules\zone.js\bundles\zone.umd.js:415:38)
+    at ZoneImpl.run (C:\Angular project-2\codebook\node_modules\zone.js\bundles\zone.umd.js:147:47)
+    at Object.wrappedFunc (C:\Angular project-2\codebook\node_modules\zone.js\bundles\zone-testing.umd.js:450:38)
+    at Promise.then.completed (C:\Angular project-2\codebook\node_modules\jest-circus\build\utils.js:298:28)
+    at new Promise (<anonymous>)
+    at callAsyncCircusFn (C:\Angular project-2\codebook\node_modules\jest-circus\build\utils.js:231:10)
+    at _callCircusTest (C:\Angular project-2\codebook\node_modules\jest-circus\build\run.js:316:40)
+    at processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at _runTest (C:\Angular project-2\codebook\node_modules\jest-circus\build\run.js:252:3)
+    at _runTestsForDescribeBlock (C:\Angular project-2\codebook\node_modules\jest-circus\build\run.js:126:9)
+    at _runTestsForDescribeBlock (C:\Angular project-2\codebook\node_modules\jest-circus\build\run.js:121:9)
+    at _runTestsForDescribeBlock (C:\Angular project-2\codebook\node_modules\jest-circus\build\run.js:121:9)
+    at run (C:\Angular project-2\codebook\node_modules\jest-circus\build\run.js:71:3)
+    at runAndTransformResultsToJestFormat (C:\Angular project-2\codebook\node_modules\jest-circus\build\legacy-code-todo-rewrite\jestAdapterInit.js:122:21)]]></failure>
+    </testCase>
+    <testCase name="AppComponent Integration with ResponsiveService should update sidenav when responsive service emits changes" duration="32">
+      <failure message="Error: Property `screenWidth$` does not exist in the provided object"><![CDATA[Error: Property `screenWidth$` does not exist in the provided object
+    at ModuleMocker._spyOnProperty (C:\Angular project-2\codebook\node_modules\jest-mock\build\index.js:807:13)
+    at ModuleMocker.spyOn (C:\Angular project-2\codebook\node_modules\jest-mock\build\index.js:727:19)
+    at C:\Angular project-2\codebook\src\app\app.component.spec.ts:237:12
+    at _ZoneDelegate.invoke (C:\Angular project-2\codebook\node_modules\zone.js\bundles\zone.umd.js:416:32)
+    at ProxyZoneSpec.Object.<anonymous>.ProxyZoneSpec.onInvoke (C:\Angular project-2\codebook\node_modules\zone.js\bundles\zone-testing.umd.js:2177:43)
+    at _ZoneDelegate.invoke (C:\Angular project-2\codebook\node_modules\zone.js\bundles\zone.umd.js:415:38)
+    at ZoneImpl.run (C:\Angular project-2\codebook\node_modules\zone.js\bundles\zone.umd.js:147:47)
+    at Object.wrappedFunc (C:\Angular project-2\codebook\node_modules\zone.js\bundles\zone-testing.umd.js:450:38)
+    at Promise.then.completed (C:\Angular project-2\codebook\node_modules\jest-circus\build\utils.js:298:28)
+    at new Promise (<anonymous>)
+    at callAsyncCircusFn (C:\Angular project-2\codebook\node_modules\jest-circus\build\utils.js:231:10)
+    at _callCircusTest (C:\Angular project-2\codebook\node_modules\jest-circus\build\run.js:316:40)
+    at processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at _runTest (C:\Angular project-2\codebook\node_modules\jest-circus\build\run.js:252:3)
+    at _runTestsForDescribeBlock (C:\Angular project-2\codebook\node_modules\jest-circus\build\run.js:126:9)
+    at _runTestsForDescribeBlock (C:\Angular project-2\codebook\node_modules\jest-circus\build\run.js:121:9)
+    at _runTestsForDescribeBlock (C:\Angular project-2\codebook\node_modules\jest-circus\build\run.js:121:9)
+    at run (C:\Angular project-2\codebook\node_modules\jest-circus\build\run.js:71:3)
+    at runAndTransformResultsToJestFormat (C:\Angular project-2\codebook\node_modules\jest-circus\build\legacy-code-todo-rewrite\jestAdapterInit.js:122:21)]]></failure>
+    </testCase>
+    <testCase name="AppComponent App Routing should redirect empty path to dashboard" duration="50"/>
+    <testCase name="AppComponent App Routing should redirect unknown paths to dashboard" duration="39"/>
+    <testCase name="AppComponent App Routing should route to dashboard component" duration="37"/>
+    <testCase name="AppComponent App Routing should route to users component" duration="53"/>
+    <testCase name="AppConfig should provide zone change detection with event coalescing" duration="1">
+      <failure message="Error: expect(received).toBeDefined()"><![CDATA[Error: expect(received).toBeDefined()
+
+Received: undefined
+    at C:\Angular project-2\codebook\src\app\app.component.spec.ts:294:26
+    at _ZoneDelegate.invoke (C:\Angular project-2\codebook\node_modules\zone.js\bundles\zone.umd.js:416:32)
+    at ProxyZoneSpec.Object.<anonymous>.ProxyZoneSpec.onInvoke (C:\Angular project-2\codebook\node_modules\zone.js\bundles\zone-testing.umd.js:2177:43)
+    at _ZoneDelegate.invoke (C:\Angular project-2\codebook\node_modules\zone.js\bundles\zone.umd.js:415:38)
+    at ZoneImpl.run (C:\Angular project-2\codebook\node_modules\zone.js\bundles\zone.umd.js:147:47)
+    at Object.wrappedFunc (C:\Angular project-2\codebook\node_modules\zone.js\bundles\zone-testing.umd.js:450:38)
+    at Promise.then.completed (C:\Angular project-2\codebook\node_modules\jest-circus\build\utils.js:298:28)
+    at new Promise (<anonymous>)
+    at callAsyncCircusFn (C:\Angular project-2\codebook\node_modules\jest-circus\build\utils.js:231:10)
+    at _callCircusTest (C:\Angular project-2\codebook\node_modules\jest-circus\build\run.js:316:40)
+    at processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at _runTest (C:\Angular project-2\codebook\node_modules\jest-circus\build\run.js:252:3)
+    at _runTestsForDescribeBlock (C:\Angular project-2\codebook\node_modules\jest-circus\build\run.js:126:9)
+    at _runTestsForDescribeBlock (C:\Angular project-2\codebook\node_modules\jest-circus\build\run.js:121:9)
+    at run (C:\Angular project-2\codebook\node_modules\jest-circus\build\run.js:71:3)
+    at runAndTransformResultsToJestFormat (C:\Angular project-2\codebook\node_modules\jest-circus\build\legacy-code-todo-rewrite\jestAdapterInit.js:122:21)]]></failure>
+    </testCase>
+    <testCase name="AppConfig should provide router with correct routes" duration="1">
+      <failure message="Error: expect(received).toBeDefined()"><![CDATA[Error: expect(received).toBeDefined()
+
+Received: undefined
+    at C:\Angular project-2\codebook\src\app\app.component.spec.ts:302:28
+    at _ZoneDelegate.invoke (C:\Angular project-2\codebook\node_modules\zone.js\bundles\zone.umd.js:416:32)
+    at ProxyZoneSpec.Object.<anonymous>.ProxyZoneSpec.onInvoke (C:\Angular project-2\codebook\node_modules\zone.js\bundles\zone-testing.umd.js:2177:43)
+    at _ZoneDelegate.invoke (C:\Angular project-2\codebook\node_modules\zone.js\bundles\zone.umd.js:415:38)
+    at ZoneImpl.run (C:\Angular project-2\codebook\node_modules\zone.js\bundles\zone.umd.js:147:47)
+    at Object.wrappedFunc (C:\Angular project-2\codebook\node_modules\zone.js\bundles\zone-testing.umd.js:450:38)
+    at Promise.then.completed (C:\Angular project-2\codebook\node_modules\jest-circus\build\utils.js:298:28)
+    at new Promise (<anonymous>)
+    at callAsyncCircusFn (C:\Angular project-2\codebook\node_modules\jest-circus\build\utils.js:231:10)
+    at _callCircusTest (C:\Angular project-2\codebook\node_modules\jest-circus\build\run.js:316:40)
+    at processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at _runTest (C:\Angular project-2\codebook\node_modules\jest-circus\build\run.js:252:3)
+    at _runTestsForDescribeBlock (C:\Angular project-2\codebook\node_modules\jest-circus\build\run.js:126:9)
+    at _runTestsForDescribeBlock (C:\Angular project-2\codebook\node_modules\jest-circus\build\run.js:121:9)
+    at run (C:\Angular project-2\codebook\node_modules\jest-circus\build\run.js:71:3)
+    at runAndTransformResultsToJestFormat (C:\Angular project-2\codebook\node_modules\jest-circus\build\legacy-code-todo-rewrite\jestAdapterInit.js:122:21)]]></failure>
+    </testCase>
   </file>
 </testExecutions>

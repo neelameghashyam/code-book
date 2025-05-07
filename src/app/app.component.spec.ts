@@ -1,7 +1,5 @@
-import { TestBed, ComponentFixture } from '@angular/core/testing';
+import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { AppComponent } from './app.component';
-import { ResponsiveService } from './services/responsive/responsive.service';
-import { CommonModule } from '@angular/common';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -9,41 +7,31 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatBadgeModule } from '@angular/material/badge';
-import { RouterOutlet } from '@angular/router';
-import { CustomSidenavComponent } from './custom-sidenav/custom-sidenav.component';
-import { TranslocoRootModule } from './transloco-root.module';
-import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { By } from '@angular/platform-browser';
+import { CustomSidenavComponent } from './custom-sidenav/custom-sidenav.component';
+import { ResponsiveService } from './services/responsive/responsive.service';
+import { TranslocoRootModule } from './transloco-root.module';
+import { RouterTestingModule } from '@angular/router/testing';
+import { Router } from '@angular/router';
+import { routes } from './app.routes';
+import { DashboardComponent } from './pages/dashboard/dashboard.component';
+import { UsersComponent } from './pages/users/users.component';
+import { Subject } from 'rxjs';
+import { TranslocoService } from '@jsverse/transloco';
+import { ApplicationConfig } from '@angular/core';
+import { appConfig } from './app.config';
 
 describe('AppComponent', () => {
   let component: AppComponent;
   let fixture: ComponentFixture<AppComponent>;
   let responsiveService: ResponsiveService;
 
-  // Mock ResponsiveService
-  const responsiveServiceMock = {
-    isMobile: jest.fn().mockReturnValue(false),
-  };
-
-  // Mock document fullscreen APIs
-  const mockRequestFullscreen = jest.fn();
-  const mockExitFullscreen = jest.fn();
-  const mockDocument = {
-    fullscreenElement: null,
-    documentElement: { requestFullscreen: mockRequestFullscreen },
-    exitFullscreen: mockExitFullscreen,
-  };
-
   beforeEach(async () => {
-    // Reset mocks
-    responsiveServiceMock.isMobile.mockReset();
-    mockRequestFullscreen.mockReset();
-    mockExitFullscreen.mockReset();
-    mockDocument.fullscreenElement = null;
-
     await TestBed.configureTestingModule({
       imports: [
-        CommonModule,
+        AppComponent,
+        NoopAnimationsModule,
         MatToolbarModule,
         MatButtonModule,
         MatIconModule,
@@ -51,221 +39,266 @@ describe('AppComponent', () => {
         MatMenuModule,
         MatTooltipModule,
         MatBadgeModule,
-        NoopAnimationsModule,
         TranslocoRootModule,
+        CustomSidenavComponent,
+        RouterTestingModule.withRoutes(routes)
       ],
-      declarations: [AppComponent, CustomSidenavComponent],
-      providers: [
-        { provide: ResponsiveService, useValue: responsiveServiceMock },
-      ],
+      providers: [ResponsiveService]
     }).compileComponents();
 
     fixture = TestBed.createComponent(AppComponent);
     component = fixture.componentInstance;
     responsiveService = TestBed.inject(ResponsiveService);
     fixture.detectChanges();
-
-    // Override document with mock
-    Object.defineProperty(window, 'document', {
-      value: mockDocument,
-      writable: true,
-    });
   });
 
-  it('should create the component', () => {
+  it('should create the app', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should initialize with correct default values', () => {
+  it('should have title "Code Book"', () => {
     expect(component.title).toBe('Code Book');
-    expect(component.collapsed()).toBe(false);
-    expect(component.currentLanguage()).toBe('English');
   });
 
-  describe('sidenavWidth', () => {
-    it('should return 280px when isMobile is true', () => {
-      responsiveServiceMock.isMobile.mockReturnValue(true);
-      expect(component.sidenavWidth()).toBe('280px');
-    });
-
-    it('should return 64px when isMobile is false and collapsed is true', () => {
-      responsiveServiceMock.isMobile.mockReturnValue(false);
-      component.collapsed.set(true);
-      expect(component.sidenavWidth()).toBe('64px');
-    });
-
-    it('should return 200px when isMobile is false and collapsed is false', () => {
-      responsiveServiceMock.isMobile.mockReturnValue(false);
-      component.collapsed.set(false);
-      expect(component.sidenavWidth()).toBe('200px');
-    });
-  });
-
-  describe('sidenavMode', () => {
-    it('should return "over" when isMobile is true', () => {
-      responsiveServiceMock.isMobile.mockReturnValue(true);
-      expect(component.sidenavMode()).toBe('over');
-    });
-
-    it('should return "side" when isMobile is false', () => {
-      responsiveServiceMock.isMobile.mockReturnValue(false);
-      expect(component.sidenavMode()).toBe('side');
-    });
-  });
-
-  describe('sidenavOpened', () => {
-    it('should return false when isMobile is true and collapsed is true', () => {
-      responsiveServiceMock.isMobile.mockReturnValue(true);
-      component.collapsed.set(true);
-      expect(component.sidenavOpened()).toBe(false);
-    });
-
-    it('should return true when isMobile is true and collapsed is false', () => {
-      responsiveServiceMock.isMobile.mockReturnValue(true);
-      component.collapsed.set(false);
-      expect(component.sidenavOpened()).toBe(true);
-    });
-
-    it('should return true when isMobile is false', () => {
-      responsiveServiceMock.isMobile.mockReturnValue(false);
-      component.collapsed.set(true); // Should not affect
-      expect(component.sidenavOpened()).toBe(true);
-    });
-  });
-
-  describe('toggleSidenav', () => {
-    it('should toggle collapsed state from false to true', () => {
-      component.collapsed.set(false);
-      component.toggleSidenav();
-      expect(component.collapsed()).toBe(true);
-    });
-
-    it('should toggle collapsed state from true to false', () => {
-      component.collapsed.set(true);
-      component.toggleSidenav();
+  describe('Initial state', () => {
+    it('should initialize collapsed as false', () => {
       expect(component.collapsed()).toBe(false);
     });
 
-    it('should trigger sidenav toggle button click', () => {
-      const button = fixture.debugElement.query(By.css('button[mat-icon-button]'));
-      const toggleSpy = jest.spyOn(component, 'toggleSidenav');
-      button.triggerEventHandler('click', null);
-      expect(toggleSpy).toHaveBeenCalled();
+    it('should initialize currentLanguage as "English"', () => {
+      expect(component.currentLanguage()).toBe('English');
     });
   });
 
-  describe('setLanguage', () => {
-    it('should set language to English when lang is "en"', () => {
+  describe('toggleFullScreen()', () => {
+    beforeEach(() => {
+      Object.defineProperty(document, 'fullscreenElement', {
+        writable: true,
+        value: null
+      });
+      document.documentElement.requestFullscreen = jest.fn();
+      document.exitFullscreen = jest.fn();
+    });
+
+    it('should enter fullscreen when not in fullscreen', () => {
+      component.toggleFullScreen();
+      expect(document.documentElement.requestFullscreen).toHaveBeenCalled();
+    });
+
+    it('should exit fullscreen when in fullscreen', () => {
+      Object.defineProperty(document, 'fullscreenElement', {
+        value: true,
+        writable: true
+      });
+      
+      component.toggleFullScreen();
+      expect(document.exitFullscreen).toHaveBeenCalled();
+    });
+
+    it('should handle fullscreen error', () => {
+      const mockError = new Error('Fullscreen error');
+      document.documentElement.requestFullscreen = jest.fn().mockRejectedValue(mockError);
+      const consoleSpy = jest.spyOn(console, 'error');
+      
+      component.toggleFullScreen();
+      expect(consoleSpy).toHaveBeenCalledWith(`Error attempting to enable fullscreen: ${mockError.message}`);
+    });
+  });
+
+  describe('setLanguage()', () => {
+    it('should set language to English when "en" is passed', () => {
       component.setLanguage('en');
       expect(component.currentLanguage()).toBe('English');
     });
 
-    it('should set language to French when lang is "fr"', () => {
+    it('should set language to French when "fr" is passed', () => {
       component.setLanguage('fr');
       expect(component.currentLanguage()).toBe('French');
     });
 
-    it('should trigger language menu item click for English', () => {
-      const menuItems = fixture.debugElement.queryAll(By.css('button[mat-menu-item]'));
-      const setLanguageSpy = jest.spyOn(component, 'setLanguage');
-      menuItems[0].triggerEventHandler('click', null);
-      expect(setLanguageSpy).toHaveBeenCalledWith('en');
+    it('should keep current language when unknown code is passed', () => {
+      component.setLanguage('de');
+      expect(component.currentLanguage()).toBe('English');
     });
 
-    it('should trigger language menu item click for French', () => {
-      const menuItems = fixture.debugElement.queryAll(By.css('button[mat-menu-item]'));
-      const setLanguageSpy = jest.spyOn(component, 'setLanguage');
-      menuItems[1].triggerEventHandler('click', null);
-      expect(setLanguageSpy).toHaveBeenCalledWith('fr');
+    it('should actually change language in transloco service', () => {
+      const translocoService = TestBed.inject(TranslocoService);
+      const setActiveLangSpy = jest.spyOn(translocoService, 'setActiveLang');
+      
+      component.setLanguage('fr');
+      expect(setActiveLangSpy).toHaveBeenCalledWith('fr');
     });
   });
 
-  describe('toggleFullScreen', () => {
-    it('should request fullscreen when not in fullscreen', async () => {
-      mockDocument.fullscreenElement = null;
-      component.toggleFullScreen();
-      expect(mockRequestFullscreen).toHaveBeenCalled();
+  describe('toggleSidenav()', () => {
+    it('should toggle collapsed state', () => {
+      const initialValue = component.collapsed();
+      component.toggleSidenav();
+      expect(component.collapsed()).toBe(!initialValue);
+      component.toggleSidenav();
+      expect(component.collapsed()).toBe(initialValue);
+    });
+  });
+
+  describe('computed properties', () => {
+    describe('sidenavWidth()', () => {
+      it('should return 280px for mobile', () => {
+        jest.spyOn(responsiveService, 'isMobile').mockReturnValue(true);
+        expect(component.sidenavWidth()).toBe('280px');
+      });
+
+      it('should return 64px when collapsed on desktop', () => {
+        jest.spyOn(responsiveService, 'isMobile').mockReturnValue(false);
+        component.collapsed.set(true);
+        expect(component.sidenavWidth()).toBe('64px');
+      });
+
+      it('should return 200px when not collapsed on desktop', () => {
+        jest.spyOn(responsiveService, 'isMobile').mockReturnValue(false);
+        component.collapsed.set(false);
+        expect(component.sidenavWidth()).toBe('200px');
+      });
     });
 
-    it('should exit fullscreen when in fullscreen', async () => {
-      mockDocument.fullscreenElement = document.documentElement;
-      component.toggleFullScreen();
-      expect(mockExitFullscreen).toHaveBeenCalled();
+    describe('sidenavMode()', () => {
+      it('should return "over" for mobile', () => {
+        jest.spyOn(responsiveService, 'isMobile').mockReturnValue(true);
+        expect(component.sidenavMode()).toBe('over');
+      });
+
+      it('should return "side" for desktop', () => {
+        jest.spyOn(responsiveService, 'isMobile').mockReturnValue(false);
+        expect(component.sidenavMode()).toBe('side');
+      });
     });
 
-    it('should log error when requestFullscreen fails', async () => {
-      const consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation();
-      mockDocument.fullscreenElement = null;
-      mockRequestFullscreen.mockRejectedValueOnce(new Error('Permission denied'));
-      component.toggleFullScreen();
-      expect(consoleErrorSpy).toHaveBeenCalledWith('Error attempting to enable fullscreen: Permission denied');
-      consoleErrorSpy.mockRestore();
+    describe('sidenavOpened()', () => {
+      it('should return true for desktop regardless of collapsed state', () => {
+        jest.spyOn(responsiveService, 'isMobile').mockReturnValue(false);
+        component.collapsed.set(true);
+        expect(component.sidenavOpened()).toBe(true);
+        component.collapsed.set(false);
+        expect(component.sidenavOpened()).toBe(true);
+      });
+
+      it('should return false when collapsed on mobile', () => {
+        jest.spyOn(responsiveService, 'isMobile').mockReturnValue(true);
+        component.collapsed.set(true);
+        expect(component.sidenavOpened()).toBe(false);
+      });
+
+      it('should return true when not collapsed on mobile', () => {
+        jest.spyOn(responsiveService, 'isMobile').mockReturnValue(true);
+        component.collapsed.set(false);
+        expect(component.sidenavOpened()).toBe(true);
+      });
+    });
+  });
+
+  describe('Template', () => {
+    it('should display the correct title in toolbar', () => {
+      const titleElement = fixture.debugElement.query(By.css('mat-toolbar .title'));
+      expect(titleElement.nativeElement.textContent).toContain('Code Book');
     });
 
-    it('should trigger fullscreen button click', () => {
-      const buttons = fixture.debugElement.queryAll(By.css('button[mat-icon-button]'));
-      const fullscreenButton = buttons.find(btn =>
-        btn.attributes['matTooltip'] === 'Full Screen'
-      );
-      const toggleFullScreenSpy = jest.spyOn(component, 'toggleFullScreen');
+    it('should call toggleSidenav when menu button is clicked', () => {
+      const toggleSpy = jest.spyOn(component, 'toggleSidenav');
+      const menuButton = fixture.debugElement.query(By.css('mat-toolbar button[aria-label="Toggle sidenav"]'));
+      menuButton.triggerEventHandler('click', null);
+      expect(toggleSpy).toHaveBeenCalled();
+    });
+
+    it('should call toggleFullScreen when fullscreen button is clicked', () => {
+      const fullscreenSpy = jest.spyOn(component, 'toggleFullScreen');
+      const fullscreenButton = fixture.debugElement.query(By.css('mat-toolbar button[aria-label="Toggle fullscreen"]'));
       fullscreenButton.triggerEventHandler('click', null);
-      expect(toggleFullScreenSpy).toHaveBeenCalled();
-    });
-  });
-
-  describe('template bindings', () => {
-    it('should display title in toolbar', () => {
-      const toolbar = fixture.debugElement.query(By.css('mat-toolbar'));
-      expect(toolbar.nativeElement.textContent).toContain('Code Book');
+      expect(fullscreenSpy).toHaveBeenCalled();
     });
 
-    it('should display current language in language button', () => {
-      component.currentLanguage.set('French');
-      fixture.detectChanges();
-      const languageButton = fixture.debugElement.query(By.css('button[matTooltip="Language"]'));
-      expect(languageButton.nativeElement.textContent).toContain('French');
+    it('should contain app-custom-sidenav component', () => {
+      const sidenavComponent = fixture.debugElement.query(By.directive(CustomSidenavComponent));
+      expect(sidenavComponent).toBeTruthy();
     });
 
-    it('should apply correct sidenav width based on collapsed state', () => {
-      responsiveServiceMock.isMobile.mockReturnValue(false);
+    it('should pass collapsed state to custom sidenav', () => {
       component.collapsed.set(true);
       fixture.detectChanges();
-      const sidenav = fixture.debugElement.query(By.css('mat-sidenav'));
-      expect(sidenav.styles['width']).toBe('64px');
-
-      component.collapsed.set(false);
-      fixture.detectChanges();
-      expect(sidenav.styles['width']).toBe('200px');
-    });
-
-    it('should close sidenav on content click when isMobile is true', () => {
-      responsiveServiceMock.isMobile.mockReturnValue(true);
-      const sidenavContent = fixture.debugElement.query(By.css('mat-sidenav-content'));
-      const sidenav = fixture.debugElement.query(By.css('mat-sidenav'));
-      const closeSpy = jest.fn();
-      sidenav.componentInstance.close = closeSpy;
-      sidenavContent.triggerEventHandler('click', null);
-      expect(closeSpy).toHaveBeenCalled();
-    });
-
-    it('should not close sidenav on content click when isMobile is false', () => {
-      responsiveServiceMock.isMobile.mockReturnValue(false);
-      const sidenavContent = fixture.debugElement.query(By.css('mat-sidenav-content'));
-      const sidenav = fixture.debugElement.query(By.css('mat-sidenav'));
-      const closeSpy = jest.fn();
-      sidenav.componentInstance.close = closeSpy;
-      sidenavContent.triggerEventHandler('click', null);
-      expect(closeSpy).not.toHaveBeenCalled();
+      const sidenavComponent = fixture.debugElement.query(By.directive(CustomSidenavComponent));
+      expect(sidenavComponent.componentInstance.collapsed).toBe(true);
     });
   });
 
-  describe('footer', () => {
-    it('should display correct footer content', () => {
-      const footer = fixture.debugElement.query(By.css('footer'));
-      expect(footer.nativeElement.textContent).toContain('© 2025 Your Code Book All rights reserved');
-      expect(footer.nativeElement.textContent).toContain('Privacy Policy');
-      expect(footer.nativeElement.textContent).toContain('Terms of Service');
-      expect(footer.nativeElement.textContent).toContain('Contact Us');
+  describe('Integration with ResponsiveService', () => {
+    it('should update sidenav when responsive service emits changes', () => {
+      // Create a mock observable
+      const mockObservable = new Subject<boolean>();
+      
+      // Properly type the spy and mock the property
+      jest.spyOn(responsiveService as any, 'screenWidth$', 'get').mockReturnValue(mockObservable);
+      
+      // Recreate component with new spy
+      fixture = TestBed.createComponent(AppComponent);
+      component = fixture.componentInstance;
+      
+      mockObservable.next(true); // Simulate mobile
+      fixture.detectChanges();
+      expect(component.sidenavMode()).toBe('over');
+      
+      mockObservable.next(false); // Simulate desktop
+      fixture.detectChanges();
+      expect(component.sidenavMode()).toBe('side');
     });
+  });
+
+  describe('App Routing', () => {
+    let router: Router;
+
+    beforeEach(() => {
+      router = TestBed.inject(Router);
+    });
+
+    it('should redirect empty path to dashboard', fakeAsync(() => {
+      router.navigate(['']);
+      tick();
+      expect(router.url).toBe('/dashboard');
+    }));
+
+    it('should redirect unknown paths to dashboard', fakeAsync(() => {
+      router.navigate(['nonexistent']);
+      tick();
+      expect(router.url).toBe('/dashboard');
+    }));
+
+    it('should route to dashboard component', fakeAsync(() => {
+      router.navigate(['dashboard']);
+      tick();
+      fixture.detectChanges();
+      expect(fixture.debugElement.query(By.directive(DashboardComponent))).toBeTruthy();
+    }));
+
+    it('should route to users component', fakeAsync(() => {
+      router.navigate(['users']);
+      tick();
+      fixture.detectChanges();
+      expect(fixture.debugElement.query(By.directive(UsersComponent))).toBeTruthy();
+    }));
+  });
+});
+
+describe('AppConfig', () => {
+  it('should provide zone change detection with event coalescing', () => {
+    // Type-safe check for zone provider
+    const zoneProvider = appConfig.providers.find(
+      (p: any) => p?.ɵproviders?.some((prov: any) => prov?.provide === 'eventCoalescingEnabled')
+    );
+    expect(zoneProvider).toBeDefined();
+  });
+
+  it('should provide router with correct routes', () => {
+    // Type-safe check for router provider
+    const routerProvider = appConfig.providers.find(
+      (p: any) => p?.ɵproviders?.some((prov: any) => prov?.provide === Router)
+    );
+    expect(routerProvider).toBeDefined();
   });
 });
