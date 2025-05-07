@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testExecutions version="1">
+  <file path="C:\Angular project-2\codebook\src\app\pages\dashboard\dashboard.component.spec.ts">
+    <testCase name="DashboardComponent should create" duration="437"/>
+  </file>
+  <file path="C:\Angular project-2\codebook\src\app\pages\users\users.component.spec.ts">
+    <testCase name="UsersComponent should create" duration="491"/>
+  </file>
+  <file path="C:\Angular project-2\codebook\src\app\services\responsive\responsive.service.spec.ts">
+    <testCase name="ResponsiveService should be created" duration="162"/>
+    <testCase name="ResponsiveService constructor should initialize breakpointObserver with all breakpoints" duration="33"/>
+    <testCase name="ResponsiveService constructor should update breakpointState when breakpointObserver emits" duration="17"/>
+    <testCase name="ResponsiveService isMobile should return true when isXSmall is true" duration="15"/>
+    <testCase name="ResponsiveService isMobile should return false when isXSmall is false" duration="13"/>
+    <testCase name="ResponsiveService isTablet should return true when isSmall is true" duration="9"/>
+    <testCase name="ResponsiveService isTablet should return true when isMedium is true" duration="15"/>
+    <testCase name="ResponsiveService isTablet should return false when neither isSmall nor isMedium is true" duration="14"/>
+    <testCase name="ResponsiveService isDesktop should return true when isLarge is true" duration="22"/>
+    <testCase name="ResponsiveService isDesktop should return true when isXLarge is true" duration="17"/>
+    <testCase name="ResponsiveService isDesktop should return false when neither isLarge nor isXLarge is true" duration="13"/>
+    <testCase name="ResponsiveService currentBreakpoint should return &quot;xsmall&quot; when isXSmall is true" duration="22"/>
+    <testCase name="ResponsiveService currentBreakpoint should return &quot;small&quot; when isSmall is true" duration="9"/>
+    <testCase name="ResponsiveService currentBreakpoint should return &quot;medium&quot; when isMedium is true" duration="10"/>
+    <testCase name="ResponsiveService currentBreakpoint should return &quot;large&quot; when isLarge is true" duration="11"/>
+    <testCase name="ResponsiveService currentBreakpoint should return &quot;xlarge&quot; when isXLarge is true or no other breakpoint is active" duration="14"/>
+  </file>
+  <file path="C:\Angular project-2\codebook\src\app\custom-sidenav\custom-sidenav.component.spec.ts">
+  </file>
+  <file path="C:\Angular project-2\codebook\src\app\app.component.spec.ts">
+  </file>
+</testExecutions>

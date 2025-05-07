@@ -1,0 +1,7 @@
+
+.content {
+  padding-top: 12px; /* Header height */
+  padding-bottom: 48px; /* Footer height */
+  min-height: calc(100vh - 56px - 48px); /* Adjusted for thinner header/footer */
+}
+
