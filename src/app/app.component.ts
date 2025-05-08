@@ -1,5 +1,4 @@
-// app.component.ts
-import { Component, computed, effect, inject, signal } from '@angular/core';
+import { Component, computed, signal, inject } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { MatToolbarModule } from '@angular/material/toolbar';
@@ -35,8 +34,6 @@ import { DarkModeService } from './services/dark-mode.service';
 })
 export class AppComponent {
   title = 'Code Book';
-
-  // Initialize collapsed as false to make sidenav visible by default
   collapsed = signal(false);
   currentLanguage = signal('English');
 

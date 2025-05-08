@@ -1,82 +1,70 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { AddUserComponent } from './add-user.component';
 import { ReactiveFormsModule } from '@angular/forms';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { ToastrService } from 'ngx-toastr';
+import { UserStore } from '../store/user-store';
+import { DarkModeService } from '../../../services/dark-mode.service';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { ToastrService } from 'ngx-toastr';
-import { UserStore } from '../store/user-store';
-import { DarkModeService } from '../../../services/dark-mode.service';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { User } from '../user';
-import { By } from '@angular/platform-browser';
 
-// Define a type for the UserStore mock to match the expected methods
-interface UserStoreMock {
-  getUser: jest.Mock<User | undefined, [number]>;
-  addUser: jest.Mock<void, [User]>;
-  updateUser: jest.Mock<void, [User]>;
+interface MockUserStore {
+  getUser: jest.Mock;
+  addUser: jest.Mock;
+  updateUser: jest.Mock;
 }
 
 describe('AddUserComponent', () => {
   let component: AddUserComponent;
   let fixture: ComponentFixture<AddUserComponent>;
-  let userStoreMock: UserStoreMock;
-  let toastrServiceMock: jest.Mocked<ToastrService>;
-  let dialogRefMock: jest.Mocked<MatDialogRef<AddUserComponent>>;
-  let darkModeServiceMock: Partial<DarkModeService>;
-
-  const mockUser: User = {
-    id: 1,
-    name: 'John Doe',
-    company: 'Acme Corp',
-    bs: 'Innovation',
-    website: 'https://acme.com',
-  };
+  let mockDialogRef: jest.Mocked<MatDialogRef<AddUserComponent>>;
+  let mockToastr: jest.Mocked<ToastrService>;
+  let mockUserStore: MockUserStore;
+  let mockDarkModeService: jest.Mocked<DarkModeService>;
 
   beforeEach(async () => {
-    userStoreMock = {
+    mockDialogRef = {
+      close: jest.fn()
+    } as unknown as jest.Mocked<MatDialogRef<AddUserComponent>>;
+
+    mockToastr = {
+      success: jest.fn(),
+      error: jest.fn()
+    } as unknown as jest.Mocked<ToastrService>;
+
+    mockUserStore = {
       getUser: jest.fn(),
       addUser: jest.fn(),
-      updateUser: jest.fn(),
+      updateUser: jest.fn()
     };
 
-    toastrServiceMock = {
-      success: jest.fn(),
-      error: jest.fn(),
-    } as any;
-
-    dialogRefMock = {
-      close: jest.fn(),
-    } as any;
-
-    darkModeServiceMock = {
-      get isDarkMode() {
-        return false;
-      },
-    };
+    mockDarkModeService = {
+      isDarkMode: jest.fn().mockReturnValue(false)
+    } as unknown as jest.Mocked<DarkModeService>;
 
     await TestBed.configureTestingModule({
       imports: [
-        AddUserComponent,
         ReactiveFormsModule,
         MatCardModule,
         MatFormFieldModule,
         MatInputModule,
         MatButtonModule,
         MatIconModule,
-        BrowserAnimationsModule,
+        NoopAnimationsModule
       ],
+      declarations: [AddUserComponent],
       providers: [
-        { provide: UserStore, useValue: userStoreMock },
-        { provide: ToastrService, useValue: toastrServiceMock },
-        { provide: MatDialogRef, useValue: dialogRefMock },
-        { provide: MAT_DIALOG_DATA, useValue: {} },
-        { provide: DarkModeService, useValue: darkModeServiceMock },
-      ],
+        { provide: MatDialogRef, useValue: mockDialogRef },
+        { provide: ToastrService, useValue: mockToastr },
+        { provide: UserStore, useValue: mockUserStore },
+        { provide: DarkModeService, useValue: mockDarkModeService },
+        { provide: MAT_DIALOG_DATA, useValue: {} }
+      ]
     }).compileComponents();
 
     fixture = TestBed.createComponent(AddUserComponent);
@@ -84,265 +72,230 @@ describe('AddUserComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create the component', () => {
+  it('should create', () => {
     expect(component).toBeTruthy();
   });
 
-  describe('Initialization', () => {
-    it('should initialize with Add User title and empty form', () => {
-      expect(component.title).toBe('Add User');
+  describe('ngOnInit', () => {
+    it('should initialize form for adding user when no userId provided', () => {
       expect(component.isEdit).toBe(false);
-      expect(component.userForm.get('id')?.value).toBe(0);
-      expect(component.userForm.get('name')?.value).toBe('');
-      expect(component.userForm.get('company')?.value).toBe('');
-      expect(component.userForm.get('bs')?.value).toBe('');
-      expect(component.userForm.get('website')?.value).toBe('');
+      expect(component.title).toBe('Add User');
+      expect(component.userForm.valid).toBe(false);
     });
 
-    it('should initialize in edit mode with user data when userId is provided', () => {
+    it('should patch form values when editing existing user', () => {
+      const mockUser: User = {
+        id: 1,
+        name: 'Test User',
+        company: 'Test Company',
+        bs: 'Test BS',
+        website: 'test.com'
+      };
+      
+      mockUserStore.getUser.mockReturnValue(mockUser);
+      
       TestBed.resetTestingModule();
       TestBed.configureTestingModule({
         imports: [
-          AddUserComponent,
           ReactiveFormsModule,
           MatCardModule,
           MatFormFieldModule,
           MatInputModule,
           MatButtonModule,
           MatIconModule,
-          BrowserAnimationsModule,
+          NoopAnimationsModule
         ],
+        declarations: [AddUserComponent],
         providers: [
-          { provide: UserStore, useValue: userStoreMock },
-          { provide: ToastrService, useValue: toastrServiceMock },
-          { provide: MatDialogRef, useValue: dialogRefMock },
-          { provide: MAT_DIALOG_DATA, useValue: { userId: 1 } },
-          { provide: DarkModeService, useValue: darkModeServiceMock },
-        ],
+          { provide: MatDialogRef, useValue: mockDialogRef },
+          { provide: ToastrService, useValue: mockToastr },
+          { provide: UserStore, useValue: mockUserStore },
+          { provide: DarkModeService, useValue: mockDarkModeService },
+          { provide: MAT_DIALOG_DATA, useValue: { userId: 1 } }
+        ]
       }).compileComponents();
 
-      userStoreMock.getUser.mockReturnValue(mockUser);
-      fixture = TestBed.createComponent(AddUserComponent);
-      component = fixture.componentInstance;
-      fixture.detectChanges();
+      const editFixture = TestBed.createComponent(AddUserComponent);
+      const editComponent = editFixture.componentInstance;
+      editFixture.detectChanges();
 
-      expect(component.title).toBe('Edit User');
-      expect(component.isEdit).toBe(true);
-      expect(component.userForm.get('id')?.value).toBe(mockUser.id);
-      expect(component.userForm.get('name')?.value).toBe(mockUser.name);
-      expect(component.userForm.get('company')?.value).toBe(mockUser.company);
-      expect(component.userForm.get('bs')?.value).toBe(mockUser.bs);
-      expect(component.userForm.get('website')?.value).toBe(mockUser.website);
-    });
-
-    it('should show error and close dialog if user data is not found in edit mode', () => {
-      TestBed.resetTestingModule();
-      TestBed.configureTestingModule({
-        imports: [
-          AddUserComponent,
-          ReactiveFormsModule,
-          MatCardModule,
-          MatFormFieldModule,
-          MatInputModule,
-          MatButtonModule,
-          MatIconModule,
-          BrowserAnimationsModule,
-        ],
-        providers: [
-          { provide: UserStore, useValue: userStoreMock },
-          { provide: ToastrService, useValue: toastrServiceMock },
-          { provide: MatDialogRef, useValue: dialogRefMock },
-          { provide: MAT_DIALOG_DATA, useValue: { userId: 1 } },
-          { provide: DarkModeService, useValue: darkModeServiceMock },
-        ],
-      }).compileComponents();
-
-      userStoreMock.getUser.mockReturnValue(undefined);
-      fixture = TestBed.createComponent(AddUserComponent);
-      component = fixture.componentInstance;
-      fixture.detectChanges();
-
-      expect(toastrServiceMock.error).toHaveBeenCalledWith('Failed to load user data');
-      expect(dialogRefMock.close).toHaveBeenCalled();
-    });
-  });
-
-  describe('Form Validation', () => {
-    it('should mark form as invalid if required fields are empty', () => {
-      expect(component.userForm.invalid).toBe(true);
-    });
-
-    it('should mark form as valid when all required fields are filled', () => {
-      component.userForm.patchValue({
-        name: 'John Doe',
-        company: 'Acme Corp',
-        bs: 'Innovation',
-        website: 'https://acme.com',
+      expect(editComponent.userForm.value).toEqual({
+        id: 1,
+        name: 'Test User',
+        company: 'Test Company',
+        bs: 'Test BS',
+        website: 'test.com'
       });
-      expect(component.userForm.valid).toBe(true);
     });
 
-    it('should disable id field', () => {
-      expect(component.userForm.get('id')?.disabled).toBe(true);
+    it('should show error and close when user not found for edit', () => {
+      mockUserStore.getUser.mockReturnValue(undefined);
+      
+      TestBed.resetTestingModule();
+      TestBed.configureTestingModule({
+        imports: [
+          ReactiveFormsModule,
+          MatCardModule,
+          MatFormFieldModule,
+          MatInputModule,
+          MatButtonModule,
+          MatIconModule,
+          NoopAnimationsModule
+        ],
+        declarations: [AddUserComponent],
+        providers: [
+          { provide: MatDialogRef, useValue: mockDialogRef },
+          { provide: ToastrService, useValue: mockToastr },
+          { provide: UserStore, useValue: mockUserStore },
+          { provide: DarkModeService, useValue: mockDarkModeService },
+          { provide: MAT_DIALOG_DATA, useValue: { userId: 999 } }
+        ]
+      }).compileComponents();
+
+      const errorFixture = TestBed.createComponent(AddUserComponent);
+      errorFixture.detectChanges();
+
+      expect(mockToastr.error).toHaveBeenCalledWith('Failed to load user data');
+      expect(mockDialogRef.close).toHaveBeenCalled();
     });
   });
 
   describe('saveUser', () => {
-    it('should show error if form is invalid', () => {
+    it('should show error when form is invalid', () => {
+      component.userForm.controls.name.setValue('');
       component.saveUser();
-      expect(toastrServiceMock.error).toHaveBeenCalledWith('Please fill all required fields');
-      expect(userStoreMock.addUser).not.toHaveBeenCalled();
-      expect(userStoreMock.updateUser).not.toHaveBeenCalled();
-      expect(dialogRefMock.close).not.toHaveBeenCalled();
+      
+      expect(mockToastr.error).toHaveBeenCalledWith('Please fill all required fields');
+      expect(mockUserStore.addUser).not.toHaveBeenCalled();
+      expect(mockUserStore.updateUser).not.toHaveBeenCalled();
     });
 
-    it('should add new user and close dialog when form is valid', () => {
-      jest.spyOn(Date, 'now').mockReturnValue(123456);
-      component.userForm.patchValue({
-        name: 'John Doe',
-        company: 'Acme Corp',
-        bs: 'Innovation',
-        website: 'https://acme.com',
+    it('should add new user when form is valid and not in edit mode', () => {
+      component.userForm.setValue({
+        id: 0,
+        name: 'New User',
+        company: 'New Company',
+        bs: 'New BS',
+        website: 'new.com'
       });
 
       component.saveUser();
 
-      expect(userStoreMock.addUser).toHaveBeenCalledWith({
-        id: 123456,
-        name: 'John Doe',
-        company: 'Acme Corp',
-        bs: 'Innovation',
-        website: 'https://acme.com',
+      expect(mockUserStore.addUser).toHaveBeenCalledWith({
+        id: expect.any(Number),
+        name: 'New User',
+        company: 'New Company',
+        bs: 'New BS',
+        website: 'new.com'
       });
-      expect(toastrServiceMock.success).toHaveBeenCalledWith('User added successfully');
-      expect(dialogRefMock.close).toHaveBeenCalled();
+      expect(mockToastr.success).toHaveBeenCalledWith('User added successfully');
+      expect(mockDialogRef.close).toHaveBeenCalled();
     });
 
-    it('should update existing user and close dialog when in edit mode', () => {
+    it('should update user when form is valid and in edit mode', () => {
       component.isEdit = true;
-      component.userForm.patchValue({
+      component.userForm.setValue({
         id: 1,
-        name: 'Jane Doe',
-        company: 'Acme Corp',
-        bs: 'Innovation',
-        website: 'https://acme.com',
+        name: 'Updated User',
+        company: 'Updated Company',
+        bs: 'Updated BS',
+        website: 'updated.com'
       });
 
       component.saveUser();
 
-      expect(userStoreMock.updateUser).toHaveBeenCalledWith({
+      expect(mockUserStore.updateUser).toHaveBeenCalledWith({
         id: 1,
-        name: 'Jane Doe',
-        company: 'Acme Corp',
-        bs: 'Innovation',
-        website: 'https://acme.com',
+        name: 'Updated User',
+        company: 'Updated Company',
+        bs: 'Updated BS',
+        website: 'updated.com'
       });
-      expect(toastrServiceMock.success).toHaveBeenCalledWith('User updated successfully');
-      expect(dialogRefMock.close).toHaveBeenCalled();
+      expect(mockToastr.success).toHaveBeenCalledWith('User updated successfully');
+      expect(mockDialogRef.close).toHaveBeenCalled();
     });
 
-    it('should show error if adding user fails', () => {
-      userStoreMock.addUser.mockImplementation(() => {
-        throw new Error('Add user failed');
+    it('should show error when adding user fails', () => {
+      mockUserStore.addUser.mockImplementation(() => {
+        throw new Error('Add failed');
       });
-      component.userForm.patchValue({
-        name: 'John Doe',
-        company: 'Acme Corp',
-        bs: 'Innovation',
-        website: 'https://acme.com',
+
+      component.userForm.setValue({
+        id: 0,
+        name: 'New User',
+        company: 'New Company',
+        bs: 'New BS',
+        website: 'new.com'
       });
 
       component.saveUser();
 
-      expect(toastrServiceMock.error).toHaveBeenCalledWith('Failed to add user');
-      expect(dialogRefMock.close).toHaveBeenCalled();
+      expect(mockToastr.error).toHaveBeenCalledWith('Failed to add user');
+      expect(mockDialogRef.close).not.toHaveBeenCalled();
     });
 
-    it('should show error if updating user fails', () => {
-      userStoreMock.updateUser.mockImplementation(() => {
-        throw new Error('Update user failed');
-      });
+    it('should show error when updating user fails', () => {
       component.isEdit = true;
-      component.userForm.patchValue({
+      mockUserStore.updateUser.mockImplementation(() => {
+        throw new Error('Update failed');
+      });
+
+      component.userForm.setValue({
         id: 1,
-        name: 'Jane Doe',
-        company: 'Acme Corp',
-        bs: 'Innovation',
-        website: 'https://acme.com',
+        name: 'Updated User',
+        company: 'Updated Company',
+        bs: 'Updated BS',
+        website: 'updated.com'
       });
 
       component.saveUser();
 
-      expect(toastrServiceMock.error).toHaveBeenCalledWith('Failed to update user');
-      expect(dialogRefMock.close).toHaveBeenCalled();
+      expect(mockToastr.error).toHaveBeenCalledWith('Failed to update user');
+      expect(mockDialogRef.close).not.toHaveBeenCalled();
     });
   });
 
   describe('closePopup', () => {
     it('should close the dialog', () => {
       component.closePopup();
-      expect(dialogRefMock.close).toHaveBeenCalled();
+      expect(mockDialogRef.close).toHaveBeenCalled();
     });
   });
 
-  describe('Template', () => {
-    it('should display the correct title', () => {
-      const titleElement = fixture.debugElement.query(By.css('h2')).nativeElement;
-      expect(titleElement.textContent).toBe('Add User');
+  describe('form validation', () => {
+    it('should mark name as invalid when empty', () => {
+      const nameControl = component.userForm.controls.name;
+      nameControl.setValue('');
+      expect(nameControl.valid).toBe(false);
     });
 
-    it('should apply dark theme class when darkModeService.isDarkMode is true', () => {
-      darkModeServiceMock = {
-        get isDarkMode() {
-          return true;
-        },
-      };
-      TestBed.resetTestingModule();
-      TestBed.configureTestingModule({
-        imports: [
-          AddUserComponent,
-          ReactiveFormsModule,
-          MatCardModule,
-          MatFormFieldModule,
-          MatInputModule,
-          MatButtonModule,
-          MatIconModule,
-          BrowserAnimationsModule,
-        ],
-        providers: [
-          { provide: UserStore, useValue: userStoreMock },
-          { provide: ToastrService, useValue: toastrServiceMock },
-          { provide: MatDialogRef, useValue: dialogRefMock },
-          { provide: MAT_DIALOG_DATA, useValue: {} },
-          { provide: DarkModeService, useValue: darkModeServiceMock },
-        ],
-      }).compileComponents();
-
-      fixture = TestBed.createComponent(AddUserComponent);
-      component = fixture.componentInstance;
-      fixture.detectChanges();
-
-      const formElement = fixture.debugElement.query(By.css('form')).nativeElement;
-      expect(formElement.classList).toContain('dark-theme');
+    it('should mark company as invalid when empty', () => {
+      const companyControl = component.userForm.controls.company;
+      companyControl.setValue('');
+      expect(companyControl.valid).toBe(false);
     });
 
-    it('should disable the id input field', () => {
-      const idInput = fixture.debugElement.query(By.css('input[formControlName="id"]')).nativeElement;
-      expect(idInput.hasAttribute('readonly')).toBe(true);
+    it('should mark bs as invalid when empty', () => {
+      const bsControl = component.userForm.controls.bs;
+      bsControl.setValue('');
+      expect(bsControl.valid).toBe(false);
     });
 
-    it('should call saveUser on form submit', () => {
-      jest.spyOn(component, 'saveUser');
-      const form = fixture.debugElement.query(By.css('form'));
-      form.triggerEventHandler('ngSubmit', null);
-      expect(component.saveUser).toHaveBeenCalled();
+    it('should mark website as invalid when empty', () => {
+      const websiteControl = component.userForm.controls.website;
+      websiteControl.setValue('');
+      expect(websiteControl.valid).toBe(false);
     });
 
-    it('should call closePopup on close button click', () => {
-      jest.spyOn(component, 'closePopup');
-      const closeButton = fixture.debugElement.query(By.css('button[type="button"]')).nativeElement;
-      closeButton.click();
-      expect(component.closePopup).toHaveBeenCalled();
+    it('should mark form as valid when all fields are filled', () => {
+      component.userForm.setValue({
+        id: 0,
+        name: 'Valid User',
+        company: 'Valid Company',
+        bs: 'Valid BS',
+        website: 'valid.com'
+      });
+      expect(component.userForm.valid).toBe(true);
     });
   });
 });

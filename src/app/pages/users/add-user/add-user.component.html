@@ -1,4 +1,4 @@
-<form [formGroup]="userForm" (ngSubmit)="saveUser()"  [class.dark-theme]="darkModeService.isDarkMode">
+<form [formGroup]="userForm" (ngSubmit)="saveUser()"  [class.dark-theme]="darkModeService.isDarkMode()">
     <div class="bg-white rounded-lg shadow-lg overflow-hidden">
       <!-- Card Header -->
       <div class="px-6 py-4">

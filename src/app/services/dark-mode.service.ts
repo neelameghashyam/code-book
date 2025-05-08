@@ -1,39 +1,59 @@
-import { Injectable } from '@angular/core';
+import { Injectable, computed, signal } from '@angular/core';
+
+export interface Theme {
+  name: 'light' | 'dark' | 'system';
+  icon: string;
+}
 
 @Injectable({
   providedIn: 'root'
 })
 export class DarkModeService {
-  private isDark = false;
+  private theme = signal<'light' | 'dark' | 'system'>('system');
+  private themes: Theme[] = [
+    { name: 'light', icon: 'light_mode' },
+    { name: 'dark', icon: 'dark_mode' },
+    { name: 'system', icon: 'desktop_windows' }
+  ];
+
+  selectedTheme = computed(() => this.themes.find(t => t.name === this.theme()));
+  isDarkMode = computed(() => {
+    if (this.theme() === 'system') {
+      return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+    }
+    return this.theme() === 'dark';
+  });
 
   constructor() {
     this.initializeTheme();
+    // Listen for system theme changes when in system mode
+    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => {
+      if (this.theme() === 'system') {
+        this.applyTheme();
+      }
+    });
   }
 
   private initializeTheme() {
-    const savedMode = localStorage.getItem('darkMode');
-    const systemPrefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
-    
-    this.isDark = savedMode ? savedMode === 'true' : systemPrefersDark;
+    const savedTheme = localStorage.getItem('theme') || 'system';
+    this.theme.set(savedTheme as 'light' | 'dark' | 'system');
     this.applyTheme();
   }
 
-  toggleDarkMode() {
-    this.isDark = !this.isDark;
-    localStorage.setItem('darkMode', String(this.isDark));
+  setTheme(theme: 'light' | 'dark' | 'system') {
+    this.theme.set(theme);
+    localStorage.setItem('theme', theme);
     this.applyTheme();
   }
 
-  get isDarkMode(): boolean {
-    return this.isDark;
+  getThemes() {
+    return this.themes;
   }
 
   private applyTheme() {
-    document.body.classList.toggle('dark-theme', this.isDark);
-    document.body.classList.toggle('light-theme', !this.isDark);
-    
-    // Update Material theme class
-    const themeClass = this.isDark ? 'dark-theme' : 'light-theme';
-    document.body.setAttribute('data-theme', themeClass);
+    const isDark = this.isDarkMode();
+    document.body.classList.toggle('dark-theme', isDark);
+    document.body.classList.toggle('light-theme', !isDark);
+    document.body.setAttribute('data-theme', isDark ? 'dark-theme' : 'light-theme');
   }
 }
