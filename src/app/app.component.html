@@ -1,83 +1,83 @@
-<div class="flex flex-col min-h-screen">
-    <!-- Header -->
-    <mat-toolbar class="bg-primary text-white shadow-md sticky top-0 z-50">
-      <div class="flex items-center justify-between w-full px-4">
-        <!-- Left section -->
-        <div class="flex items-center space-x-4">
-          <!-- Sidebar toggle button -->
-          <button mat-icon-button class="text-white hover:bg-white/10 rounded-full" (click)="toggleSidenav()">
-            <mat-icon>menu</mat-icon>
-          </button>
-          <span class="text-xl font-semibold">{{title}}</span>
-        </div>
-  
-        <!-- Right section -->
-        <div class="flex items-center space-x-2">
-          <!-- Fullscreen toggle -->
-          <button mat-icon-button class="text-white hover:bg-white/10 rounded-full" 
-                  (click)="toggleFullScreen()" matTooltip="Full Screen">
-            <mat-icon>fullscreen</mat-icon>
-          </button>
-  
-          <!-- Dark mode toggle -->
-          <button mat-icon-button class="text-white hover:bg-white/10 rounded-full"
-                  matTooltip="Toggle Dark Mode">
-            <mat-icon>light_mode</mat-icon>
-          </button>
-  
-          <!-- Language selector -->
-          <button mat-button [matMenuTriggerFor]="languageMenu" 
-                  class="text-white hover:bg-white/10 rounded-full flex items-center"
-                  matTooltip="Language">
-            <span>{{ currentLanguage() }}</span>
-            <mat-icon>arrow_drop_down</mat-icon>
-          </button>
-          <mat-menu #languageMenu="matMenu" class="language-menu">
-            <button mat-menu-item (click)="setLanguage('en')">
-              <span>English</span>
-            </button>
-            <button mat-menu-item (click)="setLanguage('fr')">
-              <span>French</span>
-            </button>
-          </mat-menu>
-        </div>
+<div class="flex flex-col min-h-screen" [class.dark-theme]="darkModeService.isDarkMode">
+  <!-- Header -->
+  <mat-toolbar class="bg-primary text-white shadow-md sticky top-0 z-50">
+    <div class="flex items-center justify-between w-full px-4">
+      <!-- Left section -->
+      <div class="flex items-center space-x-4">
+        <!-- Sidebar toggle button -->
+        <button mat-icon-button class="text-white hover:bg-white/10 rounded-full" (click)="toggleSidenav()">
+          <mat-icon>menu</mat-icon>
+        </button>
+        <span class="text-xl font-semibold">{{title}}</span>
       </div>
-    </mat-toolbar>
-  
-    <!-- Main content area -->
-    <main class="flex-grow">
-      <mat-sidenav-container class="h-full">
-        <mat-sidenav 
-          #sidenav
-          [mode]="sidenavMode()"
-          [opened]="sidenavOpened()"
-          [style.width]="sidenavWidth()" 
-          class="transition-all duration-300 shadow-lg"
-          [fixedInViewport]="responsiveService.isMobile()"
-          [fixedTopGap]="48">
-          <app-custom-sidenav [collapsed]="collapsed()"></app-custom-sidenav>
-        </mat-sidenav>
-        
-        <mat-sidenav-content 
-          [style.margin-left]="responsiveService.isMobile() ? '0px' : sidenavWidth()" 
-          class="content transition-all duration-300 p-4 "
-          (click)="responsiveService.isMobile() && sidenav.close()">
-          <router-outlet></router-outlet>
-        </mat-sidenav-content>
-      </mat-sidenav-container>
-    </main>
-  
-    <!-- Footer -->
-    <footer class=" text-black py-1">
-      <div class="container mx-auto px-4 flex flex-col md:flex-row justify-between items-center">
-        <div class="mb-2 md:mb-0">
-          © 2025 Your Code Book All rights reserved.
-        </div>
-        <div class="flex space-x-4">
-          <a href="#" class="hover:text-primary transition-colors">Privacy Policy</a>
-          <a href="#" class="hover:text-primary transition-colors">Terms of Service</a>
-          <a href="#" class="hover:text-primary transition-colors">Contact Us</a>
-        </div>
+
+      <!-- Right section -->
+      <div class="flex items-center space-x-2">
+        <!-- Fullscreen toggle -->
+        <button mat-icon-button class="text-white hover:bg-white/10 rounded-full" 
+                (click)="toggleFullScreen()" matTooltip="Full Screen">
+          <mat-icon>fullscreen</mat-icon>
+        </button>
+
+        <!-- Dark mode toggle -->
+        <button mat-icon-button class="text-white hover:bg-white/10 rounded-full"
+                (click)="darkModeService.toggleDarkMode()" matTooltip="Toggle Dark Mode">
+          <mat-icon>{{ darkModeService.isDarkMode ? 'dark_mode' : 'light_mode' }}</mat-icon>
+        </button>
+
+        <!-- Language selector -->
+        <button mat-button [matMenuTriggerFor]="languageMenu" 
+                class="text-white hover:bg-white/10 rounded-full flex items-center"
+                matTooltip="Language">
+          <h2>{{ currentLanguage() }}</h2>
+          <mat-icon>arrow_drop_down</mat-icon>
+        </button>
+        <mat-menu #languageMenu="matMenu" class="language-menu">
+          <button mat-menu-item (click)="setLanguage('en')">
+            <span>English</span>
+          </button>
+          <button mat-menu-item (click)="setLanguage('fr')">
+            <span>French</span>
+          </button>
+        </mat-menu>
       </div>
-    </footer>
-  </div>
+    </div>
+  </mat-toolbar>
+
+  <!-- Main content area -->
+  <main class="flex-grow">
+    <mat-sidenav-container class="h-full">
+      <mat-sidenav 
+        #sidenav
+        [mode]="sidenavMode()"
+        [opened]="sidenavOpened()"
+        [style.width]="sidenavWidth()" 
+        class="transition-all duration-300 shadow-lg"
+        [fixedInViewport]="responsiveService.isMobile()"
+        [fixedTopGap]="48">
+        <app-custom-sidenav [collapsed]="collapsed()"></app-custom-sidenav>
+      </mat-sidenav>
+      
+      <mat-sidenav-content 
+        [style.margin-left]="responsiveService.isMobile() ? '0px' : sidenavWidth()" 
+        class="content transition-all duration-300 p-4"
+        (click)="responsiveService.isMobile() && sidenav.close()">
+        <router-outlet></router-outlet>
+      </mat-sidenav-content>
+    </mat-sidenav-container>
+  </main>
+
+  <!-- Footer -->
+  <footer class="py-1">
+    <div class="container mx-auto px-4 flex flex-col md:flex-row justify-between items-center">
+      <div class="mb-2 md:mb-0">
+        © 2025 Your Code Book All rights reserved.
+      </div>
+      <div class="flex space-x-4">
+        <a href="#" class="hover:text-primary transition-colors">Privacy Policy</a>
+        <a href="#" class="hover:text-primary transition-colors">Terms of Service</a>
+        <a href="#" class="hover:text-primary transition-colors">Contact Us</a>
+      </div>
+    </div>
+  </footer>
+</div>

@@ -1,0 +1,85 @@
+<form [formGroup]="userForm" (ngSubmit)="saveUser()"  [class.dark-theme]="darkModeService.isDarkMode">
+    <div class="bg-white rounded-lg shadow-lg overflow-hidden">
+      <!-- Card Header -->
+      <div class="px-6 py-4">
+        <h2 class="text-xl font-semibold text-white">{{title}}</h2>
+      </div>
+      
+      <!-- Card Content -->
+      <div class="p-6 space-y-6">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <!-- User ID Field -->
+          <div class="space-y-2">
+            <label class="block text-sm font-medium text-gray-700">User ID</label>
+            <input 
+              formControlName="id" 
+              type="number" 
+              readonly
+              class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 bg-gray-100"
+            >
+          </div>
+  
+          <!-- Name Field -->
+          <div class="space-y-2">
+            <label class="block text-sm font-medium text-gray-700">User Name</label>
+            <input 
+              formControlName="name" 
+              required 
+              placeholder="Enter user name"
+              class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+            >
+          </div>
+  
+          <!-- Company Field -->
+          <div class="space-y-2">
+            <label class="block text-sm font-medium text-gray-700">Company</label>
+            <input 
+              formControlName="company" 
+              required 
+              placeholder="Enter company name"
+              class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+            >
+          </div>
+  
+          <!-- Business Strategy Field -->
+          <div class="space-y-2">
+            <label class="block text-sm font-medium text-gray-700">Business Strategy</label>
+            <input 
+              formControlName="bs" 
+              required 
+              placeholder="Enter business strategy"
+              class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+            >
+          </div>
+  
+          <!-- Website Field -->
+          <div class="md:col-span-2 space-y-2">
+            <label class="block text-sm font-medium text-gray-700">Website</label>
+            <input 
+              formControlName="website" 
+              required 
+              placeholder="Enter website URL"
+              class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+            >
+          </div>
+        </div>
+      </div>
+      
+      <!-- Card Actions -->
+      <div class="bg-gray-50 px-6 py-4 flex justify-end space-x-3">
+        <button 
+          type="submit" 
+          class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+        >
+          Save
+        </button>
+        <button 
+          type="button" 
+          (click)="closePopup()"
+          class="px-4 py-2 bg-gray-200 hover:bg-gray-300 text-gray-800 font-medium rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
+        >
+          Close
+        </button>
+      </div>
+    </div>
+  </form>

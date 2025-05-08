@@ -4,6 +4,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { ResponsiveService} from '../services/responsive/responsive.service'
+import { DarkModeService } from '../services/dark-mode.service';
 
 interface MenuItem {
   icon: string;
@@ -21,6 +22,7 @@ interface MenuItem {
 export class CustomSidenavComponent {
   public responsiveService = inject(ResponsiveService);
   
+    public darkModeService = inject(DarkModeService);
   
   menuItems = signal<MenuItem[]>([
     { icon: 'dashboard', label: 'Dashboard', route: 'dashboard' },

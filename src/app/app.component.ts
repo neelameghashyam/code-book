@@ -1,3 +1,4 @@
+// app.component.ts
 import { Component, computed, effect, inject, signal } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { CommonModule } from '@angular/common';
@@ -11,9 +12,11 @@ import { MatBadgeModule } from '@angular/material/badge';
 import { TranslocoRootModule } from './transloco-root.module';
 import { CustomSidenavComponent } from './custom-sidenav/custom-sidenav.component';
 import { ResponsiveService } from './services/responsive/responsive.service';
+import { DarkModeService } from './services/dark-mode.service'; 
 
 @Component({
     selector: 'app-root',
+    standalone: true,
     imports: [
       RouterOutlet,
       CommonModule,
@@ -38,6 +41,7 @@ export class AppComponent {
   currentLanguage = signal('English');
 
   public responsiveService = inject(ResponsiveService);
+  public darkModeService = inject(DarkModeService);
 
   toggleFullScreen() {
     if (!document.fullscreenElement) {

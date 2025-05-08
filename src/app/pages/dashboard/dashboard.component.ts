@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
+import { DarkModeService } from '../../services/dark-mode.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -7,5 +8,6 @@ import { Component } from '@angular/core';
   styleUrl: './dashboard.component.scss'
 })
 export class DashboardComponent {
+  public darkModeService = inject(DarkModeService);
 
 }
