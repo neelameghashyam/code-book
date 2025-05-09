@@ -7,7 +7,7 @@
         <button mat-icon-button class="text-white hover:bg-white/10 rounded-full" (click)="toggleSidenav()">
           <mat-icon>menu</mat-icon>
         </button>
-        <span class="text-xl font-semibold">{{title}}</span>
+        <span class="text-xl font-semibold">{{ title }}</span>
       </div>
 
       <!-- Right section -->
@@ -18,18 +18,36 @@
           <mat-icon>fullscreen</mat-icon>
         </button>
 
-        <!-- Theme selector -->
+        <!-- Dark Mode Theme selector -->
         <button mat-icon-button class="text-white hover:bg-white/10 rounded-full" 
-                [matMenuTriggerFor]="themeMenu" matTooltip="Select Theme">
+                [matMenuTriggerFor]="darkModeMenu" matTooltip="Select Light/Dark Mode">
           <mat-icon>{{ darkModeService.selectedTheme()?.icon }}</mat-icon>
         </button>
-        <mat-menu #themeMenu="matMenu">
+        <mat-menu #darkModeMenu="matMenu">
           @for (theme of darkModeService.getThemes(); track theme.name) {
             <button mat-menu-item 
                     [class.selected-theme]="darkModeService.selectedTheme()?.name === theme.name"
                     (click)="darkModeService.setTheme(theme.name)">
               <mat-icon>{{ theme.icon }}</mat-icon>
               <span>{{ theme.name | titlecase }}</span>
+            </button>
+          }
+        </mat-menu>
+
+        <!-- Color Theme selector -->
+        <button mat-icon-button 
+                [matMenuTriggerFor]="colorThemeMenu" 
+                matTooltip="Select Color Theme"
+                class="dark-mode-toggle">
+          <mat-icon>format_color_fill</mat-icon>
+        </button>
+        <mat-menu #colorThemeMenu="matMenu" class="color-theme-menu">
+          @for (theme of themeService.getThemes(); track theme.id) {
+            <button mat-menu-item (click)="themeService.setTheme(theme.id)">
+              <div class="theme-menu-item">
+                <div class="color-preview" [style.background-color]="theme.primary"></div>
+                <span>{{ theme.displayName }}</span>
+              </div>
             </button>
           }
         </mat-menu>

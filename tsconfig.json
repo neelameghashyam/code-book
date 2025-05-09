@@ -10,7 +10,8 @@
     "moduleResolution": "node",
     "importHelpers": true,
     "typeRoots": ["node_modules/@types"],
-    "lib": ["es2018", "dom"],
+    "target": "es2015",
+    "lib": ["dom", "es2019"],
     "paths": {
       "@services/*": ["app/services/*"]
     }
@@ -20,5 +21,6 @@
     "strictInjectionParameters": true,
     "strictInputAccessModifiers": true,
     "strictTemplates": true
-  }
+  },
+  
 }

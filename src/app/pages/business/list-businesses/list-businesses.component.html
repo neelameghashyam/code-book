@@ -1,0 +1,48 @@
+<div class="p-5">
+  <!-- Table layout for desktop and tablet -->
+  <div *ngIf="responsiveService.isDesktop() || responsiveService.isTablet()" class="overflow-x-auto">
+    <table class="w-full border-collapse rounded-lg shadow-sm">
+      <thead>
+        <tr class="bg-gray-100 text-gray-700 uppercase text-xs font-semibold tracking-wider">
+          <th class="px-4 py-3 text-left">Business Name</th>
+          <th class="px-4 py-3 text-left">Category</th>
+          <th class="px-4 py-3 text-left">Country</th>
+          <th class="px-4 py-3 text-left">Contact</th>
+          <th class="px-4 py-3 text-right">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let business of businesses()" class="border-b border-gray-200 hover:bg-gray-50 transition-colors">
+          <td class="px-4 py-3 text-sm text-gray-900">{{business.name}}</td>
+          <td class="px-4 py-3 text-sm text-gray-600">{{business.category}} - {{business.subCategory}}</td>
+          <td class="px-4 py-3 text-sm text-gray-600">{{business.country}}</td>
+          <td class="px-4 py-3 text-sm text-gray-600">{{business.phone}}</td>
+          <td class="px-4 py-3 text-right">
+            <button mat-icon-button color="warn" (click)="deleteBusiness(business.id)">
+              <mat-icon class="text-red-500">delete</mat-icon>
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Card layout for mobile -->
+  <div *ngIf="responsiveService.isMobile()" class="flex flex-wrap gap-5">
+    <mat-card *ngFor="let business of businesses()" class="w-full mb-5 shadow-md rounded-lg">
+      <mat-card-header class="bg-gray-50 p-4">
+        <mat-card-title class="text-lg font-semibold text-gray-900">{{business.name}}</mat-card-title>
+        <mat-card-subtitle class="text-sm text-gray-600">{{business.category}} - {{business.subCategory}}</mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content class="p-4">
+        <p class="mb-2 text-sm"><strong class="text-gray-700">Country:</strong> <span class="text-gray-600">{{business.country}}</span></p>
+        <p class="mb-2 text-sm"><strong class="text-gray-700">Contact:</strong> <span class="text-gray-600">{{business.phone}}</span></p>
+      </mat-card-content>
+      <mat-card-actions class="flex justify-end p-2">
+        <button mat-icon-button color="warn" (click)="deleteBusiness(business.id)">
+          <mat-icon class="text-red-500">delete</mat-icon>
+        </button>
+      </mat-card-actions>
+    </mat-card>
+  </div>
+</div>

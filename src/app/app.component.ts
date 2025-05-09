@@ -11,34 +11,36 @@ import { MatBadgeModule } from '@angular/material/badge';
 import { TranslocoRootModule } from './transloco-root.module';
 import { CustomSidenavComponent } from './custom-sidenav/custom-sidenav.component';
 import { ResponsiveService } from './services/responsive/responsive.service';
-import { DarkModeService } from './services/dark-mode.service'; 
+import { DarkModeService } from './services/dark-mode.service';
+import { ThemeService } from './services/theme/theme.service';
 
 @Component({
-    selector: 'app-root',
-    standalone: true,
-    imports: [
-      RouterOutlet,
-      CommonModule,
-      MatButtonModule,
-      MatIconModule,
-      MatToolbarModule,
-      MatSidenavModule,
-      MatMenuModule,
-      MatBadgeModule,
-      MatTooltipModule,
-      TranslocoRootModule,
-      CustomSidenavComponent,
-    ],
-    templateUrl: './app.component.html',
-    styleUrl: './app.component.scss'
+  selector: 'app-root',
+  standalone: true,
+  imports: [
+    RouterOutlet,
+    CommonModule,
+    MatButtonModule,
+    MatIconModule,
+    MatToolbarModule,
+    MatSidenavModule,
+    MatMenuModule,
+    MatBadgeModule,
+    MatTooltipModule,
+    TranslocoRootModule,
+    CustomSidenavComponent,
+  ],
+  templateUrl: './app.component.html',
+  styleUrl: './app.component.scss'
 })
 export class AppComponent {
   title = 'Code Book';
-  collapsed = signal(false);
+  collapsed = signal(true);
   currentLanguage = signal('English');
 
   public responsiveService = inject(ResponsiveService);
   public darkModeService = inject(DarkModeService);
+  themeService = inject(ThemeService);
 
   toggleFullScreen() {
     if (!document.fullscreenElement) {
