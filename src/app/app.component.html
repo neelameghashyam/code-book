@@ -56,7 +56,7 @@
         <button mat-button [matMenuTriggerFor]="languageMenu" 
                 class="text-white hover:bg-white/10 rounded-full flex items-center"
                 matTooltip="Language">
-          <h5>{{ currentLanguage() }}</h5>
+          <a>{{ currentLanguage() }}</a>
           <mat-icon>arrow_drop_down</mat-icon>
         </button>
         <mat-menu #languageMenu="matMenu" class="language-menu">
@@ -67,6 +67,7 @@
             <span>French</span>
           </button>
         </mat-menu>
+        <app-user></app-user>
       </div>
     </div>
   </mat-toolbar>

@@ -1,6 +1,5 @@
-<div class="h-full transition-all duration-300 ease-in-out w-full overflow-hidden flex flex-col"
-     style="background-color: var(--mat-sys-surface);">
-  <nav class="p-2 flex flex-col gap-1">
+<div class="h-full transition-all duration-300 ease-in-out w-full overflow-hidden flex flex-col" style="background-color: var(--mat-sys-surface);">
+  <nav class="p-2 flex flex-col gap-1" role="navigation" aria-label="Main navigation">
     <a
       *ngFor="let item of menuItems()"
       [routerLink]="item.route"
@@ -12,6 +11,8 @@
       style="color: var(--mat-sys-on-surface);"
       [style.background-color]="rla.isActive ? 'color-mix(in srgb, var(--mat-sys-primary), transparent 88%)' : 'transparent'"
       [style.--hover-bg]="rla.isActive ? 'color-mix(in srgb, var(--mat-sys-primary), transparent 80%)' : 'color-mix(in srgb, var(--mat-sys-primary), transparent 92%)'"
+      [attr.aria-current]="rla.isActive ? 'page' : null"
+      [attr.aria-label]="item.label"
     >
       <span 
         [class]="rla.isActive ? 'material-icons' : 'material-icons-outlined'"
@@ -20,6 +21,7 @@
           'mr-2': !sideNavCollapsed() || responsiveService.isMobile()
         }"
         [style.color]="rla.isActive ? 'var(--mat-sys-primary)' : 'var(--mat-sys-on-surface)'"
+        aria-hidden="true"
       >
         {{ item.icon }}
       </span>

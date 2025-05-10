@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <testExecutions version="1">
   <file path="C:\Angular project-2\codebook\src\app\services\dark-mode.service.spec.ts">
-    <testCase name="DarkModeService should be created" duration="215"/>
-    <testCase name="DarkModeService Initialization should initialize with system theme if no saved theme in localStorage" duration="35"/>
-    <testCase name="DarkModeService Initialization should initialize with saved theme from localStorage" duration="54">
+    <testCase name="DarkModeService should be created" duration="196"/>
+    <testCase name="DarkModeService Initialization should initialize with system theme if no saved theme in localStorage" duration="29"/>
+    <testCase name="DarkModeService Initialization should initialize with saved theme from localStorage" duration="23">
       <failure message="Error: expect(received).toBe(expected) // Object.is equality"><![CDATA[Error: expect(received).toBe(expected) // Object.is equality
 
 Expected: "dark"
@@ -26,7 +26,7 @@ Received: "system"
     at run (C:\Angular project-2\codebook\node_modules\jest-circus\build\run.js:71:3)
     at runAndTransformResultsToJestFormat (C:\Angular project-2\codebook\node_modules\jest-circus\build\legacy-code-todo-rewrite\jestAdapterInit.js:122:21)]]></failure>
     </testCase>
-    <testCase name="DarkModeService Initialization should set up system theme change listener" duration="13">
+    <testCase name="DarkModeService Initialization should set up system theme change listener" duration="15">
       <failure message="Error: expect(jest.fn()).toHaveBeenCalledWith(...expected)"><![CDATA[Error: expect(jest.fn()).toHaveBeenCalledWith(...expected)
 
 Expected: "change", Any<Function>
@@ -50,10 +50,10 @@ Number of calls: 0
     at run (C:\Angular project-2\codebook\node_modules\jest-circus\build\run.js:71:3)
     at runAndTransformResultsToJestFormat (C:\Angular project-2\codebook\node_modules\jest-circus\build\legacy-code-todo-rewrite\jestAdapterInit.js:122:21)]]></failure>
     </testCase>
-    <testCase name="DarkModeService getThemes should return all available themes" duration="65"/>
-    <testCase name="DarkModeService setTheme should set light theme and update localStorage and DOM" duration="12"/>
-    <testCase name="DarkModeService setTheme should set dark theme and update localStorage and DOM" duration="24"/>
-    <testCase name="DarkModeService setTheme should set system theme and update based on system preference" duration="21">
+    <testCase name="DarkModeService getThemes should return all available themes" duration="14"/>
+    <testCase name="DarkModeService setTheme should set light theme and update localStorage and DOM" duration="26"/>
+    <testCase name="DarkModeService setTheme should set dark theme and update localStorage and DOM" duration="63"/>
+    <testCase name="DarkModeService setTheme should set system theme and update based on system preference" duration="19">
       <failure message="Error: expect(jest.fn()).toHaveBeenCalledWith(...expected)"><![CDATA[Error: expect(jest.fn()).toHaveBeenCalledWith(...expected)
 
 Expected: "dark-theme", true
@@ -81,9 +81,9 @@ Number of calls: 4
     at run (C:\Angular project-2\codebook\node_modules\jest-circus\build\run.js:71:3)
     at runAndTransformResultsToJestFormat (C:\Angular project-2\codebook\node_modules\jest-circus\build\legacy-code-todo-rewrite\jestAdapterInit.js:122:21)]]></failure>
     </testCase>
-    <testCase name="DarkModeService isDarkMode should return true for dark theme" duration="10"/>
-    <testCase name="DarkModeService isDarkMode should return false for light theme" duration="19"/>
-    <testCase name="DarkModeService isDarkMode should return system preference for system theme (dark)" duration="11">
+    <testCase name="DarkModeService isDarkMode should return true for dark theme" duration="35"/>
+    <testCase name="DarkModeService isDarkMode should return false for light theme" duration="79"/>
+    <testCase name="DarkModeService isDarkMode should return system preference for system theme (dark)" duration="33">
       <failure message="Error: expect(received).toBe(expected) // Object.is equality"><![CDATA[Error: expect(received).toBe(expected) // Object.is equality
 
 Expected: true
@@ -106,12 +106,12 @@ Received: false
     at run (C:\Angular project-2\codebook\node_modules\jest-circus\build\run.js:71:3)
     at runAndTransformResultsToJestFormat (C:\Angular project-2\codebook\node_modules\jest-circus\build\legacy-code-todo-rewrite\jestAdapterInit.js:122:21)]]></failure>
     </testCase>
-    <testCase name="DarkModeService isDarkMode should return system preference for system theme (light)" duration="6"/>
-    <testCase name="DarkModeService isDarkMode should handle missing window.matchMedia for system theme" duration="6"/>
-    <testCase name="DarkModeService selectedTheme should return correct theme object for light theme" duration="6"/>
-    <testCase name="DarkModeService selectedTheme should return correct theme object for dark theme" duration="6"/>
-    <testCase name="DarkModeService selectedTheme should return correct theme object for system theme" duration="20"/>
-    <testCase name="DarkModeService System theme change listener should apply dark theme when system preference changes to dark in system mode" duration="14">
+    <testCase name="DarkModeService isDarkMode should return system preference for system theme (light)" duration="12"/>
+    <testCase name="DarkModeService isDarkMode should handle missing window.matchMedia for system theme" duration="40"/>
+    <testCase name="DarkModeService selectedTheme should return correct theme object for light theme" duration="11"/>
+    <testCase name="DarkModeService selectedTheme should return correct theme object for dark theme" duration="26"/>
+    <testCase name="DarkModeService selectedTheme should return correct theme object for system theme" duration="9"/>
+    <testCase name="DarkModeService System theme change listener should apply dark theme when system preference changes to dark in system mode" duration="19">
       <failure message="TypeError: changeHandler is not a function"><![CDATA[TypeError: changeHandler is not a function
     at C:\Angular project-2\codebook\src\app\services\dark-mode.service.spec.ts:187:7
     at _ZoneDelegate.invoke (C:\Angular project-2\codebook\node_modules\zone.js\bundles\zone.umd.js:416:32)
@@ -131,7 +131,7 @@ Received: false
     at run (C:\Angular project-2\codebook\node_modules\jest-circus\build\run.js:71:3)
     at runAndTransformResultsToJestFormat (C:\Angular project-2\codebook\node_modules\jest-circus\build\legacy-code-todo-rewrite\jestAdapterInit.js:122:21)]]></failure>
     </testCase>
-    <testCase name="DarkModeService System theme change listener should apply light theme when system preference changes to light in system mode" duration="6">
+    <testCase name="DarkModeService System theme change listener should apply light theme when system preference changes to light in system mode" duration="16">
       <failure message="TypeError: changeHandler is not a function"><![CDATA[TypeError: changeHandler is not a function
     at C:\Angular project-2\codebook\src\app\services\dark-mode.service.spec.ts:196:7
     at _ZoneDelegate.invoke (C:\Angular project-2\codebook\node_modules\zone.js\bundles\zone.umd.js:416:32)
@@ -151,7 +151,7 @@ Received: false
     at run (C:\Angular project-2\codebook\node_modules\jest-circus\build\run.js:71:3)
     at runAndTransformResultsToJestFormat (C:\Angular project-2\codebook\node_modules\jest-circus\build\legacy-code-todo-rewrite\jestAdapterInit.js:122:21)]]></failure>
     </testCase>
-    <testCase name="DarkModeService System theme change listener should handle multiple system preference changes in system mode" duration="10">
+    <testCase name="DarkModeService System theme change listener should handle multiple system preference changes in system mode" duration="32">
       <failure message="TypeError: changeHandler is not a function"><![CDATA[TypeError: changeHandler is not a function
     at C:\Angular project-2\codebook\src\app\services\dark-mode.service.spec.ts:205:7
     at _ZoneDelegate.invoke (C:\Angular project-2\codebook\node_modules\zone.js\bundles\zone.umd.js:416:32)
@@ -171,7 +171,7 @@ Received: false
     at run (C:\Angular project-2\codebook\node_modules\jest-circus\build\run.js:71:3)
     at runAndTransformResultsToJestFormat (C:\Angular project-2\codebook\node_modules\jest-circus\build\legacy-code-todo-rewrite\jestAdapterInit.js:122:21)]]></failure>
     </testCase>
-    <testCase name="DarkModeService System theme change listener should not apply theme when system preference changes in light mode" duration="14">
+    <testCase name="DarkModeService System theme change listener should not apply theme when system preference changes in light mode" duration="30">
       <failure message="TypeError: changeHandler is not a function"><![CDATA[TypeError: changeHandler is not a function
     at C:\Angular project-2\codebook\src\app\services\dark-mode.service.spec.ts:221:7
     at _ZoneDelegate.invoke (C:\Angular project-2\codebook\node_modules\zone.js\bundles\zone.umd.js:416:32)
@@ -191,7 +191,7 @@ Received: false
     at run (C:\Angular project-2\codebook\node_modules\jest-circus\build\run.js:71:3)
     at runAndTransformResultsToJestFormat (C:\Angular project-2\codebook\node_modules\jest-circus\build\legacy-code-todo-rewrite\jestAdapterInit.js:122:21)]]></failure>
     </testCase>
-    <testCase name="DarkModeService System theme change listener should not apply theme when system preference changes in dark mode" duration="15">
+    <testCase name="DarkModeService System theme change listener should not apply theme when system preference changes in dark mode" duration="9">
       <failure message="TypeError: changeHandler is not a function"><![CDATA[TypeError: changeHandler is not a function
     at C:\Angular project-2\codebook\src\app\services\dark-mode.service.spec.ts:229:7
     at _ZoneDelegate.invoke (C:\Angular project-2\codebook\node_modules\zone.js\bundles\zone.umd.js:416:32)
@@ -211,7 +211,7 @@ Received: false
     at run (C:\Angular project-2\codebook\node_modules\jest-circus\build\run.js:71:3)
     at runAndTransformResultsToJestFormat (C:\Angular project-2\codebook\node_modules\jest-circus\build\legacy-code-todo-rewrite\jestAdapterInit.js:122:21)]]></failure>
     </testCase>
-    <testCase name="DarkModeService System theme change listener should handle theme change from system to non-system and back during listener" duration="11">
+    <testCase name="DarkModeService System theme change listener should handle theme change from system to non-system and back during listener" duration="17">
       <failure message="TypeError: changeHandler is not a function"><![CDATA[TypeError: changeHandler is not a function
     at C:\Angular project-2\codebook\src\app\services\dark-mode.service.spec.ts:237:7
     at _ZoneDelegate.invoke (C:\Angular project-2\codebook\node_modules\zone.js\bundles\zone.umd.js:416:32)
@@ -231,7 +231,7 @@ Received: false
     at run (C:\Angular project-2\codebook\node_modules\jest-circus\build\run.js:71:3)
     at runAndTransformResultsToJestFormat (C:\Angular project-2\codebook\node_modules\jest-circus\build\legacy-code-todo-rewrite\jestAdapterInit.js:122:21)]]></failure>
     </testCase>
-    <testCase name="DarkModeService System theme change listener should handle initial system mode with immediate preference change" duration="10">
+    <testCase name="DarkModeService System theme change listener should handle initial system mode with immediate preference change" duration="12">
       <failure message="Error: expect(jest.fn()).toHaveBeenCalledWith(...expected)"><![CDATA[Error: expect(jest.fn()).toHaveBeenCalledWith(...expected)
 
 Expected: "dark-theme", true
@@ -260,7 +260,7 @@ Number of calls: 2
     </testCase>
   </file>
   <file path="C:\Angular project-2\codebook\src\app\pages\dashboard\dashboard.component.spec.ts">
-    <testCase name="DashboardComponent should create" duration="274">
+    <testCase name="DashboardComponent should create" duration="433">
       <failure message="TypeError: window.matchMedia is not a function"><![CDATA[TypeError: window.matchMedia is not a function
     at new matchMedia (C:\Angular project-2\codebook\src\app\services\dark-mode.service.ts:30:12)
     at Object.DarkModeService_Factory [as factory] (ng:///DarkModeService/ɵfac.js:5:10)
@@ -306,26 +306,8 @@ Number of calls: 2
     at processTicksAndRejections (node:internal/process/task_queues:105:5)]]></failure>
     </testCase>
   </file>
-  <file path="C:\Angular project-2\codebook\src\app\services\responsive\responsive.service.spec.ts">
-    <testCase name="ResponsiveService should be created" duration="32"/>
-    <testCase name="ResponsiveService constructor should initialize breakpointObserver with all breakpoints" duration="10"/>
-    <testCase name="ResponsiveService constructor should update breakpointState when breakpointObserver emits" duration="8"/>
-    <testCase name="ResponsiveService isMobile should return true when isXSmall is true" duration="6"/>
-    <testCase name="ResponsiveService isMobile should return false when isXSmall is false" duration="5"/>
-    <testCase name="ResponsiveService isTablet should return true when isSmall is true" duration="4"/>
-    <testCase name="ResponsiveService isTablet should return true when isMedium is true" duration="4"/>
-    <testCase name="ResponsiveService isTablet should return false when neither isSmall nor isMedium is true" duration="6"/>
-    <testCase name="ResponsiveService isDesktop should return true when isLarge is true" duration="6"/>
-    <testCase name="ResponsiveService isDesktop should return true when isXLarge is true" duration="5"/>
-    <testCase name="ResponsiveService isDesktop should return false when neither isLarge nor isXLarge is true" duration="5"/>
-    <testCase name="ResponsiveService currentBreakpoint should return &quot;xsmall&quot; when isXSmall is true" duration="4"/>
-    <testCase name="ResponsiveService currentBreakpoint should return &quot;small&quot; when isSmall is true" duration="5"/>
-    <testCase name="ResponsiveService currentBreakpoint should return &quot;medium&quot; when isMedium is true" duration="5"/>
-    <testCase name="ResponsiveService currentBreakpoint should return &quot;large&quot; when isLarge is true" duration="5"/>
-    <testCase name="ResponsiveService currentBreakpoint should return &quot;xlarge&quot; when isXLarge is true or no other breakpoint is active" duration="6"/>
-  </file>
   <file path="C:\Angular project-2\codebook\src\app\pages\users\store\user-store.spec.ts">
-    <testCase name="UserStore should initialize with correct initial state" duration="1906">
+    <testCase name="UserStore should initialize with correct initial state" duration="1700">
       <failure message="Error: expect(received).toBe(expected) // Object.is equality"><![CDATA[Error: expect(received).toBe(expected) // Object.is equality
 
 Expected: null
@@ -347,7 +329,7 @@ Received: "Failed to load users"
     at run (C:\Angular project-2\codebook\node_modules\jest-circus\build\run.js:71:3)
     at runAndTransformResultsToJestFormat (C:\Angular project-2\codebook\node_modules\jest-circus\build\legacy-code-todo-rewrite\jestAdapterInit.js:122:21)]]></failure>
     </testCase>
-    <testCase name="UserStore loadUsers should load users from localStorage if available" duration="48">
+    <testCase name="UserStore loadUsers should load users from localStorage if available" duration="34">
       <failure message="Error: expect(jest.fn()).not.toHaveBeenCalled()"><![CDATA[Error: expect(jest.fn()).not.toHaveBeenCalled()
 
 Expected number of calls: 0
@@ -369,7 +351,7 @@ Received number of calls: 1
     at drainMicroTaskQueue (C:\Angular project-2\codebook\node_modules\zone.js\bundles\zone.umd.js:638:39)
     at processTicksAndRejections (node:internal/process/task_queues:105:5)]]></failure>
     </testCase>
-    <testCase name="UserStore loadUsers should fetch users from API and store in localStorage if localStorage is empty" duration="47">
+    <testCase name="UserStore loadUsers should fetch users from API and store in localStorage if localStorage is empty" duration="34">
       <failure message="Error: expect(received).toBe(expected) // Object.is equality"><![CDATA[Error: expect(received).toBe(expected) // Object.is equality
 
 Expected: false
@@ -389,10 +371,10 @@ Received: true
     at drainMicroTaskQueue (C:\Angular project-2\codebook\node_modules\zone.js\bundles\zone.umd.js:638:39)
     at processTicksAndRejections (node:internal/process/task_queues:105:5)]]></failure>
     </testCase>
-    <testCase name="UserStore loadUsers should handle API error and update error state" duration="288"/>
-    <testCase name="UserStore addUser should add a new user and update localStorage" duration="41"/>
-    <testCase name="UserStore addUser should handle error when adding user fails" duration="543"/>
-    <testCase name="UserStore updateUser should update an existing user and update localStorage" duration="24">
+    <testCase name="UserStore loadUsers should handle API error and update error state" duration="33"/>
+    <testCase name="UserStore addUser should add a new user and update localStorage" duration="39"/>
+    <testCase name="UserStore addUser should handle error when adding user fails" duration="57"/>
+    <testCase name="UserStore updateUser should update an existing user and update localStorage" duration="21">
       <failure message="Error: expect(received).toContainEqual(expected) // deep equality"><![CDATA[Error: expect(received).toContainEqual(expected) // deep equality
 
 Expected value: {"bs": "Innovation", "company": "Acme Corp", "id": 1, "name": "John Smith", "website": "https://johnsmith.com"}
@@ -415,7 +397,7 @@ Received array: [{"bs": "Innovation", "company": "Acme Corp", "id": 123456, "nam
     at run (C:\Angular project-2\codebook\node_modules\jest-circus\build\run.js:71:3)
     at runAndTransformResultsToJestFormat (C:\Angular project-2\codebook\node_modules\jest-circus\build\legacy-code-todo-rewrite\jestAdapterInit.js:122:21)]]></failure>
     </testCase>
-    <testCase name="UserStore updateUser should handle error when updating user fails" duration="51">
+    <testCase name="UserStore updateUser should handle error when updating user fails" duration="27">
       <failure message="Error: expect(received).toEqual(expected) // deep equality"><![CDATA[Error: expect(received).toEqual(expected) // deep equality
 
 - Expected  - 1
@@ -449,7 +431,7 @@ Received array: [{"bs": "Innovation", "company": "Acme Corp", "id": 123456, "nam
     at run (C:\Angular project-2\codebook\node_modules\jest-circus\build\run.js:71:3)
     at runAndTransformResultsToJestFormat (C:\Angular project-2\codebook\node_modules\jest-circus\build\legacy-code-todo-rewrite\jestAdapterInit.js:122:21)]]></failure>
     </testCase>
-    <testCase name="UserStore deleteUser should delete a user and update localStorage" duration="43">
+    <testCase name="UserStore deleteUser should delete a user and update localStorage" duration="20">
       <failure message="Error: expect(received).toEqual(expected) // deep equality"><![CDATA[Error: expect(received).toEqual(expected) // deep equality
 
 - Expected  - 1
@@ -483,7 +465,7 @@ Received array: [{"bs": "Innovation", "company": "Acme Corp", "id": 123456, "nam
     at run (C:\Angular project-2\codebook\node_modules\jest-circus\build\run.js:71:3)
     at runAndTransformResultsToJestFormat (C:\Angular project-2\codebook\node_modules\jest-circus\build\legacy-code-todo-rewrite\jestAdapterInit.js:122:21)]]></failure>
     </testCase>
-    <testCase name="UserStore deleteUser should handle error when deleting user fails" duration="26">
+    <testCase name="UserStore deleteUser should handle error when deleting user fails" duration="31">
       <failure message="Error: expect(received).toEqual(expected) // deep equality"><![CDATA[Error: expect(received).toEqual(expected) // deep equality
 
 - Expected  - 1
@@ -517,7 +499,7 @@ Received array: [{"bs": "Innovation", "company": "Acme Corp", "id": 123456, "nam
     at run (C:\Angular project-2\codebook\node_modules\jest-circus\build\run.js:71:3)
     at runAndTransformResultsToJestFormat (C:\Angular project-2\codebook\node_modules\jest-circus\build\legacy-code-todo-rewrite\jestAdapterInit.js:122:21)]]></failure>
     </testCase>
-    <testCase name="UserStore getUser should return the user with the given ID" duration="16">
+    <testCase name="UserStore getUser should return the user with the given ID" duration="18">
       <failure message="Error: expect(received).toEqual(expected) // deep equality"><![CDATA[Error: expect(received).toEqual(expected) // deep equality
 
 Expected: {"bs": "Innovation", "company": "Acme Corp", "id": 1, "name": "John Doe", "website": "https://johndoe.com"}
@@ -540,8 +522,8 @@ Received: undefined
     at run (C:\Angular project-2\codebook\node_modules\jest-circus\build\run.js:71:3)
     at runAndTransformResultsToJestFormat (C:\Angular project-2\codebook\node_modules\jest-circus\build\legacy-code-todo-rewrite\jestAdapterInit.js:122:21)]]></failure>
     </testCase>
-    <testCase name="UserStore getUser should return undefined if user is not found" duration="35"/>
-    <testCase name="UserStore getUser should handle error when fetching user fails" duration="25">
+    <testCase name="UserStore getUser should return undefined if user is not found" duration="33"/>
+    <testCase name="UserStore getUser should handle error when fetching user fails" duration="14">
       <failure message="Error: expect(received).toThrow(expected)"><![CDATA[Error: expect(received).toThrow(expected)
 
 Expected substring: "Find error"
@@ -565,7 +547,7 @@ Received function did not throw
     at run (C:\Angular project-2\codebook\node_modules\jest-circus\build\run.js:71:3)
     at runAndTransformResultsToJestFormat (C:\Angular project-2\codebook\node_modules\jest-circus\build\legacy-code-todo-rewrite\jestAdapterInit.js:122:21)]]></failure>
     </testCase>
-    <testCase name="UserStore Computed Signals should reflect users state in users computed signal" duration="16">
+    <testCase name="UserStore Computed Signals should reflect users state in users computed signal" duration="33">
       <failure message="Error: expect(received).toEqual(expected) // deep equality"><![CDATA[Error: expect(received).toEqual(expected) // deep equality
 
 - Expected  - 1
@@ -622,7 +604,7 @@ Received: true
     at run (C:\Angular project-2\codebook\node_modules\jest-circus\build\run.js:71:3)
     at runAndTransformResultsToJestFormat (C:\Angular project-2\codebook\node_modules\jest-circus\build\legacy-code-todo-rewrite\jestAdapterInit.js:122:21)]]></failure>
     </testCase>
-    <testCase name="UserStore Hooks should call loadUsers on initialization" duration="64">
+    <testCase name="UserStore Hooks should call loadUsers on initialization" duration="62">
       <failure message="Error: expect(jest.fn()).toHaveBeenCalled()"><![CDATA[Error: expect(jest.fn()).toHaveBeenCalled()
 
 Expected number of calls: >= 1
@@ -646,94 +628,10 @@ Received number of calls:    0
     at runAndTransformResultsToJestFormat (C:\Angular project-2\codebook\node_modules\jest-circus\build\legacy-code-todo-rewrite\jestAdapterInit.js:122:21)]]></failure>
     </testCase>
   </file>
-  <file path="C:\Angular project-2\codebook\src\app\custom-sidenav\custom-sidenav.component.spec.ts">
-    <testCase name="CustomSidenavComponent should create" duration="510"/>
-    <testCase name="CustomSidenavComponent Initial state should initialize menuItems with correct values" duration="147"/>
-    <testCase name="CustomSidenavComponent Initial state should initialize sideNavCollapsed as false" duration="89"/>
-    <testCase name="CustomSidenavComponent Input collapsed should update sideNavCollapsed when input changes to true" duration="56"/>
-    <testCase name="CustomSidenavComponent Input collapsed should update sideNavCollapsed when input changes to false" duration="64"/>
-    <testCase name="CustomSidenavComponent Template rendering should render menu items with correct router links" duration="51"/>
-    <testCase name="CustomSidenavComponent Template rendering should display icon and label when not collapsed on desktop" duration="42"/>
-    <testCase name="CustomSidenavComponent Template rendering should display only icon when collapsed on desktop" duration="46"/>
-    <testCase name="CustomSidenavComponent Template rendering should display icon and label when collapsed on mobile" duration="47">
-      <failure message="Error: expect(received).toBe(expected) // Object.is equality"><![CDATA[Error: expect(received).toBe(expected) // Object.is equality
-
-Expected: true
-Received: undefined
-    at C:\Angular project-2\codebook\src\app\custom-sidenav\custom-sidenav.component.spec.ts:137:40
-    at _ZoneDelegate.invoke (C:\Angular project-2\codebook\node_modules\zone.js\bundles\zone.umd.js:416:32)
-    at ProxyZoneSpec.Object.<anonymous>.ProxyZoneSpec.onInvoke (C:\Angular project-2\codebook\node_modules\zone.js\bundles\zone-testing.umd.js:2177:43)
-    at _ZoneDelegate.invoke (C:\Angular project-2\codebook\node_modules\zone.js\bundles\zone.umd.js:415:38)
-    at ZoneImpl.run (C:\Angular project-2\codebook\node_modules\zone.js\bundles\zone.umd.js:147:47)
-    at Object.wrappedFunc (C:\Angular project-2\codebook\node_modules\zone.js\bundles\zone-testing.umd.js:450:38)
-    at Promise.then.completed (C:\Angular project-2\codebook\node_modules\jest-circus\build\utils.js:298:28)
-    at new Promise (<anonymous>)
-    at callAsyncCircusFn (C:\Angular project-2\codebook\node_modules\jest-circus\build\utils.js:231:10)
-    at _callCircusTest (C:\Angular project-2\codebook\node_modules\jest-circus\build\run.js:316:40)
-    at processTicksAndRejections (node:internal/process/task_queues:105:5)
-    at _runTest (C:\Angular project-2\codebook\node_modules\jest-circus\build\run.js:252:3)
-    at _runTestsForDescribeBlock (C:\Angular project-2\codebook\node_modules\jest-circus\build\run.js:126:9)
-    at _runTestsForDescribeBlock (C:\Angular project-2\codebook\node_modules\jest-circus\build\run.js:121:9)
-    at _runTestsForDescribeBlock (C:\Angular project-2\codebook\node_modules\jest-circus\build\run.js:121:9)
-    at run (C:\Angular project-2\codebook\node_modules\jest-circus\build\run.js:71:3)
-    at runAndTransformResultsToJestFormat (C:\Angular project-2\codebook\node_modules\jest-circus\build\legacy-code-todo-rewrite\jestAdapterInit.js:122:21)]]></failure>
-    </testCase>
-    <testCase name="CustomSidenavComponent Dark mode behavior should apply light mode classes when darkMode is false" duration="45"/>
-    <testCase name="CustomSidenavComponent Dark mode behavior should apply dark mode classes when darkMode is true" duration="44"/>
-    <testCase name="CustomSidenavComponent Active route behavior should apply active classes in light mode" duration="52"/>
-    <testCase name="CustomSidenavComponent Active route behavior should apply active classes in dark mode" duration="40"/>
-    <testCase name="CustomSidenavComponent Active route behavior should apply inactive classes for non-active routes in light mode" duration="32"/>
-    <testCase name="CustomSidenavComponent Active route behavior should apply inactive classes for non-active routes in dark mode" duration="33"/>
-    <testCase name="CustomSidenavComponent Responsive behavior should apply mobile styling when isMobile returns true" duration="35">
-      <failure message="Error: expect(received).toBe(expected) // Object.is equality"><![CDATA[Error: expect(received).toBe(expected) // Object.is equality
-
-Expected: true
-Received: undefined
-    at C:\Angular project-2\codebook\src\app\custom-sidenav\custom-sidenav.component.spec.ts:250:40
-    at _ZoneDelegate.invoke (C:\Angular project-2\codebook\node_modules\zone.js\bundles\zone.umd.js:416:32)
-    at ProxyZoneSpec.Object.<anonymous>.ProxyZoneSpec.onInvoke (C:\Angular project-2\codebook\node_modules\zone.js\bundles\zone-testing.umd.js:2177:43)
-    at _ZoneDelegate.invoke (C:\Angular project-2\codebook\node_modules\zone.js\bundles\zone.umd.js:415:38)
-    at ZoneImpl.run (C:\Angular project-2\codebook\node_modules\zone.js\bundles\zone.umd.js:147:47)
-    at Object.wrappedFunc (C:\Angular project-2\codebook\node_modules\zone.js\bundles\zone-testing.umd.js:450:38)
-    at Promise.then.completed (C:\Angular project-2\codebook\node_modules\jest-circus\build\utils.js:298:28)
-    at new Promise (<anonymous>)
-    at callAsyncCircusFn (C:\Angular project-2\codebook\node_modules\jest-circus\build\utils.js:231:10)
-    at _callCircusTest (C:\Angular project-2\codebook\node_modules\jest-circus\build\run.js:316:40)
-    at processTicksAndRejections (node:internal/process/task_queues:105:5)
-    at _runTest (C:\Angular project-2\codebook\node_modules\jest-circus\build\run.js:252:3)
-    at _runTestsForDescribeBlock (C:\Angular project-2\codebook\node_modules\jest-circus\build\run.js:126:9)
-    at _runTestsForDescribeBlock (C:\Angular project-2\codebook\node_modules\jest-circus\build\run.js:121:9)
-    at _runTestsForDescribeBlock (C:\Angular project-2\codebook\node_modules\jest-circus\build\run.js:121:9)
-    at run (C:\Angular project-2\codebook\node_modules\jest-circus\build\run.js:71:3)
-    at runAndTransformResultsToJestFormat (C:\Angular project-2\codebook\node_modules\jest-circus\build\legacy-code-todo-rewrite\jestAdapterInit.js:122:21)]]></failure>
-    </testCase>
-    <testCase name="CustomSidenavComponent Responsive behavior should apply desktop collapsed styling when not mobile and collapsed" duration="37"/>
-    <testCase name="CustomSidenavComponent Responsive behavior should apply desktop expanded styling when not mobile and not collapsed" duration="37">
-      <failure message="Error: expect(received).toBe(expected) // Object.is equality"><![CDATA[Error: expect(received).toBe(expected) // Object.is equality
-
-Expected: true
-Received: undefined
-    at C:\Angular project-2\codebook\src\app\custom-sidenav\custom-sidenav.component.spec.ts:271:40
-    at _ZoneDelegate.invoke (C:\Angular project-2\codebook\node_modules\zone.js\bundles\zone.umd.js:416:32)
-    at ProxyZoneSpec.Object.<anonymous>.ProxyZoneSpec.onInvoke (C:\Angular project-2\codebook\node_modules\zone.js\bundles\zone-testing.umd.js:2177:43)
-    at _ZoneDelegate.invoke (C:\Angular project-2\codebook\node_modules\zone.js\bundles\zone.umd.js:415:38)
-    at ZoneImpl.run (C:\Angular project-2\codebook\node_modules\zone.js\bundles\zone.umd.js:147:47)
-    at Object.wrappedFunc (C:\Angular project-2\codebook\node_modules\zone.js\bundles\zone-testing.umd.js:450:38)
-    at Promise.then.completed (C:\Angular project-2\codebook\node_modules\jest-circus\build\utils.js:298:28)
-    at new Promise (<anonymous>)
-    at callAsyncCircusFn (C:\Angular project-2\codebook\node_modules\jest-circus\build\utils.js:231:10)
-    at _callCircusTest (C:\Angular project-2\codebook\node_modules\jest-circus\build\run.js:316:40)
-    at processTicksAndRejections (node:internal/process/task_queues:105:5)
-    at _runTest (C:\Angular project-2\codebook\node_modules\jest-circus\build\run.js:252:3)
-    at _runTestsForDescribeBlock (C:\Angular project-2\codebook\node_modules\jest-circus\build\run.js:126:9)
-    at _runTestsForDescribeBlock (C:\Angular project-2\codebook\node_modules\jest-circus\build\run.js:121:9)
-    at _runTestsForDescribeBlock (C:\Angular project-2\codebook\node_modules\jest-circus\build\run.js:121:9)
-    at run (C:\Angular project-2\codebook\node_modules\jest-circus\build\run.js:71:3)
-    at runAndTransformResultsToJestFormat (C:\Angular project-2\codebook\node_modules\jest-circus\build\legacy-code-todo-rewrite\jestAdapterInit.js:122:21)]]></failure>
-    </testCase>
+  <file path="C:\Angular project-2\codebook\src\app\services\theme\theme.service.spec.ts">
   </file>
   <file path="C:\Angular project-2\codebook\src\app\pages\users\add-user\add-user.component.spec.ts">
-    <testCase name="AddUserComponent should create" duration="103">
+    <testCase name="AddUserComponent should create" duration="321">
       <failure message="Error: Unexpected &quot;AddUserComponent&quot; found in the &quot;declarations&quot; array of the &quot;TestBed.configureTestingModule&quot; call, &quot;AddUserComponent&quot; is marked as standalone and can&apos;t be declared in any NgModule - did you intend to import it instead (by adding it to the &quot;imports&quot; array)?"><![CDATA[Error: Unexpected "AddUserComponent" found in the "declarations" array of the "TestBed.configureTestingModule" call, "AddUserComponent" is marked as standalone and can't be declared in any NgModule - did you intend to import it instead (by adding it to the "imports" array)?
     at C:\Angular project-2\codebook\node_modules\@angular\core\fesm2022\testing.mjs:769:23
     at Array.forEach (<anonymous>)
@@ -763,38 +661,7 @@ Received: undefined
     at run (C:\Angular project-2\codebook\node_modules\jest-circus\build\run.js:71:3)
     at runAndTransformResultsToJestFormat (C:\Angular project-2\codebook\node_modules\jest-circus\build\legacy-code-todo-rewrite\jestAdapterInit.js:122:21)]]></failure>
     </testCase>
-    <testCase name="AddUserComponent ngOnInit should initialize form for adding user when no userId provided" duration="4">
-      <failure message="Error: Unexpected &quot;AddUserComponent&quot; found in the &quot;declarations&quot; array of the &quot;TestBed.configureTestingModule&quot; call, &quot;AddUserComponent&quot; is marked as standalone and can&apos;t be declared in any NgModule - did you intend to import it instead (by adding it to the &quot;imports&quot; array)?"><![CDATA[Error: Unexpected "AddUserComponent" found in the "declarations" array of the "TestBed.configureTestingModule" call, "AddUserComponent" is marked as standalone and can't be declared in any NgModule - did you intend to import it instead (by adding it to the "imports" array)?
-    at C:\Angular project-2\codebook\node_modules\@angular\core\fesm2022\testing.mjs:769:23
-    at Array.forEach (<anonymous>)
-    at assertNoStandaloneComponents (C:\Angular project-2\codebook\node_modules\@angular\core\fesm2022\testing.mjs:765:11)
-    at TestBedCompiler.configureTestingModule (C:\Angular project-2\codebook\node_modules\@angular\core\fesm2022\testing.mjs:844:13)
-    at _TestBedImpl.configureTestingModule (C:\Angular project-2\codebook\node_modules\@angular\core\fesm2022\testing.mjs:1976:23)
-    at Function.configureTestingModule (C:\Angular project-2\codebook\node_modules\@angular\core\fesm2022\testing.mjs:1791:37)
-    at C:\Angular project-2\codebook\src\app\pages\users\add-user\add-user.component.spec.ts:50:19
-    at Generator.next (<anonymous>)
-    at C:\Angular project-2\codebook\node_modules\tslib\tslib.js:170:75
-    at new ZoneAwarePromise (C:\Angular project-2\codebook\node_modules\zone.js\bundles\zone.umd.js:2623:29)
-    at Object.__awaiter (C:\Angular project-2\codebook\node_modules\tslib\tslib.js:166:16)
-    at C:\Angular project-2\codebook\src\app\pages\users\add-user\add-user.component.spec.ts:30:25
-    at _ZoneDelegate.invoke (C:\Angular project-2\codebook\node_modules\zone.js\bundles\zone.umd.js:416:32)
-    at ProxyZoneSpec.Object.<anonymous>.ProxyZoneSpec.onInvoke (C:\Angular project-2\codebook\node_modules\zone.js\bundles\zone-testing.umd.js:2177:43)
-    at _ZoneDelegate.invoke (C:\Angular project-2\codebook\node_modules\zone.js\bundles\zone.umd.js:415:38)
-    at ZoneImpl.run (C:\Angular project-2\codebook\node_modules\zone.js\bundles\zone.umd.js:147:47)
-    at Object.wrappedFunc (C:\Angular project-2\codebook\node_modules\zone.js\bundles\zone-testing.umd.js:450:38)
-    at Promise.then.completed (C:\Angular project-2\codebook\node_modules\jest-circus\build\utils.js:298:28)
-    at new Promise (<anonymous>)
-    at callAsyncCircusFn (C:\Angular project-2\codebook\node_modules\jest-circus\build\utils.js:231:10)
-    at _callCircusHook (C:\Angular project-2\codebook\node_modules\jest-circus\build\run.js:281:40)
-    at processTicksAndRejections (node:internal/process/task_queues:105:5)
-    at _runTest (C:\Angular project-2\codebook\node_modules\jest-circus\build\run.js:246:5)
-    at _runTestsForDescribeBlock (C:\Angular project-2\codebook\node_modules\jest-circus\build\run.js:126:9)
-    at _runTestsForDescribeBlock (C:\Angular project-2\codebook\node_modules\jest-circus\build\run.js:121:9)
-    at _runTestsForDescribeBlock (C:\Angular project-2\codebook\node_modules\jest-circus\build\run.js:121:9)
-    at run (C:\Angular project-2\codebook\node_modules\jest-circus\build\run.js:71:3)
-    at runAndTransformResultsToJestFormat (C:\Angular project-2\codebook\node_modules\jest-circus\build\legacy-code-todo-rewrite\jestAdapterInit.js:122:21)]]></failure>
-    </testCase>
-    <testCase name="AddUserComponent ngOnInit should patch form values when editing existing user" duration="2">
+    <testCase name="AddUserComponent ngOnInit should initialize form for adding user when no userId provided" duration="9">
       <failure message="Error: Unexpected &quot;AddUserComponent&quot; found in the &quot;declarations&quot; array of the &quot;TestBed.configureTestingModule&quot; call, &quot;AddUserComponent&quot; is marked as standalone and can&apos;t be declared in any NgModule - did you intend to import it instead (by adding it to the &quot;imports&quot; array)?"><![CDATA[Error: Unexpected "AddUserComponent" found in the "declarations" array of the "TestBed.configureTestingModule" call, "AddUserComponent" is marked as standalone and can't be declared in any NgModule - did you intend to import it instead (by adding it to the "imports" array)?
     at C:\Angular project-2\codebook\node_modules\@angular\core\fesm2022\testing.mjs:769:23
     at Array.forEach (<anonymous>)
@@ -825,7 +692,7 @@ Received: undefined
     at run (C:\Angular project-2\codebook\node_modules\jest-circus\build\run.js:71:3)
     at runAndTransformResultsToJestFormat (C:\Angular project-2\codebook\node_modules\jest-circus\build\legacy-code-todo-rewrite\jestAdapterInit.js:122:21)]]></failure>
     </testCase>
-    <testCase name="AddUserComponent ngOnInit should show error and close when user not found for edit" duration="3">
+    <testCase name="AddUserComponent ngOnInit should patch form values when editing existing user" duration="5">
       <failure message="Error: Unexpected &quot;AddUserComponent&quot; found in the &quot;declarations&quot; array of the &quot;TestBed.configureTestingModule&quot; call, &quot;AddUserComponent&quot; is marked as standalone and can&apos;t be declared in any NgModule - did you intend to import it instead (by adding it to the &quot;imports&quot; array)?"><![CDATA[Error: Unexpected "AddUserComponent" found in the "declarations" array of the "TestBed.configureTestingModule" call, "AddUserComponent" is marked as standalone and can't be declared in any NgModule - did you intend to import it instead (by adding it to the "imports" array)?
     at C:\Angular project-2\codebook\node_modules\@angular\core\fesm2022\testing.mjs:769:23
     at Array.forEach (<anonymous>)
@@ -856,7 +723,7 @@ Received: undefined
     at run (C:\Angular project-2\codebook\node_modules\jest-circus\build\run.js:71:3)
     at runAndTransformResultsToJestFormat (C:\Angular project-2\codebook\node_modules\jest-circus\build\legacy-code-todo-rewrite\jestAdapterInit.js:122:21)]]></failure>
     </testCase>
-    <testCase name="AddUserComponent saveUser should show error when form is invalid" duration="5">
+    <testCase name="AddUserComponent ngOnInit should show error and close when user not found for edit" duration="4">
       <failure message="Error: Unexpected &quot;AddUserComponent&quot; found in the &quot;declarations&quot; array of the &quot;TestBed.configureTestingModule&quot; call, &quot;AddUserComponent&quot; is marked as standalone and can&apos;t be declared in any NgModule - did you intend to import it instead (by adding it to the &quot;imports&quot; array)?"><![CDATA[Error: Unexpected "AddUserComponent" found in the "declarations" array of the "TestBed.configureTestingModule" call, "AddUserComponent" is marked as standalone and can't be declared in any NgModule - did you intend to import it instead (by adding it to the "imports" array)?
     at C:\Angular project-2\codebook\node_modules\@angular\core\fesm2022\testing.mjs:769:23
     at Array.forEach (<anonymous>)
@@ -887,7 +754,7 @@ Received: undefined
     at run (C:\Angular project-2\codebook\node_modules\jest-circus\build\run.js:71:3)
     at runAndTransformResultsToJestFormat (C:\Angular project-2\codebook\node_modules\jest-circus\build\legacy-code-todo-rewrite\jestAdapterInit.js:122:21)]]></failure>
     </testCase>
-    <testCase name="AddUserComponent saveUser should add new user when form is valid and not in edit mode" duration="4">
+    <testCase name="AddUserComponent saveUser should show error when form is invalid" duration="4">
       <failure message="Error: Unexpected &quot;AddUserComponent&quot; found in the &quot;declarations&quot; array of the &quot;TestBed.configureTestingModule&quot; call, &quot;AddUserComponent&quot; is marked as standalone and can&apos;t be declared in any NgModule - did you intend to import it instead (by adding it to the &quot;imports&quot; array)?"><![CDATA[Error: Unexpected "AddUserComponent" found in the "declarations" array of the "TestBed.configureTestingModule" call, "AddUserComponent" is marked as standalone and can't be declared in any NgModule - did you intend to import it instead (by adding it to the "imports" array)?
     at C:\Angular project-2\codebook\node_modules\@angular\core\fesm2022\testing.mjs:769:23
     at Array.forEach (<anonymous>)
@@ -918,7 +785,7 @@ Received: undefined
     at run (C:\Angular project-2\codebook\node_modules\jest-circus\build\run.js:71:3)
     at runAndTransformResultsToJestFormat (C:\Angular project-2\codebook\node_modules\jest-circus\build\legacy-code-todo-rewrite\jestAdapterInit.js:122:21)]]></failure>
     </testCase>
-    <testCase name="AddUserComponent saveUser should update user when form is valid and in edit mode" duration="2">
+    <testCase name="AddUserComponent saveUser should add new user when form is valid and not in edit mode" duration="17">
       <failure message="Error: Unexpected &quot;AddUserComponent&quot; found in the &quot;declarations&quot; array of the &quot;TestBed.configureTestingModule&quot; call, &quot;AddUserComponent&quot; is marked as standalone and can&apos;t be declared in any NgModule - did you intend to import it instead (by adding it to the &quot;imports&quot; array)?"><![CDATA[Error: Unexpected "AddUserComponent" found in the "declarations" array of the "TestBed.configureTestingModule" call, "AddUserComponent" is marked as standalone and can't be declared in any NgModule - did you intend to import it instead (by adding it to the "imports" array)?
     at C:\Angular project-2\codebook\node_modules\@angular\core\fesm2022\testing.mjs:769:23
     at Array.forEach (<anonymous>)
@@ -949,7 +816,7 @@ Received: undefined
     at run (C:\Angular project-2\codebook\node_modules\jest-circus\build\run.js:71:3)
     at runAndTransformResultsToJestFormat (C:\Angular project-2\codebook\node_modules\jest-circus\build\legacy-code-todo-rewrite\jestAdapterInit.js:122:21)]]></failure>
     </testCase>
-    <testCase name="AddUserComponent saveUser should show error when adding user fails" duration="2">
+    <testCase name="AddUserComponent saveUser should update user when form is valid and in edit mode" duration="3">
       <failure message="Error: Unexpected &quot;AddUserComponent&quot; found in the &quot;declarations&quot; array of the &quot;TestBed.configureTestingModule&quot; call, &quot;AddUserComponent&quot; is marked as standalone and can&apos;t be declared in any NgModule - did you intend to import it instead (by adding it to the &quot;imports&quot; array)?"><![CDATA[Error: Unexpected "AddUserComponent" found in the "declarations" array of the "TestBed.configureTestingModule" call, "AddUserComponent" is marked as standalone and can't be declared in any NgModule - did you intend to import it instead (by adding it to the "imports" array)?
     at C:\Angular project-2\codebook\node_modules\@angular\core\fesm2022\testing.mjs:769:23
     at Array.forEach (<anonymous>)
@@ -980,7 +847,7 @@ Received: undefined
     at run (C:\Angular project-2\codebook\node_modules\jest-circus\build\run.js:71:3)
     at runAndTransformResultsToJestFormat (C:\Angular project-2\codebook\node_modules\jest-circus\build\legacy-code-todo-rewrite\jestAdapterInit.js:122:21)]]></failure>
     </testCase>
-    <testCase name="AddUserComponent saveUser should show error when updating user fails" duration="2">
+    <testCase name="AddUserComponent saveUser should show error when adding user fails" duration="14">
       <failure message="Error: Unexpected &quot;AddUserComponent&quot; found in the &quot;declarations&quot; array of the &quot;TestBed.configureTestingModule&quot; call, &quot;AddUserComponent&quot; is marked as standalone and can&apos;t be declared in any NgModule - did you intend to import it instead (by adding it to the &quot;imports&quot; array)?"><![CDATA[Error: Unexpected "AddUserComponent" found in the "declarations" array of the "TestBed.configureTestingModule" call, "AddUserComponent" is marked as standalone and can't be declared in any NgModule - did you intend to import it instead (by adding it to the "imports" array)?
     at C:\Angular project-2\codebook\node_modules\@angular\core\fesm2022\testing.mjs:769:23
     at Array.forEach (<anonymous>)
@@ -1011,7 +878,38 @@ Received: undefined
     at run (C:\Angular project-2\codebook\node_modules\jest-circus\build\run.js:71:3)
     at runAndTransformResultsToJestFormat (C:\Angular project-2\codebook\node_modules\jest-circus\build\legacy-code-todo-rewrite\jestAdapterInit.js:122:21)]]></failure>
     </testCase>
-    <testCase name="AddUserComponent closePopup should close the dialog" duration="3">
+    <testCase name="AddUserComponent saveUser should show error when updating user fails" duration="12">
+      <failure message="Error: Unexpected &quot;AddUserComponent&quot; found in the &quot;declarations&quot; array of the &quot;TestBed.configureTestingModule&quot; call, &quot;AddUserComponent&quot; is marked as standalone and can&apos;t be declared in any NgModule - did you intend to import it instead (by adding it to the &quot;imports&quot; array)?"><![CDATA[Error: Unexpected "AddUserComponent" found in the "declarations" array of the "TestBed.configureTestingModule" call, "AddUserComponent" is marked as standalone and can't be declared in any NgModule - did you intend to import it instead (by adding it to the "imports" array)?
+    at C:\Angular project-2\codebook\node_modules\@angular\core\fesm2022\testing.mjs:769:23
+    at Array.forEach (<anonymous>)
+    at assertNoStandaloneComponents (C:\Angular project-2\codebook\node_modules\@angular\core\fesm2022\testing.mjs:765:11)
+    at TestBedCompiler.configureTestingModule (C:\Angular project-2\codebook\node_modules\@angular\core\fesm2022\testing.mjs:844:13)
+    at _TestBedImpl.configureTestingModule (C:\Angular project-2\codebook\node_modules\@angular\core\fesm2022\testing.mjs:1976:23)
+    at Function.configureTestingModule (C:\Angular project-2\codebook\node_modules\@angular\core\fesm2022\testing.mjs:1791:37)
+    at C:\Angular project-2\codebook\src\app\pages\users\add-user\add-user.component.spec.ts:50:19
+    at Generator.next (<anonymous>)
+    at C:\Angular project-2\codebook\node_modules\tslib\tslib.js:170:75
+    at new ZoneAwarePromise (C:\Angular project-2\codebook\node_modules\zone.js\bundles\zone.umd.js:2623:29)
+    at Object.__awaiter (C:\Angular project-2\codebook\node_modules\tslib\tslib.js:166:16)
+    at C:\Angular project-2\codebook\src\app\pages\users\add-user\add-user.component.spec.ts:30:25
+    at _ZoneDelegate.invoke (C:\Angular project-2\codebook\node_modules\zone.js\bundles\zone.umd.js:416:32)
+    at ProxyZoneSpec.Object.<anonymous>.ProxyZoneSpec.onInvoke (C:\Angular project-2\codebook\node_modules\zone.js\bundles\zone-testing.umd.js:2177:43)
+    at _ZoneDelegate.invoke (C:\Angular project-2\codebook\node_modules\zone.js\bundles\zone.umd.js:415:38)
+    at ZoneImpl.run (C:\Angular project-2\codebook\node_modules\zone.js\bundles\zone.umd.js:147:47)
+    at Object.wrappedFunc (C:\Angular project-2\codebook\node_modules\zone.js\bundles\zone-testing.umd.js:450:38)
+    at Promise.then.completed (C:\Angular project-2\codebook\node_modules\jest-circus\build\utils.js:298:28)
+    at new Promise (<anonymous>)
+    at callAsyncCircusFn (C:\Angular project-2\codebook\node_modules\jest-circus\build\utils.js:231:10)
+    at _callCircusHook (C:\Angular project-2\codebook\node_modules\jest-circus\build\run.js:281:40)
+    at processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at _runTest (C:\Angular project-2\codebook\node_modules\jest-circus\build\run.js:246:5)
+    at _runTestsForDescribeBlock (C:\Angular project-2\codebook\node_modules\jest-circus\build\run.js:126:9)
+    at _runTestsForDescribeBlock (C:\Angular project-2\codebook\node_modules\jest-circus\build\run.js:121:9)
+    at _runTestsForDescribeBlock (C:\Angular project-2\codebook\node_modules\jest-circus\build\run.js:121:9)
+    at run (C:\Angular project-2\codebook\node_modules\jest-circus\build\run.js:71:3)
+    at runAndTransformResultsToJestFormat (C:\Angular project-2\codebook\node_modules\jest-circus\build\legacy-code-todo-rewrite\jestAdapterInit.js:122:21)]]></failure>
+    </testCase>
+    <testCase name="AddUserComponent closePopup should close the dialog" duration="4">
       <failure message="Error: Unexpected &quot;AddUserComponent&quot; found in the &quot;declarations&quot; array of the &quot;TestBed.configureTestingModule&quot; call, &quot;AddUserComponent&quot; is marked as standalone and can&apos;t be declared in any NgModule - did you intend to import it instead (by adding it to the &quot;imports&quot; array)?"><![CDATA[Error: Unexpected "AddUserComponent" found in the "declarations" array of the "TestBed.configureTestingModule" call, "AddUserComponent" is marked as standalone and can't be declared in any NgModule - did you intend to import it instead (by adding it to the "imports" array)?
     at C:\Angular project-2\codebook\node_modules\@angular\core\fesm2022\testing.mjs:769:23
     at Array.forEach (<anonymous>)
@@ -1073,7 +971,7 @@ Received: undefined
     at run (C:\Angular project-2\codebook\node_modules\jest-circus\build\run.js:71:3)
     at runAndTransformResultsToJestFormat (C:\Angular project-2\codebook\node_modules\jest-circus\build\legacy-code-todo-rewrite\jestAdapterInit.js:122:21)]]></failure>
     </testCase>
-    <testCase name="AddUserComponent form validation should mark company as invalid when empty" duration="1">
+    <testCase name="AddUserComponent form validation should mark company as invalid when empty" duration="3">
       <failure message="Error: Unexpected &quot;AddUserComponent&quot; found in the &quot;declarations&quot; array of the &quot;TestBed.configureTestingModule&quot; call, &quot;AddUserComponent&quot; is marked as standalone and can&apos;t be declared in any NgModule - did you intend to import it instead (by adding it to the &quot;imports&quot; array)?"><![CDATA[Error: Unexpected "AddUserComponent" found in the "declarations" array of the "TestBed.configureTestingModule" call, "AddUserComponent" is marked as standalone and can't be declared in any NgModule - did you intend to import it instead (by adding it to the "imports" array)?
     at C:\Angular project-2\codebook\node_modules\@angular\core\fesm2022\testing.mjs:769:23
     at Array.forEach (<anonymous>)
@@ -1104,7 +1002,7 @@ Received: undefined
     at run (C:\Angular project-2\codebook\node_modules\jest-circus\build\run.js:71:3)
     at runAndTransformResultsToJestFormat (C:\Angular project-2\codebook\node_modules\jest-circus\build\legacy-code-todo-rewrite\jestAdapterInit.js:122:21)]]></failure>
     </testCase>
-    <testCase name="AddUserComponent form validation should mark bs as invalid when empty" duration="2">
+    <testCase name="AddUserComponent form validation should mark bs as invalid when empty" duration="31">
       <failure message="Error: Unexpected &quot;AddUserComponent&quot; found in the &quot;declarations&quot; array of the &quot;TestBed.configureTestingModule&quot; call, &quot;AddUserComponent&quot; is marked as standalone and can&apos;t be declared in any NgModule - did you intend to import it instead (by adding it to the &quot;imports&quot; array)?"><![CDATA[Error: Unexpected "AddUserComponent" found in the "declarations" array of the "TestBed.configureTestingModule" call, "AddUserComponent" is marked as standalone and can't be declared in any NgModule - did you intend to import it instead (by adding it to the "imports" array)?
     at C:\Angular project-2\codebook\node_modules\@angular\core\fesm2022\testing.mjs:769:23
     at Array.forEach (<anonymous>)
@@ -1135,7 +1033,7 @@ Received: undefined
     at run (C:\Angular project-2\codebook\node_modules\jest-circus\build\run.js:71:3)
     at runAndTransformResultsToJestFormat (C:\Angular project-2\codebook\node_modules\jest-circus\build\legacy-code-todo-rewrite\jestAdapterInit.js:122:21)]]></failure>
     </testCase>
-    <testCase name="AddUserComponent form validation should mark website as invalid when empty" duration="1">
+    <testCase name="AddUserComponent form validation should mark website as invalid when empty" duration="3">
       <failure message="Error: Unexpected &quot;AddUserComponent&quot; found in the &quot;declarations&quot; array of the &quot;TestBed.configureTestingModule&quot; call, &quot;AddUserComponent&quot; is marked as standalone and can&apos;t be declared in any NgModule - did you intend to import it instead (by adding it to the &quot;imports&quot; array)?"><![CDATA[Error: Unexpected "AddUserComponent" found in the "declarations" array of the "TestBed.configureTestingModule" call, "AddUserComponent" is marked as standalone and can't be declared in any NgModule - did you intend to import it instead (by adding it to the "imports" array)?
     at C:\Angular project-2\codebook\node_modules\@angular\core\fesm2022\testing.mjs:769:23
     at Array.forEach (<anonymous>)
@@ -1166,7 +1064,7 @@ Received: undefined
     at run (C:\Angular project-2\codebook\node_modules\jest-circus\build\run.js:71:3)
     at runAndTransformResultsToJestFormat (C:\Angular project-2\codebook\node_modules\jest-circus\build\legacy-code-todo-rewrite\jestAdapterInit.js:122:21)]]></failure>
     </testCase>
-    <testCase name="AddUserComponent form validation should mark form as valid when all fields are filled" duration="1">
+    <testCase name="AddUserComponent form validation should mark form as valid when all fields are filled" duration="3">
       <failure message="Error: Unexpected &quot;AddUserComponent&quot; found in the &quot;declarations&quot; array of the &quot;TestBed.configureTestingModule&quot; call, &quot;AddUserComponent&quot; is marked as standalone and can&apos;t be declared in any NgModule - did you intend to import it instead (by adding it to the &quot;imports&quot; array)?"><![CDATA[Error: Unexpected "AddUserComponent" found in the "declarations" array of the "TestBed.configureTestingModule" call, "AddUserComponent" is marked as standalone and can't be declared in any NgModule - did you intend to import it instead (by adding it to the "imports" array)?
     at C:\Angular project-2\codebook\node_modules\@angular\core\fesm2022\testing.mjs:769:23
     at Array.forEach (<anonymous>)
@@ -1198,8 +1096,451 @@ Received: undefined
     at runAndTransformResultsToJestFormat (C:\Angular project-2\codebook\node_modules\jest-circus\build\legacy-code-todo-rewrite\jestAdapterInit.js:122:21)]]></failure>
     </testCase>
   </file>
+  <file path="C:\Angular project-2\codebook\src\app\pages\business\list-businesses\list-businesses.component.spec.ts">
+    <testCase name="ListBusinessesComponent should create" duration="598">
+      <failure message="TypeError: window.matchMedia is not a function"><![CDATA[TypeError: window.matchMedia is not a function
+    at new matchMedia (C:\Angular project-2\codebook\src\app\services\dark-mode.service.ts:30:12)
+    at Object.DarkModeService_Factory [as factory] (ng:///DarkModeService/ɵfac.js:5:10)
+    at C:\Angular project-2\codebook\node_modules\@angular\core\fesm2022\core.mjs:2274:47
+    at runInInjectorProfilerContext (C:\Angular project-2\codebook\node_modules\@angular\core\fesm2022\core.mjs:880:9)
+    at R3Injector.hydrate (C:\Angular project-2\codebook\node_modules\@angular\core\fesm2022\core.mjs:2273:21)
+    at R3Injector.get (C:\Angular project-2\codebook\node_modules\@angular\core\fesm2022\core.mjs:2141:33)
+    at R3Injector.get (C:\Angular project-2\codebook\node_modules\@angular\core\fesm2022\core.mjs:2151:33)
+    at ChainedInjector.get (C:\Angular project-2\codebook\node_modules\@angular\core\fesm2022\core.mjs:17238:36)
+    at lookupTokenUsingModuleInjector (C:\Angular project-2\codebook\node_modules\@angular\core\fesm2022\core.mjs:5063:39)
+    at getOrCreateInjectable (C:\Angular project-2\codebook\node_modules\@angular\core\fesm2022\core.mjs:5111:12)
+    at ɵɵdirectiveInject (C:\Angular project-2\codebook\node_modules\@angular\core\fesm2022\core.mjs:17289:19)
+    at ɵɵinject (C:\Angular project-2\codebook\node_modules\@angular\core\fesm2022\core.mjs:1125:42)
+    at inject (C:\Angular project-2\codebook\node_modules\@angular\core\fesm2022\core.mjs:1211:12)
+    at new ListBusinessesComponent (C:\Angular project-2\codebook\src\app\pages\business\list-businesses\list-businesses.component.ts:17:32)
+    at NodeInjectorFactory.ListBusinessesComponent_Factory [as factory] (ng:///ListBusinessesComponent/ɵfac.js:5:10)
+    at getNodeInjectable (C:\Angular project-2\codebook\node_modules\@angular\core\fesm2022\core.mjs:5323:44)
+    at instantiateAllDirectives (C:\Angular project-2\codebook\node_modules\@angular\core\fesm2022\core.mjs:12562:27)
+    at createDirectivesInstances (C:\Angular project-2\codebook\node_modules\@angular\core\fesm2022\core.mjs:12352:5)
+    at ComponentFactory2.create (C:\Angular project-2\codebook\node_modules\@angular\core\fesm2022\core.mjs:17945:17)
+    at initComponent (C:\Angular project-2\codebook\node_modules\@angular\core\fesm2022\testing.mjs:2053:51)
+    at _ZoneDelegate.invoke (C:\Angular project-2\codebook\node_modules\zone.js\bundles\zone.umd.js:416:32)
+    at ProxyZoneSpec.Object.<anonymous>.ProxyZoneSpec.onInvoke (C:\Angular project-2\codebook\node_modules\zone.js\bundles\zone-testing.umd.js:2177:43)
+    at _ZoneDelegate.invoke (C:\Angular project-2\codebook\node_modules\zone.js\bundles\zone.umd.js:415:38)
+    at Object.onInvoke (C:\Angular project-2\codebook\node_modules\@angular\core\fesm2022\core.mjs:6528:33)
+    at _ZoneDelegate.invoke (C:\Angular project-2\codebook\node_modules\zone.js\bundles\zone.umd.js:415:38)
+    at ZoneImpl.run (C:\Angular project-2\codebook\node_modules\zone.js\bundles\zone.umd.js:147:47)
+    at NgZone.run (C:\Angular project-2\codebook\node_modules\@angular\core\fesm2022\core.mjs:6374:28)
+    at _TestBedImpl.createComponent (C:\Angular project-2\codebook\node_modules\@angular\core\fesm2022\testing.mjs:2058:41)
+    at Function.createComponent (C:\Angular project-2\codebook\node_modules\@angular\core\fesm2022\testing.mjs:1844:37)
+    at C:\Angular project-2\codebook\src\app\pages\business\list-businesses\list-businesses.component.spec.ts:15:23
+    at Generator.next (<anonymous>)
+    at fulfilled (C:\Angular project-2\codebook\node_modules\tslib\tslib.js:167:62)
+    at _ZoneDelegate.invoke (C:\Angular project-2\codebook\node_modules\zone.js\bundles\zone.umd.js:416:32)
+    at ProxyZoneSpec.Object.<anonymous>.ProxyZoneSpec.onInvoke (C:\Angular project-2\codebook\node_modules\zone.js\bundles\zone-testing.umd.js:2177:43)
+    at _ZoneDelegate.invoke (C:\Angular project-2\codebook\node_modules\zone.js\bundles\zone.umd.js:415:38)
+    at ZoneImpl.run (C:\Angular project-2\codebook\node_modules\zone.js\bundles\zone.umd.js:147:47)
+    at C:\Angular project-2\codebook\node_modules\zone.js\bundles\zone.umd.js:2598:42
+    at _ZoneDelegate.invokeTask (C:\Angular project-2\codebook\node_modules\zone.js\bundles\zone.umd.js:449:37)
+    at ProxyZoneSpec.Object.<anonymous>.ProxyZoneSpec.onInvokeTask (C:\Angular project-2\codebook\node_modules\zone.js\bundles\zone-testing.umd.js:2208:43)
+    at _ZoneDelegate.invokeTask (C:\Angular project-2\codebook\node_modules\zone.js\bundles\zone.umd.js:448:42)
+    at ZoneImpl.runTask (C:\Angular project-2\codebook\node_modules\zone.js\bundles\zone.umd.js:196:51)
+    at drainMicroTaskQueue (C:\Angular project-2\codebook\node_modules\zone.js\bundles\zone.umd.js:638:39)
+    at processTicksAndRejections (node:internal/process/task_queues:105:5)]]></failure>
+    </testCase>
+  </file>
+  <file path="C:\Angular project-2\codebook\src\app\user\user.component.spec.ts">
+    <testCase name="UserComponent should create the component" duration="753"/>
+    <testCase name="UserComponent should render the avatar if showAvatar is true and user has avatar" duration="393"/>
+    <testCase name="UserComponent should render mat-icon if showAvatar is false" duration="244">
+      <failure message="TypeError: Cannot read properties of null (reading &apos;nativeElement&apos;)"><![CDATA[TypeError: Cannot read properties of null (reading 'nativeElement')
+    at C:\Angular project-2\codebook\src\app\user\user.component.spec.ts:48:19
+    at _ZoneDelegate.invoke (C:\Angular project-2\codebook\node_modules\zone.js\bundles\zone.umd.js:416:32)
+    at ProxyZoneSpec.Object.<anonymous>.ProxyZoneSpec.onInvoke (C:\Angular project-2\codebook\node_modules\zone.js\bundles\zone-testing.umd.js:2177:43)
+    at _ZoneDelegate.invoke (C:\Angular project-2\codebook\node_modules\zone.js\bundles\zone.umd.js:415:38)
+    at ZoneImpl.run (C:\Angular project-2\codebook\node_modules\zone.js\bundles\zone.umd.js:147:47)
+    at Object.wrappedFunc (C:\Angular project-2\codebook\node_modules\zone.js\bundles\zone-testing.umd.js:450:38)
+    at Promise.then.completed (C:\Angular project-2\codebook\node_modules\jest-circus\build\utils.js:298:28)
+    at new Promise (<anonymous>)
+    at callAsyncCircusFn (C:\Angular project-2\codebook\node_modules\jest-circus\build\utils.js:231:10)
+    at _callCircusTest (C:\Angular project-2\codebook\node_modules\jest-circus\build\run.js:316:40)
+    at processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at _runTest (C:\Angular project-2\codebook\node_modules\jest-circus\build\run.js:252:3)
+    at _runTestsForDescribeBlock (C:\Angular project-2\codebook\node_modules\jest-circus\build\run.js:126:9)
+    at _runTestsForDescribeBlock (C:\Angular project-2\codebook\node_modules\jest-circus\build\run.js:121:9)
+    at run (C:\Angular project-2\codebook\node_modules\jest-circus\build\run.js:71:3)
+    at runAndTransformResultsToJestFormat (C:\Angular project-2\codebook\node_modules\jest-circus\build\legacy-code-todo-rewrite\jestAdapterInit.js:122:21)]]></failure>
+    </testCase>
+    <testCase name="UserComponent should apply correct status color based on user status" duration="246">
+      <failure message="TypeError: Cannot read properties of null (reading &apos;nativeElement&apos;)"><![CDATA[TypeError: Cannot read properties of null (reading 'nativeElement')
+    at C:\Angular project-2\codebook\src\app\user\user.component.spec.ts:53:16
+    at _ZoneDelegate.invoke (C:\Angular project-2\codebook\node_modules\zone.js\bundles\zone.umd.js:416:32)
+    at ProxyZoneSpec.Object.<anonymous>.ProxyZoneSpec.onInvoke (C:\Angular project-2\codebook\node_modules\zone.js\bundles\zone-testing.umd.js:2177:43)
+    at _ZoneDelegate.invoke (C:\Angular project-2\codebook\node_modules\zone.js\bundles\zone.umd.js:415:38)
+    at ZoneImpl.run (C:\Angular project-2\codebook\node_modules\zone.js\bundles\zone.umd.js:147:47)
+    at Object.wrappedFunc (C:\Angular project-2\codebook\node_modules\zone.js\bundles\zone-testing.umd.js:450:38)
+    at Promise.then.completed (C:\Angular project-2\codebook\node_modules\jest-circus\build\utils.js:298:28)
+    at new Promise (<anonymous>)
+    at callAsyncCircusFn (C:\Angular project-2\codebook\node_modules\jest-circus\build\utils.js:231:10)
+    at _callCircusTest (C:\Angular project-2\codebook\node_modules\jest-circus\build\run.js:316:40)
+    at processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at _runTest (C:\Angular project-2\codebook\node_modules\jest-circus\build\run.js:252:3)
+    at _runTestsForDescribeBlock (C:\Angular project-2\codebook\node_modules\jest-circus\build\run.js:126:9)
+    at _runTestsForDescribeBlock (C:\Angular project-2\codebook\node_modules\jest-circus\build\run.js:121:9)
+    at run (C:\Angular project-2\codebook\node_modules\jest-circus\build\run.js:71:3)
+    at runAndTransformResultsToJestFormat (C:\Angular project-2\codebook\node_modules\jest-circus\build\legacy-code-todo-rewrite\jestAdapterInit.js:122:21)]]></failure>
+    </testCase>
+    <testCase name="UserComponent should call updateUserStatus and update user status" duration="180"/>
+    <testCase name="UserComponent should call signOut and log to console" duration="243"/>
+    <testCase name="UserComponent should simulate avatar upload click" duration="1497">
+      <failure message="Error: expect(jest.fn()).toHaveBeenCalledWith(...expected)"><![CDATA[Error: expect(jest.fn()).toHaveBeenCalledWith(...expected)
+
+Expected: "avatarUpload"
+
+Number of calls: 0
+    at C:\Angular project-2\codebook\src\app\user\user.component.spec.ts:87:22
+    at _ZoneDelegate.invoke (C:\Angular project-2\codebook\node_modules\zone.js\bundles\zone.umd.js:416:32)
+    at ProxyZoneSpec.Object.<anonymous>.ProxyZoneSpec.onInvoke (C:\Angular project-2\codebook\node_modules\zone.js\bundles\zone-testing.umd.js:2177:43)
+    at _ZoneDelegate.invoke (C:\Angular project-2\codebook\node_modules\zone.js\bundles\zone.umd.js:415:38)
+    at ZoneImpl.run (C:\Angular project-2\codebook\node_modules\zone.js\bundles\zone.umd.js:147:47)
+    at Object.wrappedFunc (C:\Angular project-2\codebook\node_modules\zone.js\bundles\zone-testing.umd.js:450:38)
+    at Promise.then.completed (C:\Angular project-2\codebook\node_modules\jest-circus\build\utils.js:298:28)
+    at new Promise (<anonymous>)
+    at callAsyncCircusFn (C:\Angular project-2\codebook\node_modules\jest-circus\build\utils.js:231:10)
+    at _callCircusTest (C:\Angular project-2\codebook\node_modules\jest-circus\build\run.js:316:40)
+    at processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at _runTest (C:\Angular project-2\codebook\node_modules\jest-circus\build\run.js:252:3)
+    at _runTestsForDescribeBlock (C:\Angular project-2\codebook\node_modules\jest-circus\build\run.js:126:9)
+    at _runTestsForDescribeBlock (C:\Angular project-2\codebook\node_modules\jest-circus\build\run.js:121:9)
+    at run (C:\Angular project-2\codebook\node_modules\jest-circus\build\run.js:71:3)
+    at runAndTransformResultsToJestFormat (C:\Angular project-2\codebook\node_modules\jest-circus\build\legacy-code-todo-rewrite\jestAdapterInit.js:122:21)]]></failure>
+    </testCase>
+  </file>
+  <file path="C:\Angular project-2\codebook\src\app\custom-sidenav\custom-sidenav.component.spec.ts">
+    <testCase name="CustomSidenavComponent should create" duration="1002"/>
+    <testCase name="CustomSidenavComponent Initial state should initialize menuItems with correct values" duration="207">
+      <failure message="Error: expect(received).toBe(expected) // Object.is equality"><![CDATA[Error: expect(received).toBe(expected) // Object.is equality
+
+Expected: 2
+Received: 4
+    at C:\Angular project-2\codebook\src\app\custom-sidenav\custom-sidenav.component.spec.ts:58:44
+    at _ZoneDelegate.invoke (C:\Angular project-2\codebook\node_modules\zone.js\bundles\zone.umd.js:416:32)
+    at ProxyZoneSpec.Object.<anonymous>.ProxyZoneSpec.onInvoke (C:\Angular project-2\codebook\node_modules\zone.js\bundles\zone-testing.umd.js:2177:43)
+    at _ZoneDelegate.invoke (C:\Angular project-2\codebook\node_modules\zone.js\bundles\zone.umd.js:415:38)
+    at ZoneImpl.run (C:\Angular project-2\codebook\node_modules\zone.js\bundles\zone.umd.js:147:47)
+    at Object.wrappedFunc (C:\Angular project-2\codebook\node_modules\zone.js\bundles\zone-testing.umd.js:450:38)
+    at Promise.then.completed (C:\Angular project-2\codebook\node_modules\jest-circus\build\utils.js:298:28)
+    at new Promise (<anonymous>)
+    at callAsyncCircusFn (C:\Angular project-2\codebook\node_modules\jest-circus\build\utils.js:231:10)
+    at _callCircusTest (C:\Angular project-2\codebook\node_modules\jest-circus\build\run.js:316:40)
+    at processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at _runTest (C:\Angular project-2\codebook\node_modules\jest-circus\build\run.js:252:3)
+    at _runTestsForDescribeBlock (C:\Angular project-2\codebook\node_modules\jest-circus\build\run.js:126:9)
+    at _runTestsForDescribeBlock (C:\Angular project-2\codebook\node_modules\jest-circus\build\run.js:121:9)
+    at _runTestsForDescribeBlock (C:\Angular project-2\codebook\node_modules\jest-circus\build\run.js:121:9)
+    at run (C:\Angular project-2\codebook\node_modules\jest-circus\build\run.js:71:3)
+    at runAndTransformResultsToJestFormat (C:\Angular project-2\codebook\node_modules\jest-circus\build\legacy-code-todo-rewrite\jestAdapterInit.js:122:21)]]></failure>
+    </testCase>
+    <testCase name="CustomSidenavComponent Initial state should initialize sideNavCollapsed as false" duration="218"/>
+    <testCase name="CustomSidenavComponent Input collapsed should update sideNavCollapsed when input changes to true" duration="184"/>
+    <testCase name="CustomSidenavComponent Input collapsed should update sideNavCollapsed when input changes to false" duration="106"/>
+    <testCase name="CustomSidenavComponent Template rendering should render menu items with correct router links" duration="125">
+      <failure message="Error: expect(received).toBe(expected) // Object.is equality"><![CDATA[Error: expect(received).toBe(expected) // Object.is equality
+
+Expected: 2
+Received: 4
+    at C:\Angular project-2\codebook\src\app\custom-sidenav\custom-sidenav.component.spec.ts:93:32
+    at _ZoneDelegate.invoke (C:\Angular project-2\codebook\node_modules\zone.js\bundles\zone.umd.js:416:32)
+    at ProxyZoneSpec.Object.<anonymous>.ProxyZoneSpec.onInvoke (C:\Angular project-2\codebook\node_modules\zone.js\bundles\zone-testing.umd.js:2177:43)
+    at _ZoneDelegate.invoke (C:\Angular project-2\codebook\node_modules\zone.js\bundles\zone.umd.js:415:38)
+    at ZoneImpl.run (C:\Angular project-2\codebook\node_modules\zone.js\bundles\zone.umd.js:147:47)
+    at Object.wrappedFunc (C:\Angular project-2\codebook\node_modules\zone.js\bundles\zone-testing.umd.js:450:38)
+    at Promise.then.completed (C:\Angular project-2\codebook\node_modules\jest-circus\build\utils.js:298:28)
+    at new Promise (<anonymous>)
+    at callAsyncCircusFn (C:\Angular project-2\codebook\node_modules\jest-circus\build\utils.js:231:10)
+    at _callCircusTest (C:\Angular project-2\codebook\node_modules\jest-circus\build\run.js:316:40)
+    at processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at _runTest (C:\Angular project-2\codebook\node_modules\jest-circus\build\run.js:252:3)
+    at _runTestsForDescribeBlock (C:\Angular project-2\codebook\node_modules\jest-circus\build\run.js:126:9)
+    at _runTestsForDescribeBlock (C:\Angular project-2\codebook\node_modules\jest-circus\build\run.js:121:9)
+    at _runTestsForDescribeBlock (C:\Angular project-2\codebook\node_modules\jest-circus\build\run.js:121:9)
+    at run (C:\Angular project-2\codebook\node_modules\jest-circus\build\run.js:71:3)
+    at runAndTransformResultsToJestFormat (C:\Angular project-2\codebook\node_modules\jest-circus\build\legacy-code-todo-rewrite\jestAdapterInit.js:122:21)]]></failure>
+    </testCase>
+    <testCase name="CustomSidenavComponent Template rendering should display icon and label when not collapsed on desktop" duration="143"/>
+    <testCase name="CustomSidenavComponent Template rendering should display only icon when collapsed on desktop" duration="179"/>
+    <testCase name="CustomSidenavComponent Template rendering should display icon and label when collapsed on mobile" duration="91">
+      <failure message="Error: expect(received).toBe(expected) // Object.is equality"><![CDATA[Error: expect(received).toBe(expected) // Object.is equality
+
+Expected: true
+Received: undefined
+    at C:\Angular project-2\codebook\src\app\custom-sidenav\custom-sidenav.component.spec.ts:137:40
+    at _ZoneDelegate.invoke (C:\Angular project-2\codebook\node_modules\zone.js\bundles\zone.umd.js:416:32)
+    at ProxyZoneSpec.Object.<anonymous>.ProxyZoneSpec.onInvoke (C:\Angular project-2\codebook\node_modules\zone.js\bundles\zone-testing.umd.js:2177:43)
+    at _ZoneDelegate.invoke (C:\Angular project-2\codebook\node_modules\zone.js\bundles\zone.umd.js:415:38)
+    at ZoneImpl.run (C:\Angular project-2\codebook\node_modules\zone.js\bundles\zone.umd.js:147:47)
+    at Object.wrappedFunc (C:\Angular project-2\codebook\node_modules\zone.js\bundles\zone-testing.umd.js:450:38)
+    at Promise.then.completed (C:\Angular project-2\codebook\node_modules\jest-circus\build\utils.js:298:28)
+    at new Promise (<anonymous>)
+    at callAsyncCircusFn (C:\Angular project-2\codebook\node_modules\jest-circus\build\utils.js:231:10)
+    at _callCircusTest (C:\Angular project-2\codebook\node_modules\jest-circus\build\run.js:316:40)
+    at processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at _runTest (C:\Angular project-2\codebook\node_modules\jest-circus\build\run.js:252:3)
+    at _runTestsForDescribeBlock (C:\Angular project-2\codebook\node_modules\jest-circus\build\run.js:126:9)
+    at _runTestsForDescribeBlock (C:\Angular project-2\codebook\node_modules\jest-circus\build\run.js:121:9)
+    at _runTestsForDescribeBlock (C:\Angular project-2\codebook\node_modules\jest-circus\build\run.js:121:9)
+    at run (C:\Angular project-2\codebook\node_modules\jest-circus\build\run.js:71:3)
+    at runAndTransformResultsToJestFormat (C:\Angular project-2\codebook\node_modules\jest-circus\build\legacy-code-todo-rewrite\jestAdapterInit.js:122:21)]]></failure>
+    </testCase>
+    <testCase name="CustomSidenavComponent Dark mode behavior should apply light mode classes when darkMode is false" duration="177">
+      <failure message="Error: expect(received).toBe(expected) // Object.is equality"><![CDATA[Error: expect(received).toBe(expected) // Object.is equality
+
+Expected: true
+Received: undefined
+    at C:\Angular project-2\codebook\src\app\custom-sidenav\custom-sidenav.component.spec.ts:150:45
+    at _ZoneDelegate.invoke (C:\Angular project-2\codebook\node_modules\zone.js\bundles\zone.umd.js:416:32)
+    at ProxyZoneSpec.Object.<anonymous>.ProxyZoneSpec.onInvoke (C:\Angular project-2\codebook\node_modules\zone.js\bundles\zone-testing.umd.js:2177:43)
+    at _ZoneDelegate.invoke (C:\Angular project-2\codebook\node_modules\zone.js\bundles\zone.umd.js:415:38)
+    at ZoneImpl.run (C:\Angular project-2\codebook\node_modules\zone.js\bundles\zone.umd.js:147:47)
+    at Object.wrappedFunc (C:\Angular project-2\codebook\node_modules\zone.js\bundles\zone-testing.umd.js:450:38)
+    at Promise.then.completed (C:\Angular project-2\codebook\node_modules\jest-circus\build\utils.js:298:28)
+    at new Promise (<anonymous>)
+    at callAsyncCircusFn (C:\Angular project-2\codebook\node_modules\jest-circus\build\utils.js:231:10)
+    at _callCircusTest (C:\Angular project-2\codebook\node_modules\jest-circus\build\run.js:316:40)
+    at processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at _runTest (C:\Angular project-2\codebook\node_modules\jest-circus\build\run.js:252:3)
+    at _runTestsForDescribeBlock (C:\Angular project-2\codebook\node_modules\jest-circus\build\run.js:126:9)
+    at _runTestsForDescribeBlock (C:\Angular project-2\codebook\node_modules\jest-circus\build\run.js:121:9)
+    at _runTestsForDescribeBlock (C:\Angular project-2\codebook\node_modules\jest-circus\build\run.js:121:9)
+    at run (C:\Angular project-2\codebook\node_modules\jest-circus\build\run.js:71:3)
+    at runAndTransformResultsToJestFormat (C:\Angular project-2\codebook\node_modules\jest-circus\build\legacy-code-todo-rewrite\jestAdapterInit.js:122:21)]]></failure>
+    </testCase>
+    <testCase name="CustomSidenavComponent Dark mode behavior should apply dark mode classes when darkMode is true" duration="80">
+      <failure message="Error: expect(received).toBe(expected) // Object.is equality"><![CDATA[Error: expect(received).toBe(expected) // Object.is equality
+
+Expected: true
+Received: undefined
+    at C:\Angular project-2\codebook\src\app\custom-sidenav\custom-sidenav.component.spec.ts:165:48
+    at _ZoneDelegate.invoke (C:\Angular project-2\codebook\node_modules\zone.js\bundles\zone.umd.js:416:32)
+    at ProxyZoneSpec.Object.<anonymous>.ProxyZoneSpec.onInvoke (C:\Angular project-2\codebook\node_modules\zone.js\bundles\zone-testing.umd.js:2177:43)
+    at _ZoneDelegate.invoke (C:\Angular project-2\codebook\node_modules\zone.js\bundles\zone.umd.js:415:38)
+    at ZoneImpl.run (C:\Angular project-2\codebook\node_modules\zone.js\bundles\zone.umd.js:147:47)
+    at Object.wrappedFunc (C:\Angular project-2\codebook\node_modules\zone.js\bundles\zone-testing.umd.js:450:38)
+    at Promise.then.completed (C:\Angular project-2\codebook\node_modules\jest-circus\build\utils.js:298:28)
+    at new Promise (<anonymous>)
+    at callAsyncCircusFn (C:\Angular project-2\codebook\node_modules\jest-circus\build\utils.js:231:10)
+    at _callCircusTest (C:\Angular project-2\codebook\node_modules\jest-circus\build\run.js:316:40)
+    at processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at _runTest (C:\Angular project-2\codebook\node_modules\jest-circus\build\run.js:252:3)
+    at _runTestsForDescribeBlock (C:\Angular project-2\codebook\node_modules\jest-circus\build\run.js:126:9)
+    at _runTestsForDescribeBlock (C:\Angular project-2\codebook\node_modules\jest-circus\build\run.js:121:9)
+    at _runTestsForDescribeBlock (C:\Angular project-2\codebook\node_modules\jest-circus\build\run.js:121:9)
+    at run (C:\Angular project-2\codebook\node_modules\jest-circus\build\run.js:71:3)
+    at runAndTransformResultsToJestFormat (C:\Angular project-2\codebook\node_modules\jest-circus\build\legacy-code-todo-rewrite\jestAdapterInit.js:122:21)]]></failure>
+    </testCase>
+    <testCase name="CustomSidenavComponent Active route behavior should apply active classes in light mode" duration="165">
+      <failure message="Error: expect(received).toBe(expected) // Object.is equality"><![CDATA[Error: expect(received).toBe(expected) // Object.is equality
+
+Expected: true
+Received: undefined
+    at C:\Angular project-2\codebook\src\app\custom-sidenav\custom-sidenav.component.spec.ts:188:49
+    at _ZoneDelegate.invoke (C:\Angular project-2\codebook\node_modules\zone.js\bundles\zone.umd.js:416:32)
+    at ProxyZoneSpec.Object.<anonymous>.ProxyZoneSpec.onInvoke (C:\Angular project-2\codebook\node_modules\zone.js\bundles\zone-testing.umd.js:2177:43)
+    at _ZoneDelegate.invoke (C:\Angular project-2\codebook\node_modules\zone.js\bundles\zone.umd.js:415:38)
+    at ZoneImpl.run (C:\Angular project-2\codebook\node_modules\zone.js\bundles\zone.umd.js:147:47)
+    at Object.wrappedFunc (C:\Angular project-2\codebook\node_modules\zone.js\bundles\zone-testing.umd.js:450:38)
+    at Promise.then.completed (C:\Angular project-2\codebook\node_modules\jest-circus\build\utils.js:298:28)
+    at new Promise (<anonymous>)
+    at callAsyncCircusFn (C:\Angular project-2\codebook\node_modules\jest-circus\build\utils.js:231:10)
+    at _callCircusTest (C:\Angular project-2\codebook\node_modules\jest-circus\build\run.js:316:40)
+    at processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at _runTest (C:\Angular project-2\codebook\node_modules\jest-circus\build\run.js:252:3)
+    at _runTestsForDescribeBlock (C:\Angular project-2\codebook\node_modules\jest-circus\build\run.js:126:9)
+    at _runTestsForDescribeBlock (C:\Angular project-2\codebook\node_modules\jest-circus\build\run.js:121:9)
+    at _runTestsForDescribeBlock (C:\Angular project-2\codebook\node_modules\jest-circus\build\run.js:121:9)
+    at run (C:\Angular project-2\codebook\node_modules\jest-circus\build\run.js:71:3)
+    at runAndTransformResultsToJestFormat (C:\Angular project-2\codebook\node_modules\jest-circus\build\legacy-code-todo-rewrite\jestAdapterInit.js:122:21)]]></failure>
+    </testCase>
+    <testCase name="CustomSidenavComponent Active route behavior should apply active classes in dark mode" duration="106">
+      <failure message="Error: expect(received).toBe(expected) // Object.is equality"><![CDATA[Error: expect(received).toBe(expected) // Object.is equality
+
+Expected: true
+Received: undefined
+    at C:\Angular project-2\codebook\src\app\custom-sidenav\custom-sidenav.component.spec.ts:205:47
+    at _ZoneDelegate.invoke (C:\Angular project-2\codebook\node_modules\zone.js\bundles\zone.umd.js:416:32)
+    at ProxyZoneSpec.Object.<anonymous>.ProxyZoneSpec.onInvoke (C:\Angular project-2\codebook\node_modules\zone.js\bundles\zone-testing.umd.js:2177:43)
+    at _ZoneDelegate.invoke (C:\Angular project-2\codebook\node_modules\zone.js\bundles\zone.umd.js:415:38)
+    at ZoneImpl.run (C:\Angular project-2\codebook\node_modules\zone.js\bundles\zone.umd.js:147:47)
+    at Object.wrappedFunc (C:\Angular project-2\codebook\node_modules\zone.js\bundles\zone-testing.umd.js:450:38)
+    at Promise.then.completed (C:\Angular project-2\codebook\node_modules\jest-circus\build\utils.js:298:28)
+    at new Promise (<anonymous>)
+    at callAsyncCircusFn (C:\Angular project-2\codebook\node_modules\jest-circus\build\utils.js:231:10)
+    at _callCircusTest (C:\Angular project-2\codebook\node_modules\jest-circus\build\run.js:316:40)
+    at processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at _runTest (C:\Angular project-2\codebook\node_modules\jest-circus\build\run.js:252:3)
+    at _runTestsForDescribeBlock (C:\Angular project-2\codebook\node_modules\jest-circus\build\run.js:126:9)
+    at _runTestsForDescribeBlock (C:\Angular project-2\codebook\node_modules\jest-circus\build\run.js:121:9)
+    at _runTestsForDescribeBlock (C:\Angular project-2\codebook\node_modules\jest-circus\build\run.js:121:9)
+    at run (C:\Angular project-2\codebook\node_modules\jest-circus\build\run.js:71:3)
+    at runAndTransformResultsToJestFormat (C:\Angular project-2\codebook\node_modules\jest-circus\build\legacy-code-todo-rewrite\jestAdapterInit.js:122:21)]]></failure>
+    </testCase>
+    <testCase name="CustomSidenavComponent Active route behavior should apply inactive classes for non-active routes in light mode" duration="210">
+      <failure message="Error: expect(received).toBe(expected) // Object.is equality"><![CDATA[Error: expect(received).toBe(expected) // Object.is equality
+
+Expected: true
+Received: undefined
+    at C:\Angular project-2\codebook\src\app\custom-sidenav\custom-sidenav.component.spec.ts:222:49
+    at _ZoneDelegate.invoke (C:\Angular project-2\codebook\node_modules\zone.js\bundles\zone.umd.js:416:32)
+    at ProxyZoneSpec.Object.<anonymous>.ProxyZoneSpec.onInvoke (C:\Angular project-2\codebook\node_modules\zone.js\bundles\zone-testing.umd.js:2177:43)
+    at _ZoneDelegate.invoke (C:\Angular project-2\codebook\node_modules\zone.js\bundles\zone.umd.js:415:38)
+    at ZoneImpl.run (C:\Angular project-2\codebook\node_modules\zone.js\bundles\zone.umd.js:147:47)
+    at Object.wrappedFunc (C:\Angular project-2\codebook\node_modules\zone.js\bundles\zone-testing.umd.js:450:38)
+    at Promise.then.completed (C:\Angular project-2\codebook\node_modules\jest-circus\build\utils.js:298:28)
+    at new Promise (<anonymous>)
+    at callAsyncCircusFn (C:\Angular project-2\codebook\node_modules\jest-circus\build\utils.js:231:10)
+    at _callCircusTest (C:\Angular project-2\codebook\node_modules\jest-circus\build\run.js:316:40)
+    at processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at _runTest (C:\Angular project-2\codebook\node_modules\jest-circus\build\run.js:252:3)
+    at _runTestsForDescribeBlock (C:\Angular project-2\codebook\node_modules\jest-circus\build\run.js:126:9)
+    at _runTestsForDescribeBlock (C:\Angular project-2\codebook\node_modules\jest-circus\build\run.js:121:9)
+    at _runTestsForDescribeBlock (C:\Angular project-2\codebook\node_modules\jest-circus\build\run.js:121:9)
+    at run (C:\Angular project-2\codebook\node_modules\jest-circus\build\run.js:71:3)
+    at runAndTransformResultsToJestFormat (C:\Angular project-2\codebook\node_modules\jest-circus\build\legacy-code-todo-rewrite\jestAdapterInit.js:122:21)]]></failure>
+    </testCase>
+    <testCase name="CustomSidenavComponent Active route behavior should apply inactive classes for non-active routes in dark mode" duration="120">
+      <failure message="Error: expect(received).toBe(expected) // Object.is equality"><![CDATA[Error: expect(received).toBe(expected) // Object.is equality
+
+Expected: true
+Received: undefined
+    at C:\Angular project-2\codebook\src\app\custom-sidenav\custom-sidenav.component.spec.ts:237:49
+    at _ZoneDelegate.invoke (C:\Angular project-2\codebook\node_modules\zone.js\bundles\zone.umd.js:416:32)
+    at ProxyZoneSpec.Object.<anonymous>.ProxyZoneSpec.onInvoke (C:\Angular project-2\codebook\node_modules\zone.js\bundles\zone-testing.umd.js:2177:43)
+    at _ZoneDelegate.invoke (C:\Angular project-2\codebook\node_modules\zone.js\bundles\zone.umd.js:415:38)
+    at ZoneImpl.run (C:\Angular project-2\codebook\node_modules\zone.js\bundles\zone.umd.js:147:47)
+    at Object.wrappedFunc (C:\Angular project-2\codebook\node_modules\zone.js\bundles\zone-testing.umd.js:450:38)
+    at Promise.then.completed (C:\Angular project-2\codebook\node_modules\jest-circus\build\utils.js:298:28)
+    at new Promise (<anonymous>)
+    at callAsyncCircusFn (C:\Angular project-2\codebook\node_modules\jest-circus\build\utils.js:231:10)
+    at _callCircusTest (C:\Angular project-2\codebook\node_modules\jest-circus\build\run.js:316:40)
+    at processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at _runTest (C:\Angular project-2\codebook\node_modules\jest-circus\build\run.js:252:3)
+    at _runTestsForDescribeBlock (C:\Angular project-2\codebook\node_modules\jest-circus\build\run.js:126:9)
+    at _runTestsForDescribeBlock (C:\Angular project-2\codebook\node_modules\jest-circus\build\run.js:121:9)
+    at _runTestsForDescribeBlock (C:\Angular project-2\codebook\node_modules\jest-circus\build\run.js:121:9)
+    at run (C:\Angular project-2\codebook\node_modules\jest-circus\build\run.js:71:3)
+    at runAndTransformResultsToJestFormat (C:\Angular project-2\codebook\node_modules\jest-circus\build\legacy-code-todo-rewrite\jestAdapterInit.js:122:21)]]></failure>
+    </testCase>
+    <testCase name="CustomSidenavComponent Responsive behavior should apply mobile styling when isMobile returns true" duration="59">
+      <failure message="Error: expect(received).toBe(expected) // Object.is equality"><![CDATA[Error: expect(received).toBe(expected) // Object.is equality
+
+Expected: true
+Received: undefined
+    at C:\Angular project-2\codebook\src\app\custom-sidenav\custom-sidenav.component.spec.ts:250:40
+    at _ZoneDelegate.invoke (C:\Angular project-2\codebook\node_modules\zone.js\bundles\zone.umd.js:416:32)
+    at ProxyZoneSpec.Object.<anonymous>.ProxyZoneSpec.onInvoke (C:\Angular project-2\codebook\node_modules\zone.js\bundles\zone-testing.umd.js:2177:43)
+    at _ZoneDelegate.invoke (C:\Angular project-2\codebook\node_modules\zone.js\bundles\zone.umd.js:415:38)
+    at ZoneImpl.run (C:\Angular project-2\codebook\node_modules\zone.js\bundles\zone.umd.js:147:47)
+    at Object.wrappedFunc (C:\Angular project-2\codebook\node_modules\zone.js\bundles\zone-testing.umd.js:450:38)
+    at Promise.then.completed (C:\Angular project-2\codebook\node_modules\jest-circus\build\utils.js:298:28)
+    at new Promise (<anonymous>)
+    at callAsyncCircusFn (C:\Angular project-2\codebook\node_modules\jest-circus\build\utils.js:231:10)
+    at _callCircusTest (C:\Angular project-2\codebook\node_modules\jest-circus\build\run.js:316:40)
+    at processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at _runTest (C:\Angular project-2\codebook\node_modules\jest-circus\build\run.js:252:3)
+    at _runTestsForDescribeBlock (C:\Angular project-2\codebook\node_modules\jest-circus\build\run.js:126:9)
+    at _runTestsForDescribeBlock (C:\Angular project-2\codebook\node_modules\jest-circus\build\run.js:121:9)
+    at _runTestsForDescribeBlock (C:\Angular project-2\codebook\node_modules\jest-circus\build\run.js:121:9)
+    at run (C:\Angular project-2\codebook\node_modules\jest-circus\build\run.js:71:3)
+    at runAndTransformResultsToJestFormat (C:\Angular project-2\codebook\node_modules\jest-circus\build\legacy-code-todo-rewrite\jestAdapterInit.js:122:21)]]></failure>
+    </testCase>
+    <testCase name="CustomSidenavComponent Responsive behavior should apply desktop collapsed styling when not mobile and collapsed" duration="79"/>
+    <testCase name="CustomSidenavComponent Responsive behavior should apply desktop expanded styling when not mobile and not collapsed" duration="113">
+      <failure message="Error: expect(received).toBe(expected) // Object.is equality"><![CDATA[Error: expect(received).toBe(expected) // Object.is equality
+
+Expected: true
+Received: undefined
+    at C:\Angular project-2\codebook\src\app\custom-sidenav\custom-sidenav.component.spec.ts:271:40
+    at _ZoneDelegate.invoke (C:\Angular project-2\codebook\node_modules\zone.js\bundles\zone.umd.js:416:32)
+    at ProxyZoneSpec.Object.<anonymous>.ProxyZoneSpec.onInvoke (C:\Angular project-2\codebook\node_modules\zone.js\bundles\zone-testing.umd.js:2177:43)
+    at _ZoneDelegate.invoke (C:\Angular project-2\codebook\node_modules\zone.js\bundles\zone.umd.js:415:38)
+    at ZoneImpl.run (C:\Angular project-2\codebook\node_modules\zone.js\bundles\zone.umd.js:147:47)
+    at Object.wrappedFunc (C:\Angular project-2\codebook\node_modules\zone.js\bundles\zone-testing.umd.js:450:38)
+    at Promise.then.completed (C:\Angular project-2\codebook\node_modules\jest-circus\build\utils.js:298:28)
+    at new Promise (<anonymous>)
+    at callAsyncCircusFn (C:\Angular project-2\codebook\node_modules\jest-circus\build\utils.js:231:10)
+    at _callCircusTest (C:\Angular project-2\codebook\node_modules\jest-circus\build\run.js:316:40)
+    at processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at _runTest (C:\Angular project-2\codebook\node_modules\jest-circus\build\run.js:252:3)
+    at _runTestsForDescribeBlock (C:\Angular project-2\codebook\node_modules\jest-circus\build\run.js:126:9)
+    at _runTestsForDescribeBlock (C:\Angular project-2\codebook\node_modules\jest-circus\build\run.js:121:9)
+    at _runTestsForDescribeBlock (C:\Angular project-2\codebook\node_modules\jest-circus\build\run.js:121:9)
+    at run (C:\Angular project-2\codebook\node_modules\jest-circus\build\run.js:71:3)
+    at runAndTransformResultsToJestFormat (C:\Angular project-2\codebook\node_modules\jest-circus\build\legacy-code-todo-rewrite\jestAdapterInit.js:122:21)]]></failure>
+    </testCase>
+  </file>
+  <file path="C:\Angular project-2\codebook\src\app\services\responsive\responsive.service.spec.ts">
+    <testCase name="ResponsiveService should be created" duration="168"/>
+    <testCase name="ResponsiveService constructor should initialize breakpointObserver with all breakpoints" duration="31"/>
+    <testCase name="ResponsiveService constructor should update breakpointState when breakpointObserver emits" duration="21"/>
+    <testCase name="ResponsiveService isMobile should return true when isXSmall is true" duration="15"/>
+    <testCase name="ResponsiveService isMobile should return false when isXSmall is false" duration="13"/>
+    <testCase name="ResponsiveService isTablet should return true when isSmall is true" duration="10"/>
+    <testCase name="ResponsiveService isTablet should return true when isMedium is true" duration="10"/>
+    <testCase name="ResponsiveService isTablet should return false when neither isSmall nor isMedium is true" duration="11"/>
+    <testCase name="ResponsiveService isDesktop should return true when isLarge is true" duration="15"/>
+    <testCase name="ResponsiveService isDesktop should return true when isXLarge is true" duration="11"/>
+    <testCase name="ResponsiveService isDesktop should return false when neither isLarge nor isXLarge is true" duration="10"/>
+    <testCase name="ResponsiveService currentBreakpoint should return &quot;xsmall&quot; when isXSmall is true" duration="11"/>
+    <testCase name="ResponsiveService currentBreakpoint should return &quot;small&quot; when isSmall is true" duration="9"/>
+    <testCase name="ResponsiveService currentBreakpoint should return &quot;medium&quot; when isMedium is true" duration="10"/>
+    <testCase name="ResponsiveService currentBreakpoint should return &quot;large&quot; when isLarge is true" duration="10"/>
+    <testCase name="ResponsiveService currentBreakpoint should return &quot;xlarge&quot; when isXLarge is true or no other breakpoint is active" duration="11"/>
+  </file>
+  <file path="C:\Angular project-2\codebook\src\app\pages\business\business.component.spec.ts">
+    <testCase name="BusinessComponent should create" duration="408">
+      <failure message="TypeError: window.matchMedia is not a function"><![CDATA[TypeError: window.matchMedia is not a function
+    at new matchMedia (C:\Angular project-2\codebook\src\app\services\dark-mode.service.ts:30:12)
+    at Object.DarkModeService_Factory [as factory] (ng:///DarkModeService/ɵfac.js:5:10)
+    at C:\Angular project-2\codebook\node_modules\@angular\core\fesm2022\core.mjs:2274:47
+    at runInInjectorProfilerContext (C:\Angular project-2\codebook\node_modules\@angular\core\fesm2022\core.mjs:880:9)
+    at R3Injector.hydrate (C:\Angular project-2\codebook\node_modules\@angular\core\fesm2022\core.mjs:2273:21)
+    at R3Injector.get (C:\Angular project-2\codebook\node_modules\@angular\core\fesm2022\core.mjs:2141:33)
+    at R3Injector.get (C:\Angular project-2\codebook\node_modules\@angular\core\fesm2022\core.mjs:2151:33)
+    at ChainedInjector.get (C:\Angular project-2\codebook\node_modules\@angular\core\fesm2022\core.mjs:17238:36)
+    at lookupTokenUsingModuleInjector (C:\Angular project-2\codebook\node_modules\@angular\core\fesm2022\core.mjs:5063:39)
+    at getOrCreateInjectable (C:\Angular project-2\codebook\node_modules\@angular\core\fesm2022\core.mjs:5111:12)
+    at ɵɵdirectiveInject (C:\Angular project-2\codebook\node_modules\@angular\core\fesm2022\core.mjs:17289:19)
+    at ɵɵinject (C:\Angular project-2\codebook\node_modules\@angular\core\fesm2022\core.mjs:1125:42)
+    at inject (C:\Angular project-2\codebook\node_modules\@angular\core\fesm2022\core.mjs:1211:12)
+    at new BusinessComponent (C:\Angular project-2\codebook\src\app\pages\business\business.component.ts:39:34)
+    at NodeInjectorFactory.BusinessComponent_Factory [as factory] (ng:///BusinessComponent/ɵfac.js:5:10)
+    at getNodeInjectable (C:\Angular project-2\codebook\node_modules\@angular\core\fesm2022\core.mjs:5323:44)
+    at instantiateAllDirectives (C:\Angular project-2\codebook\node_modules\@angular\core\fesm2022\core.mjs:12562:27)
+    at createDirectivesInstances (C:\Angular project-2\codebook\node_modules\@angular\core\fesm2022\core.mjs:12352:5)
+    at ComponentFactory2.create (C:\Angular project-2\codebook\node_modules\@angular\core\fesm2022\core.mjs:17945:17)
+    at initComponent (C:\Angular project-2\codebook\node_modules\@angular\core\fesm2022\testing.mjs:2053:51)
+    at _ZoneDelegate.invoke (C:\Angular project-2\codebook\node_modules\zone.js\bundles\zone.umd.js:416:32)
+    at ProxyZoneSpec.Object.<anonymous>.ProxyZoneSpec.onInvoke (C:\Angular project-2\codebook\node_modules\zone.js\bundles\zone-testing.umd.js:2177:43)
+    at _ZoneDelegate.invoke (C:\Angular project-2\codebook\node_modules\zone.js\bundles\zone.umd.js:415:38)
+    at Object.onInvoke (C:\Angular project-2\codebook\node_modules\@angular\core\fesm2022\core.mjs:6528:33)
+    at _ZoneDelegate.invoke (C:\Angular project-2\codebook\node_modules\zone.js\bundles\zone.umd.js:415:38)
+    at ZoneImpl.run (C:\Angular project-2\codebook\node_modules\zone.js\bundles\zone.umd.js:147:47)
+    at NgZone.run (C:\Angular project-2\codebook\node_modules\@angular\core\fesm2022\core.mjs:6374:28)
+    at _TestBedImpl.createComponent (C:\Angular project-2\codebook\node_modules\@angular\core\fesm2022\testing.mjs:2058:41)
+    at Function.createComponent (C:\Angular project-2\codebook\node_modules\@angular\core\fesm2022\testing.mjs:1844:37)
+    at C:\Angular project-2\codebook\src\app\pages\business\business.component.spec.ts:15:23
+    at Generator.next (<anonymous>)
+    at fulfilled (C:\Angular project-2\codebook\node_modules\tslib\tslib.js:167:62)
+    at _ZoneDelegate.invoke (C:\Angular project-2\codebook\node_modules\zone.js\bundles\zone.umd.js:416:32)
+    at ProxyZoneSpec.Object.<anonymous>.ProxyZoneSpec.onInvoke (C:\Angular project-2\codebook\node_modules\zone.js\bundles\zone-testing.umd.js:2177:43)
+    at _ZoneDelegate.invoke (C:\Angular project-2\codebook\node_modules\zone.js\bundles\zone.umd.js:415:38)
+    at ZoneImpl.run (C:\Angular project-2\codebook\node_modules\zone.js\bundles\zone.umd.js:147:47)
+    at C:\Angular project-2\codebook\node_modules\zone.js\bundles\zone.umd.js:2598:42
+    at _ZoneDelegate.invokeTask (C:\Angular project-2\codebook\node_modules\zone.js\bundles\zone.umd.js:449:37)
+    at ProxyZoneSpec.Object.<anonymous>.ProxyZoneSpec.onInvokeTask (C:\Angular project-2\codebook\node_modules\zone.js\bundles\zone-testing.umd.js:2208:43)
+    at _ZoneDelegate.invokeTask (C:\Angular project-2\codebook\node_modules\zone.js\bundles\zone.umd.js:448:42)
+    at ZoneImpl.runTask (C:\Angular project-2\codebook\node_modules\zone.js\bundles\zone.umd.js:196:51)
+    at drainMicroTaskQueue (C:\Angular project-2\codebook\node_modules\zone.js\bundles\zone.umd.js:638:39)
+    at processTicksAndRejections (node:internal/process/task_queues:105:5)]]></failure>
+    </testCase>
+  </file>
   <file path="C:\Angular project-2\codebook\src\app\app.component.spec.ts">
-    <testCase name="AppComponent should create the app" duration="250">
+    <testCase name="AppComponent should create the app" duration="363">
       <failure message="TypeError: window.matchMedia is not a function"><![CDATA[TypeError: window.matchMedia is not a function
     at new matchMedia (C:\Angular project-2\codebook\src\app\services\dark-mode.service.ts:30:12)
     at Object.DarkModeService_Factory [as factory] (ng:///DarkModeService/ɵfac.js:5:10)
@@ -1214,7 +1555,7 @@ Received: undefined
     at ɵɵdirectiveInject (C:\Angular project-2\codebook\node_modules\@angular\core\fesm2022\core.mjs:17289:19)
     at ɵɵinject (C:\Angular project-2\codebook\node_modules\@angular\core\fesm2022\core.mjs:1125:42)
     at inject (C:\Angular project-2\codebook\node_modules\@angular\core\fesm2022\core.mjs:1211:12)
-    at new AppComponent (C:\Angular project-2\codebook\src\app\app.component.ts:41:34)
+    at new AppComponent (C:\Angular project-2\codebook\src\app\app.component.ts:44:34)
     at NodeInjectorFactory.AppComponent_Factory [as factory] (ng:///AppComponent/ɵfac.js:5:10)
     at getNodeInjectable (C:\Angular project-2\codebook\node_modules\@angular\core\fesm2022\core.mjs:5323:44)
     at instantiateAllDirectives (C:\Angular project-2\codebook\node_modules\@angular\core\fesm2022\core.mjs:12562:27)
@@ -1245,7 +1586,7 @@ Received: undefined
     at drainMicroTaskQueue (C:\Angular project-2\codebook\node_modules\zone.js\bundles\zone.umd.js:638:39)
     at processTicksAndRejections (node:internal/process/task_queues:105:5)]]></failure>
     </testCase>
-    <testCase name="AppComponent should have title &quot;Code Book&quot;" duration="30">
+    <testCase name="AppComponent should have title &quot;Code Book&quot;" duration="32">
       <failure message="TypeError: window.matchMedia is not a function"><![CDATA[TypeError: window.matchMedia is not a function
     at new matchMedia (C:\Angular project-2\codebook\src\app\services\dark-mode.service.ts:30:12)
     at Object.DarkModeService_Factory [as factory] (ng:///DarkModeService/ɵfac.js:5:10)
@@ -1260,7 +1601,7 @@ Received: undefined
     at ɵɵdirectiveInject (C:\Angular project-2\codebook\node_modules\@angular\core\fesm2022\core.mjs:17289:19)
     at ɵɵinject (C:\Angular project-2\codebook\node_modules\@angular\core\fesm2022\core.mjs:1125:42)
     at inject (C:\Angular project-2\codebook\node_modules\@angular\core\fesm2022\core.mjs:1211:12)
-    at new AppComponent (C:\Angular project-2\codebook\src\app\app.component.ts:41:34)
+    at new AppComponent (C:\Angular project-2\codebook\src\app\app.component.ts:44:34)
     at NodeInjectorFactory.AppComponent_Factory [as factory] (ng:///AppComponent/ɵfac.js:5:10)
     at getNodeInjectable (C:\Angular project-2\codebook\node_modules\@angular\core\fesm2022\core.mjs:5323:44)
     at instantiateAllDirectives (C:\Angular project-2\codebook\node_modules\@angular\core\fesm2022\core.mjs:12562:27)
@@ -1291,7 +1632,7 @@ Received: undefined
     at drainMicroTaskQueue (C:\Angular project-2\codebook\node_modules\zone.js\bundles\zone.umd.js:638:39)
     at processTicksAndRejections (node:internal/process/task_queues:105:5)]]></failure>
     </testCase>
-    <testCase name="AppComponent Initial state should initialize collapsed as false" duration="20">
+    <testCase name="AppComponent Initial state should initialize collapsed as false" duration="32">
       <failure message="TypeError: window.matchMedia is not a function"><![CDATA[TypeError: window.matchMedia is not a function
     at new matchMedia (C:\Angular project-2\codebook\src\app\services\dark-mode.service.ts:30:12)
     at Object.DarkModeService_Factory [as factory] (ng:///DarkModeService/ɵfac.js:5:10)
@@ -1306,7 +1647,7 @@ Received: undefined
     at ɵɵdirectiveInject (C:\Angular project-2\codebook\node_modules\@angular\core\fesm2022\core.mjs:17289:19)
     at ɵɵinject (C:\Angular project-2\codebook\node_modules\@angular\core\fesm2022\core.mjs:1125:42)
     at inject (C:\Angular project-2\codebook\node_modules\@angular\core\fesm2022\core.mjs:1211:12)
-    at new AppComponent (C:\Angular project-2\codebook\src\app\app.component.ts:41:34)
+    at new AppComponent (C:\Angular project-2\codebook\src\app\app.component.ts:44:34)
     at NodeInjectorFactory.AppComponent_Factory [as factory] (ng:///AppComponent/ɵfac.js:5:10)
     at getNodeInjectable (C:\Angular project-2\codebook\node_modules\@angular\core\fesm2022\core.mjs:5323:44)
     at instantiateAllDirectives (C:\Angular project-2\codebook\node_modules\@angular\core\fesm2022\core.mjs:12562:27)
@@ -1337,7 +1678,7 @@ Received: undefined
     at drainMicroTaskQueue (C:\Angular project-2\codebook\node_modules\zone.js\bundles\zone.umd.js:638:39)
     at processTicksAndRejections (node:internal/process/task_queues:105:5)]]></failure>
     </testCase>
-    <testCase name="AppComponent Initial state should initialize currentLanguage as &quot;English&quot;" duration="20">
+    <testCase name="AppComponent Initial state should initialize currentLanguage as &quot;English&quot;" duration="29">
       <failure message="TypeError: window.matchMedia is not a function"><![CDATA[TypeError: window.matchMedia is not a function
     at new matchMedia (C:\Angular project-2\codebook\src\app\services\dark-mode.service.ts:30:12)
     at Object.DarkModeService_Factory [as factory] (ng:///DarkModeService/ɵfac.js:5:10)
@@ -1352,7 +1693,7 @@ Received: undefined
     at ɵɵdirectiveInject (C:\Angular project-2\codebook\node_modules\@angular\core\fesm2022\core.mjs:17289:19)
     at ɵɵinject (C:\Angular project-2\codebook\node_modules\@angular\core\fesm2022\core.mjs:1125:42)
     at inject (C:\Angular project-2\codebook\node_modules\@angular\core\fesm2022\core.mjs:1211:12)
-    at new AppComponent (C:\Angular project-2\codebook\src\app\app.component.ts:41:34)
+    at new AppComponent (C:\Angular project-2\codebook\src\app\app.component.ts:44:34)
     at NodeInjectorFactory.AppComponent_Factory [as factory] (ng:///AppComponent/ɵfac.js:5:10)
     at getNodeInjectable (C:\Angular project-2\codebook\node_modules\@angular\core\fesm2022\core.mjs:5323:44)
     at instantiateAllDirectives (C:\Angular project-2\codebook\node_modules\@angular\core\fesm2022\core.mjs:12562:27)
@@ -1383,7 +1724,7 @@ Received: undefined
     at drainMicroTaskQueue (C:\Angular project-2\codebook\node_modules\zone.js\bundles\zone.umd.js:638:39)
     at processTicksAndRejections (node:internal/process/task_queues:105:5)]]></failure>
     </testCase>
-    <testCase name="AppComponent toggleFullScreen() should enter fullscreen when not in fullscreen" duration="25">
+    <testCase name="AppComponent toggleFullScreen() should enter fullscreen when not in fullscreen" duration="30">
       <failure message="TypeError: window.matchMedia is not a function"><![CDATA[TypeError: window.matchMedia is not a function
     at new matchMedia (C:\Angular project-2\codebook\src\app\services\dark-mode.service.ts:30:12)
     at Object.DarkModeService_Factory [as factory] (ng:///DarkModeService/ɵfac.js:5:10)
@@ -1398,7 +1739,7 @@ Received: undefined
     at ɵɵdirectiveInject (C:\Angular project-2\codebook\node_modules\@angular\core\fesm2022\core.mjs:17289:19)
     at ɵɵinject (C:\Angular project-2\codebook\node_modules\@angular\core\fesm2022\core.mjs:1125:42)
     at inject (C:\Angular project-2\codebook\node_modules\@angular\core\fesm2022\core.mjs:1211:12)
-    at new AppComponent (C:\Angular project-2\codebook\src\app\app.component.ts:41:34)
+    at new AppComponent (C:\Angular project-2\codebook\src\app\app.component.ts:44:34)
     at NodeInjectorFactory.AppComponent_Factory [as factory] (ng:///AppComponent/ɵfac.js:5:10)
     at getNodeInjectable (C:\Angular project-2\codebook\node_modules\@angular\core\fesm2022\core.mjs:5323:44)
     at instantiateAllDirectives (C:\Angular project-2\codebook\node_modules\@angular\core\fesm2022\core.mjs:12562:27)
@@ -1429,7 +1770,7 @@ Received: undefined
     at drainMicroTaskQueue (C:\Angular project-2\codebook\node_modules\zone.js\bundles\zone.umd.js:638:39)
     at processTicksAndRejections (node:internal/process/task_queues:105:5)]]></failure>
     </testCase>
-    <testCase name="AppComponent toggleFullScreen() should exit fullscreen when in fullscreen" duration="31">
+    <testCase name="AppComponent toggleFullScreen() should exit fullscreen when in fullscreen" duration="22">
       <failure message="TypeError: window.matchMedia is not a function"><![CDATA[TypeError: window.matchMedia is not a function
     at new matchMedia (C:\Angular project-2\codebook\src\app\services\dark-mode.service.ts:30:12)
     at Object.DarkModeService_Factory [as factory] (ng:///DarkModeService/ɵfac.js:5:10)
@@ -1444,7 +1785,7 @@ Received: undefined
     at ɵɵdirectiveInject (C:\Angular project-2\codebook\node_modules\@angular\core\fesm2022\core.mjs:17289:19)
     at ɵɵinject (C:\Angular project-2\codebook\node_modules\@angular\core\fesm2022\core.mjs:1125:42)
     at inject (C:\Angular project-2\codebook\node_modules\@angular\core\fesm2022\core.mjs:1211:12)
-    at new AppComponent (C:\Angular project-2\codebook\src\app\app.component.ts:41:34)
+    at new AppComponent (C:\Angular project-2\codebook\src\app\app.component.ts:44:34)
     at NodeInjectorFactory.AppComponent_Factory [as factory] (ng:///AppComponent/ɵfac.js:5:10)
     at getNodeInjectable (C:\Angular project-2\codebook\node_modules\@angular\core\fesm2022\core.mjs:5323:44)
     at instantiateAllDirectives (C:\Angular project-2\codebook\node_modules\@angular\core\fesm2022\core.mjs:12562:27)
@@ -1475,7 +1816,7 @@ Received: undefined
     at drainMicroTaskQueue (C:\Angular project-2\codebook\node_modules\zone.js\bundles\zone.umd.js:638:39)
     at processTicksAndRejections (node:internal/process/task_queues:105:5)]]></failure>
     </testCase>
-    <testCase name="AppComponent toggleFullScreen() should handle fullscreen error" duration="28">
+    <testCase name="AppComponent toggleFullScreen() should handle fullscreen error" duration="24">
       <failure message="TypeError: window.matchMedia is not a function"><![CDATA[TypeError: window.matchMedia is not a function
     at new matchMedia (C:\Angular project-2\codebook\src\app\services\dark-mode.service.ts:30:12)
     at Object.DarkModeService_Factory [as factory] (ng:///DarkModeService/ɵfac.js:5:10)
@@ -1490,7 +1831,7 @@ Received: undefined
     at ɵɵdirectiveInject (C:\Angular project-2\codebook\node_modules\@angular\core\fesm2022\core.mjs:17289:19)
     at ɵɵinject (C:\Angular project-2\codebook\node_modules\@angular\core\fesm2022\core.mjs:1125:42)
     at inject (C:\Angular project-2\codebook\node_modules\@angular\core\fesm2022\core.mjs:1211:12)
-    at new AppComponent (C:\Angular project-2\codebook\src\app\app.component.ts:41:34)
+    at new AppComponent (C:\Angular project-2\codebook\src\app\app.component.ts:44:34)
     at NodeInjectorFactory.AppComponent_Factory [as factory] (ng:///AppComponent/ɵfac.js:5:10)
     at getNodeInjectable (C:\Angular project-2\codebook\node_modules\@angular\core\fesm2022\core.mjs:5323:44)
     at instantiateAllDirectives (C:\Angular project-2\codebook\node_modules\@angular\core\fesm2022\core.mjs:12562:27)
@@ -1521,7 +1862,7 @@ Received: undefined
     at drainMicroTaskQueue (C:\Angular project-2\codebook\node_modules\zone.js\bundles\zone.umd.js:638:39)
     at processTicksAndRejections (node:internal/process/task_queues:105:5)]]></failure>
     </testCase>
-    <testCase name="AppComponent setLanguage() should set language to English when &quot;en&quot; is passed" duration="19">
+    <testCase name="AppComponent setLanguage() should set language to English when &quot;en&quot; is passed" duration="18">
       <failure message="TypeError: window.matchMedia is not a function"><![CDATA[TypeError: window.matchMedia is not a function
     at new matchMedia (C:\Angular project-2\codebook\src\app\services\dark-mode.service.ts:30:12)
     at Object.DarkModeService_Factory [as factory] (ng:///DarkModeService/ɵfac.js:5:10)
@@ -1536,7 +1877,7 @@ Received: undefined
     at ɵɵdirectiveInject (C:\Angular project-2\codebook\node_modules\@angular\core\fesm2022\core.mjs:17289:19)
     at ɵɵinject (C:\Angular project-2\codebook\node_modules\@angular\core\fesm2022\core.mjs:1125:42)
     at inject (C:\Angular project-2\codebook\node_modules\@angular\core\fesm2022\core.mjs:1211:12)
-    at new AppComponent (C:\Angular project-2\codebook\src\app\app.component.ts:41:34)
+    at new AppComponent (C:\Angular project-2\codebook\src\app\app.component.ts:44:34)
     at NodeInjectorFactory.AppComponent_Factory [as factory] (ng:///AppComponent/ɵfac.js:5:10)
     at getNodeInjectable (C:\Angular project-2\codebook\node_modules\@angular\core\fesm2022\core.mjs:5323:44)
     at instantiateAllDirectives (C:\Angular project-2\codebook\node_modules\@angular\core\fesm2022\core.mjs:12562:27)
@@ -1567,7 +1908,7 @@ Received: undefined
     at drainMicroTaskQueue (C:\Angular project-2\codebook\node_modules\zone.js\bundles\zone.umd.js:638:39)
     at processTicksAndRejections (node:internal/process/task_queues:105:5)]]></failure>
     </testCase>
-    <testCase name="AppComponent setLanguage() should set language to French when &quot;fr&quot; is passed" duration="20">
+    <testCase name="AppComponent setLanguage() should set language to French when &quot;fr&quot; is passed" duration="29">
       <failure message="TypeError: window.matchMedia is not a function"><![CDATA[TypeError: window.matchMedia is not a function
     at new matchMedia (C:\Angular project-2\codebook\src\app\services\dark-mode.service.ts:30:12)
     at Object.DarkModeService_Factory [as factory] (ng:///DarkModeService/ɵfac.js:5:10)
@@ -1582,7 +1923,7 @@ Received: undefined
     at ɵɵdirectiveInject (C:\Angular project-2\codebook\node_modules\@angular\core\fesm2022\core.mjs:17289:19)
     at ɵɵinject (C:\Angular project-2\codebook\node_modules\@angular\core\fesm2022\core.mjs:1125:42)
     at inject (C:\Angular project-2\codebook\node_modules\@angular\core\fesm2022\core.mjs:1211:12)
-    at new AppComponent (C:\Angular project-2\codebook\src\app\app.component.ts:41:34)
+    at new AppComponent (C:\Angular project-2\codebook\src\app\app.component.ts:44:34)
     at NodeInjectorFactory.AppComponent_Factory [as factory] (ng:///AppComponent/ɵfac.js:5:10)
     at getNodeInjectable (C:\Angular project-2\codebook\node_modules\@angular\core\fesm2022\core.mjs:5323:44)
     at instantiateAllDirectives (C:\Angular project-2\codebook\node_modules\@angular\core\fesm2022\core.mjs:12562:27)
@@ -1613,7 +1954,7 @@ Received: undefined
     at drainMicroTaskQueue (C:\Angular project-2\codebook\node_modules\zone.js\bundles\zone.umd.js:638:39)
     at processTicksAndRejections (node:internal/process/task_queues:105:5)]]></failure>
     </testCase>
-    <testCase name="AppComponent setLanguage() should keep current language when unknown code is passed" duration="14">
+    <testCase name="AppComponent setLanguage() should keep current language when unknown code is passed" duration="18">
       <failure message="TypeError: window.matchMedia is not a function"><![CDATA[TypeError: window.matchMedia is not a function
     at new matchMedia (C:\Angular project-2\codebook\src\app\services\dark-mode.service.ts:30:12)
     at Object.DarkModeService_Factory [as factory] (ng:///DarkModeService/ɵfac.js:5:10)
@@ -1628,7 +1969,7 @@ Received: undefined
     at ɵɵdirectiveInject (C:\Angular project-2\codebook\node_modules\@angular\core\fesm2022\core.mjs:17289:19)
     at ɵɵinject (C:\Angular project-2\codebook\node_modules\@angular\core\fesm2022\core.mjs:1125:42)
     at inject (C:\Angular project-2\codebook\node_modules\@angular\core\fesm2022\core.mjs:1211:12)
-    at new AppComponent (C:\Angular project-2\codebook\src\app\app.component.ts:41:34)
+    at new AppComponent (C:\Angular project-2\codebook\src\app\app.component.ts:44:34)
     at NodeInjectorFactory.AppComponent_Factory [as factory] (ng:///AppComponent/ɵfac.js:5:10)
     at getNodeInjectable (C:\Angular project-2\codebook\node_modules\@angular\core\fesm2022\core.mjs:5323:44)
     at instantiateAllDirectives (C:\Angular project-2\codebook\node_modules\@angular\core\fesm2022\core.mjs:12562:27)
@@ -1659,7 +2000,7 @@ Received: undefined
     at drainMicroTaskQueue (C:\Angular project-2\codebook\node_modules\zone.js\bundles\zone.umd.js:638:39)
     at processTicksAndRejections (node:internal/process/task_queues:105:5)]]></failure>
     </testCase>
-    <testCase name="AppComponent setLanguage() should actually change language in transloco service" duration="17">
+    <testCase name="AppComponent setLanguage() should actually change language in transloco service" duration="29">
       <failure message="TypeError: window.matchMedia is not a function"><![CDATA[TypeError: window.matchMedia is not a function
     at new matchMedia (C:\Angular project-2\codebook\src\app\services\dark-mode.service.ts:30:12)
     at Object.DarkModeService_Factory [as factory] (ng:///DarkModeService/ɵfac.js:5:10)
@@ -1674,7 +2015,7 @@ Received: undefined
     at ɵɵdirectiveInject (C:\Angular project-2\codebook\node_modules\@angular\core\fesm2022\core.mjs:17289:19)
     at ɵɵinject (C:\Angular project-2\codebook\node_modules\@angular\core\fesm2022\core.mjs:1125:42)
     at inject (C:\Angular project-2\codebook\node_modules\@angular\core\fesm2022\core.mjs:1211:12)
-    at new AppComponent (C:\Angular project-2\codebook\src\app\app.component.ts:41:34)
+    at new AppComponent (C:\Angular project-2\codebook\src\app\app.component.ts:44:34)
     at NodeInjectorFactory.AppComponent_Factory [as factory] (ng:///AppComponent/ɵfac.js:5:10)
     at getNodeInjectable (C:\Angular project-2\codebook\node_modules\@angular\core\fesm2022\core.mjs:5323:44)
     at instantiateAllDirectives (C:\Angular project-2\codebook\node_modules\@angular\core\fesm2022\core.mjs:12562:27)
@@ -1705,7 +2046,7 @@ Received: undefined
     at drainMicroTaskQueue (C:\Angular project-2\codebook\node_modules\zone.js\bundles\zone.umd.js:638:39)
     at processTicksAndRejections (node:internal/process/task_queues:105:5)]]></failure>
     </testCase>
-    <testCase name="AppComponent toggleSidenav() should toggle collapsed state" duration="23">
+    <testCase name="AppComponent toggleSidenav() should toggle collapsed state" duration="27">
       <failure message="TypeError: window.matchMedia is not a function"><![CDATA[TypeError: window.matchMedia is not a function
     at new matchMedia (C:\Angular project-2\codebook\src\app\services\dark-mode.service.ts:30:12)
     at Object.DarkModeService_Factory [as factory] (ng:///DarkModeService/ɵfac.js:5:10)
@@ -1720,7 +2061,7 @@ Received: undefined
     at ɵɵdirectiveInject (C:\Angular project-2\codebook\node_modules\@angular\core\fesm2022\core.mjs:17289:19)
     at ɵɵinject (C:\Angular project-2\codebook\node_modules\@angular\core\fesm2022\core.mjs:1125:42)
     at inject (C:\Angular project-2\codebook\node_modules\@angular\core\fesm2022\core.mjs:1211:12)
-    at new AppComponent (C:\Angular project-2\codebook\src\app\app.component.ts:41:34)
+    at new AppComponent (C:\Angular project-2\codebook\src\app\app.component.ts:44:34)
     at NodeInjectorFactory.AppComponent_Factory [as factory] (ng:///AppComponent/ɵfac.js:5:10)
     at getNodeInjectable (C:\Angular project-2\codebook\node_modules\@angular\core\fesm2022\core.mjs:5323:44)
     at instantiateAllDirectives (C:\Angular project-2\codebook\node_modules\@angular\core\fesm2022\core.mjs:12562:27)
@@ -1751,7 +2092,7 @@ Received: undefined
     at drainMicroTaskQueue (C:\Angular project-2\codebook\node_modules\zone.js\bundles\zone.umd.js:638:39)
     at processTicksAndRejections (node:internal/process/task_queues:105:5)]]></failure>
     </testCase>
-    <testCase name="AppComponent computed properties sidenavWidth() should return 280px for mobile" duration="22">
+    <testCase name="AppComponent computed properties sidenavWidth() should return 280px for mobile" duration="20">
       <failure message="TypeError: window.matchMedia is not a function"><![CDATA[TypeError: window.matchMedia is not a function
     at new matchMedia (C:\Angular project-2\codebook\src\app\services\dark-mode.service.ts:30:12)
     at Object.DarkModeService_Factory [as factory] (ng:///DarkModeService/ɵfac.js:5:10)
@@ -1766,7 +2107,7 @@ Received: undefined
     at ɵɵdirectiveInject (C:\Angular project-2\codebook\node_modules\@angular\core\fesm2022\core.mjs:17289:19)
     at ɵɵinject (C:\Angular project-2\codebook\node_modules\@angular\core\fesm2022\core.mjs:1125:42)
     at inject (C:\Angular project-2\codebook\node_modules\@angular\core\fesm2022\core.mjs:1211:12)
-    at new AppComponent (C:\Angular project-2\codebook\src\app\app.component.ts:41:34)
+    at new AppComponent (C:\Angular project-2\codebook\src\app\app.component.ts:44:34)
     at NodeInjectorFactory.AppComponent_Factory [as factory] (ng:///AppComponent/ɵfac.js:5:10)
     at getNodeInjectable (C:\Angular project-2\codebook\node_modules\@angular\core\fesm2022\core.mjs:5323:44)
     at instantiateAllDirectives (C:\Angular project-2\codebook\node_modules\@angular\core\fesm2022\core.mjs:12562:27)
@@ -1797,7 +2138,7 @@ Received: undefined
     at drainMicroTaskQueue (C:\Angular project-2\codebook\node_modules\zone.js\bundles\zone.umd.js:638:39)
     at processTicksAndRejections (node:internal/process/task_queues:105:5)]]></failure>
     </testCase>
-    <testCase name="AppComponent computed properties sidenavWidth() should return 64px when collapsed on desktop" duration="15">
+    <testCase name="AppComponent computed properties sidenavWidth() should return 64px when collapsed on desktop" duration="31">
       <failure message="TypeError: window.matchMedia is not a function"><![CDATA[TypeError: window.matchMedia is not a function
     at new matchMedia (C:\Angular project-2\codebook\src\app\services\dark-mode.service.ts:30:12)
     at Object.DarkModeService_Factory [as factory] (ng:///DarkModeService/ɵfac.js:5:10)
@@ -1812,7 +2153,7 @@ Received: undefined
     at ɵɵdirectiveInject (C:\Angular project-2\codebook\node_modules\@angular\core\fesm2022\core.mjs:17289:19)
     at ɵɵinject (C:\Angular project-2\codebook\node_modules\@angular\core\fesm2022\core.mjs:1125:42)
     at inject (C:\Angular project-2\codebook\node_modules\@angular\core\fesm2022\core.mjs:1211:12)
-    at new AppComponent (C:\Angular project-2\codebook\src\app\app.component.ts:41:34)
+    at new AppComponent (C:\Angular project-2\codebook\src\app\app.component.ts:44:34)
     at NodeInjectorFactory.AppComponent_Factory [as factory] (ng:///AppComponent/ɵfac.js:5:10)
     at getNodeInjectable (C:\Angular project-2\codebook\node_modules\@angular\core\fesm2022\core.mjs:5323:44)
     at instantiateAllDirectives (C:\Angular project-2\codebook\node_modules\@angular\core\fesm2022\core.mjs:12562:27)
@@ -1843,7 +2184,7 @@ Received: undefined
     at drainMicroTaskQueue (C:\Angular project-2\codebook\node_modules\zone.js\bundles\zone.umd.js:638:39)
     at processTicksAndRejections (node:internal/process/task_queues:105:5)]]></failure>
     </testCase>
-    <testCase name="AppComponent computed properties sidenavWidth() should return 200px when not collapsed on desktop" duration="18">
+    <testCase name="AppComponent computed properties sidenavWidth() should return 200px when not collapsed on desktop" duration="24">
       <failure message="TypeError: window.matchMedia is not a function"><![CDATA[TypeError: window.matchMedia is not a function
     at new matchMedia (C:\Angular project-2\codebook\src\app\services\dark-mode.service.ts:30:12)
     at Object.DarkModeService_Factory [as factory] (ng:///DarkModeService/ɵfac.js:5:10)
@@ -1858,7 +2199,7 @@ Received: undefined
     at ɵɵdirectiveInject (C:\Angular project-2\codebook\node_modules\@angular\core\fesm2022\core.mjs:17289:19)
     at ɵɵinject (C:\Angular project-2\codebook\node_modules\@angular\core\fesm2022\core.mjs:1125:42)
     at inject (C:\Angular project-2\codebook\node_modules\@angular\core\fesm2022\core.mjs:1211:12)
-    at new AppComponent (C:\Angular project-2\codebook\src\app\app.component.ts:41:34)
+    at new AppComponent (C:\Angular project-2\codebook\src\app\app.component.ts:44:34)
     at NodeInjectorFactory.AppComponent_Factory [as factory] (ng:///AppComponent/ɵfac.js:5:10)
     at getNodeInjectable (C:\Angular project-2\codebook\node_modules\@angular\core\fesm2022\core.mjs:5323:44)
     at instantiateAllDirectives (C:\Angular project-2\codebook\node_modules\@angular\core\fesm2022\core.mjs:12562:27)
@@ -1889,7 +2230,7 @@ Received: undefined
     at drainMicroTaskQueue (C:\Angular project-2\codebook\node_modules\zone.js\bundles\zone.umd.js:638:39)
     at processTicksAndRejections (node:internal/process/task_queues:105:5)]]></failure>
     </testCase>
-    <testCase name="AppComponent computed properties sidenavMode() should return &quot;over&quot; for mobile" duration="20">
+    <testCase name="AppComponent computed properties sidenavMode() should return &quot;over&quot; for mobile" duration="32">
       <failure message="TypeError: window.matchMedia is not a function"><![CDATA[TypeError: window.matchMedia is not a function
     at new matchMedia (C:\Angular project-2\codebook\src\app\services\dark-mode.service.ts:30:12)
     at Object.DarkModeService_Factory [as factory] (ng:///DarkModeService/ɵfac.js:5:10)
@@ -1904,7 +2245,7 @@ Received: undefined
     at ɵɵdirectiveInject (C:\Angular project-2\codebook\node_modules\@angular\core\fesm2022\core.mjs:17289:19)
     at ɵɵinject (C:\Angular project-2\codebook\node_modules\@angular\core\fesm2022\core.mjs:1125:42)
     at inject (C:\Angular project-2\codebook\node_modules\@angular\core\fesm2022\core.mjs:1211:12)
-    at new AppComponent (C:\Angular project-2\codebook\src\app\app.component.ts:41:34)
+    at new AppComponent (C:\Angular project-2\codebook\src\app\app.component.ts:44:34)
     at NodeInjectorFactory.AppComponent_Factory [as factory] (ng:///AppComponent/ɵfac.js:5:10)
     at getNodeInjectable (C:\Angular project-2\codebook\node_modules\@angular\core\fesm2022\core.mjs:5323:44)
     at instantiateAllDirectives (C:\Angular project-2\codebook\node_modules\@angular\core\fesm2022\core.mjs:12562:27)
@@ -1950,7 +2291,7 @@ Received: undefined
     at ɵɵdirectiveInject (C:\Angular project-2\codebook\node_modules\@angular\core\fesm2022\core.mjs:17289:19)
     at ɵɵinject (C:\Angular project-2\codebook\node_modules\@angular\core\fesm2022\core.mjs:1125:42)
     at inject (C:\Angular project-2\codebook\node_modules\@angular\core\fesm2022\core.mjs:1211:12)
-    at new AppComponent (C:\Angular project-2\codebook\src\app\app.component.ts:41:34)
+    at new AppComponent (C:\Angular project-2\codebook\src\app\app.component.ts:44:34)
     at NodeInjectorFactory.AppComponent_Factory [as factory] (ng:///AppComponent/ɵfac.js:5:10)
     at getNodeInjectable (C:\Angular project-2\codebook\node_modules\@angular\core\fesm2022\core.mjs:5323:44)
     at instantiateAllDirectives (C:\Angular project-2\codebook\node_modules\@angular\core\fesm2022\core.mjs:12562:27)
@@ -1981,7 +2322,7 @@ Received: undefined
     at drainMicroTaskQueue (C:\Angular project-2\codebook\node_modules\zone.js\bundles\zone.umd.js:638:39)
     at processTicksAndRejections (node:internal/process/task_queues:105:5)]]></failure>
     </testCase>
-    <testCase name="AppComponent computed properties sidenavOpened() should return true for desktop regardless of collapsed state" duration="14">
+    <testCase name="AppComponent computed properties sidenavOpened() should return true for desktop regardless of collapsed state" duration="16">
       <failure message="TypeError: window.matchMedia is not a function"><![CDATA[TypeError: window.matchMedia is not a function
     at new matchMedia (C:\Angular project-2\codebook\src\app\services\dark-mode.service.ts:30:12)
     at Object.DarkModeService_Factory [as factory] (ng:///DarkModeService/ɵfac.js:5:10)
@@ -1996,7 +2337,7 @@ Received: undefined
     at ɵɵdirectiveInject (C:\Angular project-2\codebook\node_modules\@angular\core\fesm2022\core.mjs:17289:19)
     at ɵɵinject (C:\Angular project-2\codebook\node_modules\@angular\core\fesm2022\core.mjs:1125:42)
     at inject (C:\Angular project-2\codebook\node_modules\@angular\core\fesm2022\core.mjs:1211:12)
-    at new AppComponent (C:\Angular project-2\codebook\src\app\app.component.ts:41:34)
+    at new AppComponent (C:\Angular project-2\codebook\src\app\app.component.ts:44:34)
     at NodeInjectorFactory.AppComponent_Factory [as factory] (ng:///AppComponent/ɵfac.js:5:10)
     at getNodeInjectable (C:\Angular project-2\codebook\node_modules\@angular\core\fesm2022\core.mjs:5323:44)
     at instantiateAllDirectives (C:\Angular project-2\codebook\node_modules\@angular\core\fesm2022\core.mjs:12562:27)
@@ -2027,7 +2368,7 @@ Received: undefined
     at drainMicroTaskQueue (C:\Angular project-2\codebook\node_modules\zone.js\bundles\zone.umd.js:638:39)
     at processTicksAndRejections (node:internal/process/task_queues:105:5)]]></failure>
     </testCase>
-    <testCase name="AppComponent computed properties sidenavOpened() should return false when collapsed on mobile" duration="16">
+    <testCase name="AppComponent computed properties sidenavOpened() should return false when collapsed on mobile" duration="18">
       <failure message="TypeError: window.matchMedia is not a function"><![CDATA[TypeError: window.matchMedia is not a function
     at new matchMedia (C:\Angular project-2\codebook\src\app\services\dark-mode.service.ts:30:12)
     at Object.DarkModeService_Factory [as factory] (ng:///DarkModeService/ɵfac.js:5:10)
@@ -2042,7 +2383,7 @@ Received: undefined
     at ɵɵdirectiveInject (C:\Angular project-2\codebook\node_modules\@angular\core\fesm2022\core.mjs:17289:19)
     at ɵɵinject (C:\Angular project-2\codebook\node_modules\@angular\core\fesm2022\core.mjs:1125:42)
     at inject (C:\Angular project-2\codebook\node_modules\@angular\core\fesm2022\core.mjs:1211:12)
-    at new AppComponent (C:\Angular project-2\codebook\src\app\app.component.ts:41:34)
+    at new AppComponent (C:\Angular project-2\codebook\src\app\app.component.ts:44:34)
     at NodeInjectorFactory.AppComponent_Factory [as factory] (ng:///AppComponent/ɵfac.js:5:10)
     at getNodeInjectable (C:\Angular project-2\codebook\node_modules\@angular\core\fesm2022\core.mjs:5323:44)
     at instantiateAllDirectives (C:\Angular project-2\codebook\node_modules\@angular\core\fesm2022\core.mjs:12562:27)
@@ -2073,7 +2414,7 @@ Received: undefined
     at drainMicroTaskQueue (C:\Angular project-2\codebook\node_modules\zone.js\bundles\zone.umd.js:638:39)
     at processTicksAndRejections (node:internal/process/task_queues:105:5)]]></failure>
     </testCase>
-    <testCase name="AppComponent computed properties sidenavOpened() should return true when not collapsed on mobile" duration="11">
+    <testCase name="AppComponent computed properties sidenavOpened() should return true when not collapsed on mobile" duration="13">
       <failure message="TypeError: window.matchMedia is not a function"><![CDATA[TypeError: window.matchMedia is not a function
     at new matchMedia (C:\Angular project-2\codebook\src\app\services\dark-mode.service.ts:30:12)
     at Object.DarkModeService_Factory [as factory] (ng:///DarkModeService/ɵfac.js:5:10)
@@ -2088,7 +2429,7 @@ Received: undefined
     at ɵɵdirectiveInject (C:\Angular project-2\codebook\node_modules\@angular\core\fesm2022\core.mjs:17289:19)
     at ɵɵinject (C:\Angular project-2\codebook\node_modules\@angular\core\fesm2022\core.mjs:1125:42)
     at inject (C:\Angular project-2\codebook\node_modules\@angular\core\fesm2022\core.mjs:1211:12)
-    at new AppComponent (C:\Angular project-2\codebook\src\app\app.component.ts:41:34)
+    at new AppComponent (C:\Angular project-2\codebook\src\app\app.component.ts:44:34)
     at NodeInjectorFactory.AppComponent_Factory [as factory] (ng:///AppComponent/ɵfac.js:5:10)
     at getNodeInjectable (C:\Angular project-2\codebook\node_modules\@angular\core\fesm2022\core.mjs:5323:44)
     at instantiateAllDirectives (C:\Angular project-2\codebook\node_modules\@angular\core\fesm2022\core.mjs:12562:27)
@@ -2119,7 +2460,7 @@ Received: undefined
     at drainMicroTaskQueue (C:\Angular project-2\codebook\node_modules\zone.js\bundles\zone.umd.js:638:39)
     at processTicksAndRejections (node:internal/process/task_queues:105:5)]]></failure>
     </testCase>
-    <testCase name="AppComponent Template should display the correct title in toolbar" duration="11">
+    <testCase name="AppComponent Template should display the correct title in toolbar" duration="25">
       <failure message="TypeError: window.matchMedia is not a function"><![CDATA[TypeError: window.matchMedia is not a function
     at new matchMedia (C:\Angular project-2\codebook\src\app\services\dark-mode.service.ts:30:12)
     at Object.DarkModeService_Factory [as factory] (ng:///DarkModeService/ɵfac.js:5:10)
@@ -2134,7 +2475,7 @@ Received: undefined
     at ɵɵdirectiveInject (C:\Angular project-2\codebook\node_modules\@angular\core\fesm2022\core.mjs:17289:19)
     at ɵɵinject (C:\Angular project-2\codebook\node_modules\@angular\core\fesm2022\core.mjs:1125:42)
     at inject (C:\Angular project-2\codebook\node_modules\@angular\core\fesm2022\core.mjs:1211:12)
-    at new AppComponent (C:\Angular project-2\codebook\src\app\app.component.ts:41:34)
+    at new AppComponent (C:\Angular project-2\codebook\src\app\app.component.ts:44:34)
     at NodeInjectorFactory.AppComponent_Factory [as factory] (ng:///AppComponent/ɵfac.js:5:10)
     at getNodeInjectable (C:\Angular project-2\codebook\node_modules\@angular\core\fesm2022\core.mjs:5323:44)
     at instantiateAllDirectives (C:\Angular project-2\codebook\node_modules\@angular\core\fesm2022\core.mjs:12562:27)
@@ -2165,7 +2506,7 @@ Received: undefined
     at drainMicroTaskQueue (C:\Angular project-2\codebook\node_modules\zone.js\bundles\zone.umd.js:638:39)
     at processTicksAndRejections (node:internal/process/task_queues:105:5)]]></failure>
     </testCase>
-    <testCase name="AppComponent Template should call toggleSidenav when menu button is clicked" duration="12">
+    <testCase name="AppComponent Template should call toggleSidenav when menu button is clicked" duration="15">
       <failure message="TypeError: window.matchMedia is not a function"><![CDATA[TypeError: window.matchMedia is not a function
     at new matchMedia (C:\Angular project-2\codebook\src\app\services\dark-mode.service.ts:30:12)
     at Object.DarkModeService_Factory [as factory] (ng:///DarkModeService/ɵfac.js:5:10)
@@ -2180,7 +2521,7 @@ Received: undefined
     at ɵɵdirectiveInject (C:\Angular project-2\codebook\node_modules\@angular\core\fesm2022\core.mjs:17289:19)
     at ɵɵinject (C:\Angular project-2\codebook\node_modules\@angular\core\fesm2022\core.mjs:1125:42)
     at inject (C:\Angular project-2\codebook\node_modules\@angular\core\fesm2022\core.mjs:1211:12)
-    at new AppComponent (C:\Angular project-2\codebook\src\app\app.component.ts:41:34)
+    at new AppComponent (C:\Angular project-2\codebook\src\app\app.component.ts:44:34)
     at NodeInjectorFactory.AppComponent_Factory [as factory] (ng:///AppComponent/ɵfac.js:5:10)
     at getNodeInjectable (C:\Angular project-2\codebook\node_modules\@angular\core\fesm2022\core.mjs:5323:44)
     at instantiateAllDirectives (C:\Angular project-2\codebook\node_modules\@angular\core\fesm2022\core.mjs:12562:27)
@@ -2211,7 +2552,7 @@ Received: undefined
     at drainMicroTaskQueue (C:\Angular project-2\codebook\node_modules\zone.js\bundles\zone.umd.js:638:39)
     at processTicksAndRejections (node:internal/process/task_queues:105:5)]]></failure>
     </testCase>
-    <testCase name="AppComponent Template should call toggleFullScreen when fullscreen button is clicked" duration="18">
+    <testCase name="AppComponent Template should call toggleFullScreen when fullscreen button is clicked" duration="22">
       <failure message="TypeError: window.matchMedia is not a function"><![CDATA[TypeError: window.matchMedia is not a function
     at new matchMedia (C:\Angular project-2\codebook\src\app\services\dark-mode.service.ts:30:12)
     at Object.DarkModeService_Factory [as factory] (ng:///DarkModeService/ɵfac.js:5:10)
@@ -2226,7 +2567,7 @@ Received: undefined
     at ɵɵdirectiveInject (C:\Angular project-2\codebook\node_modules\@angular\core\fesm2022\core.mjs:17289:19)
     at ɵɵinject (C:\Angular project-2\codebook\node_modules\@angular\core\fesm2022\core.mjs:1125:42)
     at inject (C:\Angular project-2\codebook\node_modules\@angular\core\fesm2022\core.mjs:1211:12)
-    at new AppComponent (C:\Angular project-2\codebook\src\app\app.component.ts:41:34)
+    at new AppComponent (C:\Angular project-2\codebook\src\app\app.component.ts:44:34)
     at NodeInjectorFactory.AppComponent_Factory [as factory] (ng:///AppComponent/ɵfac.js:5:10)
     at getNodeInjectable (C:\Angular project-2\codebook\node_modules\@angular\core\fesm2022\core.mjs:5323:44)
     at instantiateAllDirectives (C:\Angular project-2\codebook\node_modules\@angular\core\fesm2022\core.mjs:12562:27)
@@ -2257,7 +2598,7 @@ Received: undefined
     at drainMicroTaskQueue (C:\Angular project-2\codebook\node_modules\zone.js\bundles\zone.umd.js:638:39)
     at processTicksAndRejections (node:internal/process/task_queues:105:5)]]></failure>
     </testCase>
-    <testCase name="AppComponent Template should contain app-custom-sidenav component" duration="18">
+    <testCase name="AppComponent Template should contain app-custom-sidenav component" duration="17">
       <failure message="TypeError: window.matchMedia is not a function"><![CDATA[TypeError: window.matchMedia is not a function
     at new matchMedia (C:\Angular project-2\codebook\src\app\services\dark-mode.service.ts:30:12)
     at Object.DarkModeService_Factory [as factory] (ng:///DarkModeService/ɵfac.js:5:10)
@@ -2272,7 +2613,7 @@ Received: undefined
     at ɵɵdirectiveInject (C:\Angular project-2\codebook\node_modules\@angular\core\fesm2022\core.mjs:17289:19)
     at ɵɵinject (C:\Angular project-2\codebook\node_modules\@angular\core\fesm2022\core.mjs:1125:42)
     at inject (C:\Angular project-2\codebook\node_modules\@angular\core\fesm2022\core.mjs:1211:12)
-    at new AppComponent (C:\Angular project-2\codebook\src\app\app.component.ts:41:34)
+    at new AppComponent (C:\Angular project-2\codebook\src\app\app.component.ts:44:34)
     at NodeInjectorFactory.AppComponent_Factory [as factory] (ng:///AppComponent/ɵfac.js:5:10)
     at getNodeInjectable (C:\Angular project-2\codebook\node_modules\@angular\core\fesm2022\core.mjs:5323:44)
     at instantiateAllDirectives (C:\Angular project-2\codebook\node_modules\@angular\core\fesm2022\core.mjs:12562:27)
@@ -2303,7 +2644,7 @@ Received: undefined
     at drainMicroTaskQueue (C:\Angular project-2\codebook\node_modules\zone.js\bundles\zone.umd.js:638:39)
     at processTicksAndRejections (node:internal/process/task_queues:105:5)]]></failure>
     </testCase>
-    <testCase name="AppComponent Template should pass collapsed state to custom sidenav" duration="18">
+    <testCase name="AppComponent Template should pass collapsed state to custom sidenav" duration="14">
       <failure message="TypeError: window.matchMedia is not a function"><![CDATA[TypeError: window.matchMedia is not a function
     at new matchMedia (C:\Angular project-2\codebook\src\app\services\dark-mode.service.ts:30:12)
     at Object.DarkModeService_Factory [as factory] (ng:///DarkModeService/ɵfac.js:5:10)
@@ -2318,7 +2659,7 @@ Received: undefined
     at ɵɵdirectiveInject (C:\Angular project-2\codebook\node_modules\@angular\core\fesm2022\core.mjs:17289:19)
     at ɵɵinject (C:\Angular project-2\codebook\node_modules\@angular\core\fesm2022\core.mjs:1125:42)
     at inject (C:\Angular project-2\codebook\node_modules\@angular\core\fesm2022\core.mjs:1211:12)
-    at new AppComponent (C:\Angular project-2\codebook\src\app\app.component.ts:41:34)
+    at new AppComponent (C:\Angular project-2\codebook\src\app\app.component.ts:44:34)
     at NodeInjectorFactory.AppComponent_Factory [as factory] (ng:///AppComponent/ɵfac.js:5:10)
     at getNodeInjectable (C:\Angular project-2\codebook\node_modules\@angular\core\fesm2022\core.mjs:5323:44)
     at instantiateAllDirectives (C:\Angular project-2\codebook\node_modules\@angular\core\fesm2022\core.mjs:12562:27)
@@ -2349,7 +2690,7 @@ Received: undefined
     at drainMicroTaskQueue (C:\Angular project-2\codebook\node_modules\zone.js\bundles\zone.umd.js:638:39)
     at processTicksAndRejections (node:internal/process/task_queues:105:5)]]></failure>
     </testCase>
-    <testCase name="AppComponent Integration with ResponsiveService should update sidenav when responsive service emits changes" duration="15">
+    <testCase name="AppComponent Integration with ResponsiveService should update sidenav when responsive service emits changes" duration="16">
       <failure message="TypeError: window.matchMedia is not a function"><![CDATA[TypeError: window.matchMedia is not a function
     at new matchMedia (C:\Angular project-2\codebook\src\app\services\dark-mode.service.ts:30:12)
     at Object.DarkModeService_Factory [as factory] (ng:///DarkModeService/ɵfac.js:5:10)
@@ -2364,7 +2705,7 @@ Received: undefined
     at ɵɵdirectiveInject (C:\Angular project-2\codebook\node_modules\@angular\core\fesm2022\core.mjs:17289:19)
     at ɵɵinject (C:\Angular project-2\codebook\node_modules\@angular\core\fesm2022\core.mjs:1125:42)
     at inject (C:\Angular project-2\codebook\node_modules\@angular\core\fesm2022\core.mjs:1211:12)
-    at new AppComponent (C:\Angular project-2\codebook\src\app\app.component.ts:41:34)
+    at new AppComponent (C:\Angular project-2\codebook\src\app\app.component.ts:44:34)
     at NodeInjectorFactory.AppComponent_Factory [as factory] (ng:///AppComponent/ɵfac.js:5:10)
     at getNodeInjectable (C:\Angular project-2\codebook\node_modules\@angular\core\fesm2022\core.mjs:5323:44)
     at instantiateAllDirectives (C:\Angular project-2\codebook\node_modules\@angular\core\fesm2022\core.mjs:12562:27)
@@ -2410,7 +2751,7 @@ Received: undefined
     at ɵɵdirectiveInject (C:\Angular project-2\codebook\node_modules\@angular\core\fesm2022\core.mjs:17289:19)
     at ɵɵinject (C:\Angular project-2\codebook\node_modules\@angular\core\fesm2022\core.mjs:1125:42)
     at inject (C:\Angular project-2\codebook\node_modules\@angular\core\fesm2022\core.mjs:1211:12)
-    at new AppComponent (C:\Angular project-2\codebook\src\app\app.component.ts:41:34)
+    at new AppComponent (C:\Angular project-2\codebook\src\app\app.component.ts:44:34)
     at NodeInjectorFactory.AppComponent_Factory [as factory] (ng:///AppComponent/ɵfac.js:5:10)
     at getNodeInjectable (C:\Angular project-2\codebook\node_modules\@angular\core\fesm2022\core.mjs:5323:44)
     at instantiateAllDirectives (C:\Angular project-2\codebook\node_modules\@angular\core\fesm2022\core.mjs:12562:27)
@@ -2441,7 +2782,7 @@ Received: undefined
     at drainMicroTaskQueue (C:\Angular project-2\codebook\node_modules\zone.js\bundles\zone.umd.js:638:39)
     at processTicksAndRejections (node:internal/process/task_queues:105:5)]]></failure>
     </testCase>
-    <testCase name="AppComponent App Routing should redirect unknown paths to dashboard" duration="15">
+    <testCase name="AppComponent App Routing should redirect unknown paths to dashboard" duration="20">
       <failure message="TypeError: window.matchMedia is not a function"><![CDATA[TypeError: window.matchMedia is not a function
     at new matchMedia (C:\Angular project-2\codebook\src\app\services\dark-mode.service.ts:30:12)
     at Object.DarkModeService_Factory [as factory] (ng:///DarkModeService/ɵfac.js:5:10)
@@ -2456,7 +2797,7 @@ Received: undefined
     at ɵɵdirectiveInject (C:\Angular project-2\codebook\node_modules\@angular\core\fesm2022\core.mjs:17289:19)
     at ɵɵinject (C:\Angular project-2\codebook\node_modules\@angular\core\fesm2022\core.mjs:1125:42)
     at inject (C:\Angular project-2\codebook\node_modules\@angular\core\fesm2022\core.mjs:1211:12)
-    at new AppComponent (C:\Angular project-2\codebook\src\app\app.component.ts:41:34)
+    at new AppComponent (C:\Angular project-2\codebook\src\app\app.component.ts:44:34)
     at NodeInjectorFactory.AppComponent_Factory [as factory] (ng:///AppComponent/ɵfac.js:5:10)
     at getNodeInjectable (C:\Angular project-2\codebook\node_modules\@angular\core\fesm2022\core.mjs:5323:44)
     at instantiateAllDirectives (C:\Angular project-2\codebook\node_modules\@angular\core\fesm2022\core.mjs:12562:27)
@@ -2487,7 +2828,7 @@ Received: undefined
     at drainMicroTaskQueue (C:\Angular project-2\codebook\node_modules\zone.js\bundles\zone.umd.js:638:39)
     at processTicksAndRejections (node:internal/process/task_queues:105:5)]]></failure>
     </testCase>
-    <testCase name="AppComponent App Routing should route to dashboard component" duration="12">
+    <testCase name="AppComponent App Routing should route to dashboard component" duration="15">
       <failure message="TypeError: window.matchMedia is not a function"><![CDATA[TypeError: window.matchMedia is not a function
     at new matchMedia (C:\Angular project-2\codebook\src\app\services\dark-mode.service.ts:30:12)
     at Object.DarkModeService_Factory [as factory] (ng:///DarkModeService/ɵfac.js:5:10)
@@ -2502,7 +2843,7 @@ Received: undefined
     at ɵɵdirectiveInject (C:\Angular project-2\codebook\node_modules\@angular\core\fesm2022\core.mjs:17289:19)
     at ɵɵinject (C:\Angular project-2\codebook\node_modules\@angular\core\fesm2022\core.mjs:1125:42)
     at inject (C:\Angular project-2\codebook\node_modules\@angular\core\fesm2022\core.mjs:1211:12)
-    at new AppComponent (C:\Angular project-2\codebook\src\app\app.component.ts:41:34)
+    at new AppComponent (C:\Angular project-2\codebook\src\app\app.component.ts:44:34)
     at NodeInjectorFactory.AppComponent_Factory [as factory] (ng:///AppComponent/ɵfac.js:5:10)
     at getNodeInjectable (C:\Angular project-2\codebook\node_modules\@angular\core\fesm2022\core.mjs:5323:44)
     at instantiateAllDirectives (C:\Angular project-2\codebook\node_modules\@angular\core\fesm2022\core.mjs:12562:27)
@@ -2533,7 +2874,7 @@ Received: undefined
     at drainMicroTaskQueue (C:\Angular project-2\codebook\node_modules\zone.js\bundles\zone.umd.js:638:39)
     at processTicksAndRejections (node:internal/process/task_queues:105:5)]]></failure>
     </testCase>
-    <testCase name="AppComponent App Routing should route to users component" duration="36">
+    <testCase name="AppComponent App Routing should route to users component" duration="10">
       <failure message="TypeError: window.matchMedia is not a function"><![CDATA[TypeError: window.matchMedia is not a function
     at new matchMedia (C:\Angular project-2\codebook\src\app\services\dark-mode.service.ts:30:12)
     at Object.DarkModeService_Factory [as factory] (ng:///DarkModeService/ɵfac.js:5:10)
@@ -2548,7 +2889,7 @@ Received: undefined
     at ɵɵdirectiveInject (C:\Angular project-2\codebook\node_modules\@angular\core\fesm2022\core.mjs:17289:19)
     at ɵɵinject (C:\Angular project-2\codebook\node_modules\@angular\core\fesm2022\core.mjs:1125:42)
     at inject (C:\Angular project-2\codebook\node_modules\@angular\core\fesm2022\core.mjs:1211:12)
-    at new AppComponent (C:\Angular project-2\codebook\src\app\app.component.ts:41:34)
+    at new AppComponent (C:\Angular project-2\codebook\src\app\app.component.ts:44:34)
     at NodeInjectorFactory.AppComponent_Factory [as factory] (ng:///AppComponent/ɵfac.js:5:10)
     at getNodeInjectable (C:\Angular project-2\codebook\node_modules\@angular\core\fesm2022\core.mjs:5323:44)
     at instantiateAllDirectives (C:\Angular project-2\codebook\node_modules\@angular\core\fesm2022\core.mjs:12562:27)
@@ -2579,7 +2920,7 @@ Received: undefined
     at drainMicroTaskQueue (C:\Angular project-2\codebook\node_modules\zone.js\bundles\zone.umd.js:638:39)
     at processTicksAndRejections (node:internal/process/task_queues:105:5)]]></failure>
     </testCase>
-    <testCase name="AppConfig should provide zone change detection with event coalescing" duration="12">
+    <testCase name="AppConfig should provide zone change detection with event coalescing" duration="3">
       <failure message="Error: expect(received).toBeDefined()"><![CDATA[Error: expect(received).toBeDefined()
 
 Received: undefined
@@ -2623,10 +2964,10 @@ Received: undefined
     </testCase>
   </file>
   <file path="C:\Angular project-2\codebook\src\app\pages\users\users.component.spec.ts">
-    <testCase name="UsersComponent Initialization should create the component" duration="748"/>
-    <testCase name="UsersComponent Initialization should initialize properties" duration="79"/>
-    <testCase name="UsersComponent Initialization should call loadUsers and set filterPredicate on ngOnInit" duration="101"/>
-    <testCase name="UsersComponent Initialization should set dataSource.data, paginator, and call detectChanges when users change" duration="375">
+    <testCase name="UsersComponent Initialization should create the component" duration="1513"/>
+    <testCase name="UsersComponent Initialization should initialize properties" duration="149"/>
+    <testCase name="UsersComponent Initialization should call loadUsers and set filterPredicate on ngOnInit" duration="126"/>
+    <testCase name="UsersComponent Initialization should set dataSource.data, paginator, and call detectChanges when users change" duration="629">
       <failure message="TypeError: Cannot read private member #channel from an object whose class did not declare it"><![CDATA[TypeError: Cannot read private member #channel from an object whose class did not declare it
     at C:\Angular project-2\codebook\src\app\pages\users\users.component.spec.ts:140:46
     at _ZoneDelegate.invoke (C:\Angular project-2\codebook\node_modules\zone.js\bundles\zone.umd.js:416:32)
@@ -2646,7 +2987,7 @@ Received: undefined
     at run (C:\Angular project-2\codebook\node_modules\jest-circus\build\run.js:71:3)
     at runAndTransformResultsToJestFormat (C:\Angular project-2\codebook\node_modules\jest-circus\build\legacy-code-todo-rewrite\jestAdapterInit.js:122:21)]]></failure>
     </testCase>
-    <testCase name="UsersComponent Initialization should show error toast and log error when store has error" duration="210">
+    <testCase name="UsersComponent Initialization should show error toast and log error when store has error" duration="205">
       <failure message="Error: expect(jest.fn()).toHaveBeenCalled()"><![CDATA[Error: expect(jest.fn()).toHaveBeenCalled()
 
 Expected number of calls: >= 1
@@ -2669,7 +3010,7 @@ Received number of calls:    0
     at run (C:\Angular project-2\codebook\node_modules\jest-circus\build\run.js:71:3)
     at runAndTransformResultsToJestFormat (C:\Angular project-2\codebook\node_modules\jest-circus\build\legacy-code-todo-rewrite\jestAdapterInit.js:122:21)]]></failure>
     </testCase>
-    <testCase name="UsersComponent Initialization should log warning if paginator is not initialized" duration="166">
+    <testCase name="UsersComponent Initialization should log warning if paginator is not initialized" duration="210">
       <failure message="Error: expect(jest.fn()).toHaveBeenCalled()"><![CDATA[Error: expect(jest.fn()).toHaveBeenCalled()
 
 Expected number of calls: >= 1
@@ -2692,7 +3033,7 @@ Received number of calls:    0
     at run (C:\Angular project-2\codebook\node_modules\jest-circus\build\run.js:71:3)
     at runAndTransformResultsToJestFormat (C:\Angular project-2\codebook\node_modules\jest-circus\build\legacy-code-todo-rewrite\jestAdapterInit.js:122:21)]]></failure>
     </testCase>
-    <testCase name="UsersComponent User Actions should open dialog for adding user" duration="299">
+    <testCase name="UsersComponent User Actions should open dialog for adding user" duration="113">
       <failure message="TypeError: Cannot read properties of undefined (reading &apos;push&apos;)"><![CDATA[TypeError: Cannot read properties of undefined (reading 'push')
     at _MatDialog.open (C:\Angular project-2\codebook\node_modules\@angular\material\fesm2022\module-c1a8b4bb.mjs:638:26)
     at UsersComponent.open [as openPopup] (C:\Angular project-2\codebook\src\app\pages\users\users.component.ts:92:17)
@@ -2715,7 +3056,7 @@ Received number of calls:    0
     at run (C:\Angular project-2\codebook\node_modules\jest-circus\build\run.js:71:3)
     at runAndTransformResultsToJestFormat (C:\Angular project-2\codebook\node_modules\jest-circus\build\legacy-code-todo-rewrite\jestAdapterInit.js:122:21)]]></failure>
     </testCase>
-    <testCase name="UsersComponent User Actions should open dialog for editing user" duration="214">
+    <testCase name="UsersComponent User Actions should open dialog for editing user" duration="99">
       <failure message="TypeError: Cannot read properties of undefined (reading &apos;push&apos;)"><![CDATA[TypeError: Cannot read properties of undefined (reading 'push')
     at _MatDialog.open (C:\Angular project-2\codebook\node_modules\@angular\material\fesm2022\module-c1a8b4bb.mjs:638:26)
     at UsersComponent.open [as openPopup] (C:\Angular project-2\codebook\src\app\pages\users\users.component.ts:92:17)
@@ -2738,8 +3079,8 @@ Received number of calls:    0
     at run (C:\Angular project-2\codebook\node_modules\jest-circus\build\run.js:71:3)
     at runAndTransformResultsToJestFormat (C:\Angular project-2\codebook\node_modules\jest-circus\build\legacy-code-todo-rewrite\jestAdapterInit.js:122:21)]]></failure>
     </testCase>
-    <testCase name="UsersComponent User Actions should call deleteUser on store when deleting user" duration="71"/>
-    <testCase name="UsersComponent User Actions should open popup with correct configuration" duration="113">
+    <testCase name="UsersComponent User Actions should call deleteUser on store when deleting user" duration="58"/>
+    <testCase name="UsersComponent User Actions should open popup with correct configuration" duration="89">
       <failure message="TypeError: Cannot read properties of undefined (reading &apos;push&apos;)"><![CDATA[TypeError: Cannot read properties of undefined (reading 'push')
     at _MatDialog.open (C:\Angular project-2\codebook\node_modules\@angular\material\fesm2022\module-c1a8b4bb.mjs:638:26)
     at UsersComponent.open [as openPopup] (C:\Angular project-2\codebook\src\app\pages\users\users.component.ts:92:17)
@@ -2761,7 +3102,7 @@ Received number of calls:    0
     at run (C:\Angular project-2\codebook\node_modules\jest-circus\build\run.js:71:3)
     at runAndTransformResultsToJestFormat (C:\Angular project-2\codebook\node_modules\jest-circus\build\legacy-code-todo-rewrite\jestAdapterInit.js:122:21)]]></failure>
     </testCase>
-    <testCase name="UsersComponent Filtering should apply filter when search term changes with paginator" duration="239">
+    <testCase name="UsersComponent Filtering should apply filter when search term changes with paginator" duration="143">
       <failure message="TypeError: Cannot read properties of undefined (reading &apos;firstPage&apos;)"><![CDATA[TypeError: Cannot read properties of undefined (reading 'firstPage')
     at C:\Angular project-2\codebook\src\app\pages\users\users.component.spec.ts:212:46
     at _ZoneDelegate.invoke (C:\Angular project-2\codebook\node_modules\zone.js\bundles\zone.umd.js:416:32)
@@ -2781,7 +3122,7 @@ Received number of calls:    0
     at run (C:\Angular project-2\codebook\node_modules\jest-circus\build\run.js:71:3)
     at runAndTransformResultsToJestFormat (C:\Angular project-2\codebook\node_modules\jest-circus\build\legacy-code-todo-rewrite\jestAdapterInit.js:122:21)]]></failure>
     </testCase>
-    <testCase name="UsersComponent Filtering should apply filter when search term changes without paginator" duration="139">
+    <testCase name="UsersComponent Filtering should apply filter when search term changes without paginator" duration="251">
       <failure message="Error: expect(jest.fn()).toHaveBeenCalled()"><![CDATA[Error: expect(jest.fn()).toHaveBeenCalled()
 
 Expected number of calls: >= 1
@@ -2804,18 +3145,18 @@ Received number of calls:    0
     at run (C:\Angular project-2\codebook\node_modules\jest-circus\build\run.js:71:3)
     at runAndTransformResultsToJestFormat (C:\Angular project-2\codebook\node_modules\jest-circus\build\legacy-code-todo-rewrite\jestAdapterInit.js:122:21)]]></failure>
     </testCase>
-    <testCase name="UsersComponent Filtering should filter dataSource based on search term" duration="44"/>
-    <testCase name="UsersComponent Pagination should initialize paginator with correct pageSizeOptions and pageSize" duration="30"/>
-    <testCase name="UsersComponent Pagination should slice data correctly based on paginator" duration="93"/>
-    <testCase name="UsersComponent Template Interactions should display users in table view on desktop" duration="232"/>
-    <testCase name="UsersComponent Template Interactions should display users in card view on mobile" duration="183"/>
-    <testCase name="UsersComponent Template Interactions should trigger addUser when clicking Add New button" duration="145"/>
-    <testCase name="UsersComponent Template Interactions should trigger editUser when clicking Edit button" duration="155"/>
-    <testCase name="UsersComponent Template Interactions should trigger deleteUser when clicking Delete button" duration="130"/>
-    <testCase name="UsersComponent Template Interactions should apply filter when typing in search input" duration="113"/>
-    <testCase name="UsersComponent Dark Mode should apply dark-theme class when darkModeService.isDarkMode is true" duration="126"/>
-    <testCase name="UsersComponent Dark Mode should not apply dark-theme class when darkModeService.isDarkMode is false" duration="96"/>
-    <testCase name="UsersComponent Lifecycle Hooks should log on ngOnInit" duration="28"/>
-    <testCase name="UsersComponent Lifecycle Hooks should log on ngOnDestroy" duration="36"/>
+    <testCase name="UsersComponent Filtering should filter dataSource based on search term" duration="54"/>
+    <testCase name="UsersComponent Pagination should initialize paginator with correct pageSizeOptions and pageSize" duration="42"/>
+    <testCase name="UsersComponent Pagination should slice data correctly based on paginator" duration="162"/>
+    <testCase name="UsersComponent Template Interactions should display users in table view on desktop" duration="164"/>
+    <testCase name="UsersComponent Template Interactions should display users in card view on mobile" duration="164"/>
+    <testCase name="UsersComponent Template Interactions should trigger addUser when clicking Add New button" duration="163"/>
+    <testCase name="UsersComponent Template Interactions should trigger editUser when clicking Edit button" duration="179"/>
+    <testCase name="UsersComponent Template Interactions should trigger deleteUser when clicking Delete button" duration="158"/>
+    <testCase name="UsersComponent Template Interactions should apply filter when typing in search input" duration="153"/>
+    <testCase name="UsersComponent Dark Mode should apply dark-theme class when darkModeService.isDarkMode is true" duration="143"/>
+    <testCase name="UsersComponent Dark Mode should not apply dark-theme class when darkModeService.isDarkMode is false" duration="122"/>
+    <testCase name="UsersComponent Lifecycle Hooks should log on ngOnInit" duration="47"/>
+    <testCase name="UsersComponent Lifecycle Hooks should log on ngOnDestroy" duration="34"/>
   </file>
 </testExecutions>

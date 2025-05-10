@@ -1,323 +1,206 @@
 <div class="container mx-auto px-4 py-8 max-w-4xl" [class.dark-theme]="darkModeService.isDarkMode()">
-  <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 gap-4">
+  <header class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 gap-4">
     <h1>Business Registration</h1>
-    <div class="flex items-center gap-4 w-full sm:w-auto">
-      <button (click)="resetForm()" class="flex items-center gap-2 px-4 py-2 bg-blue-600 rounded-lg transition-colors w-full sm:w-auto justify-center">
-        <mat-icon >add</mat-icon>
-        <a>Create New Business</a>
-      </button>
-    </div>
-  </div>
+    <button (click)="resetForm()" class="flex items-center gap-2 px-4 py-2 bg-blue-600 rounded-lg w-full sm:w-auto justify-center" aria-label="Create New Business">
+      <mat-icon aria-hidden="true">add</mat-icon>
+      <span>Create New Business</span>
+    </button>
+  </header>
 
-  <mat-stepper linear #stepper [orientation]="responsiveService.isMobile() ? 'vertical' : 'horizontal'" class="bg-white rounded-xl shadow-md overflow-hidden">
-    <!-- Step 1: Basic Information -->
-    <mat-step label="Basic Information" state="home" [completed]="isStep1Valid()">
+  <mat-stepper linear #stepper [orientation]="responsiveService.isMobile()?'vertical':'horizontal'" class="bg-white rounded-xl shadow-md overflow-hidden" role="tablist">
+    <mat-step label="Basic Information" state="home" [completed]="isStep1Valid()" role="tabpanel" aria-labelledby="step1-label">
       <ng-template matStepContent>
-        <form #step1Form="ngForm">
-          <div *ngIf="!isEditing().step1; else editStep1" class="p-4 sm:p-6">
+        <form #step1Form="ngForm" class="p-4 sm:p-6">
+          <div *ngIf="!isEditing().step1; else editStep1">
             <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
-              <h3>Basic Information</h3>
-              <button *ngIf="isPublished()" (click)="toggleEdit('step1')" class="flex items-center gap-1 transition-colors" style="color: var(--mat-sys-primary);">
-                <mat-icon>edit</mat-icon>
+              <h2>Basic Information</h2>
+              <button *ngIf="isPublished()" (click)="toggleEdit('step1')" class="flex items-center gap-1" style="color: var(--mat-sys-primary)" aria-label="Edit Basic Information">
+                <mat-icon aria-hidden="true">edit</mat-icon>
                 <span class="text-sm">Edit</span>
               </button>
             </div>
-            
             <div *ngIf="!isPublished()" class="space-y-4">
               <div class="space-y-2">
-                <label>Business Name</label>
-                <input [(ngModel)]="business().name" name="name" placeholder="Enter business name" required 
-                       class="w-full px-3 py-2 border rounded-md shadow-sm"
-                       #name="ngModel">
+                <label for="name">Business Name</label>
+                <input id="name" [(ngModel)]="business().name" name="name" placeholder="Enter business name" required class="w-full px-3 py-2 border rounded-md shadow-sm" #name="ngModel">
                 <div *ngIf="name.invalid && name.touched" class="text-red-500 text-sm">Business Name is required</div>
               </div>
-              
               <div class="space-y-2">
-                <label>Country</label>
-                <input [(ngModel)]="business().country" name="country" placeholder="Enter country" required 
-                       class="w-full px-3 py-2 border rounded-md shadow-sm"
-                       #country="ngModel">
+                <label for="country">Country</label>
+                <input id="country" [(ngModel)]="business().country" name="country" placeholder="Enter country" required class="w-full px-3 py-2 border rounded-md shadow-sm" #country="ngModel">
                 <div *ngIf="country.invalid && country.touched" class="text-red-500 text-sm">Country is required</div>
               </div>
             </div>
-            
             <div *ngIf="isPublished()" class="space-y-3 bg-gray-50 p-4 rounded-lg">
-              <div class="flex flex-col sm:flex-row items-start gap-2 sm:gap-0">
-                <span class="font-medium sm:w-24">Name:</span>
-                <span>{{ business().name }}</span>
-              </div>
-              <div class="flex flex-col sm:flex-row items-start gap-2 sm:gap-0">
-                <span class="font-medium sm:w-24">Country:</span>
-                <span>{{ business().country }}</span>
-              </div>
+              <div class="flex flex-col sm:flex-row gap-2"><span class="font-medium sm:w-24">Name:</span><span>{{business().name}}</span></div>
+              <div class="flex flex-col sm:flex-row gap-2"><span class="font-medium sm:w-24">Country:</span><span>{{business().country}}</span></div>
             </div>
-            
             <div class="flex justify-end mt-8">
-              <button mat-button matStepperNext *ngIf="!isPublished()" 
-                      [disabled]="step1Form.invalid"
-                      class="bg-blue-600 text-white px-4 py-2 rounded-lg w-full sm:w-auto">
-                <a>Next</a>
-              </button>
+              <button *ngIf="!isPublished()" mat-button matStepperNext [disabled]="step1Form.invalid" class="bg-blue-600 text-white px-4 py-2 rounded-lg w-full sm:w-auto" aria-label="Next Step">Next</button>
             </div>
           </div>
-
-          <!-- Edit Mode -->
           <ng-template #editStep1>
-            <div class="p-4 sm:p-6">
-              <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
-                <h3>Edit Basic Information</h3>
-                <div class="flex items-center gap-2 text-sm" style="color: var(--mat-sys-on-surface);">
-                  <mat-icon style="color: var(--mat-sys-primary);">info</mat-icon>
-                  <span>Editing existing business data</span>
-                </div>
+            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
+              <h2>Edit Basic Information</h2>
+              <div class="flex items-center gap-2 text-sm" style="color: var(--mat-sys-on-surface)">
+                <mat-icon style="color: var(--mat-sys-primary)" aria-hidden="true">info</mat-icon>
+                <span>Editing existing business data</span>
               </div>
-              
-              <div class="space-y-4">
-                <div class="space-y-2">
-                  <label>Business Name</label>
-                  <input [(ngModel)]="business().name" name="editName" placeholder="Enter business name" required 
-                         class="w-full px-3 py-2 border rounded-md shadow-sm"
-                         #editName="ngModel">
-                  <div *ngIf="editName.invalid && editName.touched" class="text-red-500 text-sm">Business Name is required</div>
-                  <p class="text-sm" style="color: var(--mat-sys-primary);">Current: {{ business().name }}</p>
-                </div>
-
-                <div class="space-y-2">
-                  <label>Country</label>
-                  <input [(ngModel)]="business().country" name="editCountry" placeholder="Enter country" required 
-                         class="w-full px-3 py-2 border rounded-md shadow-sm"
-                         #editCountry="ngModel">
-                  <div *ngIf="editCountry.invalid && editCountry.touched" class="text-red-500 text-sm">Country is required</div>
-                  <p class="text-sm" style="color: var(--mat-sys-primary);">Current: {{ business().country }}</p>
-                </div>
+            </div>
+            <div class="space-y-4">
+              <div class="space-y-2">
+                <label for="editName">Business Name</label>
+                <input id="editName" [(ngModel)]="business().name" name="editName" placeholder="Enter business name" required class="w-full px-3 py-2 border rounded-md shadow-sm" #editName="ngModel">
+                <div *ngIf="editName.invalid && editName.touched" class="text-red-500 text-sm">Business Name is required</div>
+                <p class="text-sm" style="color: var(--mat-sys-primary)">Current: {{business().name}}</p>
               </div>
-
-              <div class="flex flex-col sm:flex-row justify-end gap-3 mt-8">
-                <button mat-button (click)="toggleEdit('step1')"
-                        class="border px-4 py-2 rounded-lg flex items-center gap-1 justify-center w-full sm:w-auto">
-                  <mat-icon>close</mat-icon>
-                  <span>Cancel</span>
-                </button>
-                <button mat-button (click)="updateBusiness(); toggleEdit('step1')" 
-                        [disabled]="step1Form.invalid"
-                        class="bg-blue-600 text-white px-4 py-2 rounded-lg flex items-center gap-1 justify-center w-full sm:w-auto">
-                  <mat-icon>check</mat-icon>
-                  <span>Save Changes</span>
-                </button>
+              <div class="space-y-2">
+                <label for="editCountry">Country</label>
+                <input id="editCountry" [(ngModel)]="business().country" name="editCountry" placeholder="Enter country" required class="w-full px-3 py-2 border rounded-md shadow-sm" #editCountry="ngModel">
+                <div *ngIf="editCountry.invalid && editCountry.touched" class="text-red-500 text-sm">Country is required</div>
+                <p class="text-sm" style="color: var(--mat-sys-primary)">Current: {{business().country}}</p>
               </div>
+            </div>
+            <div class="flex flex-col sm:flex-row justify-end gap-3 mt-8">
+              <button mat-button (click)="toggleEdit('step1')" class="border px-4 py-2 rounded-lg flex items-center gap-1 justify-center w-full sm:w-auto" aria-label="Cancel Edit">Cancel</button>
+              <button mat-button (click)="updateBusiness();toggleEdit('step1')" [disabled]="step1Form.invalid" class="bg-blue-600 text-white px-4 py-2 rounded-lg flex items-center gap-1 justify-center w-full sm:w-auto" aria-label="Save Changes">Save</button>
             </div>
           </ng-template>
         </form>
       </ng-template>
     </mat-step>
 
-    <!-- Step 2: Business Category -->
-    <mat-step label="Category" state="business" [completed]="isStep2Valid()">
+    <mat-step label="Category" state="business" [completed]="isStep2Valid()" role="tabpanel" aria-labelledby="step2-label">
       <ng-template matStepContent>
-        <form #step2Form="ngForm">
-          <div *ngIf="!isEditing().step2; else editStep2" class="p-4 sm:p-6">
+        <form #step2Form="ngForm" class="p-4 sm:p-6">
+          <div *ngIf="!isEditing().step2; else editStep2">
             <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
-              <h3>Business Category</h3>
-              <button *ngIf="isPublished()" (click)="toggleEdit('step2')" class="flex items-center gap-1 transition-colors" style="color: var(--mat-sys-primary);">
-                <mat-icon>edit</mat-icon>
+              <h2>Business Category</h2>
+              <button *ngIf="isPublished()" (click)="toggleEdit('step2')" class="flex items-center gap-1" style="color: var(--mat-sys-primary)" aria-label="Edit Category">
+                <mat-icon aria-hidden="true">edit</mat-icon>
                 <span class="text-sm">Edit</span>
               </button>
             </div>
-            
             <div *ngIf="!isPublished()" class="space-y-4">
               <div class="space-y-2">
-                <label>Category</label>
-                <select [(ngModel)]="business().category" name="category" required
-                        class="w-full px-3 py-2 border rounded-md shadow-sm"
-                        #category="ngModel">
+                <label for="category">Category</label>
+                <select id="category" [(ngModel)]="business().category" name="category" required class="w-full px-3 py-2 border rounded-md shadow-sm" #category="ngModel">
                   <option value="" disabled selected>Select a category</option>
-                  <option *ngFor="let category of categories" [value]="category">{{ category }}</option>
+                  <option *ngFor="let category of categories" [value]="category">{{category}}</option>
                 </select>
                 <div *ngIf="category.invalid && category.touched" class="text-red-500 text-sm">Category is required</div>
               </div>
-
               <div class="space-y-2">
-                <label>Subcategory</label>
-                <select [(ngModel)]="business().subCategory" name="subCategory" required
-                        class="w-full px-3 py-2 border rounded-md shadow-sm"
-                        #subCategory="ngModel">
+                <label for="subCategory">Subcategory</label>
+                <select id="subCategory" [(ngModel)]="business().subCategory" name="subCategory" required class="w-full px-3 py-2 border rounded-md shadow-sm" #subCategory="ngModel">
                   <option value="" disabled selected>Select a subcategory</option>
-                  <option *ngFor="let subCategory of subCategories" [value]="subCategory">{{ subCategory }}</option>
+                  <option *ngFor="let subCategory of subCategories" [value]="subCategory">{{subCategory}}</option>
                 </select>
                 <div *ngIf="subCategory.invalid && subCategory.touched" class="text-red-500 text-sm">Subcategory is required</div>
               </div>
             </div>
-            
             <div *ngIf="isPublished()" class="space-y-3 bg-gray-50 p-4 rounded-lg">
-              <div class="flex flex-col sm:flex-row items-start gap-2 sm:gap-0">
-                <span class="font-medium sm:w-24">Category:</span>
-                <span>{{ business().category }}</span>
-              </div>
-              <div class="flex flex-col sm:flex-row items-start gap-2 sm:gap-0">
-                <span class="font-medium sm:w-24">Subcategory:</span>
-                <span>{{ business().subCategory }}</span>
-              </div>
+              <div class="flex flex-col sm:flex-row gap-2"><span class="font-medium sm:w-24">Category:</span><span>{{business().category}}</span></div>
+              <div class="flex flex-col sm:flex-row gap-2"><span class="font-medium sm:w-24">Subcategory:</span><span>{{business().subCategory}}</span></div>
             </div>
-            
             <div class="flex flex-col sm:flex-row justify-between gap-4 mt-8">
-              <button mat-button matStepperPrevious
-              class="bg-blue-600 text-white px-4 py-2 rounded-lg w-full sm:w-auto">
-                <a>Back</a>
-              </button>
-              <button mat-button matStepperNext *ngIf="!isPublished()" 
-                      [disabled]="step2Form.invalid"
-                      class="bg-blue-600 text-white px-4 py-2 rounded-lg w-full sm:w-auto">
-                      <a>Next</a>
-                    </button>
+              <button mat-button matStepperPrevious class="bg-blue-600 text-white px-4 py-2 rounded-lg w-full sm:w-auto" aria-label="Previous Step">Back</button>
+              <button *ngIf="!isPublished()" mat-button matStepperNext [disabled]="step2Form.invalid" class="bg-blue-600 text-white px-4 py-2 rounded-lg w-full sm:w-auto" aria-label="Next Step">Next</button>
             </div>
           </div>
-
-          <!-- Edit Mode -->
           <ng-template #editStep2>
-            <div class="p-4 sm:p-6">
-              <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
-                <h3>Edit Business Category</h3>
-                <div class="flex items-center gap-2 text-sm" style="color: var(--mat-sys-on-surface);">
-                  <mat-icon style="color: var(--mat-sys-primary);">info</mat-icon>
-                  <span>Editing existing business data</span>
-                </div>
+            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
+              <h2>Edit Business Category</h2>
+              <div class="flex items-center gap-2 text-sm" style="color: var(--mat-sys-on-surface)">
+                <mat-icon style="color: var(--mat-sys-primary)" aria-hidden="true">info</mat-icon>
+                <span>Editing existing business data</span>
               </div>
-              
-              <div class="space-y-4">
-                <div class="space-y-2">
-                  <label>Category</label>
-                  <select [(ngModel)]="business().category" name="editCategory" required
-                          class="w-full px-3 py-2 border rounded-md shadow-sm"
-                          #editCategory="ngModel">
-                    <option value="" disabled>Select a category</option>
-                    <option *ngFor="let category of categories" [value]="category">{{ category }}</option>
-                  </select>
-                  <div *ngIf="editCategory.invalid && editCategory.touched" class="text-red-500 text-sm">Category is required</div>
-                  <p class="text-sm" style="color: var(--mat-sys-primary);">Current: {{ business().category }}</p>
-                </div>
-
-                <div class="space-y-2">
-                  <label>Subcategory</label>
-                  <select [(ngModel)]="business().subCategory" name="editSubCategory" required
-                          class="w-full px-3 py-2 border rounded-md shadow-sm"
-                          #editSubCategory="ngModel">
-                    <option value="" disabled>Select a subcategory</option>
-                    <option *ngFor="let subCategory of subCategories" [value]="subCategory">{{ subCategory }}</option>
-                  </select>
-                  <div *ngIf="editSubCategory.invalid && editSubCategory.touched" class="text-red-500 text-sm">Subcategory is required</div>
-                  <p class="text-sm" style="color: var(--mat-sys-primary);">Current: {{ business().subCategory }}</p>
-                </div>
+            </div>
+            <div class="space-y-4">
+              <div class="space-y-2">
+                <label for="editCategory">Category</label>
+                <select id="editCategory" [(ngModel)]="business().category" name="editCategory" required class="w-full px-3 py-2 border rounded-md shadow-sm" #editCategory="ngModel">
+                  <option value="" disabled>Select a category</option>
+                  <option *ngFor="let category of categories" [value]="category">{{category}}</option>
+                </select>
+                <div *ngIf="editCategory.invalid && editCategory.touched" class="text-red-500 text-sm">Category is required</div>
+                <p class="text-sm" style="color: var(--mat-sys-primary)">Current: {{business().category}}</p>
               </div>
-
-              <div class="flex flex-col sm:flex-row justify-end gap-3 mt-8">
-                <button mat-button (click)="toggleEdit('step2')"
-                        class="border px-4 py-2 rounded-lg flex items-center gap-1 justify-center w-full sm:w-auto">
-                  <mat-icon>close</mat-icon>
-                  <span>Cancel</span>
-                </button>
-                <button mat-button (click)="updateBusiness(); toggleEdit('step2')"
-                        [disabled]="step2Form.invalid"
-                        class="bg-blue-600 text-white px-4 py-2 rounded-lg flex items-center gap-1 justify-center w-full sm:w-auto">
-                  <mat-icon>check</mat-icon>
-                  <span>Save Changes</span>
-                </button>
+              <div class="space-y-2">
+                <label for="editSubCategory">Subcategory</label>
+                <select id="editSubCategory" [(ngModel)]="business().subCategory" name="editSubCategory" required class="w-full px-3 py-2 border rounded-md shadow-sm" #editSubCategory="ngModel">
+                  <option value="" disabled>Select a subcategory</option>
+                  <option *ngFor="let subCategory of subCategories" [value]="subCategory">{{subCategory}}</option>
+                </select>
+                <div *ngIf="editSubCategory.invalid && editSubCategory.touched" class="text-red-500 text-sm">Subcategory is required</div>
+                <p class="text-sm" style="color: var(--mat-sys-primary)">Current: {{business().subCategory}}</p>
               </div>
+            </div>
+            <div class="flex flex-col sm:flex-row justify-end gap-3 mt-8">
+              <button mat-button (click)="toggleEdit('step2')" class="border px-4 py-2 rounded-lg flex items-center gap-1 justify-center w-full sm:w-auto" aria-label="Cancel Edit">Cancel</button>
+              <button mat-button (click)="updateBusiness();toggleEdit('step2')" [disabled]="step2Form.invalid" class="bg-blue-600 text-white px-4 py-2 rounded-lg flex items-center gap-1 justify-center w-full sm:w-auto" aria-label="Save Changes">Save</button>
             </div>
           </ng-template>
         </form>
       </ng-template>
     </mat-step>
 
-    <!-- Step 3: Contact Information -->
-    <mat-step label="Contact" state="dial" [completed]="isStep3Valid()">
+    <mat-step label="Contact" state="dial" [completed]="isStep3Valid()" role="tabpanel" aria-labelledby="step3-label">
       <ng-template matStepContent>
-        <form #step3Form="ngForm">
-          <div *ngIf="!isEditing().step3; else editStep3" class="p-4 sm:p-6">
+        <form #step3Form="ngForm" class="p-4 sm:p-6">
+          <div *ngIf="!isEditing().step3; else editStep3">
             <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
-              <h3>Contact Information</h3>
-              <button *ngIf="isPublished()" (click)="toggleEdit('step3')" class="flex items-center gap-1 transition-colors" style="color: var(--mat-sys-primary);">
-                <mat-icon>edit</mat-icon>
+              <h2>Contact Information</h2>
+              <button *ngIf="isPublished()" (click)="toggleEdit('step3')" class="flex items-center gap-1" style="color: var(--mat-sys-primary)" aria-label="Edit Contact Information">
+                <mat-icon aria-hidden="true">edit</mat-icon>
                 <span class="text-sm">Edit</span>
               </button>
             </div>
-            
-            <div *ngIf="!isPublished()">
-              <div class="space-y-2">
-                <label>Phone</label>
-                <input [(ngModel)]="business().phone" name="phone" placeholder="Enter phone number" required 
-                       class="w-full px-3 py-2 border rounded-md shadow-sm"
-                       #phone="ngModel">
-                <div *ngIf="phone.invalid && phone.touched" class="text-red-500 text-sm">Phone is required</div>
-              </div>
+            <div *ngIf="!isPublished()" class="space-y-2">
+              <label for="phone">Phone</label>
+              <input id="phone" [(ngModel)]="business().phone" name="phone" placeholder="Enter phone number" required class="w-full px-3 py-2 border rounded-md shadow-sm" #phone="ngModel">
+              <div *ngIf="phone.invalid && phone.touched" class="text-red-500 text-sm">Phone is required</div>
             </div>
-            
             <div *ngIf="isPublished()" class="space-y-3 bg-gray-50 p-4 rounded-lg">
-              <div class="flex flex-col sm:flex-row items-start gap-2 sm:gap-0">
-                <span class="font-medium sm:w-24">Phone:</span>
-                <span>{{ business().phone }}</span>
-              </div>
+              <div class="flex flex-col sm:flex-row gap-2"><span class="font-medium sm:w-24">Phone:</span><span>{{business().phone}}</span></div>
             </div>
-            
             <div class="flex flex-col sm:flex-row justify-between gap-4 mt-8">
-              <button mat-button matStepperPrevious
-                      class="border px-4 py-2 rounded-lg w-full sm:w-auto">
-                <a>Back</a>
-              </button>
-              <button *ngIf="!isPublished()" (click)="publish()" [disabled]="step3Form.invalid"
-                      class="bg-blue-600 text-white px-4 py-2 rounded-lg w-full sm:w-auto">
-                <a>Publish</a>
-              </button>
+              <button mat-button matStepperPrevious class="border px-4 py-2 rounded-lg w-full sm:w-auto" aria-label="Previous Step">Back</button>
+              <button *ngIf="!isPublished()" (click)="publish()" [disabled]="step3Form.invalid" class="bg-blue-600 text-white px-4 py-2 rounded-lg w-full sm:w-auto" aria-label="Publish Business">Publish</button>
             </div>
           </div>
-
-          <!-- Edit Mode -->
           <ng-template #editStep3>
-            <div class="p-4 sm:p-6">
-              <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
-                <h3>Edit Contact Information</h3>
-                <div class="flex items-center gap-2 text-sm" style="color: var(--mat-sys-on-surface);">
-                  <mat-icon style="color: var(--mat-sys-primary);">info</mat-icon>
-                  <span>Editing existing business data</span>
-                </div>
+            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
+              <h2>Edit Contact Information</h2>
+              <div class="flex items-center gap-2 text-sm" style="color: var(--mat-sys-on-surface)">
+                <mat-icon style="color: var(--mat-sys-primary)" aria-hidden="true">info</mat-icon>
+                <span>Editing existing business data</span>
               </div>
-              
-              <div class="space-y-4">
-                <div class="space-y-2">
-                  <label>Phone</label>
-                  <input [(ngModel)]="business().phone" name="editPhone" placeholder="Enter phone number" required 
-                         class="w-full px-3 py-2 border rounded-md shadow-sm"
-                         #editPhone="ngModel">
-                  <div *ngIf="editPhone.invalid && editPhone.touched" class="text-red-500 text-sm">Phone is required</div>
-                  <p class="text-sm" style="color: var(--mat-sys-primary);">Current: {{ business().phone }}</p>
-                </div>
+            </div>
+            <div class="space-y-4">
+              <div class="space-y-2">
+                <label for="editPhone">Phone</label>
+                <input id="editPhone" [(ngModel)]="business().phone" name="editPhone" placeholder="Enter phone number" required class="w-full px-3 py-2 border rounded-md shadow-sm" #editPhone="ngModel">
+                <div *ngIf="editPhone.invalid && editPhone.touched" class="text-red-500 text-sm">Phone is required</div>
+                <p class="text-sm" style="color: var(--mat-sys-primary)">Current: {{business().phone}}</p>
               </div>
-
-              <div class="flex flex-col sm:flex-row justify-end gap-3 mt-8">
-                <button mat-button (click)="toggleEdit('step3')"
-                        class="border px-4 py-2 rounded-lg flex items-center gap-1 justify-center w-full sm:w-auto">
-                  <mat-icon>close</mat-icon>
-                  <span>Cancel</span>
-                </button>
-                <button mat-button (click)="updateBusiness(); toggleEdit('step3')"
-                        [disabled]="step3Form.invalid"
-                        class="bg-blue-600 text-white px-4 py-2 rounded-lg flex items-center gap-1 justify-center w-full sm:w-auto">
-                  <mat-icon>check</mat-icon>
-                  <span>Save Changes</span>
-                </button>
-              </div>
+            </div>
+            <div class="flex flex-col sm:flex-row justify-end gap-3 mt-8">
+              <button mat-button (click)="toggleEdit('step3')" class="border px-4 py-2 rounded-lg flex items-center gap-1 justify-center w-full sm:w-auto" aria-label="Cancel Edit">Cancel</button>
+              <button mat-button (click)="updateBusiness();toggleEdit('step3')" [disabled]="step3Form.invalid" class="bg-blue-600 text-white px-4 py-2 rounded-lg flex items-center gap-1 justify-center w-full sm:w-auto" aria-label="Save Changes">Save</button>
             </div>
           </ng-template>
         </form>
       </ng-template>
     </mat-step>
 
-    <ng-template matStepperIcon="home"><mat-icon style="color: var(--mat-sys-primary);">home</mat-icon></ng-template>
-    <ng-template matStepperIcon="business"><mat-icon style="color: var(--mat-sys-primary);">business</mat-icon></ng-template>
-    <ng-template matStepperIcon="dial"><mat-icon style="color: var(--mat-sys-primary);">call</mat-icon></ng-template>
+    <ng-template matStepperIcon="home"><mat-icon style="color: var(--mat-sys-primary)" aria-hidden="true">home</mat-icon></ng-template>
+    <ng-template matStepperIcon="business"><mat-icon style="color: var(--mat-sys-primary)" aria-hidden="true">business</mat-icon></ng-template>
+    <ng-template matStepperIcon="dial"><mat-icon style="color: var(--mat-sys-primary)" aria-hidden="true">call</mat-icon></ng-template>
   </mat-stepper>
 
-  <div *ngIf="isPublished()" class="mt-6 p-4 border rounded-lg flex items-center gap-3" style="background-color: var(--mat-sys-surface-container-high); border-color: var(--mat-sys-outline);">
-    <mat-icon style="color: var(--mat-sys-success);">check_circle</mat-icon>
-    <p style="color: var(--mat-sys-on-surface); font-weight: 500;">Business published successfully!</p>
+  <div *ngIf="isPublished()" class="mt-6 p-4 border rounded-lg flex items-center gap-3" style="background-color: var(--mat-sys-surface-container-high);border-color: var(--mat-sys-outline)">
+    <mat-icon style="color: var(--mat-sys-success)" aria-hidden="true">check_circle</mat-icon>
+    <p style="color: var(--mat-sys-on-surface);font-weight: 500">Business published successfully!</p>
   </div>
 </div>
