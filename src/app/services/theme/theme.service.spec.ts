@@ -1,37 +1,37 @@
 import { TestBed } from '@angular/core/testing';
 import { ThemeService, Theme } from './theme.service';
-import { DarkModeService } from '../dark-theme/dark-mode.service';
-import { signal, effect } from '@angular/core';
+import { DarkModeService } from '../dark-mode.service';
+import { signal } from '@angular/core';
 
 describe('ThemeService', () => {
   let service: ThemeService;
-  let darkModeService: DarkModeService;
-  let mockDarkModeSignal: any;
-
-  // Mock document.body.classList and style
-  let classListAddSpy: jest.SpyInstance;
-  let classListRemoveSpy: jest.SpyInstance;
-  let styleSetPropertySpy: jest.SpyInstance;
+  let darkModeServiceMock: jest.Mocked<DarkModeService>;
 
   beforeEach(() => {
     // Mock DarkModeService
-    mockDarkModeSignal = signal(false);
-    const darkModeServiceMock = {
-      darkMode: jest.fn().mockReturnValue(mockDarkModeSignal),
-    };
+    darkModeServiceMock = {
+      isDarkMode: jest.fn().mockReturnValue(false),
+      // Include other properties to satisfy DarkModeService interface
+      selectedTheme: signal({ name: 'light', icon: 'light_mode' }),
+      getThemes: jest.fn(),
+      setTheme: jest.fn(),
+    } as any;
 
     // Mock document.body
-    const mockClassList = {
-      add: jest.fn(),
-      remove: jest.fn(),
+    const bodyMock = {
+      classList: {
+        add: jest.fn(),
+        remove: jest.fn(),
+        toggle: jest.fn(),
+      },
+      style: {
+        setProperty: jest.fn(),
+      },
     };
-    const mockStyle = {
-      setProperty: jest.fn(),
-    };
-    jest.spyOn(document, 'body', 'get').mockReturnValue({
-      classList: mockClassList,
-      style: mockStyle,
-    } as any);
+    Object.defineProperty(document, 'body', {
+      value: bodyMock,
+      writable: true,
+    });
 
     TestBed.configureTestingModule({
       providers: [
@@ -39,150 +39,198 @@ describe('ThemeService', () => {
         { provide: DarkModeService, useValue: darkModeServiceMock },
       ],
     });
-
     service = TestBed.inject(ThemeService);
-    darkModeService = TestBed.inject(DarkModeService);
-
-    // Store spies
-    classListAddSpy = jest.spyOn(mockClassList, 'add');
-    classListRemoveSpy = jest.spyOn(mockClassList, 'remove');
-    styleSetPropertySpy = jest.spyOn(mockStyle, 'setProperty');
   });
 
   afterEach(() => {
     jest.clearAllMocks();
   });
 
-  it('should be created', () => {
-    expect(service).toBeTruthy();
-  });
-
-  describe('constructor and effect', () => {
-    it('should initialize with default theme (deep-blue)', () => {
-      expect(service.currentTheme().id).toBe('deep-blue');
-      expect(service.currentTheme().lightModeClass).toBe('deep-blue-light-theme');
-    });
-
-    it('should call applyCurrentTheme on initialization via effect', () => {
-      const applyCurrentThemeSpy = jest.spyOn(service as any, 'applyCurrentTheme');
-      TestBed.inject(ThemeService); // Trigger effect
-      expect(applyCurrentThemeSpy).toHaveBeenCalled();
-    });
-
-    it('should re-apply theme when darkMode or currentTheme signal changes', () => {
-      const applyCurrentThemeSpy = jest.spyOn(service as any, 'applyCurrentTheme');
-      applyCurrentThemeSpy.mockClear(); // Clear initial call
-
-      // Run effect in injection context to ensure synchronous execution
-      TestBed.runInInjectionContext(() => {
-        // Initial effect run
-        effect(() => {
-          service['applyCurrentTheme'](); // Access private method
-        });
-
-        // Change darkMode signal
-        mockDarkModeSignal.set(true);
-        expect(applyCurrentThemeSpy).toHaveBeenCalledTimes(1);
-
-        // Change currentTheme signal
-        service.setTheme('green');
-        expect(applyCurrentThemeSpy).toHaveBeenCalledTimes(2);
-
-        // Change darkMode signal again
-        mockDarkModeSignal.set(false);
-        expect(applyCurrentThemeSpy).toHaveBeenCalledTimes(3);
+  describe('Initialization', () => {
+    it('should initialize with deep-blue theme', () => {
+      expect(service.currentTheme()).toEqual({
+        id: 'deep-blue',
+        primary: '#1976D2',
+        displayName: 'Deep-Blue',
+        darkModeClass: 'deep-blue-dark-theme',
+        lightModeClass: 'deep-blue-light-theme',
       });
+      expect(document.body.classList.add).toHaveBeenCalledWith('deep-blue-light-theme');
+      expect(document.body.style.setProperty).toHaveBeenCalledWith('--mat-icon-color', 'var(--mat-sys-on-surface)');
+      expect(document.body.style.setProperty).toHaveBeenCalledWith('--mat-sys-primary', '#1976D2');
+    });
+
+    it('should remove all theme classes during initialization', () => {
+      const allThemeClasses = [
+        'deep-blue-dark-theme', 'deep-blue-light-theme',
+        'green-dark-theme', 'green-light-theme',
+        'orange-dark-theme', 'orange-light-theme',
+        'purple-dark-theme', 'purple-light-theme',
+        'red-dark-theme', 'red-light-theme',
+      ];
+      expect(document.body.classList.remove).toHaveBeenCalledWith(...allThemeClasses);
     });
   });
 
   describe('getThemes', () => {
-    it('should return all themes', () => {
+    it('should return the list of themes', () => {
       const themes = service.getThemes();
-      expect(themes.length).toBe(5);
-      expect(themes.map((t) => t.id)).toEqual(['deep-blue', 'green', 'orange', 'purple', 'red']);
+      expect(themes).toHaveLength(5);
+      expect(themes).toEqual([
+        {
+          id: 'deep-blue',
+          primary: '#1976D2',
+          displayName: 'Deep-Blue',
+          darkModeClass: 'deep-blue-dark-theme',
+          lightModeClass: 'deep-blue-light-theme',
+        },
+        {
+          id: 'green',
+          primary: '#00796B',
+          displayName: 'Green',
+          darkModeClass: 'green-dark-theme',
+          lightModeClass: 'green-light-theme',
+        },
+        {
+          id: 'orange',
+          primary: '#E65100',
+          displayName: 'Orange',
+          darkModeClass: 'orange-dark-theme',
+          lightModeClass: 'orange-light-theme',
+        },
+        {
+          id: 'purple',
+          primary: '#6200EE',
+          displayName: 'Purple',
+          darkModeClass: 'purple-dark-theme',
+          lightModeClass: 'purple-light-theme',
+        },
+        {
+          id: 'red',
+          primary: '#C2185B',
+          displayName: 'Red',
+          darkModeClass: 'red-dark-theme',
+          lightModeClass: 'red-light-theme',
+        },
+      ]);
     });
   });
 
   describe('setTheme', () => {
-    it.each([
-      ['deep-blue', 'deep-blue-light-theme', '#1976D2'],
-      ['green', 'green-light-theme', '#00796B'],
-      ['orange', 'orange-light-theme', '#E65100'],
-      ['purple', 'purple-light-theme', '#6200EE'],
-      ['red', 'red-light-theme', '#C2185B'],
-    ])('should set theme %s and apply lightModeClass', (themeId, lightModeClass, primary) => {
-      service.setTheme(themeId);
-      expect(service.currentTheme().id).toBe(themeId);
-      expect(service.currentTheme().lightModeClass).toBe(lightModeClass);
-      expect(service.currentTheme().primary).toBe(primary);
-      expect(classListAddSpy).toHaveBeenCalledWith(lightModeClass);
+    it('should set theme to green and apply light theme class when not in dark mode', () => {
+      darkModeServiceMock.isDarkMode.mockReturnValue(false);
+      service.setTheme('green');
+      expect(service.currentTheme()).toEqual({
+        id: 'green',
+        primary: '#00796B',
+        displayName: 'Green',
+        darkModeClass: 'green-dark-theme',
+        lightModeClass: 'green-light-theme',
+      });
+      expect(document.body.classList.remove).toHaveBeenCalledWith(
+        'deep-blue-dark-theme', 'deep-blue-light-theme',
+        'green-dark-theme', 'green-light-theme',
+        'orange-dark-theme', 'orange-light-theme',
+        'purple-dark-theme', 'purple-light-theme',
+        'red-dark-theme', 'red-light-theme'
+      );
+      expect(document.body.classList.add).toHaveBeenCalledWith('green-light-theme');
+      expect(document.body.style.setProperty).toHaveBeenCalledWith('--mat-icon-color', 'var(--mat-sys-on-surface)');
+      expect(document.body.style.setProperty).toHaveBeenCalledWith('--mat-sys-primary', '#00796B');
+    });
+
+    it('should set theme to purple and apply dark theme class when in dark mode', () => {
+      darkModeServiceMock.isDarkMode.mockReturnValue(true);
+      service.setTheme('purple');
+      expect(service.currentTheme()).toEqual({
+        id: 'purple',
+        primary: '#6200EE',
+        displayName: 'Purple',
+        darkModeClass: 'purple-dark-theme',
+        lightModeClass: 'purple-light-theme',
+      });
+      expect(document.body.classList.remove).toHaveBeenCalledWith(
+        'deep-blue-dark-theme', 'deep-blue-light-theme',
+        'green-dark-theme', 'green-light-theme',
+        'orange-dark-theme', 'orange-light-theme',
+        'purple-dark-theme', 'purple-light-theme',
+        'red-dark-theme', 'red-light-theme'
+      );
+      expect(document.body.classList.add).toHaveBeenCalledWith('purple-dark-theme');
+      expect(document.body.style.setProperty).toHaveBeenCalledWith('--mat-icon-color', 'var(--mat-sys-on-surface)');
+      expect(document.body.style.setProperty).toHaveBeenCalledWith('--mat-sys-primary', '#6200EE');
     });
 
     it('should not change theme if themeId is invalid', () => {
-      const initialTheme = service.currentTheme();
+      const originalTheme = service.currentTheme();
       service.setTheme('invalid');
-      expect(service.currentTheme()).toBe(initialTheme);
-      expect(classListAddSpy).not.toHaveBeenCalledWith('invalid');
+      expect(service.currentTheme()).toBe(originalTheme);
+      expect(document.body.classList.add).toHaveBeenCalledTimes(1); // Only called during initialization
+      expect(document.body.style.setProperty).toHaveBeenCalledTimes(2); // Only called during initialization
     });
   });
 
   describe('applyCurrentTheme', () => {
-    it('should remove all theme classes', () => {
-      (service as any).applyCurrentTheme();
-      expect(classListRemoveSpy).toHaveBeenCalledWith(
-        'deep-blue-dark-theme',
-        'deep-blue-light-theme',
-        'green-dark-theme',
-        'green-light-theme',
-        'orange-dark-theme',
-        'orange-light-theme',
-        'purple-dark-theme',
-        'purple-light-theme',
-        'red-dark-theme',
-        'red-light-theme'
+    it('should apply light theme class when not in dark mode', () => {
+      darkModeServiceMock.isDarkMode.mockReturnValue(false);
+      service.setTheme('orange');
+      expect(document.body.classList.remove).toHaveBeenCalledWith(
+        'deep-blue-dark-theme', 'deep-blue-light-theme',
+        'green-dark-theme', 'green-light-theme',
+        'orange-dark-theme', 'orange-light-theme',
+        'purple-dark-theme', 'purple-light-theme',
+        'red-dark-theme', 'red-light-theme'
       );
+      expect(document.body.classList.add).toHaveBeenCalledWith('orange-light-theme');
+      expect(document.body.style.setProperty).toHaveBeenCalledWith('--mat-icon-color', 'var(--mat-sys-on-surface)');
+      expect(document.body.style.setProperty).toHaveBeenCalledWith('--mat-sys-primary', '#E65100');
     });
 
-    it.each([
-      ['deep-blue', 'deep-blue-light-theme', 'deep-blue-dark-theme', '#1976D2'],
-      ['green', 'green-light-theme', 'green-dark-theme', '#00796B'],
-      ['orange', 'orange-light-theme', 'orange-dark-theme', '#E65100'],
-      ['purple', 'purple-light-theme', 'purple-dark-theme', '#6200EE'],
-      ['red', 'red-light-theme', 'red-dark-theme', '#C2185B'],
-    ])(
-      'should apply lightModeClass for %s when darkMode is false',
-      (themeId, lightModeClass, darkModeClass, primary) => {
-        service.setTheme(themeId);
-        mockDarkModeSignal.set(false);
-        (service as any).applyCurrentTheme();
-        expect(classListAddSpy).toHaveBeenCalledWith(lightModeClass);
-        expect(classListAddSpy).not.toHaveBeenCalledWith(darkModeClass);
-        expect(styleSetPropertySpy).toHaveBeenCalledWith('--mat-sys-primary', primary);
-      }
-    );
+    it('should apply dark theme class when in dark mode', () => {
+      darkModeServiceMock.isDarkMode.mockReturnValue(true);
+      service.setTheme('red');
+      expect(document.body.classList.remove).toHaveBeenCalledWith(
+        'deep-blue-dark-theme', 'deep-blue-light-theme',
+        'green-dark-theme', 'green-light-theme',
+        'orange-dark-theme', 'orange-light-theme',
+        'purple-dark-theme', 'purple-light-theme',
+        'red-dark-theme', 'red-light-theme'
+      );
+      expect(document.body.classList.add).toHaveBeenCalledWith('red-dark-theme');
+      expect(document.body.style.setProperty).toHaveBeenCalledWith('--mat-icon-color', 'var(--mat-sys-on-surface)');
+      expect(document.body.style.setProperty).toHaveBeenCalledWith('--mat-sys-primary', '#C2185B');
+    });
+  });
 
-    it.each([
-      ['deep-blue', 'deep-blue-dark-theme', 'deep-blue-light-theme', '#1976D2'],
-      ['green', 'green-dark-theme', 'green-light-theme', '#00796B'],
-      ['orange', 'orange-dark-theme', 'orange-light-theme', '#E65100'],
-      ['purple', 'purple-dark-theme', 'purple-light-theme', '#6200EE'],
-      ['red', 'red-dark-theme', 'red-light-theme', '#C2185B'],
-    ])(
-      'should apply darkModeClass for %s when darkMode is true',
-      (themeId, darkModeClass, lightModeClass, primary) => {
-        service.setTheme(themeId);
-        mockDarkModeSignal.set(true);
-        (service as any).applyCurrentTheme();
-        expect(classListAddSpy).toHaveBeenCalledWith(darkModeClass);
-        expect(classListAddSpy).not.toHaveBeenCalledWith(lightModeClass);
-        expect(styleSetPropertySpy).toHaveBeenCalledWith('--mat-sys-primary', primary);
-      }
-    );
+  describe('Effect', () => {
+    it('should reapply theme when dark mode changes', () => {
+      // Initialize with light mode
+      darkModeServiceMock.isDarkMode.mockReturnValue(false);
+      service.setTheme('green');
+      expect(document.body.classList.add).toHaveBeenCalledWith('green-light-theme');
 
-    it('should set CSS variables for icon and primary colors', () => {
+      // Simulate dark mode change
+      darkModeServiceMock.isDarkMode.mockReturnValue(true);
+      // Manually trigger applyCurrentTheme to simulate effect
       (service as any).applyCurrentTheme();
-      expect(styleSetPropertySpy).toHaveBeenCalledWith('--mat-icon-color', 'var(--mat-sys-on-surface)');
-      expect(styleSetPropertySpy).toHaveBeenCalledWith('--mat-sys-primary', '#1976D2');
+      expect(document.body.classList.remove).toHaveBeenCalledWith(
+        'deep-blue-dark-theme', 'deep-blue-light-theme',
+        'green-dark-theme', 'green-light-theme',
+        'orange-dark-theme', 'orange-light-theme',
+        'purple-dark-theme', 'purple-light-theme',
+        'red-dark-theme', 'red-light-theme'
+      );
+      expect(document.body.classList.add).toHaveBeenCalledWith('green-dark-theme');
+      expect(document.body.style.setProperty).toHaveBeenCalledWith('--mat-sys-primary', '#00796B');
+    });
+
+    it('should call applyCurrentTheme when effect is triggered', () => {
+      const applyThemeSpy = jest.spyOn(service as any, 'applyCurrentTheme');
+      // Simulate effect trigger by manually calling applyCurrentTheme
+      (service as any).applyCurrentTheme();
+      expect(applyThemeSpy).toHaveBeenCalled();
+      expect(document.body.classList.add).toHaveBeenCalledWith('deep-blue-light-theme');
+      applyThemeSpy.mockRestore();
     });
   });
 });

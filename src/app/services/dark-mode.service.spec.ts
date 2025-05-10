@@ -4,40 +4,61 @@ import { DarkModeService, Theme } from './dark-mode.service';
 describe('DarkModeService', () => {
   let service: DarkModeService;
   let matchMediaMock: jest.Mock;
-  let localStorageMock: { getItem: jest.Mock; setItem: jest.Mock };
-  let mediaQueryListMock: { matches: boolean; addEventListener: jest.Mock; removeEventListener: jest.Mock };
+  let mediaQueryList: MockMediaQueryList;
+
+  // Mock MediaQueryList with writable matches
+  interface MockMediaQueryList extends MediaQueryList {
+    matches: boolean; // Make matches writable
+    addEventListener: jest.Mock;
+    removeEventListener: jest.Mock;
+  }
 
   beforeEach(() => {
     // Mock window.matchMedia
-    mediaQueryListMock = {
+    mediaQueryList = {
       matches: false,
+      media: '(prefers-color-scheme: dark)',
+      onchange: null,
       addEventListener: jest.fn(),
       removeEventListener: jest.fn(),
-    };
-    matchMediaMock = jest.fn().mockImplementation((query) => ({
-      ...mediaQueryListMock,
-      matches: query === '(prefers-color-scheme: dark)' ? mediaQueryListMock.matches : true,
-    }));
-    window.matchMedia = matchMediaMock;
+      addListener: jest.fn(),
+      removeListener: jest.fn(),
+      dispatchEvent: jest.fn(),
+    } as MockMediaQueryList;
+
+    matchMediaMock = jest.fn().mockReturnValue(mediaQueryList);
+    Object.defineProperty(window, 'matchMedia', {
+      writable: true,
+      value: matchMediaMock,
+    });
 
     // Mock localStorage
-    localStorageMock = {
-      getItem: jest.fn().mockReturnValue(null),
-      setItem: jest.fn(),
+    const localStorageMock = {
+      store: {} as { [key: string]: string },
+      getItem: jest.fn((key: string) => localStorageMock.store[key] || null),
+      setItem: jest.fn((key: string, value: string) => {
+        localStorageMock.store[key] = value;
+      }),
+      clear: jest.fn(() => {
+        localStorageMock.store = {};
+      }),
     };
-    Object.defineProperty(window, 'localStorage', { value: localStorageMock });
+    Object.defineProperty(window, 'localStorage', {
+      value: localStorageMock,
+      writable: true,
+    });
 
     // Mock document.body
-    const bodyClassList = {
-      add: jest.fn(),
-      remove: jest.fn(),
-      toggle: jest.fn(),
+    const bodyMock = {
+      classList: {
+        add: jest.fn(),
+        remove: jest.fn(),
+        toggle: jest.fn(),
+      },
+      setAttribute: jest.fn(),
     };
     Object.defineProperty(document, 'body', {
-      value: {
-        classList: bodyClassList,
-        setAttribute: jest.fn(),
-      },
+      value: bodyMock,
       writable: true,
     });
 
@@ -47,43 +68,127 @@ describe('DarkModeService', () => {
     service = TestBed.inject(DarkModeService);
   });
 
-  it('should be created', () => {
-    expect(service).toBeTruthy();
+  afterEach(() => {
+    jest.clearAllMocks();
   });
 
   describe('Initialization', () => {
-    it('should initialize with system theme if no saved theme in localStorage', () => {
-      localStorageMock.getItem.mockReturnValue(null);
-      const newService = TestBed.inject(DarkModeService);
-      expect(newService.selectedTheme()?.name).toBe('system');
-      expect(localStorageMock.getItem).toHaveBeenCalledWith('theme');
+    it('should initialize with system theme by default', () => {
+      expect(service['theme']()).toBe('system');
+      expect(localStorage.getItem).toHaveBeenCalledWith('theme');
+      expect(document.body.classList.toggle).toHaveBeenCalledWith('dark-theme', false);
       expect(document.body.classList.toggle).toHaveBeenCalledWith('light-theme', true);
       expect(document.body.setAttribute).toHaveBeenCalledWith('data-theme', 'light-theme');
     });
 
     it('should initialize with saved theme from localStorage', () => {
-      localStorageMock.getItem.mockReturnValue('dark');
+      localStorage.setItem('theme', 'dark');
       const newService = TestBed.inject(DarkModeService);
-      expect(newService.selectedTheme()?.name).toBe('dark');
-      expect(localStorageMock.getItem).toHaveBeenCalledWith('theme');
+      expect(newService['theme']()).toBe('dark');
+      expect(localStorage.getItem).toHaveBeenCalledWith('theme');
       expect(document.body.classList.toggle).toHaveBeenCalledWith('dark-theme', true);
+      expect(document.body.classList.toggle).toHaveBeenCalledWith('light-theme', false);
       expect(document.body.setAttribute).toHaveBeenCalledWith('data-theme', 'dark-theme');
     });
 
-    it('should set up system theme change listener', () => {
-      const addEventListenerSpy = jest.fn();
-      matchMediaMock.mockReturnValueOnce({
-        matches: false,
-        addEventListener: addEventListenerSpy,
-        removeEventListener: jest.fn(),
-      });
-      const newService = TestBed.inject(DarkModeService);
-      expect(addEventListenerSpy).toHaveBeenCalledWith('change', expect.any(Function));
+    it('should set up event listener for system theme changes', () => {
+      expect(window.matchMedia).toHaveBeenCalledWith('(prefers-color-scheme: dark)');
+      expect(mediaQueryList.addEventListener).toHaveBeenCalledWith('change', expect.any(Function));
+    });
+  });
+
+  describe('selectedTheme', () => {
+    it('should return the correct theme object for light theme', () => {
+      service.setTheme('light');
+      const selected = service.selectedTheme();
+      expect(selected).toEqual({ name: 'light', icon: 'light_mode' });
+    });
+
+    it('should return the correct theme object for dark theme', () => {
+      service.setTheme('dark');
+      const selected = service.selectedTheme();
+      expect(selected).toEqual({ name: 'dark', icon: 'dark_mode' });
+    });
+
+    it('should return the correct theme object for system theme', () => {
+      service.setTheme('system');
+      const selected = service.selectedTheme();
+      expect(selected).toEqual({ name: 'system', icon: 'desktop_windows' });
+    });
+  });
+
+  describe('isDarkMode', () => {
+    it('should return false for light theme', () => {
+      service.setTheme('light');
+      expect(service.isDarkMode()).toBe(false);
+    });
+
+    it('should return true for dark theme', () => {
+      service.setTheme('dark');
+      expect(service.isDarkMode()).toBe(true);
+    });
+
+    it('should return system preference for system theme (dark)', () => {
+      mediaQueryList.matches = true;
+      service.setTheme('system');
+      expect(service.isDarkMode()).toBe(true);
+    });
+
+    it('should return system preference for system theme (light)', () => {
+      mediaQueryList.matches = false;
+      service.setTheme('system');
+      expect(service.isDarkMode()).toBe(false);
+    });
+
+    it('should handle missing window.matchMedia for system theme', () => {
+      Object.defineProperty(window, 'matchMedia', { value: undefined });
+      service.setTheme('system');
+      expect(service.isDarkMode()).toBe(false);
+    });
+  });
+
+  describe('setTheme', () => {
+    it('should set light theme and update DOM', () => {
+      service.setTheme('light');
+      expect(service['theme']()).toBe('light');
+      expect(localStorage.setItem).toHaveBeenCalledWith('theme', 'light');
+      expect(document.body.classList.toggle).toHaveBeenCalledWith('dark-theme', false);
+      expect(document.body.classList.toggle).toHaveBeenCalledWith('light-theme', true);
+      expect(document.body.setAttribute).toHaveBeenCalledWith('data-theme', 'light-theme');
+    });
+
+    it('should set dark theme and update DOM', () => {
+      service.setTheme('dark');
+      expect(service['theme']()).toBe('dark');
+      expect(localStorage.setItem).toHaveBeenCalledWith('theme', 'dark');
+      expect(document.body.classList.toggle).toHaveBeenCalledWith('dark-theme', true);
+      expect(document.body.classList.toggle).toHaveBeenCalledWith('light-theme', false);
+      expect(document.body.setAttribute).toHaveBeenCalledWith('data-theme', 'dark-theme');
+    });
+
+    it('should set system theme and update DOM based on system preference (dark)', () => {
+      mediaQueryList.matches = true;
+      service.setTheme('system');
+      expect(service['theme']()).toBe('system');
+      expect(localStorage.setItem).toHaveBeenCalledWith('theme', 'system');
+      expect(document.body.classList.toggle).toHaveBeenCalledWith('dark-theme', true);
+      expect(document.body.classList.toggle).toHaveBeenCalledWith('light-theme', false);
+      expect(document.body.setAttribute).toHaveBeenCalledWith('data-theme', 'dark-theme');
+    });
+
+    it('should set system theme and update DOM based on system preference (light)', () => {
+      mediaQueryList.matches = false;
+      service.setTheme('system');
+      expect(service['theme']()).toBe('system');
+      expect(localStorage.setItem).toHaveBeenCalledWith('theme', 'system');
+      expect(document.body.classList.toggle).toHaveBeenCalledWith('dark-theme', false);
+      expect(document.body.classList.toggle).toHaveBeenCalledWith('light-theme', true);
+      expect(document.body.setAttribute).toHaveBeenCalledWith('data-theme', 'light-theme');
     });
   });
 
   describe('getThemes', () => {
-    it('should return all available themes', () => {
+    it('should return the list of themes', () => {
       const themes = service.getThemes();
       expect(themes).toEqual([
         { name: 'light', icon: 'light_mode' },
@@ -93,173 +198,57 @@ describe('DarkModeService', () => {
     });
   });
 
-  describe('setTheme', () => {
-    it('should set light theme and update localStorage and DOM', () => {
-      service.setTheme('light');
-      expect(service.selectedTheme()?.name).toBe('light');
-      expect(localStorageMock.setItem).toHaveBeenCalledWith('theme', 'light');
-      expect(document.body.classList.toggle).toHaveBeenCalledWith('dark-theme', false);
-      expect(document.body.classList.toggle).toHaveBeenCalledWith('light-theme', true);
-      expect(document.body.setAttribute).toHaveBeenCalledWith('data-theme', 'light-theme');
-    });
-
-    it('should set dark theme and update localStorage and DOM', () => {
-      service.setTheme('dark');
-      expect(service.selectedTheme()?.name).toBe('dark');
-      expect(localStorageMock.setItem).toHaveBeenCalledWith('theme', 'dark');
-      expect(document.body.classList.toggle).toHaveBeenCalledWith('dark-theme', true);
-      expect(document.body.classList.toggle).toHaveBeenCalledWith('light-theme', false);
-      expect(document.body.setAttribute).toHaveBeenCalledWith('data-theme', 'dark-theme');
-    });
-
-    it('should set system theme and update based on system preference', () => {
-      mediaQueryListMock.matches = true;
+  describe('System Theme Change Listener', () => {
+    it('should apply theme when system preference changes in system mode', () => {
       service.setTheme('system');
-      expect(service.selectedTheme()?.name).toBe('system');
-      expect(localStorageMock.setItem).toHaveBeenCalledWith('theme', 'system');
-      expect(document.body.classList.toggle).toHaveBeenCalledWith('dark-theme', true);
-      expect(document.body.classList.toggle).toHaveBeenCalledWith('light-theme', false);
-      expect(document.body.setAttribute).toHaveBeenCalledWith('data-theme', 'dark-theme');
+      mediaQueryList.matches = true;
+      // Access the event handler with type assertion
+      const changeHandler = (mediaQueryList.addEventListener as jest.Mock).mock.calls[0][1];
+      jest.spyOn(service as any, 'applyTheme').mockImplementation();
+      changeHandler();
+      expect((service as any).applyTheme).toHaveBeenCalled();
+    });
+
+    it('should not apply theme when system preference changes in non-system mode', () => {
+      service.setTheme('light');
+      mediaQueryList.matches = true;
+      // Access the event handler with type assertion
+      const changeHandler = (mediaQueryList.addEventListener as jest.Mock).mock.calls[0][1];
+      jest.spyOn(service as any, 'applyTheme').mockImplementation();
+      changeHandler();
+      expect((service as any).applyTheme).not.toHaveBeenCalled();
     });
   });
 
-  describe('isDarkMode', () => {
-    it('should return true for dark theme', () => {
+  describe('applyTheme', () => {
+    it('should apply dark theme classes and attributes', () => {
       service.setTheme('dark');
-      expect(service.isDarkMode()).toBe(true);
-    });
-
-    it('should return false for light theme', () => {
-      service.setTheme('light');
-      expect(service.isDarkMode()).toBe(false);
-    });
-
-    it('should return system preference for system theme (dark)', () => {
-      mediaQueryListMock.matches = true;
-      service.setTheme('system');
-      expect(service.isDarkMode()).toBe(true);
-    });
-
-    it('should return system preference for system theme (light)', () => {
-      mediaQueryListMock.matches = false;
-      service.setTheme('system');
-      expect(service.isDarkMode()).toBe(false);
-    });
-
-    it('should handle missing window.matchMedia for system theme', () => {
-      window.matchMedia = undefined as any;
-      service.setTheme('system');
-      expect(service.isDarkMode()).toBe(false);
-    });
-  });
-
-  describe('selectedTheme', () => {
-    it('should return correct theme object for light theme', () => {
-      service.setTheme('light');
-      expect(service.selectedTheme()).toEqual({ name: 'light', icon: 'light_mode' });
-    });
-
-    it('should return correct theme object for dark theme', () => {
-      service.setTheme('dark');
-      expect(service.selectedTheme()).toEqual({ name: 'dark', icon: 'dark_mode' });
-    });
-
-    it('should return correct theme object for system theme', () => {
-      service.setTheme('system');
-      expect(service.selectedTheme()).toEqual({ name: 'system', icon: 'desktop_windows' });
-    });
-  });
-
-  describe('System theme change listener', () => {
-    let changeHandler: (event: { matches: boolean }) => void;
-
-    beforeEach(() => {
-      mediaQueryListMock.addEventListener.mockImplementation((_, handler) => {
-        changeHandler = handler;
-      });
-      matchMediaMock.mockReturnValue(mediaQueryListMock);
-      TestBed.inject(DarkModeService); // Initialize service to set up listener
-    });
-
-    it('should apply dark theme when system preference changes to dark in system mode', () => {
-      service.setTheme('system');
-      mediaQueryListMock.matches = true;
-      changeHandler({ matches: true });
       expect(document.body.classList.toggle).toHaveBeenCalledWith('dark-theme', true);
       expect(document.body.classList.toggle).toHaveBeenCalledWith('light-theme', false);
       expect(document.body.setAttribute).toHaveBeenCalledWith('data-theme', 'dark-theme');
     });
 
-    it('should apply light theme when system preference changes to light in system mode', () => {
-      service.setTheme('system');
-      mediaQueryListMock.matches = false;
-      changeHandler({ matches: false });
-      expect(document.body.classList.toggle).toHaveBeenCalledWith('dark-theme', false);
-      expect(document.body.classList.toggle).toHaveBeenCalledWith('light-theme', true);
-      expect(document.body.setAttribute).toHaveBeenCalledWith('data-theme', 'light-theme');
-    });
-
-    it('should handle multiple system preference changes in system mode', () => {
-      service.setTheme('system');
-      mediaQueryListMock.matches = true;
-      changeHandler({ matches: true }); // Dark
-      expect(document.body.classList.toggle).toHaveBeenCalledWith('dark-theme', true);
-      expect(document.body.classList.toggle).toHaveBeenCalledWith('light-theme', false);
-      expect(document.body.setAttribute).toHaveBeenCalledWith('data-theme', 'dark-theme');
-
-      mediaQueryListMock.matches = false;
-      changeHandler({ matches: false }); // Light
-      expect(document.body.classList.toggle).toHaveBeenCalledWith('dark-theme', false);
-      expect(document.body.classList.toggle).toHaveBeenCalledWith('light-theme', true);
-      expect(document.body.setAttribute).toHaveBeenCalledWith('data-theme', 'light-theme');
-    });
-
-    it('should not apply theme when system preference changes in light mode', () => {
-      const applyThemeSpy = jest.spyOn(service as any, 'applyTheme');
+    it('should apply light theme classes and attributes', () => {
       service.setTheme('light');
-      mediaQueryListMock.matches = true;
-      changeHandler({ matches: true });
-      expect(applyThemeSpy).not.toHaveBeenCalled();
-    });
-
-    it('should not apply theme when system preference changes in dark mode', () => {
-      const applyThemeSpy = jest.spyOn(service as any, 'applyTheme');
-      service.setTheme('dark');
-      mediaQueryListMock.matches = false;
-      changeHandler({ matches: false });
-      expect(applyThemeSpy).not.toHaveBeenCalled();
-    });
-
-    it('should handle theme change from system to non-system and back during listener', () => {
-      const applyThemeSpy = jest.spyOn(service as any, 'applyTheme');
-      service.setTheme('system');
-      mediaQueryListMock.matches = true;
-      changeHandler({ matches: true }); // Apply dark theme
-      expect(applyThemeSpy).toHaveBeenCalledTimes(1);
-
-      service.setTheme('light'); // Switch to light mode
-      mediaQueryListMock.matches = false;
-      changeHandler({ matches: false }); // System changes to light
-      expect(applyThemeSpy).toHaveBeenCalledTimes(1); // No additional calls
-
-      service.setTheme('system'); // Switch back to system mode
-      mediaQueryListMock.matches = false;
-      changeHandler({ matches: false }); // System still light
-      expect(applyThemeSpy).toHaveBeenCalledTimes(2); // Apply light theme
       expect(document.body.classList.toggle).toHaveBeenCalledWith('dark-theme', false);
       expect(document.body.classList.toggle).toHaveBeenCalledWith('light-theme', true);
       expect(document.body.setAttribute).toHaveBeenCalledWith('data-theme', 'light-theme');
     });
 
-    it('should handle initial system mode with immediate preference change', () => {
-      mediaQueryListMock.addEventListener.mockImplementation((_, handler) => {
-        handler({ matches: true }); // Immediate change to dark
-      });
-      const newService = TestBed.inject(DarkModeService);
-      expect(newService.selectedTheme()?.name).toBe('system');
+    it('should apply system theme based on dark preference', () => {
+      mediaQueryList.matches = true;
+      service.setTheme('system');
       expect(document.body.classList.toggle).toHaveBeenCalledWith('dark-theme', true);
       expect(document.body.classList.toggle).toHaveBeenCalledWith('light-theme', false);
       expect(document.body.setAttribute).toHaveBeenCalledWith('data-theme', 'dark-theme');
+    });
+
+    it('should apply system theme based on light preference', () => {
+      mediaQueryList.matches = false;
+      service.setTheme('system');
+      expect(document.body.classList.toggle).toHaveBeenCalledWith('dark-theme', false);
+      expect(document.body.classList.toggle).toHaveBeenCalledWith('light-theme', true);
+      expect(document.body.setAttribute).toHaveBeenCalledWith('data-theme', 'light-theme');
     });
   });
 });

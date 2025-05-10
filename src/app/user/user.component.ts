@@ -28,23 +28,6 @@ export class UserComponent {
   };
 
   
-
-  // Optional: Handle file selection for avatar upload
-  onFileSelected(event: Event): void {
-    const input = event.target as HTMLInputElement;
-    if (input.files && input.files.length > 0) {
-      const file = input.files[0];
-      // Example: Update user.avatar with a local URL for preview
-      const reader = new FileReader();
-      reader.onload = () => {
-        this.user.avatar = reader.result as string;
-      };
-      reader.readAsDataURL(file);
-      // Add logic to upload the file to a server if needed
-      console.log('Selected file:', file);
-    }
-  }
-
   updateUserStatus(status: 'online' | 'away' | 'busy' | 'not-visible'): void {
     this.user.status = status;
   }

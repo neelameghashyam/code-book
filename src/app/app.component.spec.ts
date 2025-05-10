@@ -1,5 +1,6 @@
-import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
-import { AppComponent } from './app.component';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { RouterOutlet, Router, provideRouter } from '@angular/router';
+import { CommonModule } from '@angular/common';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -8,30 +9,92 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatBadgeModule } from '@angular/material/badge';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { By } from '@angular/platform-browser';
-import { CustomSidenavComponent } from './custom-sidenav/custom-sidenav.component';
+import { provideHttpClient, HttpClient } from '@angular/common/http';
+import { provideToastr, ToastrService } from 'ngx-toastr';
+import { provideAnimations } from '@angular/platform-browser/animations';
+import { provideZoneChangeDetection } from '@angular/core';
+import { AppComponent } from './app.component';
 import { ResponsiveService } from './services/responsive/responsive.service';
+import { DarkModeService } from './services/dark-mode.service';
+import { ThemeService } from './services/theme/theme.service';
 import { TranslocoRootModule } from './transloco-root.module';
-import { RouterTestingModule } from '@angular/router/testing';
-import { Router } from '@angular/router';
 import { routes } from './app.routes';
+import { appConfig } from './app.config';
+import { Component, signal, NgModule } from '@angular/core';
+import { By } from '@angular/platform-browser';
 import { DashboardComponent } from './pages/dashboard/dashboard.component';
 import { UsersComponent } from './pages/users/users.component';
-import { Subject } from 'rxjs';
-import { TranslocoService } from '@jsverse/transloco';
-import { ApplicationConfig } from '@angular/core';
-import { appConfig } from './app.config';
+import { BusinessComponent } from './pages/business/business.component';
+import { ListBusinessesComponent } from './pages/business/list-businesses/list-businesses.component';
+
+// Mock Services
+class MockResponsiveService {
+  isMobile = jest.fn().mockReturnValue(false);
+}
+
+class MockDarkModeService {
+  isDarkMode = jest.fn().mockReturnValue(false);
+  selectedTheme = jest.fn().mockReturnValue({ name: 'light', icon: 'light_mode' });
+  getThemes = jest.fn().mockReturnValue([
+    { name: 'light', icon: 'light_mode' },
+    { name: 'dark', icon: 'dark_mode' },
+  ]);
+  setTheme = jest.fn();
+}
+
+class MockThemeService {
+  getThemes = jest.fn().mockReturnValue([
+    { id: 'deep-blue', primary: '#1976D2', displayName: 'Deep-Blue' },
+    { id: 'green', primary: '#00796B', displayName: 'Green' },
+  ]);
+  setTheme = jest.fn();
+}
+
+// Mock Components
+@Component({ selector: 'app-custom-sidenav', template: '' })
+class MockCustomSidenavComponent {
+  collapsed = signal(true);
+}
+
+@Component({ selector: 'app-user', template: '' })
+class MockUserComponent {}
+
+@Component({ selector: 'app-dashboard', template: '<div>Dashboard</div>' })
+class MockDashboardComponent {}
+
+@Component({ selector: 'app-users', template: '<div>Users</div>' })
+class MockUsersComponent {}
+
+@Component({ selector: 'app-business', template: '<div>Business</div>' })
+class MockBusinessComponent {}
+
+@Component({ selector: 'app-list-businesses', template: '<div>List Businesses</div>' })
+class MockListBusinessesComponent {}
+
+// Mock TranslocoRootModule
+@NgModule({
+  imports: [],
+  exports: [],
+})
+class MockTranslocoRootModule {}
 
 describe('AppComponent', () => {
   let component: AppComponent;
   let fixture: ComponentFixture<AppComponent>;
-  let responsiveService: ResponsiveService;
+  let responsiveService: MockResponsiveService;
+  let darkModeService: MockDarkModeService;
+  let themeService: MockThemeService;
+  let router: Router;
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
+  beforeEach(waitForAsync(() => {
+    responsiveService = new MockResponsiveService();
+    darkModeService = new MockDarkModeService();
+    themeService = new MockThemeService();
+
+    TestBed.configureTestingModule({
       imports: [
-        AppComponent,
-        NoopAnimationsModule,
+        RouterOutlet,
+        CommonModule,
         MatToolbarModule,
         MatButtonModule,
         MatIconModule,
@@ -39,266 +102,589 @@ describe('AppComponent', () => {
         MatMenuModule,
         MatTooltipModule,
         MatBadgeModule,
-        TranslocoRootModule,
-        CustomSidenavComponent,
-        RouterTestingModule.withRoutes(routes)
+        NoopAnimationsModule,
+        MockTranslocoRootModule,
       ],
-      providers: [ResponsiveService]
-    }).compileComponents();
+      providers: [
+        { provide: ResponsiveService, useValue: responsiveService },
+        { provide: DarkModeService, useValue: darkModeService },
+        { provide: ThemeService, useValue: themeService },
+        ...appConfig.providers,
+      ],
+    })
+      .overrideComponent(AppComponent, {
+        set: {
+          imports: [
+            RouterOutlet,
+            CommonModule,
+            MatToolbarModule,
+            MatButtonModule,
+            MatIconModule,
+            MatSidenavModule,
+            MatMenuModule,
+            MatTooltipModule,
+            MatBadgeModule,
+            MockTranslocoRootModule,
+            MockCustomSidenavComponent,
+            MockUserComponent,
+          ],
+        },
+      })
+      .compileComponents();
+  }));
 
+  beforeEach(() => {
     fixture = TestBed.createComponent(AppComponent);
     component = fixture.componentInstance;
-    responsiveService = TestBed.inject(ResponsiveService);
+    router = TestBed.inject(Router);
     fixture.detectChanges();
   });
 
-  it('should create the app', () => {
+  it('should create the component', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should have title "Code Book"', () => {
-    expect(component.title).toBe('Code Book');
+  describe('Initial State', () => {
+    it('should initialize with default title, collapsed, and currentLanguage', () => {
+      expect(component.title).toBe('Code Book');
+      expect(component.collapsed()).toBe(true);
+      expect(component.currentLanguage()).toBe('English');
+    });
+
+    it('should inject services', () => {
+      expect(component.responsiveService).toBe(responsiveService);
+      expect(component.darkModeService).toBe(darkModeService);
+      expect(component.themeService).toBe(themeService);
+    });
   });
 
-  describe('Initial state', () => {
-    it('should initialize collapsed as false', () => {
+  describe('Template Rendering', () => {
+    it('should render toolbar with title and buttons', () => {
+      const toolbar = fixture.nativeElement.querySelector('mat-toolbar');
+      expect(toolbar).toBeTruthy();
+      expect(toolbar.querySelector('span').textContent).toContain('Code Book');
+      expect(toolbar.querySelectorAll('button[mat-icon-button]').length).toBe(3);
+      expect(toolbar.querySelector('button[mat-button]')).toBeTruthy();
+      expect(toolbar.querySelector('app-user')).toBeTruthy();
+      expect(toolbar.querySelector('button[mat-icon-button] mat-icon').textContent).toBe('menu');
+      expect(toolbar.querySelectorAll('button[mat-icon-button]')[1].querySelector('mat-icon').textContent).toBe('fullscreen');
+      expect(toolbar.querySelectorAll('button[mat-icon-button]')[2].querySelector('mat-icon').textContent).toBe('light_mode');
+    });
+
+    it('should render sidenav with CustomSidenavComponent', () => {
+      const sidenav = fixture.nativeElement.querySelector('mat-sidenav');
+      expect(sidenav).toBeTruthy();
+      expect(sidenav.querySelector('app-custom-sidenav')).toBeTruthy();
+    });
+
+    it('should render router-outlet in sidenav-content', () => {
+      const sidenavContent = fixture.nativeElement.querySelector('mat-sidenav-content');
+      expect(sidenavContent.querySelector('router-outlet')).toBeTruthy();
+    });
+
+    it('should render footer with copyright and links', () => {
+      const footer = fixture.nativeElement.querySelector('footer');
+      expect(footer.textContent).toContain('© 2025 Your Code Book All rights reserved');
+      const links = footer.querySelectorAll('a');
+      expect(links.length).toBe(3);
+      expect(links[0].textContent).toBe('Privacy Policy');
+      expect(links[1].textContent).toBe('Terms of Service');
+      expect(links[2].textContent).toBe('Contact Us');
+    });
+
+    it('should apply dark-theme class when dark mode is enabled', () => {
+      darkModeService.isDarkMode.mockReturnValue(true);
+      fixture.detectChanges();
+      const container = fixture.nativeElement.querySelector('.flex.flex-col');
+      expect(container.classList).toContain('dark-theme');
+    });
+  });
+
+  describe('Computed Signals', () => {
+    it('should compute sidenavWidth based on collapsed and isMobile', () => {
+      expect(component.sidenavWidth()).toBe('64px');
+      component.collapsed.set(false);
+      expect(component.sidenavWidth()).toBe('200px');
+      responsiveService.isMobile.mockReturnValue(true);
+      expect(component.sidenavWidth()).toBe('280px');
+    });
+
+    it('should compute sidenavMode based on isMobile', () => {
+      expect(component.sidenavMode()).toBe('side');
+      responsiveService.isMobile.mockReturnValue(true);
+      expect(component.sidenavMode()).toBe('over');
+    });
+
+    it('should compute sidenavOpened based on isMobile and collapsed', () => {
+      expect(component.sidenavOpened()).toBe(true);
+      component.collapsed.set(false);
+      expect(component.sidenavOpened()).toBe(true);
+      responsiveService.isMobile.mockReturnValue(true);
+      expect(component.sidenavOpened()).toBe(false);
+      component.collapsed.set(false);
+      expect(component.sidenavOpened()).toBe(true);
+    });
+  });
+
+  describe('toggleSidenav', () => {
+    it('should toggle collapsed state', () => {
+      expect(component.collapsed()).toBe(true);
+      component.toggleSidenav();
+      expect(component.collapsed()).toBe(false);
+      component.toggleSidenav();
+      expect(component.collapsed()).toBe(true);
+    });
+
+    it('should toggle sidenav when menu button is clicked', () => {
+      const menuButton = fixture.debugElement.query(By.css('button[mat-icon-button]'));
+      menuButton.nativeElement.click();
+      fixture.detectChanges();
       expect(component.collapsed()).toBe(false);
     });
 
-    it('should initialize currentLanguage as "English"', () => {
-      expect(component.currentLanguage()).toBe('English');
+    it('should update sidenav width in UI', () => {
+      component.toggleSidenav();
+      fixture.detectChanges();
+      const sidenav = fixture.nativeElement.querySelector('mat-sidenav');
+      expect(sidenav.style.width).toBe('200px');
     });
   });
 
-  describe('toggleFullScreen()', () => {
+  describe('toggleFullScreen', () => {
+    let requestFullscreenSpy: jest.SpyInstance;
+    let exitFullscreenSpy: jest.SpyInstance;
+
     beforeEach(() => {
+      // Set default mocks
+      requestFullscreenSpy = jest.spyOn(document.documentElement, 'requestFullscreen').mockImplementation(() => Promise.resolve());
+      exitFullscreenSpy = jest.spyOn(document, 'exitFullscreen').mockImplementation(() => Promise.resolve());
+      // Ensure document properties are writable
       Object.defineProperty(document, 'fullscreenElement', {
+        value: null,
         writable: true,
-        value: null
+        configurable: true,
       });
-      document.documentElement.requestFullscreen = jest.fn();
-      document.exitFullscreen = jest.fn();
+      Object.defineProperty(document, 'exitFullscreen', {
+        value: jest.fn().mockImplementation(() => Promise.resolve()),
+        writable: true,
+        configurable: true,
+      });
     });
 
-    it('should enter fullscreen when not in fullscreen', () => {
-      component.toggleFullScreen();
-      expect(document.documentElement.requestFullscreen).toHaveBeenCalled();
-    });
-
-    it('should exit fullscreen when in fullscreen', () => {
+    afterEach(() => {
+      requestFullscreenSpy.mockRestore();
+      exitFullscreenSpy.mockRestore();
+      // Reset document properties to avoid test interference
       Object.defineProperty(document, 'fullscreenElement', {
-        value: true,
-        writable: true
+        value: null,
+        writable: true,
+        configurable: true,
       });
-      
-      component.toggleFullScreen();
+      Object.defineProperty(document, 'exitFullscreen', {
+        value: jest.fn().mockImplementation(() => Promise.resolve()),
+        writable: true,
+        configurable: true,
+      });
+    });
+
+    it('should request fullscreen when not in fullscreen', async () => {
+      Object.defineProperty(document, 'fullscreenElement', { value: null });
+      await component.toggleFullScreen();
+      expect(requestFullscreenSpy).toHaveBeenCalled();
+      expect(exitFullscreenSpy).not.toHaveBeenCalled();
+    });
+
+    it('should exit fullscreen when in fullscreen and exitFullscreen is available', async () => {
+      Object.defineProperty(document, 'fullscreenElement', { value: document.documentElement });
+      Object.defineProperty(document, 'exitFullscreen', { value: jest.fn().mockImplementation(() => Promise.resolve()) });
+      await component.toggleFullScreen();
+      expect(document.exitFullscreen).toHaveBeenCalled();
+      expect(requestFullscreenSpy).not.toHaveBeenCalled();
+    });
+
+    it('should not attempt to exit fullscreen when in fullscreen but exitFullscreen is undefined', async () => {
+      Object.defineProperty(document, 'fullscreenElement', { value: document.documentElement });
+      Object.defineProperty(document, 'exitFullscreen', { value: undefined });
+      await component.toggleFullScreen();
+      expect(requestFullscreenSpy).not.toHaveBeenCalled();
+      expect(exitFullscreenSpy).not.toHaveBeenCalled();
+    });
+
+    it('should not attempt to exit fullscreen when in fullscreen but exitFullscreen is null', async () => {
+      Object.defineProperty(document, 'fullscreenElement', { value: document.documentElement });
+      Object.defineProperty(document, 'exitFullscreen', { value: null });
+      await component.toggleFullScreen();
+      expect(requestFullscreenSpy).not.toHaveBeenCalled();
+      expect(exitFullscreenSpy).not.toHaveBeenCalled();
+    });
+
+    it('should log error when fullscreen request fails', async () => {
+      jest.spyOn(console, 'error').mockImplementation();
+      requestFullscreenSpy.mockRejectedValue(new Error('Permission denied'));
+      Object.defineProperty(document, 'fullscreenElement', { value: null });
+      await component.toggleFullScreen();
+      expect(console.error).toHaveBeenCalledWith('Error attempting to enable fullscreen: Permission denied');
+    });
+
+    it('should trigger fullscreen toggle when button is clicked (enter fullscreen)', async () => {
+      Object.defineProperty(document, 'fullscreenElement', { value: null });
+      const fullscreenButton = fixture.debugElement.queryAll(By.css('button[mat-icon-button]'))[1];
+      fullscreenButton.nativeElement.click();
+      await fixture.whenStable();
+      fixture.detectChanges();
+      expect(requestFullscreenSpy).toHaveBeenCalled();
+    });
+
+    it('should trigger fullscreen toggle when button is clicked (exit fullscreen)', async () => {
+      Object.defineProperty(document, 'fullscreenElement', { value: document.documentElement });
+      Object.defineProperty(document, 'exitFullscreen', { value: jest.fn().mockImplementation(() => Promise.resolve()) });
+      const fullscreenButton = fixture.debugElement.queryAll(By.css('button[mat-icon-button]'))[1];
+      fullscreenButton.nativeElement.click();
+      await fixture.whenStable();
+      fixture.detectChanges();
       expect(document.exitFullscreen).toHaveBeenCalled();
     });
-
-    it('should handle fullscreen error', () => {
-      const mockError = new Error('Fullscreen error');
-      document.documentElement.requestFullscreen = jest.fn().mockRejectedValue(mockError);
-      const consoleSpy = jest.spyOn(console, 'error');
-      
-      component.toggleFullScreen();
-      expect(consoleSpy).toHaveBeenCalledWith(`Error attempting to enable fullscreen: ${mockError.message}`);
-    });
   });
 
-  describe('setLanguage()', () => {
-    it('should set language to English when "en" is passed', () => {
+  describe('setLanguage', () => {
+    it('should set language to English for "en"', () => {
       component.setLanguage('en');
       expect(component.currentLanguage()).toBe('English');
     });
 
-    it('should set language to French when "fr" is passed', () => {
+    it('should set language to French for "fr"', () => {
       component.setLanguage('fr');
       expect(component.currentLanguage()).toBe('French');
     });
 
-    it('should keep current language when unknown code is passed', () => {
-      component.setLanguage('de');
-      expect(component.currentLanguage()).toBe('English');
-    });
-
-    it('should actually change language in transloco service', () => {
-      const translocoService = TestBed.inject(TranslocoService);
-      const setActiveLangSpy = jest.spyOn(translocoService, 'setActiveLang');
-      
-      component.setLanguage('fr');
-      expect(setActiveLangSpy).toHaveBeenCalledWith('fr');
-    });
-  });
-
-  describe('toggleSidenav()', () => {
-    it('should toggle collapsed state', () => {
-      const initialValue = component.collapsed();
-      component.toggleSidenav();
-      expect(component.collapsed()).toBe(!initialValue);
-      component.toggleSidenav();
-      expect(component.collapsed()).toBe(initialValue);
-    });
-  });
-
-  describe('computed properties', () => {
-    describe('sidenavWidth()', () => {
-      it('should return 280px for mobile', () => {
-        jest.spyOn(responsiveService, 'isMobile').mockReturnValue(true);
-        expect(component.sidenavWidth()).toBe('280px');
-      });
-
-      it('should return 64px when collapsed on desktop', () => {
-        jest.spyOn(responsiveService, 'isMobile').mockReturnValue(false);
-        component.collapsed.set(true);
-        expect(component.sidenavWidth()).toBe('64px');
-      });
-
-      it('should return 200px when not collapsed on desktop', () => {
-        jest.spyOn(responsiveService, 'isMobile').mockReturnValue(false);
-        component.collapsed.set(false);
-        expect(component.sidenavWidth()).toBe('200px');
-      });
-    });
-
-    describe('sidenavMode()', () => {
-      it('should return "over" for mobile', () => {
-        jest.spyOn(responsiveService, 'isMobile').mockReturnValue(true);
-        expect(component.sidenavMode()).toBe('over');
-      });
-
-      it('should return "side" for desktop', () => {
-        jest.spyOn(responsiveService, 'isMobile').mockReturnValue(false);
-        expect(component.sidenavMode()).toBe('side');
-      });
-    });
-
-    describe('sidenavOpened()', () => {
-      it('should return true for desktop regardless of collapsed state', () => {
-        jest.spyOn(responsiveService, 'isMobile').mockReturnValue(false);
-        component.collapsed.set(true);
-        expect(component.sidenavOpened()).toBe(true);
-        component.collapsed.set(false);
-        expect(component.sidenavOpened()).toBe(true);
-      });
-
-      it('should return false when collapsed on mobile', () => {
-        jest.spyOn(responsiveService, 'isMobile').mockReturnValue(true);
-        component.collapsed.set(true);
-        expect(component.sidenavOpened()).toBe(false);
-      });
-
-      it('should return true when not collapsed on mobile', () => {
-        jest.spyOn(responsiveService, 'isMobile').mockReturnValue(true);
-        component.collapsed.set(false);
-        expect(component.sidenavOpened()).toBe(true);
-      });
-    });
-  });
-
-  describe('Template', () => {
-    it('should display the correct title in toolbar', () => {
-      const titleElement = fixture.debugElement.query(By.css('mat-toolbar .title'));
-      expect(titleElement.nativeElement.textContent).toContain('Code Book');
-    });
-
-    it('should call toggleSidenav when menu button is clicked', () => {
-      const toggleSpy = jest.spyOn(component, 'toggleSidenav');
-      const menuButton = fixture.debugElement.query(By.css('mat-toolbar button[aria-label="Toggle sidenav"]'));
-      menuButton.triggerEventHandler('click', null);
-      expect(toggleSpy).toHaveBeenCalled();
-    });
-
-    it('should call toggleFullScreen when fullscreen button is clicked', () => {
-      const fullscreenSpy = jest.spyOn(component, 'toggleFullScreen');
-      const fullscreenButton = fixture.debugElement.query(By.css('mat-toolbar button[aria-label="Toggle fullscreen"]'));
-      fullscreenButton.triggerEventHandler('click', null);
-      expect(fullscreenSpy).toHaveBeenCalled();
-    });
-
-    it('should contain app-custom-sidenav component', () => {
-      const sidenavComponent = fixture.debugElement.query(By.directive(CustomSidenavComponent));
-      expect(sidenavComponent).toBeTruthy();
-    });
-
-    it('should pass collapsed state to custom sidenav', () => {
-      component.collapsed.set(true);
+    it('should update language when menu item is clicked', () => {
+      const languageButton = fixture.debugElement.query(By.css('button[matMenuTriggerFor="languageMenu"]'));
+      languageButton.nativeElement.click();
       fixture.detectChanges();
-      const sidenavComponent = fixture.debugElement.query(By.directive(CustomSidenavComponent));
-      expect(sidenavComponent.componentInstance.collapsed).toBe(true);
+
+      const menuItems = fixture.debugElement.queryAll(By.css('mat-menu[ng-reflect-menu="languageMenu"] button[mat-menu-item]'));
+      menuItems[1].nativeElement.click();
+      fixture.detectChanges();
+
+      expect(component.currentLanguage()).toBe('French');
+      expect(fixture.nativeElement.querySelector('button[matMenuTriggerFor="languageMenu"] a').textContent).toBe('French');
     });
   });
 
-  describe('Integration with ResponsiveService', () => {
-    it('should update sidenav when responsive service emits changes', () => {
-      // Create a mock observable
-      const mockObservable = new Subject<boolean>();
-      
-      // Properly type the spy and mock the property
-      jest.spyOn(responsiveService as any, 'screenWidth$', 'get').mockReturnValue(mockObservable);
-      
-      // Recreate component with new spy
+  describe('Dark Mode Menu', () => {
+    it('should render dark mode menu items', () => {
+      const darkModeButton = fixture.debugElement.query(By.css('button[matMenuTriggerFor="darkModeMenu"]'));
+      darkModeButton.nativeElement.click();
+      fixture.detectChanges();
+
+      const menuItems = fixture.debugElement.queryAll(By.css('mat-menu[ng-reflect-menu="darkModeMenu"] button[mat-menu-item]'));
+      expect(menuItems.length).toBe(2);
+      expect(menuItems[0].nativeElement.textContent).toContain('Light');
+      expect(menuItems[1].nativeElement.textContent).toContain('Dark');
+    });
+
+    it('should apply selected-theme class to current dark mode theme', () => {
+      darkModeService.selectedTheme.mockReturnValue({ name: 'dark', icon: 'dark_mode' });
+      fixture.detectChanges();
+
+      const darkModeButton = fixture.debugElement.query(By.css('button[matMenuTriggerFor="darkModeMenu"]'));
+      darkModeButton.nativeElement.click();
+      fixture.detectChanges();
+
+      const menuItems = fixture.debugElement.queryAll(By.css('mat-menu[ng-reflect-menu="darkModeMenu"] button[mat-menu-item]'));
+      expect(menuItems[1].nativeElement.classList).toContain('selected-theme');
+      expect(menuItems[0].nativeElement.classList).not.toContain('selected-theme');
+    });
+
+    it('should call setTheme when dark mode menu item is clicked', () => {
+      const darkModeButton = fixture.debugElement.query(By.css('button[matMenuTriggerFor="darkModeMenu"]'));
+      darkModeButton.nativeElement.click();
+      fixture.detectChanges();
+
+      const menuItems = fixture.debugElement.queryAll(By.css('mat-menu[ng-reflect-menu="darkModeMenu"] button[mat-menu-item]'));
+      menuItems[1].nativeElement.click();
+      fixture.detectChanges();
+
+      expect(darkModeService.setTheme).toHaveBeenCalledWith('dark');
+    });
+  });
+
+  describe('Color Theme Menu', () => {
+    it('should render color theme menu items with color preview', () => {
+      const colorThemeButton = fixture.debugElement.query(By.css('button[matMenuTriggerFor="colorThemeMenu"]'));
+      colorThemeButton.nativeElement.click();
+      fixture.detectChanges();
+
+      const menuItems = fixture.debugElement.queryAll(By.css('mat-menu[ng-reflect-menu="colorThemeMenu"] button[mat-menu-item]'));
+      expect(menuItems.length).toBe(2);
+      expect(menuItems[0].nativeElement.textContent).toContain('Deep-Blue');
+      expect(menuItems[1].nativeElement.textContent).toContain('Green');
+
+      const colorPreviews = fixture.debugElement.queryAll(By.css('.color-preview'));
+      expect(colorPreviews[0].nativeElement.style.backgroundColor).toBe('rgb(25, 118, 210)');
+      expect(colorPreviews[1].nativeElement.style.backgroundColor).toBe('rgb(0, 121, 107)');
+    });
+
+    it('should call setTheme when color theme menu item is clicked', () => {
+      const colorThemeButton = fixture.debugElement.query(By.css('button[matMenuTriggerFor="colorThemeMenu"]'));
+      colorThemeButton.nativeElement.click();
+      fixture.detectChanges();
+
+      const menuItems = fixture.debugElement.queryAll(By.css('mat-menu[ng-reflect-menu="colorThemeMenu"] button[mat-menu-item]'));
+      menuItems[1].nativeElement.click();
+      fixture.detectChanges();
+
+      expect(themeService.setTheme).toHaveBeenCalledWith('green');
+    });
+  });
+
+  describe('Responsive Behavior', () => {
+    it('should set sidenav margin-left to 0 on mobile', () => {
+      responsiveService.isMobile.mockReturnValue(true);
+      fixture.detectChanges();
+      const sidenavContent = fixture.nativeElement.querySelector('mat-sidenav-content');
+      expect(sidenavContent.style.marginLeft).toBe('0px');
+    });
+
+    it('should set fixedInViewport and fixedTopGap on mobile', () => {
+      responsiveService.isMobile.mockReturnValue(true);
+      fixture.detectChanges();
+      const sidenav = fixture.nativeElement.querySelector('mat-sidenav');
+      expect(sidenav.getAttribute('ng-reflect-fixed-in-viewport')).toBe('true');
+      expect(sidenav.getAttribute('ng-reflect-fixed-top-gap')).toBe('48');
+    });
+
+    it('should close sidenav on content click when mobile', () => {
+      responsiveService.isMobile.mockReturnValue(true);
+      component.collapsed.set(false);
+      fixture.detectChanges();
+
+      const sidenav = fixture.debugElement.query(By.css('mat-sidenav')).componentInstance;
+      const closeSpy = jest.spyOn(sidenav, 'close');
+      const sidenavContent = fixture.debugElement.query(By.css('mat-sidenav-content'));
+      sidenavContent.triggerEventHandler('click', {});
+      fixture.detectChanges();
+
+      expect(closeSpy).toHaveBeenCalled();
+    });
+
+    it('should not close sidenav on content click when not mobile', () => {
+      responsiveService.isMobile.mockReturnValue(false);
+      component.collapsed.set(false);
+      fixture.detectChanges();
+
+      const sidenav = fixture.debugElement.query(By.css('mat-sidenav')).componentInstance;
+      const closeSpy = jest.spyOn(sidenav, 'close');
+      const sidenavContent = fixture.debugElement.query(By.css('mat-sidenav-content'));
+      sidenavContent.triggerEventHandler('click', {});
+      fixture.detectChanges();
+
+      expect(closeSpy).not.toHaveBeenCalled();
+    });
+  });
+
+  describe('Tooltip Integration', () => {
+    it('should render tooltips for fullscreen, dark mode, color theme, and language buttons', () => {
+      const buttons = fixture.debugElement.queryAll(By.css('button[matTooltip]'));
+      expect(buttons.length).toBe(3);
+      expect(buttons[0].nativeElement.getAttribute('matTooltip')).toBe('Full Screen');
+      expect(buttons[1].nativeElement.getAttribute('matTooltip')).toBe('Select Light/Dark Mode');
+      expect(buttons[2].nativeElement.getAttribute('matTooltip')).toBe('Select Color Theme');
+    });
+  });
+
+  describe('Routing Integration', () => {
+    beforeEach(() => {
+      TestBed.resetTestingModule();
+      TestBed.configureTestingModule({
+        imports: [
+          RouterOutlet,
+          CommonModule,
+          MatToolbarModule,
+          MatButtonModule,
+          MatIconModule,
+          MatSidenavModule,
+          MatMenuModule,
+          MatTooltipModule,
+          MatBadgeModule,
+          NoopAnimationsModule,
+          MockTranslocoRootModule,
+        ],
+        providers: [
+          { provide: ResponsiveService, useValue: responsiveService },
+          { provide: DarkModeService, useValue: darkModeService },
+          { provide: ThemeService, useValue: themeService },
+          ...appConfig.providers,
+        ],
+      })
+        .overrideComponent(AppComponent, {
+          set: {
+            imports: [
+              RouterOutlet,
+              CommonModule,
+              MatToolbarModule,
+              MatButtonModule,
+              MatIconModule,
+              MatSidenavModule,
+              MatMenuModule,
+              MatTooltipModule,
+              MatBadgeModule,
+              MockTranslocoRootModule,
+              MockCustomSidenavComponent,
+              MockUserComponent,
+            ],
+          },
+        })
+        .compileComponents();
+
       fixture = TestBed.createComponent(AppComponent);
       component = fixture.componentInstance;
-      
-      mockObservable.next(true); // Simulate mobile
-      fixture.detectChanges();
-      expect(component.sidenavMode()).toBe('over');
-      
-      mockObservable.next(false); // Simulate desktop
-      fixture.detectChanges();
-      expect(component.sidenavMode()).toBe('side');
-    });
-  });
-
-  describe('App Routing', () => {
-    let router: Router;
-
-    beforeEach(() => {
       router = TestBed.inject(Router);
+      fixture.detectChanges();
     });
 
-    it('should redirect empty path to dashboard', fakeAsync(() => {
-      router.navigate(['']);
-      tick();
-      expect(router.url).toBe('/dashboard');
-    }));
-
-    it('should redirect unknown paths to dashboard', fakeAsync(() => {
-      router.navigate(['nonexistent']);
-      tick();
-      expect(router.url).toBe('/dashboard');
-    }));
-
-    it('should route to dashboard component', fakeAsync(() => {
-      router.navigate(['dashboard']);
-      tick();
+    it('should render DashboardComponent for /dashboard route', async () => {
+      await router.navigate(['dashboard']);
       fixture.detectChanges();
-      expect(fixture.debugElement.query(By.directive(DashboardComponent))).toBeTruthy();
-    }));
+      const dashboard = fixture.debugElement.query(By.css('app-dashboard'));
+      expect(dashboard).toBeTruthy();
+      expect(dashboard.nativeElement.textContent).toContain('Dashboard');
+    });
 
-    it('should route to users component', fakeAsync(() => {
-      router.navigate(['users']);
-      tick();
+    it('should render UsersComponent for /users route', async () => {
+      await router.navigate(['users']);
       fixture.detectChanges();
-      expect(fixture.debugElement.query(By.directive(UsersComponent))).toBeTruthy();
-    }));
-  });
-});
+      const users = fixture.debugElement.query(By.css('app-users'));
+      expect(users).toBeTruthy();
+      expect(users.nativeElement.textContent).toContain('Users');
+    });
 
-describe('AppConfig', () => {
-  it('should provide zone change detection with event coalescing', () => {
-    // Type-safe check for zone provider
-    const zoneProvider = appConfig.providers.find(
-      (p: any) => p?.ɵproviders?.some((prov: any) => prov?.provide === 'eventCoalescingEnabled')
-    );
-    expect(zoneProvider).toBeDefined();
+    it('should render BusinessComponent for /business route', async () => {
+      await router.navigate(['business']);
+      fixture.detectChanges();
+      const business = fixture.debugElement.query(By.css('app-business'));
+      expect(business).toBeTruthy();
+      expect(business.nativeElement.textContent).toContain('Business');
+    });
+
+    it('should render ListBusinessesComponent for /business-list route', async () => {
+      await router.navigate(['business-list']);
+      fixture.detectChanges();
+      const listBusinesses = fixture.debugElement.query(By.css('app-list-businesses'));
+      expect(listBusinesses).toBeTruthy();
+      expect(listBusinesses.nativeElement.textContent).toContain('List Businesses');
+    });
+
+    it('should redirect to /dashboard for empty route', async () => {
+      await router.navigate(['']);
+      fixture.detectChanges();
+      const dashboard = fixture.debugElement.query(By.css('app-dashboard'));
+      expect(dashboard).toBeTruthy();
+      expect(router.url).toBe('/dashboard');
+    });
+
+    it('should redirect to /dashboard for unknown route', async () => {
+      await router.navigate(['unknown']);
+      fixture.detectChanges();
+      const dashboard = fixture.debugElement.query(By.css('app-dashboard'));
+      expect(dashboard).toBeTruthy();
+      expect(router.url).toBe('/dashboard');
+    });
   });
 
-  it('should provide router with correct routes', () => {
-    // Type-safe check for router provider
-    const routerProvider = appConfig.providers.find(
-      (p: any) => p?.ɵproviders?.some((prov: any) => prov?.provide === Router)
-    );
-    expect(routerProvider).toBeDefined();
+  describe('AppConfig Integration', () => {
+    beforeEach(() => {
+      TestBed.resetTestingModule();
+      TestBed.configureTestingModule({
+        imports: [
+          RouterOutlet,
+          CommonModule,
+          MatToolbarModule,
+          MatButtonModule,
+          MatIconModule,
+          MatSidenavModule,
+          MatMenuModule,
+          MatTooltipModule,
+          MatBadgeModule,
+          NoopAnimationsModule,
+          MockTranslocoRootModule,
+        ],
+        providers: [
+          { provide: ResponsiveService, useValue: responsiveService },
+          { provide: DarkModeService, useValue: darkModeService },
+          { provide: ThemeService, useValue: themeService },
+          ...appConfig.providers,
+        ],
+      })
+        .overrideComponent(AppComponent, {
+          set: {
+            imports: [
+              RouterOutlet,
+              CommonModule,
+              MatToolbarModule,
+              MatButtonModule,
+              MatIconModule,
+              MatSidenavModule,
+              MatMenuModule,
+              MatTooltipModule,
+              MatBadgeModule,
+              MockTranslocoRootModule,
+              MockCustomSidenavComponent,
+              MockUserComponent,
+            ],
+          },
+        })
+        .compileComponents();
+    });
+
+    it('should include all providers from appConfig', () => {
+      expect(appConfig.providers.length).toBe(5);
+      expect(appConfig.providers).toContainEqual(provideZoneChangeDetection({ eventCoalescing: true }));
+      expect(appConfig.providers).toContainEqual(provideRouter(routes));
+      expect(appConfig.providers).toContainEqual(provideHttpClient());
+      expect(appConfig.providers).toContainEqual(provideAnimations());
+      expect(appConfig.providers).toContainEqual(
+        provideToastr({
+          timeOut: 3000,
+          positionClass: 'toast-top-right',
+          preventDuplicates: true,
+        })
+      );
+    });
+
+    it('should provide ZoneChangeDetection with eventCoalescing', () => {
+      const zoneConfig = TestBed.inject(provideZoneChangeDetection);
+      expect(zoneConfig).toBeDefined();
+      expect(zoneConfig({ eventCoalescing: true })).toBeDefined();
+    });
+
+    it('should provide Router with routes', () => {
+      const routerInstance = TestBed.inject(Router);
+      expect(routerInstance).toBeTruthy();
+      expect(routerInstance.config).toContainEqual(expect.objectContaining({ path: 'dashboard' }));
+      expect(routerInstance.config).toContainEqual(expect.objectContaining({ path: 'users' }));
+      expect(routerInstance.config).toContainEqual(expect.objectContaining({ path: 'business' }));
+      expect(routerInstance.config).toContainEqual(expect.objectContaining({ path: 'business-list' }));
+      expect(routerInstance.config).toContainEqual(expect.objectContaining({ path: '', redirectTo: 'dashboard' }));
+      expect(routerInstance.config).toContainEqual(expect.objectContaining({ path: '**', redirectTo: 'dashboard' }));
+    });
+
+    it('should provide HttpClient', () => {
+      const httpClient = TestBed.inject(HttpClient);
+      expect(httpClient).toBeTruthy();
+    });
+
+    it('should provide Animations', () => {
+      const animations = TestBed.inject(provideAnimations);
+      expect(animations).toBeDefined();
+    });
+
+    it('should provide Toastr with correct configuration', () => {
+      const toastrService = TestBed.inject(ToastrService);
+      expect(toastrService).toBeTruthy();
+      expect(toastrService.toastrConfig.timeOut).toBe(3000);
+      expect(toastrService.toastrConfig.positionClass).toBe('toast-top-right');
+      expect(toastrService.toastrConfig.preventDuplicates).toBe(true);
+    });
   });
 });
