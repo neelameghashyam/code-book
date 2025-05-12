@@ -1,4 +1,4 @@
-import { Component, computed, signal, inject } from '@angular/core';
+import { Component, computed, signal, inject, ViewChild } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { MatToolbarModule } from '@angular/material/toolbar';
@@ -8,6 +8,7 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatBadgeModule } from '@angular/material/badge';
+import { MatSidenav } from '@angular/material/sidenav';
 import { TranslocoRootModule } from './transloco-root.module';
 import { CustomSidenavComponent } from './custom-sidenav/custom-sidenav.component';
 import { ResponsiveService } from './services/responsive/responsive.service';
@@ -31,7 +32,7 @@ import { UserComponent } from "./user/user.component";
     TranslocoRootModule,
     CustomSidenavComponent,
     UserComponent
-],
+  ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })
@@ -43,6 +44,8 @@ export class AppComponent {
   public responsiveService = inject(ResponsiveService);
   public darkModeService = inject(DarkModeService);
   themeService = inject(ThemeService);
+
+  @ViewChild('sidenav') sidenav!: MatSidenav;
 
   toggleFullScreen() {
     if (!document.fullscreenElement) {

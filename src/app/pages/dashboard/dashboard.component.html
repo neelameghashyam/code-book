@@ -1,1 +1,164 @@
-<p>dashboard works!</p>
+<div class="container mx-auto max-w-4xl p-4 sm:p-6 font-sans">
+  <h2 class="text-2xl font-bold mb-2">Add Service Provider</h2>
+  <p class="text-gray-600 dark:text-gray-400 mb-5">
+    Fill in the fields below to add a new service provider.
+  </p>
+
+  <form [formGroup]="providerForm" (ngSubmit)="onSubmit()">
+    <div class="flex flex-col md:flex-row gap-4 md:gap-6">
+      <!-- Left Column -->
+      <div class="flex-1 flex flex-col gap-4">
+        <label for="country" class="text-sm font-bold">Country</label>
+        <select
+          id="country"
+          formControlName="country"
+          class="p-2 border border-gray-300 rounded text-sm w-full focus:outline-none focus:border-blue-500 bg-white dark:text-white"
+          [ngClass]="{
+            'border-red-500': providerForm.get('country')?.invalid && providerForm.get('country')?.touched
+          }"
+        >
+          <option value="" disabled>
+            Select country
+          </option>
+          <option *ngFor="let country of countries" [value]="country">
+            {{ country }}
+          </option>
+        </select>
+        <small
+          *ngIf="providerForm.get('country')?.invalid && providerForm.get('country')?.touched"
+          class="text-xs text-red-500"
+        >
+          Country is required
+        </small>
+
+        <label for="addressLine1" class="text-sm font-bold">Address line 1</label>
+        <input
+          id="addressLine1"
+          type="text"
+          formControlName="addressLine1"
+          placeholder="First line of address"
+          class="p-2 border border-gray-300 rounded text-sm w-full focus:outline-none focus:border-blue-500 bg-white dark:text-white"
+          [ngClass]="{
+            'border-red-500': providerForm.get('addressLine1')?.invalid && providerForm.get('addressLine1')?.touched
+          }"
+        />
+        <small
+          *ngIf="providerForm.get('addressLine1')?.invalid && providerForm.get('addressLine1')?.touched"
+          class="text-xs text-red-500"
+        >
+          Address line 1 is required
+        </small>
+
+        <label for="addressLine3" class="text-sm font-bold">Address line 3 (optional)</label>
+        <input
+          id="addressLine3"
+          type="text"
+          formControlName="addressLine3"
+          placeholder="Third line of address"
+          class="p-2 border border-gray-300 rounded text-sm w-full focus:outline-none focus:border-blue-500 bg-white dark:text-white"
+        />
+
+        <label for="state" class="text-sm font-bold">State / Province (optional)</label>
+        <input
+          id="state"
+          type="text"
+          formControlName="state"
+          placeholder="Enter state or province"
+          class="p-2 border border-gray-300 rounded text-sm w-full focus:outline-none focus:border-blue-500 bg-white dark:text-white"
+          [ngClass]="{
+            'border-red-500': providerForm.get('state')?.invalid && providerForm.get('state')?.touched
+          }"
+        />
+        <small
+          *ngIf="providerForm.get('state')?.invalid && providerForm.get('state')?.touched"
+          class="text-xs text-red-500"
+        >
+          State code must be 2 or 3 characters
+        </small>
+      </div>
+
+      <!-- Right Column -->
+      <div class="flex-1 flex flex-col gap-4">
+        <label for="spName" class="text-sm font-bold">Service Provider | SP Name</label>
+        <input
+          id="spName"
+          type="text"
+          formControlName="spName"
+          placeholder="Enter Service Provider name"
+          class="p-2 border border-gray-300 rounded text-sm w-full focus:outline-none focus:border-blue-500 bg-white dark:text-white"
+          [ngClass]="{
+            'border-red-500': providerForm.get('spName')?.invalid && providerForm.get('spName')?.touched
+          }"
+        />
+        <small
+          *ngIf="providerForm.get('spName')?.invalid && providerForm.get('spName')?.touched"
+          class="text-xs text-red-500"
+        >
+          Service Provider name is required and must be at least 3 characters
+        </small>
+
+        <label for="addressLine2" class="text-sm font-bold">Address line 2 (optional)</label>
+        <input
+          id="addressLine2"
+          type="text"
+          formControlName="addressLine2"
+          placeholder="Second line of address"
+          class="p-2 border border-gray-300 rounded text-sm w-full focus:outline-none focus:border-blue-500 bg-white dark:text-white"
+        />
+
+        <label for="city" class="text-sm font-bold">City / Town</label>
+        <input
+          id="city"
+          type="text"
+          formControlName="city"
+          placeholder="Enter city / town"
+          class="p-2 border border-gray-300 rounded text-sm w-full focus:outline-none focus:border-blue-500 bg-white dark:text-white"
+          [ngClass]="{
+            'border-red-500': providerForm.get('city')?.invalid && providerForm.get('city')?.touched
+          }"
+        />
+        <small
+          *ngIf="providerForm.get('city')?.invalid && providerForm.get('city')?.touched"
+          class="text-xs text-red-500"
+        >
+          City is required
+        </small>
+
+        <label for="postalCode" class="text-sm font-bold">Postal code / Zip code</label>
+        <input
+          id="postalCode"
+          type="text"
+          formControlName="postalCode"
+          placeholder="Enter code"
+          class="p-2 border border-gray-300 rounded text-sm w-full focus:outline-none focus:border-blue-500 bg-white dark:text-white"
+          [ngClass]="{
+            'border-red-500': providerForm.get('postalCode')?.invalid && providerForm.get('postalCode')?.touched
+          }"
+        />
+        <small
+          *ngIf="providerForm.get('postalCode')?.invalid && providerForm.get('postalCode')?.touched"
+          class="text-xs text-red-500"
+        >
+          Postal code is required and must be at least 5 characters
+        </small>
+      </div>
+    </div>
+
+    <!-- Buttons -->
+    <div class="flex flex-col sm:flex-row gap-3 mt-5">
+      <button
+        type="submit"
+        class="bg-orange-500 text-white px-4 py-2 rounded-full text-sm font-medium hover:bg-orange-600 w-full sm:w-auto"
+      >
+        ADD SERVICE PROVIDER
+      </button>
+      <button
+        type="button"
+        class="border border-red-500 text-red-500 px-4 py-2 rounded-full text-sm font-medium hover:bg-red-50 w-full sm:w-auto"
+        (click)="onCancel()"
+      >
+        Cancel
+      </button>
+    </div>
+  </form>
+</div>

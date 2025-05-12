@@ -1,72 +1,99 @@
 <div class="flex flex-col min-h-screen" [class.dark-theme]="darkModeService.isDarkMode()">
   <!-- Header -->
-  <mat-toolbar class="bg-primary text-white shadow-md sticky top-0 z-50">
-    <div class="flex items-center justify-between w-full px-4">
+  <mat-toolbar class="bg-primary text-white shadow-md sticky top-0 z-50 px-2 sm:px-4">
+    <div class="flex items-center justify-between w-full">
       <!-- Left section -->
-      <div class="flex items-center space-x-4">
+      <div class="flex items-center space-x-2 sm:space-x-4">
         <button mat-icon-button class="text-white hover:bg-white/10 rounded-full" (click)="toggleSidenav()">
-          <mat-icon>menu</mat-icon>
+          <mat-icon class="text-lg sm:text-xl">menu</mat-icon>
         </button>
-        <span class="text-xl font-semibold">{{ title }}</span>
+        <span class="text-lg sm:text-xl font-semibold truncate">{{ title }}</span>
       </div>
 
       <!-- Right section -->
-      <div class="flex items-center space-x-2">
-        <!-- Fullscreen toggle -->
-        <button mat-icon-button class="text-white hover:bg-white/10 rounded-full" 
-                (click)="toggleFullScreen()" matTooltip="Full Screen">
-          <mat-icon>fullscreen</mat-icon>
+      <div class="flex items-center space-x-1 sm:space-x-2">
+        <!-- Mobile menu button for right section -->
+        <button mat-icon-button class="text-white hover:bg-white/10 rounded-full sm:hidden" 
+                [matMenuTriggerFor]="mobileMenu" matTooltip="Menu">
+          <mat-icon>more_vert</mat-icon>
         </button>
-
-        <!-- Dark Mode Theme selector -->
-        <button mat-icon-button class="text-white hover:bg-white/10 rounded-full" 
-                [matMenuTriggerFor]="darkModeMenu" matTooltip="Select Light/Dark Mode">
-          <mat-icon>{{ darkModeService.selectedTheme()?.icon }}</mat-icon>
-        </button>
-        <mat-menu #darkModeMenu="matMenu">
-          @for (theme of darkModeService.getThemes(); track theme.name) {
-            <button mat-menu-item 
-                    [class.selected-theme]="darkModeService.selectedTheme()?.name === theme.name"
-                    (click)="darkModeService.setTheme(theme.name)">
-              <mat-icon>{{ theme.icon }}</mat-icon>
-              <span>{{ theme.name | titlecase }}</span>
-            </button>
-          }
-        </mat-menu>
-
-        <!-- Color Theme selector -->
-        <button mat-icon-button 
-                [matMenuTriggerFor]="colorThemeMenu" 
-                matTooltip="Select Color Theme"
-                class="dark-mode-toggle">
-          <mat-icon>format_color_fill</mat-icon>
-        </button>
-        <mat-menu #colorThemeMenu="matMenu" class="color-theme-menu">
-          @for (theme of themeService.getThemes(); track theme.id) {
-            <button mat-menu-item (click)="themeService.setTheme(theme.id)">
-              <div class="theme-menu-item">
-                <div class="color-preview" [style.background-color]="theme.primary"></div>
-                <span>{{ theme.displayName }}</span>
-              </div>
-            </button>
-          }
-        </mat-menu>
-
-        <!-- Language selector -->
-        <button mat-button [matMenuTriggerFor]="languageMenu" 
-                class="text-white hover:bg-white/10 rounded-full flex items-center"
-                matTooltip="Language">
-          <a>{{ currentLanguage() }}</a>
-          <mat-icon>arrow_drop_down</mat-icon>
-        </button>
-        <mat-menu #languageMenu="matMenu" class="language-menu">
-          <button mat-menu-item (click)="setLanguage('en')">
-            <span>English</span>
+        <mat-menu #mobileMenu="matMenu">
+          <button mat-menu-item (click)="toggleFullScreen()">
+            <mat-icon>fullscreen</mat-icon>
+            <span>Full Screen</span>
           </button>
-          <button mat-menu-item (click)="setLanguage('fr')">
-            <span>French</span>
+          <button mat-menu-item [matMenuTriggerFor]="darkModeMenu">
+            <mat-icon>{{ darkModeService.selectedTheme()?.icon }}</mat-icon>
+            <span>Theme</span>
+          </button>
+          <button mat-menu-item [matMenuTriggerFor]="colorThemeMenu">
+            <mat-icon>format_color_fill</mat-icon>
+            <span>Color Theme</span>
+          </button>
+          <button mat-menu-item [matMenuTriggerFor]="languageMenu">
+            <mat-icon>language</mat-icon>
+            <span>Language</span>
           </button>
         </mat-menu>
+
+        <!-- Right section buttons (hidden on mobile) -->
+        <div class="hidden sm:flex items-center space-x-1 sm:space-x-2">
+          <!-- Fullscreen toggle -->
+          <button mat-icon-button class="text-white hover:bg-white/10 rounded-full" 
+                  (click)="toggleFullScreen()" matTooltip="Full Screen">
+            <mat-icon class="text-lg sm:text-xl">fullscreen</mat-icon>
+          </button>
+
+          <!-- Dark Mode Theme selector -->
+          <button mat-icon-button class="text-white hover:bg-white/10 rounded-full" 
+                  [matMenuTriggerFor]="darkModeMenu" matTooltip="Select Light/Dark Mode">
+            <mat-icon class="text-lg sm:text-xl">{{ darkModeService.selectedTheme()?.icon }}</mat-icon>
+          </button>
+          <mat-menu #darkModeMenu="matMenu">
+            @for (theme of darkModeService.getThemes(); track theme.name) {
+              <button mat-menu-item 
+                      [class.selected-theme]="darkModeService.selectedTheme()?.name === theme.name"
+                      (click)="darkModeService.setTheme(theme.name)">
+                <mat-icon>{{ theme.icon }}</mat-icon>
+                <span>{{ theme.name | titlecase }}</span>
+              </button>
+            }
+          </mat-menu>
+
+          <!-- Color Theme selector -->
+          <button mat-icon-button class="text-white hover:bg-white/10 rounded-full dark-mode-toggle" 
+                  [matMenuTriggerFor]="colorThemeMenu" matTooltip="Select Color Theme">
+            <mat-icon class="text-lg sm:text-xl">format_color_fill</mat-icon>
+          </button>
+          <mat-menu #colorThemeMenu="matMenu" class="color-theme-menu">
+            @for (theme of themeService.getThemes(); track theme.id) {
+              <button mat-menu-item (click)="themeService.setTheme(theme.id)">
+                <div class="theme-menu-item">
+                  <div class="color-preview" [style.background-color]="theme.primary"></div>
+                  <span>{{ theme.displayName }}</span>
+                </div>
+              </button>
+            }
+          </mat-menu>
+
+          <!-- Language selector -->
+          <button mat-button [matMenuTriggerFor]="languageMenu" 
+                  class="text-white hover:bg-white/10 rounded-full flex items-center"
+                  matTooltip="Language">
+            <span class="text-sm sm:text-base">{{ currentLanguage() }}</span>
+            <mat-icon class="text-lg sm:text-xl">arrow_drop_down</mat-icon>
+          </button>
+          <mat-menu #languageMenu="matMenu" class="language-menu">
+            <button mat-menu-item (click)="setLanguage('en')">
+              <span>English</span>
+            </button>
+            <button mat-menu-item (click)="setLanguage('fr')">
+              <span>French</span>
+            </button>
+          </mat-menu>
+        </div>
+
+        <!-- Profile (always visible) -->
         <app-user></app-user>
       </div>
     </div>
@@ -88,7 +115,7 @@
       
       <mat-sidenav-content 
         [style.margin-left]="responsiveService.isMobile() ? '0px' : sidenavWidth()" 
-        class="content transition-all duration-300 p-4"
+        class="p-2 sm:p-4"
         (click)="responsiveService.isMobile() && sidenav.close()">
         <router-outlet></router-outlet>
       </mat-sidenav-content>
@@ -96,12 +123,12 @@
   </main>
 
   <!-- Footer -->
-  <footer class="py-1">
-    <div class="container mx-auto px-4 flex flex-col md:flex-row justify-between items-center">
-      <div class="mb-2 md:mb-0">
+  <footer class="py-2 sm:py-4 bg-gray-100 dark:bg-gray-800">
+    <div class="container mx-auto px-2 sm:px-4 flex flex-col sm:flex-row justify-between items-center text-sm sm:text-base">
+      <div class="mb-2 sm:mb-0 text-center sm:text-left">
         © 2025 Your Code Book All rights reserved.
       </div>
-      <div class="flex space-x-4">
+      <div class="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-4 text-center">
         <a href="#" class="hover:text-primary transition-colors">Privacy Policy</a>
         <a href="#" class="hover:text-primary transition-colors">Terms of Service</a>
         <a href="#" class="hover:text-primary transition-colors">Contact Us</a>
