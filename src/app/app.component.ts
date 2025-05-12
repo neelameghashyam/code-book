@@ -14,7 +14,7 @@ import { CustomSidenavComponent } from './custom-sidenav/custom-sidenav.componen
 import { ResponsiveService } from './services/responsive/responsive.service';
 import { DarkModeService } from './services/dark-mode.service';
 import { ThemeService } from './services/theme/theme.service';
-import { UserComponent } from "./user/user.component";
+import { UserComponent } from './user/user.component';
 
 @Component({
   selector: 'app-root',

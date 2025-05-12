@@ -1,10 +1,10 @@
-<div class="h-full transition-all duration-300 ease-in-out w-full overflow-hidden flex flex-col" style="background-color: var(--mat-sys-surface);">
+<div class="h-full  w-full overflow-hidden flex flex-col" style="background-color: var(--mat-sys-surface);">
   <nav class="p-2 flex flex-col gap-1" role="navigation" aria-label="Main navigation">
     <a
       *ngFor="let item of menuItems()"
       [routerLink]="item.route"
       routerLinkActive #rla="routerLinkActive"
-      class="rounded-lg p-3 transition-all duration-300 ease-in-out flex items-center"
+      class="rounded-lg p-3 t flex items-center"
       [ngClass]="{
         'justify-center py-3 px-0': sideNavCollapsed() && !responsiveService.isMobile()
       }"
@@ -28,7 +28,7 @@
       
       <span 
         *ngIf="!sideNavCollapsed() || responsiveService.isMobile()"
-        class="font-medium transition-all duration-200 ease-in-out"
+        class="font-medium"
         [style.color]="rla.isActive ? 'var(--mat-sys-primary)' : 'var(--mat-sys-on-surface)'"
         [style.font-weight]="rla.isActive ? '600' : '500'"
       >

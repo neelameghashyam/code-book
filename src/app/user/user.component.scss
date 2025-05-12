@@ -1,0 +1,102 @@
+@use '@angular/material' as mat;
+
+.user-container {
+  position: relative;
+
+  button[mat-icon-button] {
+    padding: 0;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--mat-sys-on-primary);
+
+    img {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+
+    .mat-icon {
+      font-size: 28px;
+      width: 28px;
+      height: 28px;
+    }
+  }
+
+  .status-dot {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    margin-right: 12px;
+
+    &.online {
+      background-color: #22c55e;
+    }
+    &.away {
+      background-color: #f59e0b;
+    }
+    &.busy {
+      background-color: #ef4444;
+    }
+    &.not-visible {
+      background-color: #9ca3af;
+    }
+  }
+}
+
+.user-menu, .status-menu {
+  
+
+  button[mat-menu-item] {
+    display: flex;
+    align-items: center;
+    
+    .mat-icon {
+      margin-right: 12px;
+      color: var(--mat-sys-on-surface);
+    }
+  }
+
+  .mat-divider {
+    border-top-color: rgba(var(--mat-sys-on-surface), 0.12);
+  }
+}
+  
+  .status-dot {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    margin-right: 12px;
+    
+    &.online {
+      background-color: #22c55e;
+    }
+    &.away {
+      background-color: #f59e0b;
+    }
+    &.busy {
+      background-color: #ef4444;
+    }
+    &.not-visible {
+      background-color: #9ca3af;
+    }
+  }
+  
+  .user-menu, .status-menu {
+    min-width: 200px;
+    padding: 8px 0;
+  
+    button[mat-menu-item] {
+      display: flex;
+      align-items: center;
+      
+      .mat-icon {
+        margin-right: 12px;
+      }
+    }
+  }

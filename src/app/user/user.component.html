@@ -1,80 +1,69 @@
-<div class="relative">
-  <!-- Hidden file input for avatar upload -->
-  <input type="file" #avatarUpload id="avatarUpload" class="hidden" />
-
-  <button
-    class="flex items-center justify-center w-10 h-10 rounded-full text-white"
-    [matMenuTriggerFor]="userActions"
-    aria-label="User menu">
-    <span class="relative">
-      @if (showAvatar && user.avatar) {
-        <img
-          class="w-7 h-7 rounded-full object-cover"
-          [src]="user.avatar"
-          alt="User avatar"
-         >
-      }
-      @if (!showAvatar || !user.avatar) {
-        <svg class="w-7 h-7" fill="currentColor" viewBox="0 0 24 24">
-          <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
-        </svg>
-      }
-      <span
-        class="absolute right-0 bottom-0 w-2 h-2 rounded-full border border-white"
-        [ngClass]="{
-          'bg-green-500': user.status === 'online',
-          'bg-amber-500': user.status === 'away',
-          'bg-red-500': user.status === 'busy',
-          'bg-gray-400': user.status === 'not-visible'
-        }">
+<div class="user-container">
+    <!-- Hidden file input for avatar upload -->
+    
+    <button
+      mat-icon-button
+      [matMenuTriggerFor]="userActions"
+      aria-label="User menu">
+      <span class="relative">
+        @if (showAvatar && user.avatar) {
+          <img
+            class="w-7 h-7 rounded-full object-cover"
+            [src]="user.avatar"
+            alt="User avatar"
+            (click)="document.getElementById('avatarUpload').click()">
+        }
+        @if (!showAvatar || !user.avatar) {
+          <mat-icon>account_circle</mat-icon>
+        }
+        <span
+          class="absolute right-0 bottom-0 w-2 h-2 rounded-full border border-white"
+          [ngClass]="{
+            'bg-green-500': user.status === 'online',
+            'bg-amber-500': user.status === 'away',
+            'bg-red-500': user.status === 'busy',
+            'bg-gray-400': user.status === 'not-visible'
+          }">
+        </span>
       </span>
-    </span>
-  </button>
-
-  <mat-menu #userActions="matMenu" xPosition="before" class="min-w-52 p-2 bg-white shadow-lg rounded-lg">
-    <button mat-menu-item class="flex items-center px-4 py-2 text-gray-700 hover:bg-gray-100 rounded">
-      <svg class="w-5 h-5 mr-3 text-gray-700" fill="currentColor" viewBox="0 0 24 24">
-        <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
-      </svg>
-      <a>Profile</a>
     </button>
-    <button mat-menu-item class="flex items-center px-4 py-2 text-gray-700 hover:bg-gray-100 rounded">
-      <svg class="w-5 h-5 mr-3 text-gray-700" fill="currentColor" viewBox="0 0 24 24">
-        <path d="M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.06-.94l2.03-1.58a.49.49 0 0 0 .12-.61l-1.92-3.32a.488.488 0 0 0-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54a.484.484 0 0 0-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.12.56-1.62.94l-2.39-.96a.488.488 0 0 0-.59.22l-1.92 3.32c-.14.24-.08.54.12.61l2.03 1.58c-.04.3-.06.62-.06.94 0 .32.02.64.06.94l-2.03 1.58c-.2.16-.26.46-.12.61l1.92 3.32c.14.24.43.34.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.04.24.24.41.48.41h3.84c.24 0 .43-.17.47-.41l-.36-2.54c.59-.24 1.12-.56 1.62-.94l2.39.96c.24.1.51 0 .59-.22l1.92-3.32c.14-.24.08-.54-.12-.61l-2.03-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z"/>
-      </svg>
-      <a>Settings</a>
-    </button>
-    <button mat-menu-item [matMenuTriggerFor]="userStatus" class="flex items-center px-4 py-2 text-gray-700 hover:bg-gray-100 rounded">
-      <svg class="w-5 h-5 mr-3 text-gray-700" fill="currentColor" viewBox="0 0 24 24">
-        <path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/>
-      </svg>
-      <a>Status</a>
-    </button>
-    <hr class="my-2 border-gray-200/20">
-    <button mat-menu-item (click)="signOut()" class="flex items-center px-4 py-2 text-gray-700 hover:bg-gray-100 rounded">
-      <svg class="w-5 h-5 mr-3 text-gray-700" fill="currentColor" viewBox="0 0 24 24">
-        <path d="M17 7l-1.41 1.41L18.17 11H8v2h10.17l-2.58 2.58L17 17l5-5zM4 5h8V3H4c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h8v-2H4V5z"/>
-      </svg>
-      <a>Sign out</a>
-    </button>
-  </mat-menu>
-
-  <mat-menu #userStatus="matMenu" class="min-w-52 p-2 bg-white shadow-lg rounded-lg">
-    <button mat-menu-item (click)="updateUserStatus('online')" class="flex items-center px-4 py-2 text-gray-700 hover:bg-gray-100 rounded">
-      <span class="inline-block w-2 h-2 rounded-full bg-[#22c55e] mr-3"></span>
-      <a>Online</a>
-    </button>
-    <button mat-menu-item (click)="updateUserStatus('away')" class="flex items-center px-4 py-2 text-gray-700 hover:bg-gray-100 rounded">
-      <span class="inline-block w-2 h-2 rounded-full bg-[#f59e0b] mr-3"></span>
-      <a>Away</a>
-    </button>
-    <button mat-menu-item (click)="updateUserStatus('busy')" class="flex items-center px-4 py-2 text-gray-700 hover:bg-gray-100 rounded">
-      <span class="inline-block w-2 h-2 rounded-full bg-[#ef4444] mr-3"></span>
-      <a>Busy</a>
-    </button>
-    <button mat-menu-item (click)="updateUserStatus('not-visible')" class="flex items-center px-4 py-2 text-gray-700 hover:bg-gray-100 rounded">
-      <span class="inline-block w-2 h-2 rounded-full bg-[#9ca3af] mr-3"></span>
-      <a>Invisible</a>
-    </button>
-  </mat-menu>
-</div>
+  
+    <mat-menu #userActions="matMenu" xPosition="before" class="user-menu">
+      <button mat-menu-item>
+        <mat-icon>account_circle</mat-icon>
+        <span class="ml-2">Profile</span>
+      </button>
+      <button mat-menu-item>
+        <mat-icon>settings</mat-icon>
+        <span class="ml-2">Settings</span>
+      </button>
+      <button mat-menu-item [matMenuTriggerFor]="userStatus">
+        <mat-icon>more_vert</mat-icon>
+        <span class="ml-2">Status</span>
+      </button>
+      <mat-divider class="my-2"></mat-divider>
+      <button mat-menu-item (click)="signOut()">
+        <mat-icon>logout</mat-icon>
+        <span class="ml-2">Sign out</span>
+      </button>
+    </mat-menu>
+  
+    <mat-menu #userStatus="matMenu" class="status-menu">
+      <button mat-menu-item (click)="updateUserStatus('online')">
+        <span class="status-dot online"></span>
+        <span>Online</span>
+      </button>
+      <button mat-menu-item (click)="updateUserStatus('away')">
+        <span class="status-dot away"></span>
+        <span>Away</span>
+      </button>
+      <button mat-menu-item (click)="updateUserStatus('busy')">
+        <span class="status-dot busy"></span>
+        <span>Busy</span>
+      </button>
+      <button mat-menu-item (click)="updateUserStatus('not-visible')">
+        <span class="status-dot not-visible"></span>
+        <span>Invisible</span>
+      </button>
+    </mat-menu>
+  </div>

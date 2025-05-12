@@ -12,8 +12,8 @@
 
       <!-- Right section -->
       <div class="flex items-center space-x-1 sm:space-x-2">
-        <!-- Mobile menu button for right section -->
-        <button mat-icon-button class="text-white hover:bg-white/10 rounded-full sm:hidden" 
+        <!-- Mobile menu button (visible only on mobile, XSmall) -->
+        <button *ngIf="responsiveService.isMobile()" mat-icon-button class="text-white hover:bg-white/10 rounded-full sm:hidden mobile-menu-button" 
                 [matMenuTriggerFor]="mobileMenu" matTooltip="Menu">
           <mat-icon>more_vert</mat-icon>
         </button>
@@ -36,7 +36,7 @@
           </button>
         </mat-menu>
 
-        <!-- Right section buttons (hidden on mobile) -->
+        <!-- Right section buttons (hidden on mobile, visible on sm and above) -->
         <div class="hidden sm:flex items-center space-x-1 sm:space-x-2">
           <!-- Fullscreen toggle -->
           <button mat-icon-button class="text-white hover:bg-white/10 rounded-full" 
