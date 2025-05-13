@@ -44,7 +44,6 @@ export class UsersComponent implements OnInit, OnDestroy {
 
   constructor(public darkModeService: DarkModeService) {
     effect(() => {
-      console.log('Users updated:', this.store.users());
       this.dataSource.data = this.store.users();
       if (this.paginator) {
         this.dataSource.paginator = this.paginator;
@@ -52,7 +51,6 @@ export class UsersComponent implements OnInit, OnDestroy {
         console.warn('Paginator not initialized');
       }
       if (this.store.error()) {
-        console.error('Store error:', this.store.error());
         this.toastr.error(this.store.error());
       }
       this.cdr.detectChanges();
@@ -60,7 +58,6 @@ export class UsersComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    console.log('Initializing UsersComponent');
     this.store.loadUsers();
     this.dataSource.filterPredicate = (data: User, filter: string) => {
       const searchTerm = filter.toLowerCase();

@@ -1,8 +1,6 @@
 <div class="container mx-auto max-w-4xl p-4 sm:p-6 font-sans">
   <h2 class="text-2xl font-bold mb-2">Add Service Provider</h2>
-  <p class="text-gray-600 dark:text-gray-400 mb-5">
-    Fill in the fields below to add a new service provider.
-  </p>
+  <p>Fill in the fields below to add a new service provider.</p>
 
   <form [formGroup]="providerForm" (ngSubmit)="onSubmit()">
     <div class="flex flex-col md:flex-row gap-4 md:gap-6">
@@ -14,7 +12,7 @@
           <select
             id="country"
             formControlName="country"
-            class="p-2 border border-gray-300 rounded text-sm w-full focus:outline-none focus:border-blue-500 bg-white dark:text-white"
+            class="p-2 border border-gray-300 rounded text-sm w-full focus:outline-none focus:border-blue-500 bg-white"
             [ngClass]="{
               'border-red-500': providerForm.get('country')?.invalid && providerForm.get('country')?.touched
             }"
@@ -40,7 +38,7 @@
             type="text"
             formControlName="addressLine1"
             placeholder="First line of address"
-            class="p-2 border border-gray-300 rounded text-sm w-full focus:outline-none focus:border-blue-500 bg-white dark:text-white"
+            class="p-2 border border-gray-300 rounded text-sm w-full focus:outline-none focus:border-blue-500 bg-white"
             [ngClass]="{
               'border-red-500': providerForm.get('addressLine1')?.invalid && providerForm.get('addressLine1')?.touched
             }"
@@ -61,7 +59,7 @@
             type="text"
             formControlName="addressLine3"
             placeholder="Third line of address"
-            class="p-2 border border-gray-300 rounded text-sm w-full focus:outline-none focus:border-blue-500 bg-white dark:text-white"
+            class="p-2 border border-gray-300 rounded text-sm w-full focus:outline-none focus:border-blue-500 bg-white"
           />
         </div>
 
@@ -73,7 +71,7 @@
             type="text"
             formControlName="state"
             placeholder="Enter state or province"
-            class="p-2 border border-gray-300 rounded text-sm w-full focus:outline-none focus:border-blue-500 bg-white dark:text-white"
+            class="p-2 border border-gray-300 rounded text-sm w-full focus:outline-none focus:border-blue-500 bg-white"
             [ngClass]="{
               'border-red-500': providerForm.get('state')?.invalid && providerForm.get('state')?.touched
             }"
@@ -97,7 +95,7 @@
             type="text"
             formControlName="spName"
             placeholder="Enter Service Provider name"
-            class="p-2 border border-gray-300 rounded text-sm w-full focus:outline-none focus:border-blue-500 bg-white dark:text-white"
+            class="p-2 border border-gray-300 rounded text-sm w-full focus:outline-none focus:border-blue-500 bg-white"
             [ngClass]="{
               'border-red-500': providerForm.get('spName')?.invalid && providerForm.get('spName')?.touched
             }"
@@ -118,7 +116,7 @@
             type="text"
             formControlName="addressLine2"
             placeholder="Second line of address"
-            class="p-2 border border-gray-300 rounded text-sm w-full focus:outline-none focus:border-blue-500 bg-white dark:text-white"
+            class="p-2 border border-gray-300 rounded text-sm w-full focus:outline-none focus:border-blue-500 bg-white"
           />
         </div>
 
@@ -130,7 +128,7 @@
             type="text"
             formControlName="city"
             placeholder="Enter city / town"
-            class="p-2 border border-gray-300 rounded text-sm w-full focus:outline-none focus:border-blue-500 bg-white dark:text-white"
+            class="p-2 border border-gray-300 rounded text-sm w-full focus:outline-none focus:border-blue-500 bg-white"
             [ngClass]="{
               'border-red-500': providerForm.get('city')?.invalid && providerForm.get('city')?.touched
             }"
@@ -151,7 +149,7 @@
             type="text"
             formControlName="postalCode"
             placeholder="Enter code"
-            class="p-2 border border-gray-300 rounded text-sm w-full focus:outline-none focus:border-blue-500 bg-white dark:text-white"
+            class="p-2 border border-gray-300 rounded text-sm w-full focus:outline-none focus:border-blue-500 bg-white"
             [ngClass]="{
               'border-red-500': providerForm.get('postalCode')?.invalid && providerForm.get('postalCode')?.touched
             }"
@@ -170,17 +168,181 @@
     <div class="flex flex-col sm:flex-row gap-3 mt-5">
       <button
         type="submit"
-        class="bg-orange-500 text-white px-4 py-2 rounded-full text-sm font-medium hover:bg-orange-600 w-full sm:w-auto"
-      >
-        ADD SERVICE PROVIDER
-      </button>
+        class="bg-orange-500 text-gray-900 px-4 py-2 rounded-full text-sm font-medium hover:bg-orange-600 w-full sm:w-auto"
+        (click)="onSubmit()"
+        >
+        {{ providerForm.get('id')?.value ? 'UPDATE SERVICE PROVIDER' : 'ADD SERVICE PROVIDER' }}
+     
+
+ </button>
       <button
         type="button"
-        class="border border-red-500 text-red-500 px-4 py-2 rounded-full text-sm font-medium hover:bg-red-50 w-full sm:w-auto"
+        class="bg-orange-500 text-gray-900 px-4 py-2 rounded-full text-sm font-medium hover:bg-orange-600 w-full sm:w-auto"
         (click)="onCancel()"
       >
         Cancel
       </button>
     </div>
   </form>
+
+  <!-- Service Providers Table -->
+  <div class="bg-white rounded-lg shadow-lg overflow-hidden mt-8" [class.dark-theme]="darkModeService.isDarkMode()">
+    <!-- Card Header -->
+    <div class="p-4 border-b border-gray-200 flex justify-between items-center">
+      <div class="relative w-64">
+        <input
+          type="text"
+          placeholder="Search providers..."
+          [(ngModel)]="searchTerm"
+          (input)="applyFilter()"
+          class="w-full pl-4 pr-10 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
+        />
+        <svg class="absolute right-3 top-2.5 h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+        </svg>
+      </div>
+    </div>
+
+    <!-- Table View -->
+    <div class="p-4 hidden md:block">
+      <div class="overflow-x-auto">
+        <table class="min-w-full divide-y divide-gray-200">
+          <thead class="bg-gray-50">
+            <tr>
+              <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">ID</th>
+              <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
+              <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Country</th>
+              <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">City</th>
+              <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Postal Code</th>
+              <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Action</th>
+            </tr>
+          </thead>
+          <tbody class="bg-white divide-y divide-gray-200">
+            <tr *ngFor="let provider of paginatedData">
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{provider.id}}</td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{provider.spName}}</td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{provider.country}}</td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{provider.city}}</td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{provider.postalCode}}</td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm">
+                <button
+                  (click)="editProvider(provider)"
+        class=" mr-2 px-3 py-1 bg-orange-500 text-gray-900 px-4 py-2 rounded-full text-sm font-medium hover:bg-orange-600 w-full sm:w-auto"
+                >
+                  Edit
+                </button>
+                <button
+                  (click)="deleteProvider(provider.id)"
+        class="bg-orange-500 text-gray-900 px-4 py-2 rounded-full text-sm font-medium hover:bg-orange-600 w-full sm:w-auto"
+                >
+                  Delete
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <!-- Pagination -->
+      <div class="mt-4 flex justify-center items-center space-x-2">
+        <button
+          (click)="changePage(pageIndex - 1)"
+          [disabled]="pageIndex === 0"
+          class="px-3 py-1 bg-gray-200 hover:bg-gray-300 rounded-md text-sm"
+        >
+          Previous
+        </button>
+        <span class="text-sm">
+          Page {{pageIndex + 1}} of {{totalPages}}
+        </span>
+        <button
+          (click)="changePage(pageIndex + 1)"
+          [disabled]="pageIndex + 1 >= totalPages"
+          class="px-3 py-1 bg-gray-200 hover:bg-gray-300 rounded-md text-sm"
+        >
+          Next
+        </button>
+        <select
+          [(ngModel)]="pageSize"
+          (change)="changePageSize(pageSize)"
+          class="p-1 border border-gray-300 rounded text-sm"
+        >
+          <option *ngFor="let size of pageSizeOptions" [value]="size">{{size}}</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Card View (Mobile) -->
+    <div class="p-4 md:hidden">
+      <div class="grid grid-cols-1 gap-4">
+        <div
+          *ngFor="let provider of paginatedData"
+          class="bg-white rounded-lg shadow p-4"
+        >
+          <div class="space-y-2">
+            <div class="flex justify-between">
+              <span class="text-sm font-medium text-gray-500">ID</span>
+              <span class="text-sm text-gray-900">{{provider.id}}</span>
+            </div>
+            <div class="flex justify-between">
+              <span class="text-sm font-medium text-gray-500">Name</span>
+              <span class="text-sm text-gray-900">{{provider.spName}}</span>
+            </div>
+            <div class="flex justify-between">
+              <span class="text-sm font-medium text-gray-500">Country</span>
+              <span class="text-sm text-gray-900">{{provider.country}}</span>
+            </div>
+            <div class="flex justify-between">
+              <span class="text-sm font-medium text-gray-500">City</span>
+              <span class="text-sm text-gray-900">{{provider.city}}</span>
+            </div>
+            <div class="flex justify-between">
+              <span class="text-sm font-medium text-gray-500">Postal Code</span>
+              <span class="text-sm text-gray-900">{{provider.postalCode}}</span>
+            </div>
+          </div>
+          <div class="mt-4 flex space-x-2">
+            <button
+              (click)="editProvider(provider)"
+        class=" mr-2 px-3 py-1 bg-orange-500 text-gray-900 px-4 py-2 rounded-full text-sm font-medium hover:bg-orange-600 w-full sm:w-auto"
+            >
+              Edit
+            </button>
+            <button
+              (click)="deleteProvider(provider.id)"
+        class=" mr-2 px-3 py-1 bg-orange-500 text-gray-900 px-4 py-2 rounded-full text-sm font-medium hover:bg-orange-600 w-full sm:w-auto"
+            >
+              Delete
+            </button>
+          </div>
+        </div>
+      </div>
+      <!-- Pagination for Mobile -->
+      <div class="mt-4 flex justify-center items-center space-x-2">
+        <button
+          (click)="changePage(pageIndex - 1)"
+          [disabled]="pageIndex === 0"
+          class="px-3 py-1 bg-gray-200 hover:bg-gray-300 rounded-md text-sm"
+        >
+          Previous
+        </button>
+        <span class="text-sm">
+          Page {{pageIndex + 1}} of {{totalPages}}
+        </span>
+        <button
+          (click)="changePage(pageIndex + 1)"
+          [disabled]="pageIndex + 1 >= totalPages"
+          class="px-3 py-1 bg-gray-200 hover:bg-gray-300 rounded-md text-sm"
+        >
+          Next
+        </button>
+        <select
+          [(ngModel)]="pageSize"
+          (change)="changePageSize(pageSize)"
+          class="p-1 border border-gray-300 rounded text-sm"
+        >
+          <option *ngFor="let size of pageSizeOptions" [value]="size">{{size}}</option>
+        </select>
+      </div>
+    </div>
+  </div>
 </div>
