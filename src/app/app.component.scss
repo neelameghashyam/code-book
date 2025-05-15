@@ -1,7 +1,14 @@
 
-.content {
-  padding-top: 12px; /* Header height */
-  padding-bottom: 48px; /* Footer height */
-  min-height: calc(100vh - 56px - 48px); /* Adjusted for thinner header/footer */
+
+/* Theme menu item */
+.theme-menu-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
 }
 
+.color-preview {
+  width: 1rem;
+  height: 1rem;
+  border-radius: 50%;
+}

@@ -47,6 +47,16 @@ export class AppComponent {
 
   @ViewChild('sidenav') sidenav!: MatSidenav;
 
+  // Compute aria-label for dark mode themes
+  getThemeAriaLabel(themeName: string): string {
+    return `${themeName.charAt(0).toUpperCase() + themeName.slice(1)} theme`;
+  }
+
+  // Compute aria-label for color themes
+  getColorThemeAriaLabel(displayName: string): string {
+    return `${displayName} color theme`;
+  }
+
   toggleFullScreen() {
     if (!document.fullscreenElement) {
       document.documentElement.requestFullscreen().catch(err => {
