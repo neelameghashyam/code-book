@@ -76,20 +76,20 @@
             }
           </mat-menu>
 
-          <button mat-button [matMenuTriggerFor]="languageMenu" 
-                  class="text-white hover:bg-white/10 rounded-full flex items-center"
-                  aria-label="Select language">
-            <span class="text-sm sm:text-base">{{ currentLanguage() }}</span>
-            <mat-icon class="text-lg sm:text-xl">arrow_drop_down</mat-icon>
-          </button>
-          <mat-menu #languageMenu="matMenu">
-            <button mat-menu-item (click)="setLanguage('en')" aria-label="Select English language">
-              <span>English</span>
-            </button>
-            <button mat-menu-item (click)="setLanguage('fr')" aria-label="Select French language">
-              <span>French</span>
-            </button>
-          </mat-menu>
+         <button mat-button [matMenuTriggerFor]="languageMenu"
+        class="text-white hover:bg-white/10 rounded-full flex items-center"
+        aria-label="Select language">
+  <span class="text-sm sm:text-base">{{ currentLanguage() }}</span>
+  <mat-icon class="text-lg sm:text-xl">arrow_drop_down</mat-icon>
+</button>
+<mat-menu #languageMenu="matMenu">
+  <button mat-menu-item (click)="ChangeLang('en')" aria-label="Select English language">
+    <span>English</span>
+  </button>
+  <button mat-menu-item (click)="ChangeLang('fr')" aria-label="Select French language">
+    <span>French</span>
+  </button>
+</mat-menu>
         </div>
 
         <app-user></app-user>
@@ -124,12 +124,12 @@
   <footer class="py-2 sm:py-4 bg-gray-100 dark:bg-gray-800">
     <div class="container mx-auto px-2 sm:px-4 flex flex-col sm:flex-row justify-between items-center text-sm sm:text-base">
       <div class="mb-2 sm:mb-0 text-center sm:text-left">
-        © 2025 Your Code Book All rights reserved.
+          {{ 'footerCopyright' | translate }}
       </div>
       <div class="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-4 text-center">
-        <a href="#" class="hover:text-primary transition-colors">Privacy Policy</a>
-        <a href="#" class="hover:text-primary transition-colors">Terms of Service</a>
-        <a href="#" class="hover:text-primary transition-colors">Contact Us</a>
+        <a href="#" class="hover:text-primary transition-colors">{{ 'footerContactUs' | translate }}</a>
+        <a href="#" class="hover:text-primary transition-colors">{{ 'footerTermsOfService' | translate }}</a>
+        <a href="#" class="hover:text-primary transition-colors">{{ 'footerPrivacyPolicy' | translate }}</a>
       </div>
     </div>
   </footer>

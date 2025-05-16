@@ -10,7 +10,8 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { ToastrService } from 'ngx-toastr';
 import { ResponsiveService } from '../../../services/responsive/responsive.service';
 import { ServiceProvider } from '../interfaces';
-import { MatIcon } from '@angular/material/icon';
+import { MatIconModule } from '@angular/material/icon'; // Fixed import
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-service-provider',
@@ -23,7 +24,8 @@ import { MatIcon } from '@angular/material/icon';
     MatInputModule,
     MatButtonModule,
     MatSelectModule,
-    MatIcon
+    MatIconModule, // Updated import
+    TranslateModule // Add TranslateModule
   ],
   templateUrl: './service-provider.component.html',
   styleUrls: ['./service-provider.component.scss']
@@ -41,7 +43,8 @@ export class ServiceProviderComponent implements OnInit {
     private toastr: ToastrService,
     private responsiveService: ResponsiveService,
     @Inject(MAT_DIALOG_DATA) public data: { isPopup: boolean; provider?: ServiceProvider },
-    private dialogRef: MatDialogRef<ServiceProviderComponent>
+    private dialogRef: MatDialogRef<ServiceProviderComponent>,
+    private translateService: TranslateService // Inject TranslateService
   ) {
     this.isPopup = data?.isPopup || false;
     this.providerId = data?.provider?.id;
@@ -63,9 +66,10 @@ export class ServiceProviderComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    
+    // Initialize translation
+    const lang = localStorage.getItem('lang') || 'en';
+    this.translateService.use(lang);
 
-    // Update layout based on breakpoint
     this.responsiveService.currentBreakpoint().subscribe(breakpoint => {
       this.responsiveClass = breakpoint === 'xsmall' || breakpoint === 'small' ? 'flex-col' : 'md:flex-row';
     });
@@ -94,14 +98,14 @@ export class ServiceProviderComponent implements OnInit {
         localStorage.setItem('serviceProviders', JSON.stringify(existingProviders));
 
         this.dialogRef.close(providerData);
-        this.toastr.success('Service provider saved successfully');
+        this.toastr.success(this.translateService.instant('serviceProviderSaved')); // Use translated message
       } catch (error) {
-        this.toastr.error('Error saving service provider');
+        this.toastr.error(this.translateService.instant('errorSavingProvider'));
       } finally {
         this.isSubmitting = false;
       }
     } else {
-      this.toastr.error('Please fill all required fields');
+      this.toastr.error(this.translateService.instant('fillRequiredFields'));
       this.providerForm.markAllAsTouched();
       this.isSubmitting = false;
     }

@@ -1,14 +1,14 @@
 <div class="container mx-auto bg-white transition-colors duration-300 font-sans">
   <mat-card class="bg-white font-sans border-0 shadow-none p-4">
     <mat-card-header class="p-4">
-      <button (click)="onCancel()" class="absolute top-0 right-0 flex justify-center items-center p-2 rounded-full hover:bg-gray-100" aria-label="Close">
+      <button (click)="onCancel()" class="absolute top-0 right-0 flex justify-center items-center p-2 rounded-full hover:bg-gray-100" [attr.aria-label]="'close' | translate">
         <mat-icon>close</mat-icon>
       </button>
       <mat-card-title class="flex justify-between items-center relative">
-        <h2 class="text-2xl font-bold text-gray-900">Add Service Provider</h2>
+        <h2 class="text-2xl font-bold text-gray-900">{{ 'addServiceProviderForm' | translate }}</h2>
       </mat-card-title>
       <mat-card-subtitle class="text-gray-900 mt-1 mb-4 text-sm">
-        <p>Fill in the fields below to add a new service provider.</p>
+        <p>{{ 'fillServiceProviderFields' | translate }}</p>
       </mat-card-subtitle>
     </mat-card-header>
     <mat-card-content class="p-4 pt-0">
@@ -18,7 +18,7 @@
           <div class="flex-1 flex flex-col gap-4">
             <!-- Country -->
             <div class="flex flex-col">
-              <label for="country" class="text-sm font-bold text-gray-900">Country</label>
+              <label for="country" class="text-sm font-bold text-gray-900">{{ 'country' | translate }}</label>
               <select
                 id="country"
                 formControlName="country"
@@ -28,7 +28,7 @@
                 }"
                 aria-required="true"
               >
-                <option value="" disabled>Select country</option>
+                <option value="" disabled>{{ 'selectCountry' | translate }}</option>
                 <option *ngFor="let country of countries" [value]="country" class="font-sans">
                   {{ country }}
                 </option>
@@ -38,19 +38,19 @@
                   *ngIf="providerForm.get('country')?.invalid && providerForm.get('country')?.touched"
                   class="text-xs text-[#D7373C] font-sans"
                 >
-                  Country is required
+                  {{ 'countryRequired' | translate }}
                 </small>
               </div>
             </div>
 
             <!-- Address Line 1 -->
             <div class="flex flex-col">
-              <label for="addressLine1" class="text-sm font-bold text-gray-900 font-sans">Address line 1</label>
+              <label for="addressLine1" class="text-sm font-bold text-gray-900 font-sans">{{ 'addressLine1' | translate }}</label>
               <input
                 id="addressLine1"
                 type="text"
                 formControlName="addressLine1"
-                placeholder="First line of address"
+                [placeholder]="'addressLine1Placeholder' | translate"
                 class="p-2 border border-gray-300 rounded text-sm w-full bg-white text-gray-900 h-10 font-sans"
                 [ngClass]="{
                   'border-[#D7373C]': providerForm.get('addressLine1')?.invalid && providerForm.get('addressLine1')?.touched
@@ -62,19 +62,19 @@
                   *ngIf="providerForm.get('addressLine1')?.invalid && providerForm.get('addressLine1')?.touched"
                   class="text-xs text-[#D7373C] font-sans"
                 >
-                  Address line 1 is required
+                  {{ 'addressLine1Required' | translate }}
                 </small>
               </div>
             </div>
 
             <!-- Address Line 3 -->
             <div class="flex flex-col">
-              <label for="addressLine3" class="text-sm font-bold text-gray-900 font-sans">Address line 3 (optional)</label>
+              <label for="addressLine3" class="text-sm font-bold text-gray-900 font-sans">{{ 'addressLine3' | translate }}</label>
               <input
                 id="addressLine3"
                 type="text"
                 formControlName="addressLine3"
-                placeholder="Third line of address"
+                [placeholder]="'addressLine3Placeholder' | translate"
                 class="p-2 border border-gray-300 rounded text-sm w-full bg-white text-gray-900 h-10 font-sans"
               />
               <div class="min-h-6 mt-1"></div>
@@ -82,12 +82,12 @@
 
             <!-- State / Province -->
             <div class="flex flex-col">
-              <label for="state" class="text-sm font-bold text-gray-900 font-sans">State / Province (optional)</label>
+              <label for="state" class="text-sm font-bold text-gray-900 font-sans">{{ 'stateProvince' | translate }}</label>
               <input
                 id="state"
                 type="text"
                 formControlName="state"
-                placeholder="Enter state or province"
+                [placeholder]="'statePlaceholder' | translate"
                 class="p-2 border border-gray-300 rounded text-sm w-full bg-white text-gray-900 h-10 font-sans"
                 [ngClass]="{
                   'border-[#D7373C]': providerForm.get('state')?.invalid && providerForm.get('state')?.touched
@@ -98,7 +98,7 @@
                   *ngIf="providerForm.get('state')?.invalid && providerForm.get('state')?.touched"
                   class="text-xs text-[#D7373C] font-sans"
                 >
-                  State code must be 1 to 10 alphanumeric characters
+                  {{ 'stateInvalid' | translate }}
                 </small>
               </div>
             </div>
@@ -108,12 +108,12 @@
           <div class="flex-1 flex flex-col gap-4">
             <!-- Service Provider Name -->
             <div class="flex flex-col">
-              <label for="spName" class="text-sm font-bold text-gray-900 font-sans">Service Provider | SP Name</label>
+              <label for="spName" class="text-sm font-bold text-gray-900 font-sans">{{ 'serviceProviderName' | translate }}</label>
               <input
                 id="spName"
                 type="text"
                 formControlName="spName"
-                placeholder="Enter Service Provider name"
+                [placeholder]="'serviceProviderNamePlaceholder' | translate"
                 class="p-2 border border-gray-300 rounded text-sm w-full bg-white text-gray-900 h-10 font-sans"
                 [ngClass]="{
                   'border-[#D7373C]': providerForm.get('spName')?.invalid && providerForm.get('spName')?.touched
@@ -125,19 +125,19 @@
                   *ngIf="providerForm.get('spName')?.invalid && providerForm.get('spName')?.touched"
                   class="text-xs text-[#D7373C] font-sans"
                 >
-                  Service Provider name is required and must be at least 3 characters
+                  {{ 'serviceProviderNameInvalid' | translate }}
                 </small>
               </div>
             </div>
 
             <!-- Address Line 2 -->
             <div class="flex flex-col">
-              <label for="addressLine2" class="text-sm font-bold text-gray-900 font-sans">Address line 2 (optional)</label>
+              <label for="addressLine2" class="text-sm font-bold text-gray-900 font-sans">{{ 'addressLine2' | translate }}</label>
               <input
                 id="addressLine2"
                 type="text"
                 formControlName="addressLine2"
-                placeholder="Second line of address"
+                [placeholder]="'addressLine2Placeholder' | translate"
                 class="p-2 border border-gray-300 rounded text-sm w-full bg-white text-gray-900 h-10 font-sans"
               />
               <div class="min-h-6 mt-1"></div>
@@ -145,12 +145,12 @@
 
             <!-- City / Town -->
             <div class="flex flex-col">
-              <label for="city" class="text-sm font-bold text-gray-900 font-sans">City / Town</label>
+              <label for="city" class="text-sm font-bold text-gray-900 font-sans">{{ 'cityTown' | translate }}</label>
               <input
                 id="city"
                 type="text"
                 formControlName="city"
-                placeholder="Enter city / town"
+                [placeholder]="'cityPlaceholder' | translate"
                 class="p-2 border border-gray-300 rounded text-sm w-full bg-white text-gray-900 h-10 font-sans"
                 [ngClass]="{
                   'border-[#D7373C]': providerForm.get('city')?.invalid && providerForm.get('city')?.touched
@@ -162,19 +162,19 @@
                   *ngIf="providerForm.get('city')?.invalid && providerForm.get('city')?.touched"
                   class="text-xs text-[#D7373C] font-sans"
                 >
-                  City is required
+                  {{ 'cityRequired' | translate }}
                 </small>
               </div>
             </div>
 
             <!-- Postal Code / Zip Code -->
             <div class="flex flex-col">
-              <label for="postalCode" class="text-sm font-bold text-gray-900 font-sans">Postal code / Zip code</label>
+              <label for="postalCode" class="text-sm font-bold text-gray-900 font-sans">{{ 'postalCode' | translate }}</label>
               <input
                 id="postalCode"
                 type="text"
                 formControlName="postalCode"
-                placeholder="Enter code"
+                [placeholder]="'postalCodePlaceholder' | translate"
                 class="p-2 border border-gray-300 rounded text-sm w-full bg-white text-gray-900 h-10 font-sans"
                 [ngClass]="{
                   'border-[#D7373C]': providerForm.get('postalCode')?.invalid && providerForm.get('postalCode')?.touched
@@ -186,7 +186,7 @@
                   *ngIf="providerForm.get('postalCode')?.invalid && providerForm.get('postalCode')?.touched"
                   class="text-xs text-[#D7373C] font-sans"
                 >
-                  Postal code is required and must be at least 3 characters
+                  {{ 'postalCodeInvalid' | translate }}
                 </small>
               </div>
             </div>
@@ -198,18 +198,18 @@
       <button
         type="submit"
         class="bg-[#CF4500] text-white px-4 py-2 rounded-full text-sm font-medium hover:bg-[#B53C00] focus:ring-2 focus:ring-[#CF4500] w-full sm:w-auto font-sans uppercase"
-        [attr.aria-label]="providerForm.get('id')?.value ? 'Update service provider' : 'Add service provider'"
+        [attr.aria-label]="providerForm.get('id')?.value ? ('updateServiceProvider' | translate) : ('addServiceProvider' | translate)"
         (click)="saveProvider()"
       >
-        {{ providerForm.get('id')?.value ? 'UPDATE SERVICE PROVIDER' : 'ADD SERVICE PROVIDER' }}
+        {{ providerForm.get('id')?.value ? ('updateServiceProvider' | translate) : ('addServiceProvider' | translate) }}
       </button>
       <button
         type="button"
         class="bg-[#CF4500] text-white px-4 py-2 rounded-full text-sm font-medium hover:bg-[#B53C00] focus:ring-2 focus:ring-[#CF4500] w-full sm:w-auto font-sans uppercase"
         (click)="onCancel()"
-        aria-label="Cancel form"
+        [attr.aria-label]="'cancel' | translate"
       >
-        Cancel
+        {{ 'cancel' | translate }}
       </button>
     </div>
   </mat-card>

@@ -1,4 +1,4 @@
-import { Component, computed, signal, inject, ViewChild } from '@angular/core';
+import { Component, computed, signal, inject, ViewChild, OnInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { MatToolbarModule } from '@angular/material/toolbar';
@@ -15,6 +15,9 @@ import { ResponsiveService } from './services/responsive/responsive.service';
 import { DarkModeService } from './services/dark-mode.service';
 import { ThemeService } from './services/theme/theme.service';
 import { UserComponent } from './user/user.component';
+import { TranslateService } from '@ngx-translate/core';
+import { TranslateModule} from '@ngx-translate/core';
+
 
 @Component({
   selector: 'app-root',
@@ -31,15 +34,39 @@ import { UserComponent } from './user/user.component';
     MatTooltipModule,
     TranslocoRootModule,
     CustomSidenavComponent,
-    UserComponent
+    UserComponent,
+    TranslateModule
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
   title = 'Code Book';
   collapsed = signal(true);
-  currentLanguage = signal('English');
+  currentLanguage = signal('English'); // Default language display name
+
+  constructor(private translateService: TranslateService) {
+    // Set available languages
+    this.translateService.addLangs(['en', 'fr']);
+  }
+
+  ngOnInit(): void {
+    // Get language from localStorage or default to 'en'
+    const storedLang = localStorage.getItem('lang') || 'en';
+    this.translateService.setDefaultLang('en'); // Set default language
+    this.translateService.use(storedLang); // Use stored or default language
+    // Update currentLanguage signal based on stored language
+    this.currentLanguage.set(storedLang === 'en' ? 'English' : 'French');
+  }
+
+  ChangeLang(langCode: string) {
+    // Update translation service
+    this.translateService.use(langCode);
+    // Update localStorage
+    localStorage.setItem('lang', langCode);
+    // Update currentLanguage signal
+    this.currentLanguage.set(langCode === 'en' ? 'English' : 'French');
+  }
 
   public responsiveService = inject(ResponsiveService);
   public darkModeService = inject(DarkModeService);
@@ -67,10 +94,6 @@ export class AppComponent {
         document.exitFullscreen();
       }
     }
-  }
-
-  setLanguage(lang: string) {
-    this.currentLanguage.set(lang === 'en' ? 'English' : 'French');
   }
 
   sidenavWidth = computed(() => {

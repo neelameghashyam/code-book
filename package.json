@@ -70,6 +70,8 @@
     "@angular/router": "^19.2.0",
     "@jsverse/transloco": "^7.5.1",
     "@ngrx/signals": "^19.1.0",
+    "@ngx-translate/core": "^16.0.4",
+    "@ngx-translate/http-loader": "^16.0.1",
     "@tailwindcss/postcss": "^4.0.9",
     "ngx-toastr": "^19.0.0",
     "postcss": "^8.5.3",

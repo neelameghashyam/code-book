@@ -13,6 +13,7 @@ import { ToastrService } from 'ngx-toastr';
 import { ResponsiveService } from '../../services/responsive/responsive.service';
 import { ServiceProviderComponent } from './service-provider/service-provider.component';
 import { BusinessForm, ServiceProvider } from './interfaces';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-dashboard',
@@ -28,6 +29,7 @@ import { BusinessForm, ServiceProvider } from './interfaces';
     MatSelectModule,
     MatButtonModule,
     MatCardModule,
+    TranslateModule // Add TranslateModule
   ],
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.scss'],
@@ -53,7 +55,8 @@ export class DashboardComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private toastr: ToastrService,
-    private responsiveService: ResponsiveService
+    private responsiveService: ResponsiveService,
+    private translateService: TranslateService // Inject TranslateService
   ) {
     this.providerForm = this.fb.group({
       country: ['', Validators.required],
@@ -69,6 +72,10 @@ export class DashboardComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    // Initialize translation
+    const lang = localStorage.getItem('lang') || 'en';
+    this.translateService.use(lang);
+
     this._countries = ['USA', 'Canada', 'UK', 'Australia', 'India'];
     this.loadFromLocalStorage();
 
@@ -78,6 +85,7 @@ export class DashboardComponent implements OnInit {
     });
   }
 
+  // Rest of the component remains unchanged
   openPopup(provider?: ServiceProvider, index?: number): void {
     const dialogRef = this.dialog.open(ServiceProviderComponent, {
       width: '90%',
@@ -95,11 +103,9 @@ export class DashboardComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
         if (index !== undefined) {
-          // Update existing provider
           this.serviceProviders[index] = result;
           this.serviceProvidersArray.at(index).patchValue(result);
         } else {
-          // Add new provider
           this.serviceProviders.push(result);
           this.serviceProvidersArray.push(this.createServiceProviderFormGroup(result));
         }
@@ -132,14 +138,11 @@ export class DashboardComponent implements OnInit {
       const deletedProvider = this.serviceProviders.splice(index, 1)[0];
       this.serviceProvidersArray.removeAt(index);
 
-      // Update localStorage
       const existingProviders: ServiceProvider[] = JSON.parse(localStorage.getItem('serviceProviders') || '[]');
       const updatedProviders = existingProviders.filter(provider => provider.id !== deletedProvider.id);
       localStorage.setItem('serviceProviders', JSON.stringify(updatedProviders));
 
-      // Update businessForm in localStorage
       this.saveToLocalStorage();
-
       this.toastr.success('Service provider deleted successfully');
       this.cdr.markForCheck();
     } catch (error) {
@@ -157,8 +160,8 @@ export class DashboardComponent implements OnInit {
       try {
         localStorage.setItem('businessForm', JSON.stringify(formData));
         this.toastr.success('Business form submitted successfully');
-        this.readOnly = true; // Switch to read-only mode
-        this.providerForm.disable(); // Disable the form
+        this.readOnly = true;
+        this.providerForm.disable();
         this.cdr.markForCheck();
       } catch (error) {
         this.toastr.error('Error saving business form');
@@ -173,7 +176,7 @@ export class DashboardComponent implements OnInit {
 
   enableEditMode(): void {
     this.readOnly = false;
-    this.providerForm.enable(); // Enable the form
+    this.providerForm.enable();
     this.cdr.markForCheck();
   }
 
@@ -190,32 +193,26 @@ export class DashboardComponent implements OnInit {
       serviceProviders: this.serviceProvidersArray.value
     });
     this.readOnly = false;
-    this.providerForm.enable(); // Ensure the form is enabled after reset
+    this.providerForm.enable();
     this.toastr.info('Form reset');
     this.cdr.markForCheck();
   }
 
   loadFromLocalStorage(): void {
     try {
-      // Load from businessForm
       let businessProviders: ServiceProvider[] = [];
-      
-      // Load from serviceProviders
       const providerData = localStorage.getItem('serviceProviders');
       let standaloneProviders: ServiceProvider[] = [];
       if (providerData) {
         standaloneProviders = JSON.parse(providerData) || [];
       }
 
-      // Merge providers, avoiding duplicates by id
       const allProviders = [...businessProviders, ...standaloneProviders];
       const uniqueProviders = Array.from(
         new Map(allProviders.map(provider => [provider.id, provider])).values()
       );
 
       this.serviceProviders = Array.from(uniqueProviders);
-      
-      // Clear existing FormArray and repopulate
       this.serviceProvidersArray.clear();
       this.serviceProviders.forEach(provider => {
         this.serviceProvidersArray.push(this.createServiceProviderFormGroup(provider));
