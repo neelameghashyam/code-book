@@ -5,6 +5,8 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { ResponsiveService} from '../services/responsive/responsive.service'
 import { DarkModeService } from '../services/dark-mode.service';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
+
 
 interface MenuItem {
   icon: string;
@@ -15,12 +17,13 @@ interface MenuItem {
 @Component({
   selector: 'app-custom-sidenav',
   standalone: true,
-  imports: [CommonModule, MatListModule, MatIconModule, RouterModule],
+  imports: [CommonModule, MatListModule, MatIconModule, RouterModule,TranslateModule],
   templateUrl: './custom-sidenav.component.html',
   styleUrl: './custom-sidenav.component.scss'
 })
 export class CustomSidenavComponent {
   public responsiveService = inject(ResponsiveService);
+  
   
     public darkModeService = inject(DarkModeService);
   
@@ -30,9 +33,12 @@ export class CustomSidenavComponent {
     { icon: 'business_center', label: 'Business', route: 'business' },
     { icon: 'business', label: 'Business List', route: 'business-list' },
 
-
-
   ]);
+
+  constructor(
+        private translateService: TranslateService,
+
+  ){}
 
   sideNavCollapsed = signal(false);
   @Input() set collapsed(val: boolean) {

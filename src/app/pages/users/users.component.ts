@@ -12,6 +12,8 @@ import { DarkModeService } from '../../services/dark-mode.service';
 import { User } from './user';
 import { UserStore } from './store/user-store';
 import { AddUserComponent } from './add-user/add-user.component';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
+
 
 @Component({
   selector: 'app-users',
@@ -25,6 +27,7 @@ import { AddUserComponent } from './add-user/add-user.component';
     CommonModule,
     FormsModule,
     MatInputModule,
+    TranslateModule
   ],
   templateUrl: './users.component.html',
   styleUrl: './users.component.scss'
@@ -42,7 +45,10 @@ export class UsersComponent implements OnInit, OnDestroy {
   pageSize: number = 5;
   searchTerm: string = '';
 
-  constructor(public darkModeService: DarkModeService) {
+  constructor(
+    public darkModeService: DarkModeService,
+    private translateService: TranslateService
+  ) {
     effect(() => {
       this.dataSource.data = this.store.users();
       if (this.paginator) {

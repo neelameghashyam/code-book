@@ -29,7 +29,7 @@ import { TranslateModule, TranslateService } from '@ngx-translate/core';
     MatSelectModule,
     MatButtonModule,
     MatCardModule,
-    TranslateModule // Add TranslateModule
+    TranslateModule 
   ],
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.scss'],

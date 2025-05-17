@@ -4,7 +4,7 @@
       <div class="relative w-64">
         <input 
           type="text"
-          placeholder="Search users..."
+          placeholder="{{'search' | translate}}..."
           [(ngModel)]="searchTerm"
           (input)="applyFilter($event)"
           class="w-full pl-4 pr-10 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -17,7 +17,7 @@
         (click)="addUser()"
         class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
       >
-        Add New
+        {{'addNew' | translate}}
       </button>
     </div>
   
@@ -27,12 +27,12 @@
         <table class="min-w-full divide-y divide-gray-200">
           <thead class="bg-gray-50">
             <tr>
-              <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">User Id</th>
-              <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
-              <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Company</th>
-              <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Business Strategy</th>
-              <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Website</th>
-              <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Action</th>
+              <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{{'userId' | translate}}</th>
+              <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{{'name' | translate}}</th>
+              <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{{'company' | translate}}</th>
+              <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{{'businessStrategy' | translate}}</th>
+              <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{{'website' | translate}}</th>
+              <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{{'actions' | translate}}</th>
             </tr>
           </thead>
           <tbody class="bg-white divide-y divide-gray-200">
@@ -47,13 +47,13 @@
                   (click)="editUser(element.id)"
                   class="mr-2 px-3 py-1 bg-blue-600 hover:bg-blue-700 text-white rounded-md text-sm transition duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
                 >
-                  Edit
+                  {{'edit' | translate}}
                 </button>
                 <button 
                   (click)="deleteUser(element.id)"
                   class="px-3 py-1 bg-red-600 hover:bg-red-700 text-white rounded-md text-sm transition duration-200 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50"
                 >
-                  Delete
+                  {{'delete' | translate}}
                 </button>
               </td>
             </tr>
@@ -79,23 +79,23 @@
         >
           <div class="space-y-2">
             <div class="flex justify-between">
-              <span class="text-sm font-medium text-gray-500">ID</span>
+              <span class="text-sm font-medium text-gray-500">{{'userId' | translate}}</span>
               <span class="text-sm text-gray-900">{{element.id}}</span>
             </div>
             <div class="flex justify-between">
-              <span class="text-sm font-medium text-gray-500">Name</span>
+              <span class="text-sm font-medium text-gray-500">{{'name' | translate}}</span>
               <span class="text-sm text-gray-900">{{element.name}}</span>
             </div>
             <div class="flex justify-between">
-              <span class="text-sm font-medium text-gray-500">Company</span>
+              <span class="text-sm font-medium text-gray-500">{{'company' | translate}}</span>
               <span class="text-sm text-gray-900">{{element.company}}</span>
             </div>
             <div class="flex justify-between">
-              <span class="text-sm font-medium text-gray-500">Business Strategy</span>
+              <span class="text-sm font-medium text-gray-500">{{'businessStrategy' | translate}}</span>
               <span class="text-sm text-gray-900">{{element.bs}}</span>
             </div>
             <div class="flex justify-between">
-              <span class="text-sm font-medium text-gray-500">Website</span>
+              <span class="text-sm font-medium text-gray-500">{{'website' | translate}}</span>
               <span class="text-sm text-gray-900">{{element.website}}</span>
             </div>
           </div>
@@ -104,13 +104,13 @@
               (click)="editUser(element.id)"
               class="flex-1 px-3 py-1 bg-blue-600 hover:bg-blue-700 text-white rounded-md text-sm transition duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
             >
-              Edit
+              {{'edit' | translate}}
             </button>
             <button 
               (click)="deleteUser(element.id)"
               class="flex-1 px-3 py-1 bg-red-600 hover:bg-red-700 text-white rounded-md text-sm transition duration-200 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50"
             >
-              Delete
+              {{'delete' | translate}}
             </button>
           </div>
         </div>
@@ -124,4 +124,4 @@
         ></mat-paginator>
       </div>
     </div>
-  </div>
+</div>

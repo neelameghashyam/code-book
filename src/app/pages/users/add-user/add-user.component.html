@@ -1,4 +1,4 @@
-<form [formGroup]="userForm" (ngSubmit)="saveUser()"  [class.dark-theme]="darkModeService.isDarkMode()">
+<form [formGroup]="userForm" (ngSubmit)="saveUser()" [class.dark-theme]="darkModeService.isDarkMode()">
     <div class="bg-white rounded-lg shadow-lg overflow-hidden">
       <!-- Card Header -->
       <div class="px-6 py-4">
@@ -10,7 +10,7 @@
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
           <!-- User ID Field -->
           <div class="space-y-2">
-            <label class="block text-sm font-medium text-gray-700">User ID</label>
+            <label class="block text-sm font-medium text-gray-700">{{'userId' | translate}}</label>
             <input 
               formControlName="id" 
               type="number" 
@@ -21,44 +21,44 @@
   
           <!-- Name Field -->
           <div class="space-y-2">
-            <label class="block text-sm font-medium text-gray-700">User Name</label>
+            <label class="block text-sm font-medium text-gray-700">{{'userName' | translate}}</label>
             <input 
               formControlName="name" 
               required 
-              placeholder="Enter user name"
+              placeholder="{{'name' | translate}}"
               class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
             >
           </div>
   
           <!-- Company Field -->
           <div class="space-y-2">
-            <label class="block text-sm font-medium text-gray-700">Company</label>
+            <label class="block text-sm font-medium text-gray-700">{{'company' | translate}}</label>
             <input 
               formControlName="company" 
               required 
-              placeholder="Enter company name"
+              placeholder="{{'company' | translate}}"
               class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
             >
           </div>
   
           <!-- Business Strategy Field -->
           <div class="space-y-2">
-            <label class="block text-sm font-medium text-gray-700">Business Strategy</label>
+            <label class="block text-sm font-medium text-gray-700">{{'businessStrategy' | translate}}</label>
             <input 
               formControlName="bs" 
               required 
-              placeholder="Enter business strategy"
+              placeholder="{{'businessStrategy' | translate}}"
               class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
             >
           </div>
   
           <!-- Website Field -->
           <div class="md:col-span-2 space-y-2">
-            <label class="block text-sm font-medium text-gray-700">Website</label>
+            <label class="block text-sm font-medium text-gray-700">{{'website' | translate}}</label>
             <input 
               formControlName="website" 
               required 
-              placeholder="Enter website URL"
+              placeholder="{{'website' | translate}}"
               class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
             >
           </div>
@@ -71,15 +71,15 @@
           type="submit" 
           class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
         >
-          Save
+          {{'save' | translate}}
         </button>
         <button 
           type="button" 
           (click)="closePopup()"
           class="px-4 py-2 bg-gray-200 hover:bg-gray-300 text-gray-800 font-medium rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
         >
-          Close
+          {{'close' | translate}}
         </button>
       </div>
     </div>
-  </form>
+</form>

@@ -11,6 +11,8 @@ import { ToastrService } from 'ngx-toastr';
 import { UserStore } from '../store/user-store';
 import { inject } from '@angular/core';
 import { DarkModeService } from '../../../services/dark-mode.service';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
+
 
 @Component({
   selector: 'app-add-user',
@@ -22,6 +24,8 @@ import { DarkModeService } from '../../../services/dark-mode.service';
     MatInputModule,
     MatButtonModule,
     MatIconModule,
+    TranslateModule
+
   ],
   templateUrl: './add-user.component.html',
   styleUrl: './add-user.component.scss',
@@ -41,6 +45,7 @@ export class AddUserComponent implements OnInit {
 
   constructor(
     private ref: MatDialogRef<AddUserComponent>,
+    private translateService: TranslateService,
     private toastr: ToastrService,
     @Inject(MAT_DIALOG_DATA) public data: { userId: number },
     public darkModeService: DarkModeService

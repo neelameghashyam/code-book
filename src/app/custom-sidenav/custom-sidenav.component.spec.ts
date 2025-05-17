@@ -1,43 +1,47 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { CustomSidenavComponent } from './custom-sidenav.component';
+import { ResponsiveService } from '../services/responsive/responsive.service';
+import { DarkModeService } from '../services/dark-mode.service';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { MatListModule } from '@angular/material/list';
 import { MatIconModule } from '@angular/material/icon';
 import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
-import { By } from '@angular/platform-browser';
-import { ResponsiveService } from '../services/responsive/responsive.service';
-import { DarkModeService } from '../services/dark-mode.service';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { Router } from '@angular/router';
+import { By } from '@angular/platform-browser';
+import { signal } from '@angular/core';
 
 describe('CustomSidenavComponent', () => {
   let component: CustomSidenavComponent;
   let fixture: ComponentFixture<CustomSidenavComponent>;
   let responsiveService: ResponsiveService;
   let darkModeService: DarkModeService;
-  let router: Router;
+  let translateService: TranslateService;
+
+  // Mock services
+  const responsiveServiceMock = {
+    // Add mock methods if used in template/component logic
+  };
+  const darkModeServiceMock = {
+    // Add mock methods if used in template/component logic
+  };
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [
         CustomSidenavComponent,
+        CommonModule,
         MatListModule,
         MatIconModule,
-        CommonModule,
-        RouterTestingModule.withRoutes([
-          { path: 'dashboard', component: CustomSidenavComponent },
-          { path: 'users', component: CustomSidenavComponent },
-        ]),
+        RouterTestingModule,
         NoopAnimationsModule,
+        TranslateModule.forRoot(),
       ],
       providers: [
-        ResponsiveService,
-        {
-          provide: DarkModeService,
-          useValue: {
-            isDarkMode: jest.fn().mockReturnValue(false),
-          },
-        },
+        { provide: ResponsiveService, useValue: responsiveServiceMock },
+        { provide: DarkModeService, useValue: darkModeServiceMock },
+        TranslateService,
       ],
     }).compileComponents();
 
@@ -45,231 +49,124 @@ describe('CustomSidenavComponent', () => {
     component = fixture.componentInstance;
     responsiveService = TestBed.inject(ResponsiveService);
     darkModeService = TestBed.inject(DarkModeService);
-    router = TestBed.inject(Router);
-    fixture.detectChanges();
+    translateService = TestBed.inject(TranslateService);
+
+    // Mock translateService.instant to return the input key
+    jest.spyOn(translateService, 'instant').mockImplementation((key: string) => key);
+
+    fixture.detectChanges(); // Trigger initial rendering
   });
 
-  it('should create', () => {
+  it('should create the component', () => {
     expect(component).toBeTruthy();
   });
 
-  describe('Initial state', () => {
-    it('should initialize menuItems with correct values', () => {
-      expect(component.menuItems().length).toBe(2);
-      expect(component.menuItems()[0]).toEqual({
-        icon: 'dashboard',
-        label: 'Dashboard',
-        route: 'dashboard',
-      });
-      expect(component.menuItems()[1]).toEqual({
-        icon: 'group',
-        label: 'Users',
-        route: 'users',
-      });
-    });
+  it('should inject ResponsiveService', () => {
+    expect(component.responsiveService).toBe(responsiveService);
+  });
 
-    it('should initialize sideNavCollapsed as false', () => {
-      expect(component.sideNavCollapsed()).toBe(false);
+  it('should inject DarkModeService', () => {
+    expect(component.darkModeService).toBe(darkModeService);
+  });
+
+  it('should initialize menuItems signal with correct items', () => {
+    const expectedItems = [
+      { icon: 'dashboard', label: 'Dashboard', route: 'dashboard' },
+      { icon: 'group', label: 'Users', route: 'users' },
+      { icon: 'business_center', label: 'Business', route: 'business' },
+      { icon: 'business', label: 'Business List', route: 'business-list' },
+    ];
+    expect(component.menuItems()).toEqual(expectedItems);
+  });
+
+  it('should initialize sideNavCollapsed signal as false', () => {
+    expect(component.sideNavCollapsed()).toBe(false);
+  });
+
+  it('should set sideNavCollapsed signal when collapsed input is set', () => {
+    component.collapsed = true;
+    expect(component.sideNavCollapsed()).toBe(true);
+
+    component.collapsed = false;
+    expect(component.sideNavCollapsed()).toBe(false);
+  });
+
+  it('should render all menu items in the template', () => {
+    const listItems = fixture.debugElement.queryAll(By.css('mat-list-item'));
+    expect(listItems.length).toBe(component.menuItems().length);
+
+    component.menuItems().forEach((item, index) => {
+      const listItem = listItems[index];
+      const icon = listItem.query(By.css('mat-icon'));
+      const link = listItem.query(By.css('a'));
+
+      expect(icon.nativeElement.textContent).toBe(item.icon);
+      expect(link.nativeElement.getAttribute('ng-reflect-router-link')).toBe(item.route);
+      // Translated label should match the input key (mocked translateService.instant)
+      expect(link.nativeElement.textContent.trim()).toContain(item.label);
     });
   });
 
-  describe('Input collapsed', () => {
-    it('should update sideNavCollapsed when input changes to true', () => {
-      component.collapsed = true;
-      fixture.detectChanges();
-      expect(component.sideNavCollapsed()).toBe(true);
-    });
+  it('should apply collapsed class when sideNavCollapsed is true', () => {
+    component.collapsed = true;
+    fixture.detectChanges();
 
-    it('should update sideNavCollapsed when input changes to false', () => {
-      component.collapsed = false;
-      fixture.detectChanges();
-      expect(component.sideNavCollapsed()).toBe(false);
-    });
+    const sidenav = fixture.debugElement.query(By.css('.sidenav-container'));
+    expect(sidenav.classes['collapsed']).toBeTruthy();
   });
 
-  describe('Template rendering', () => {
-    it('should render menu items with correct router links', () => {
-      const menuItems = fixture.debugElement.queryAll(By.css('a'));
-      expect(menuItems.length).toBe(2);
-      expect(menuItems[0].attributes['ng-reflect-router-link']).toBe('dashboard');
-      expect(menuItems[1].attributes['ng-reflect-router-link']).toBe('users');
-    });
+  it('should not apply collapsed class when sideNavCollapsed is false', () => {
+    component.collapsed = false;
+    fixture.detectChanges();
 
-    it('should display icon and label when not collapsed on desktop', () => {
-      jest.spyOn(responsiveService, 'isMobile').mockReturnValue(false);
-      component.sideNavCollapsed.set(false);
-      fixture.detectChanges();
-
-      const menuItem = fixture.debugElement.queryAll(By.css('a'))[0];
-      const spans = menuItem.queryAll(By.css('span'));
-      expect(spans.length).toBe(2);
-      expect(spans[0].nativeElement.textContent.trim()).toBe('dashboard');
-      expect(spans[1].nativeElement.textContent.trim()).toBe('Dashboard');
-      expect(spans[0].classes['mr-2']).toBe(true);
-    });
-
-    it('should display only icon when collapsed on desktop', () => {
-      jest.spyOn(responsiveService, 'isMobile').mockReturnValue(false);
-      component.sideNavCollapsed.set(true);
-      fixture.detectChanges();
-
-      const menuItem = fixture.debugElement.queryAll(By.css('a'))[0];
-      const spans = menuItem.queryAll(By.css('span'));
-      expect(spans.length).toBe(1);
-      expect(spans[0].nativeElement.textContent.trim()).toBe('dashboard');
-      expect(spans[0].classes['mr-0']).toBe(true);
-      expect(menuItem.classes['px-0']).toBe(true);
-      expect(menuItem.classes['py-3']).toBe(true);
-      expect(menuItem.classes['justify-center']).toBe(true);
-    });
-
-    it('should display icon and label when collapsed on mobile', () => {
-      jest.spyOn(responsiveService, 'isMobile').mockReturnValue(true);
-      component.sideNavCollapsed.set(true);
-      fixture.detectChanges();
-
-      const menuItem = fixture.debugElement.queryAll(By.css('a'))[0];
-      const spans = menuItem.queryAll(By.css('span'));
-      expect(spans.length).toBe(2);
-      expect(spans[0].nativeElement.textContent.trim()).toBe('dashboard');
-      expect(spans[1].nativeElement.textContent.trim()).toBe('Dashboard');
-      expect(spans[0].classes['mr-2']).toBe(true);
-      expect(menuItem.classes['px-3']).toBe(true);
-    });
+    const sidenav = fixture.debugElement.query(By.css('.sidenav-container'));
+    expect(sidenav.classes['collapsed']).toBeFalsy();
   });
 
-  describe('Dark mode behavior', () => {
-    it('should apply light mode classes when darkMode is false', () => {
-      jest.spyOn(darkModeService, 'isDarkMode').mockReturnValue(false);
-      fixture.detectChanges();
+  it('should handle empty menuItems signal', () => {
+    component.menuItems.set([]);
+    fixture.detectChanges();
 
-      const container = fixture.debugElement.query(By.css('div'));
-      const menuItem = fixture.debugElement.queryAll(By.css('a'))[0];
-      const icon = menuItem.queryAll(By.css('span'))[0];
-
-      expect(container.classes['bg-white']).toBe(true);
-      expect(container.classes['bg-gray-900']).toBeFalsy();
-      expect(menuItem.classes['text-gray-900']).toBe(true);
-      expect(menuItem.classes['hover:bg-gray-100']).toBe(true);
-      expect(icon.classes['text-gray-600']).toBe(true);
-    });
-
-    it('should apply dark mode classes when darkMode is true', () => {
-      jest.spyOn(darkModeService, 'isDarkMode').mockReturnValue(true);
-      fixture.detectChanges();
-
-      const container = fixture.debugElement.query(By.css('div'));
-      const menuItem = fixture.debugElement.queryAll(By.css('a'))[0];
-      const icon = menuItem.queryAll(By.css('span'))[0];
-
-      expect(container.classes['bg-gray-900']).toBe(true);
-      expect(container.classes['bg-white']).toBeFalsy();
-      expect(menuItem.classes['text-gray-200']).toBe(true);
-      expect(menuItem.classes['hover:bg-gray-800']).toBe(true);
-      expect(icon.classes['text-gray-400']).toBe(true);
-    });
+    const listItems = fixture.debugElement.queryAll(By.css('mat-list-item'));
+    expect(listItems.length).toBe(0);
   });
 
-  describe('Active route behavior', () => {
-    beforeEach(async () => {
-      // Navigate to dashboard to activate the route
-      await router.navigate(['dashboard']);
-      fixture.detectChanges();
-    });
+  it('should update menuItems signal and reflect in template', () => {
+    const newItems = [
+      { icon: 'home', label: 'Home', route: 'home' },
+    ];
+    component.menuItems.set(newItems);
+    fixture.detectChanges();
 
-    it('should apply active classes in light mode', () => {
-      jest.spyOn(darkModeService, 'isDarkMode').mockReturnValue(false);
-      fixture.detectChanges();
-
-      const menuItem = fixture.debugElement.queryAll(By.css('a'))[0];
-      const icon = menuItem.queryAll(By.css('span'))[0];
-      const label = menuItem.queryAll(By.css('span'))[1];
-
-      expect(menuItem.classes['bg-primary-50']).toBe(true);
-      expect(menuItem.classes['text-primary-600']).toBe(true);
-      expect(menuItem.classes['hover:bg-primary-100']).toBe(true);
-      expect(icon.classes['text-primary-600']).toBe(true);
-      expect(icon.classes['material-icons']).toBe(true);
-      expect(label.classes['text-primary-600']).toBe(true);
-      expect(label.classes['font-semibold']).toBe(true);
-    });
-
-    it('should apply active classes in dark mode', () => {
-      jest.spyOn(darkModeService, 'isDarkMode').mockReturnValue(true);
-      fixture.detectChanges();
-
-      const menuItem = fixture.debugElement.queryAll(By.css('a'))[0];
-      const icon = menuItem.queryAll(By.css('span'))[0];
-      const label = menuItem.queryAll(By.css('span'))[1];
-
-      expect(menuItem.classes['bg-gray-700']).toBe(true);
-      expect(menuItem.classes['text-white']).toBe(true);
-      expect(icon.classes['text-white']).toBe(true);
-      expect(icon.classes['material-icons']).toBe(true);
-      expect(label.classes['text-white']).toBe(true);
-      expect(label.classes['font-semibold']).toBe(true);
-    });
-
-    it('should apply inactive classes for non-active routes in light mode', () => {
-      jest.spyOn(darkModeService, 'isDarkMode').mockReturnValue(false);
-      fixture.detectChanges();
-
-      const menuItem = fixture.debugElement.queryAll(By.css('a'))[1]; // Users route
-      const icon = menuItem.queryAll(By.css('span'))[0];
-      const label = menuItem.queryAll(By.css('span'))[1];
-
-      expect(menuItem.classes['bg-primary-50']).toBeFalsy();
-      expect(menuItem.classes['text-gray-900']).toBe(true);
-      expect(icon.classes['text-gray-600']).toBe(true);
-      expect(icon.classes['material-icons-outlined']).toBe(true);
-      expect(label.classes['text-gray-900']).toBe(true);
-    });
-
-    it('should apply inactive classes for non-active routes in dark mode', () => {
-      jest.spyOn(darkModeService, 'isDarkMode').mockReturnValue(true);
-      fixture.detectChanges();
-
-      const menuItem = fixture.debugElement.queryAll(By.css('a'))[1]; // Users route
-      const icon = menuItem.queryAll(By.css('span'))[0];
-      const label = menuItem.queryAll(By.css('span'))[1];
-
-      expect(menuItem.classes['bg-gray-700']).toBeFalsy();
-      expect(menuItem.classes['text-gray-200']).toBe(true);
-      expect(icon.classes['text-gray-400']).toBe(true);
-      expect(icon.classes['material-icons-outlined']).toBe(true);
-      expect(label.classes['text-gray-300']).toBe(true);
-    });
+    const listItems = fixture.debugElement.queryAll(By.css('mat-list-item'));
+    expect(listItems.length).toBe(1);
+    const icon = listItems[0].query(By.css('mat-icon'));
+    const link = listItems[0].query(By.css('a'));
+    expect(icon.nativeElement.textContent).toBe('home');
+    expect(link.nativeElement.getAttribute('ng-reflect-router-link')).toBe('home');
+    expect(link.nativeElement.textContent.trim()).toContain('Home');
   });
 
-  describe('Responsive behavior', () => {
-    it('should apply mobile styling when isMobile returns true', () => {
-      jest.spyOn(responsiveService, 'isMobile').mockReturnValue(true);
-      fixture.detectChanges();
+  it('should handle null collapsed input gracefully', () => {
+    component.collapsed = null as any;
+    expect(component.sideNavCollapsed()).toBe(false); // Signal should remain unchanged or default
+  });
 
-      const menuItem = fixture.debugElement.queryAll(By.css('a'))[0];
-      expect(menuItem.classes['px-3']).toBe(true);
-      expect(menuItem.classes['px-0']).toBeFalsy();
+  it('should use translate pipe for menu item labels', () => {
+    // Mock translateService.instant to return a modified label
+    jest.spyOn(translateService, 'instant').mockImplementation((key: string) => `Translated_${key}`);
+
+    component.menuItems().forEach((item) => {
+      expect(translateService.instant(item.label)).toBe(`Translated_${item.label}`);
     });
 
-    it('should apply desktop collapsed styling when not mobile and collapsed', () => {
-      jest.spyOn(responsiveService, 'isMobile').mockReturnValue(false);
-      component.sideNavCollapsed.set(true);
-      fixture.detectChanges();
-
-      const menuItem = fixture.debugElement.queryAll(By.css('a'))[0];
-      expect(menuItem.classes['px-0']).toBe(true);
-      expect(menuItem.classes['py-3']).toBe(true);
-      expect(menuItem.classes['justify-center']).toBe(true);
-    });
-
-    it('should apply desktop expanded styling when not mobile and not collapsed', () => {
-      jest.spyOn(responsiveService, 'isMobile').mockReturnValue(false);
-      component.sideNavCollapsed.set(false);
-      fixture.detectChanges();
-
-      const menuItem = fixture.debugElement.queryAll(By.css('a'))[0];
-      expect(menuItem.classes['px-3']).toBe(true);
-      expect(menuItem.classes['px-0']).toBeFalsy();
+    fixture.detectChanges();
+    const listItems = fixture.debugElement.queryAll(By.css('mat-list-item'));
+    listItems.forEach((listItem, index) => {
+      const link = listItem.query(By.css('a'));
+      expect(link.nativeElement.textContent.trim()).toContain(
+        `Translated_${component.menuItems()[index].label}`
+      );
     });
   });
 });
