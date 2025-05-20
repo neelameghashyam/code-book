@@ -1,0 +1,150 @@
+<div class="min-h-screen flex items-center justify-center bg-gray-100">
+  <!-- Left Side: Image (Visible only on desktop) -->
+  <div class="hidden lg:flex w-1/2 items-center justify-center">
+    <img src="assets/login-img.png" alt="Login Illustration" class="max-w-xl w-full h-auto object-contain" />
+  </div>
+
+  <!-- Right Side: Form (Visible on all devices) -->
+  <div class="w-full lg:w-1/2 flex items-center justify-center p-4 sm:p-6">
+    <mat-card class="p-4 sm:p-6 w-full max-w-sm sm:max-w-md">
+      <!-- Heading -->
+      <mat-card-title class="text-3xl sm:text-5xl font-bold text-center mb-4">
+        <h1 style="color: #1E88E5 !important; font-weight: 600 !important; font-family: 'Poppins', sans-serif !important">
+          Welcome,<br />please authorize
+        </h1>
+      </mat-card-title>
+      <!-- Social Login Buttons (only for login) -->
+      <div class="flex justify-center space-x-4 mt-6">
+        <button mat-icon-button class="border border-[#E0E0E0] rounded-full p-2">
+          <img src="assets/facebook.png" alt="Facebook" class="w-6 h-6" />
+        </button>
+        <button mat-icon-button class="border border-[#E0E0E0] rounded-full p-2">
+          <img src="assets/apple-logo.png" alt="Apple" class="w-6 h-6" />
+        </button>
+        <button mat-icon-button class="border border-[#E0E0E0] rounded-full p-2">
+          <img src="assets/google.png" alt="Google" class="w-6 h-6" />
+        </button>
+      </div>
+
+      <!-- Form Fields -->
+      <form [formGroup]="authForm" class="space-y-4 p-2">
+        <!-- Name field (only for signup) -->
+        <mat-form-field *ngIf="isSignupMode" class="w-full">
+          <mat-label>Full Name</mat-label>
+          <input
+            matInput
+            id="name"
+            type="text"
+            formControlName="name"
+            placeholder="Full Name"
+          />
+          <mat-icon matPrefix style="color: #1E88E5 !important;">person</mat-icon>
+          <mat-error *ngIf="authForm.get('name')?.hasError('required') && authForm.get('name')?.touched">
+            Name is required
+          </mat-error>
+        </mat-form-field>
+
+        <!-- Email field -->
+        <mat-form-field class="w-full">
+          <mat-label>Email</mat-label>
+          <input
+            matInput
+            id="email"
+            type="email"
+            formControlName="email"
+            placeholder="Email"
+          />
+          <mat-icon matPrefix style="color: #1E88E5 !important;">email</mat-icon>
+          <mat-error *ngIf="authForm.get('email')?.hasError('required') && authForm.get('email')?.touched">
+            Email is required
+          </mat-error>
+          <mat-error *ngIf="authForm.get('email')?.hasError('email') && authForm.get('email')?.touched">
+            Valid email is required
+          </mat-error>
+        </mat-form-field>
+
+        <!-- Password field -->
+        <mat-form-field class="w-full">
+          <mat-label>Password</mat-label>
+          <input
+            matInput
+            id="password"
+            [type]="showPassword ? 'text' : 'password'"
+            formControlName="password"
+            placeholder="Password"
+          />
+          <mat-icon matPrefix style="color: #1E88E5 !important;">lock</mat-icon>
+          <button mat-icon-button matSuffix (click)="togglePasswordVisibility()" type="button">
+            <mat-icon style="color: #1E88E5 !important;">{{ showPassword ? 'visibility_off' : 'visibility' }}</mat-icon>
+          </button>
+          <mat-error *ngIf="authForm.get('password')?.hasError('required') && authForm.get('password')?.touched">
+            Password is required
+          </mat-error>
+          <mat-error *ngIf="authForm.get('password')?.hasError('minlength') && authForm.get('password')?.touched">
+            Password must be at least 6 characters
+          </mat-error>
+        </mat-form-field>
+
+        <!-- Confirm Password field (only for signup) -->
+        <mat-form-field *ngIf="isSignupMode" class="w-full">
+          <mat-label>Confirm Password</mat-label>
+          <input
+            matInput
+            id="confirmPassword"
+            [type]="showConfirmPassword ? 'text' : 'password'"
+            formControlName="confirmPassword"
+            placeholder="Confirm Password"
+          />
+          <mat-icon matPrefix style="color: #1E88E5 !important;">lock</mat-icon>
+          <button mat-icon-button matSuffix (click)="toggleConfirmPasswordVisibility()" type="button">
+            <mat-icon style="color: #1E88E5 !important;">{{ showConfirmPassword ? 'visibility_off' : 'visibility' }}</mat-icon>
+          </button>
+          <mat-error *ngIf="authForm.get('confirmPassword')?.hasError('required') && authForm.get('confirmPassword')?.touched">
+            Confirm Password is required
+          </mat-error>
+          <mat-error *ngIf="authForm.hasError('mismatch') && authForm.get('confirmPassword')?.touched">
+            Passwords must match
+          </mat-error>
+        </mat-form-field>
+
+        <!-- Remember Me and Forget Password (only for login) -->
+        <div *ngIf="!isSignupMode" class="flex justify-between items-center">
+          <mat-checkbox formControlName="rememberMe" color="primary">Remember Me</mat-checkbox>
+          <a href="#" class="text-sm text-[#1E88E5] hover:underline" style="font-family: 'Poppins', sans-serif !important">Forget Password?</a>
+        </div>
+
+        <!-- Terms Agreement (only for signup) -->
+        <div *ngIf="isSignupMode" class="flex items-center">
+          <mat-checkbox formControlName="agreeTerms" color="primary">
+            I agree to the <a href="#" class="text-[#1E88E5] hover:underline">Terms of Service and Privacy Policy</a>
+          </mat-checkbox>
+        </div>
+      </form>
+
+      <!-- Error message -->
+      <div *ngIf="error()" class="text-red-500 text-sm my-4 text-center">{{ error() }}</div>
+
+      <!-- Tabs for Login/Sign Up -->
+      <div class="p-3 flex justify-center mb-6 space-x-2">
+        <button
+          mat-button
+          (click)="handleLogin()"
+          class="rounded-2xl px-6 py-2 text-base sm:text-lg font-semibold w-full sm:w-auto"
+          [ngClass]="!isSignupMode ? 'bg-[#1E88E5] text-white' : 'bg-white text-[#1E88E5] border border-[#1E88E5]'"
+          [style]="!isSignupMode ? 'background-color: #1E88E5 !important; color: white !important; font-weight: 600 !important; font-family: \'Poppins\', sans-serif !important' : 'background-color: white !important; color: #1E88E5 !important; border: 1px solid #1E88E5 !important; font-weight: 600 !important; font-family: \'Poppins\', sans-serif !important'"
+        >
+          {{ isLoading() && !isSignupMode ? 'Logging in...' : 'Login' }}
+        </button>
+        <button
+          mat-button
+          (click)="handleSignup()"
+          class="rounded-2xl px-6 py-2 text-base sm:text-lg font-semibold w-full sm:w-auto"
+          [ngClass]="isSignupMode ? 'bg-[#1E88E5] text-white' : 'bg-white text-[#1E88E5] border border-[#1E88E5]'"
+          [style]="isSignupMode ? 'background-color: #1E88E5 !important; color: white !important; font-weight: 600 !important; font-family: \'Poppins\', sans-serif !important' : 'background-color: white !important; color: #1E88E5 !important; border: 1px solid #1E88E5 !important; font-weight: 600 !important; font-family: \'Poppins\', sans-serif !important'"
+        >
+          {{ isLoading() && isSignupMode ? 'Signing up...' : 'Sign Up' }}
+        </button>
+      </div>
+    </mat-card>
+  </div>
+</div>

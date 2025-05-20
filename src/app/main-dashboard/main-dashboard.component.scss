@@ -1,0 +1,12 @@
+/* Theme menu item */
+.theme-menu-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.color-preview {
+  width: 1rem;
+  height: 1rem;
+  border-radius: 50%;
+}

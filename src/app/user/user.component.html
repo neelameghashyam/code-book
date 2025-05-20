@@ -11,7 +11,7 @@
             class="w-7 h-7 rounded-full object-cover"
             [src]="user.avatar"
             alt="User avatar"
-            (click)="document.getElementById('avatarUpload').click()">
+            >
         }
         @if (!showAvatar || !user.avatar) {
           <mat-icon>account_circle</mat-icon>
