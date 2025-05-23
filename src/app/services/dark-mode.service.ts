@@ -50,7 +50,7 @@ export class DarkModeService {
     return this.themes;
   }
 
-  private applyTheme() {
+  public applyTheme() {
     const isDark = this.isDarkMode();
     document.body.classList.toggle('dark-theme', isDark);
     document.body.classList.toggle('light-theme', !isDark);

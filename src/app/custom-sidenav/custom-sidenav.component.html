@@ -27,13 +27,14 @@
       </span>
       
       <span 
-        *ngIf="!sideNavCollapsed() || responsiveService.isMobile()"
-        class="font-medium"
-        [style.color]="rla.isActive ? 'var(--mat-sys-primary)' : 'var(--mat-sys-on-surface)'"
-        [style.font-weight]="rla.isActive ? '600' : '500'"
-      >
-        {{ item.label }}
-      </span>
+    *ngIf="!sideNavCollapsed() || responsiveService.isMobile()"
+    class="font-medium"
+    style="font-family: 'Poppins', sans-serif !important"
+    [style.color]="rla.isActive ? 'var(--mat-sys-primary)' : 'var(--mat-sys-on-surface)'"
+    [style.font-weight]="rla.isActive ? '600' : '500'"
+>
+    {{ item.label }}
+</span>
     </a>
   </nav>
 </div>

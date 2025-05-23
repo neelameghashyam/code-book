@@ -6,6 +6,7 @@ import { Routes } from '@angular/router';
    import { LoginComponent } from './login/login/login.component';
    import { MainDashboardComponent } from './main-dashboard/main-dashboard.component';
    import { AuthGuard } from './auth.guard';
+import { PincodesComponent } from './pages/pincodes/pincodes.component';
 
    export const routes: Routes = [
      {
@@ -14,6 +15,7 @@ import { Routes } from '@angular/router';
        canActivate: [AuthGuard],
        children: [
          { path: 'dashboard', component: DashboardComponent },
+         { path: 'pincode', component: PincodesComponent },
          { path: 'users', component: UsersComponent },
          { path: 'business', component: BusinessComponent },
          { path: 'business-list', component: ListBusinessesComponent },

@@ -41,7 +41,7 @@ import { TranslateModule } from '@ngx-translate/core';
 })
 export class MainDashboardComponent implements OnInit {
   title = 'Code Book';
-  collapsed = signal(true);
+  collapsed = signal(false);
   currentLanguage = signal('English'); // Default language display name
 
   constructor(private translateService: TranslateService) {

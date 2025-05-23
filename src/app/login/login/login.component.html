@@ -1,12 +1,12 @@
 <div class="min-h-screen flex items-center justify-center bg-gray-100">
   <!-- Left Side: Image (Visible only on desktop) -->
-  <div class="hidden lg:flex w-1/2 items-center justify-center">
-    <img src="assets/login-img.png" alt="Login Illustration" class="max-w-xl w-full h-auto object-contain" />
+  <div class="hidden lg:flex w-2/5 items-center justify-center">
+    <img src="https://svg.io/images/examples/flat_fox-surrounded-by-stars.svg" alt="Login Illustration" class="max-w-xl w-full h-auto object-contain" />
   </div>
 
   <!-- Right Side: Form (Visible on all devices) -->
-  <div class="w-full lg:w-1/2 flex items-center justify-center p-4 sm:p-6">
-    <mat-card class="p-4 sm:p-6 w-full max-w-sm sm:max-w-md">
+  <div class="w-full lg:w-3/5 flex items-center justify-center p-4 sm:p-6">
+    <mat-card class="p-6 sm:p-20 w-full max-w-md sm:max-w-lg" style="font-family: 'Poppins', sans-serif !important">
       <!-- Heading -->
       <mat-card-title class="text-3xl sm:text-5xl font-bold text-center mb-4">
         <h1 style="color: #1E88E5 !important; font-weight: 600 !important; font-family: 'Poppins', sans-serif !important">
@@ -15,114 +15,168 @@
       </mat-card-title>
       <!-- Social Login Buttons (only for login) -->
       <div class="flex justify-center space-x-4 mt-6">
-        <button mat-icon-button class="border border-[#E0E0E0] rounded-full p-2">
+        <button mat-icon-button class="border border-[#E0E0E0] rounded-full p-2" aria-label="Sign in with Facebook">
           <img src="assets/facebook.png" alt="Facebook" class="w-6 h-6" />
         </button>
-        <button mat-icon-button class="border border-[#E0E0E0] rounded-full p-2">
+        <button mat-icon-button class="border border-[#E0E0E0] rounded-full p-2" aria-label="Sign in with Apple">
           <img src="assets/apple-logo.png" alt="Apple" class="w-6 h-6" />
         </button>
-        <button mat-icon-button class="border border-[#E0E0E0] rounded-full p-2">
+        <button mat-icon-button class="border border-[#E0E0E0] rounded-full p-2" aria-label="Sign in with Google">
           <img src="assets/google.png" alt="Google" class="w-6 h-6" />
         </button>
       </div>
 
       <!-- Form Fields -->
-      <form [formGroup]="authForm" class="space-y-4 p-2">
+      <form [formGroup]="authForm" class="space-y-4 p-4" style="font-family: 'Poppins', sans-serif !important">
         <!-- Name field (only for signup) -->
-        <mat-form-field *ngIf="isSignupMode" class="w-full">
-          <mat-label>Full Name</mat-label>
-          <input
-            matInput
-            id="name"
-            type="text"
-            formControlName="name"
-            placeholder="Full Name"
-          />
-          <mat-icon matPrefix style="color: #1E88E5 !important;">person</mat-icon>
-          <mat-error *ngIf="authForm.get('name')?.hasError('required') && authForm.get('name')?.touched">
+        <div *ngIf="isSignupMode" class="w-full flex flex-col">
+          <div class="relative">
+            <mat-icon class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500" style="color: #1E88E5 !important">person</mat-icon>
+            <input
+              id="name"
+              type="text"
+              formControlName="name"
+              placeholder="Enter Full name"
+              class="border border-gray-300 rounded-md p-2 pl-10 text-gray-500 w-full focus:outline focus:ring-1 focus:ring-blue-500 focus:border-none"
+              [ngClass]="{'border-red-500': authForm.get('name')?.hasError('required') && authForm.get('name')?.touched}"
+              style="font-family: 'Poppins', sans-serif !important"
+              aria-label="Full name"
+            />
+          </div>
+          <span
+            *ngIf="authForm.get('name')?.hasError('required') && authForm.get('name')?.touched"
+            class="text-xs text-red-500 mt-1"
+            style="font-family: 'Poppins', sans-serif !important"
+          >
             Name is required
-          </mat-error>
-        </mat-form-field>
+          </span>
+        </div>
 
         <!-- Email field -->
-        <mat-form-field class="w-full">
-          <mat-label>Email</mat-label>
-          <input
-            matInput
-            id="email"
-            type="email"
-            formControlName="email"
-            placeholder="Email"
-          />
-          <mat-icon matPrefix style="color: #1E88E5 !important;">email</mat-icon>
-          <mat-error *ngIf="authForm.get('email')?.hasError('required') && authForm.get('email')?.touched">
+        <div class="w-full flex flex-col">
+          <div class="relative">
+            <mat-icon class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500" style="color: #1E88E5 !important">email</mat-icon>
+            <input
+              id="email"
+              type="email"
+              formControlName="email"
+              placeholder="Enter Email"
+              class="bg-gray-100 border border-gray-300 rounded-md p-2 pl-10 text-gray-500 w-full focus:outline focus:ring-1 focus:ring-blue-500 focus:border-none"
+              [ngClass]="{'border-red-500': authForm.get('email')?.hasError('required') || authForm.get('email')?.hasError('email') && authForm.get('email')?.touched}"
+              style="font-family: 'Poppins', sans-serif !important"
+              aria-label="Email address"
+            />
+          </div>
+          <span
+            *ngIf="authForm.get('email')?.hasError('required') && authForm.get('email')?.touched"
+            class="text-xs text-red-500 mt-1"
+            style="font-family: 'Poppins', sans-serif !important"
+          >
             Email is required
-          </mat-error>
-          <mat-error *ngIf="authForm.get('email')?.hasError('email') && authForm.get('email')?.touched">
+          </span>
+          <span
+            *ngIf="authForm.get('email')?.hasError('email') && authForm.get('email')?.touched"
+            class="text-xs text-red-500 mt-1"
+            style="font-family: 'Poppins', sans-serif !important"
+          >
             Valid email is required
-          </mat-error>
-        </mat-form-field>
+          </span>
+        </div>
 
         <!-- Password field -->
-        <mat-form-field class="w-full">
-          <mat-label>Password</mat-label>
-          <input
-            matInput
-            id="password"
-            [type]="showPassword ? 'text' : 'password'"
-            formControlName="password"
-            placeholder="Password"
-          />
-          <mat-icon matPrefix style="color: #1E88E5 !important;">lock</mat-icon>
-          <button mat-icon-button matSuffix (click)="togglePasswordVisibility()" type="button">
-            <mat-icon style="color: #1E88E5 !important;">{{ showPassword ? 'visibility_off' : 'visibility' }}</mat-icon>
-          </button>
-          <mat-error *ngIf="authForm.get('password')?.hasError('required') && authForm.get('password')?.touched">
+        <div class="w-full flex flex-col">
+          <div class="relative">
+            <mat-icon class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500" style="color: #1E88E5 !important">lock</mat-icon>
+            <input
+              id="password"
+              [type]="showPassword ? 'text' : 'password'"
+              formControlName="password"
+              placeholder="Enter Password"
+              class="bg-gray-100 border border-gray-300 rounded-md p-2 pl-10 pr-10 text-gray-500 w-full focus:outline focus:ring-1 focus:ring-blue-500 focus:border-none"
+              [ngClass]="{'border-red-500': authForm.get('password')?.hasError('required') || authForm.get('password')?.hasError('minlength') && authForm.get('password')?.touched}"
+              style="font-family: 'Poppins', sans-serif !important"
+              aria-label="Password"
+            />
+            <button
+              type="button"
+              (click)="togglePasswordVisibility()"
+              class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500"
+              aria-label="Toggle password visibility"
+            >
+              <mat-icon style="color: #1E88E5 !important"> {{ showPassword ? 'visibility_off' : 'visibility' }}</mat-icon>
+            </button>
+          </div>
+          <span
+            *ngIf="authForm.get('password')?.hasError('required') && authForm.get('password')?.touched"
+            class="text-xs text-red-500 mt-1"
+            style="font-family: 'Poppins', sans-serif !important"
+          >
             Password is required
-          </mat-error>
-          <mat-error *ngIf="authForm.get('password')?.hasError('minlength') && authForm.get('password')?.touched">
+          </span>
+          <span
+            *ngIf="authForm.get('password')?.hasError('minlength') && authForm.get('password')?.touched"
+            class="text-xs text-red-500 mt-1"
+            style="font-family: 'Poppins', sans-serif !important"
+          >
             Password must be at least 6 characters
-          </mat-error>
-        </mat-form-field>
+          </span>
+        </div>
 
         <!-- Confirm Password field (only for signup) -->
-        <mat-form-field *ngIf="isSignupMode" class="w-full">
-          <mat-label>Confirm Password</mat-label>
-          <input
-            matInput
-            id="confirmPassword"
-            [type]="showConfirmPassword ? 'text' : 'password'"
-            formControlName="confirmPassword"
-            placeholder="Confirm Password"
-          />
-          <mat-icon matPrefix style="color: #1E88E5 !important;">lock</mat-icon>
-          <button mat-icon-button matSuffix (click)="toggleConfirmPasswordVisibility()" type="button">
-            <mat-icon style="color: #1E88E5 !important;">{{ showConfirmPassword ? 'visibility_off' : 'visibility' }}</mat-icon>
-          </button>
-          <mat-error *ngIf="authForm.get('confirmPassword')?.hasError('required') && authForm.get('confirmPassword')?.touched">
+        <div *ngIf="isSignupMode" class="w-full flex flex-col">
+          <div class="relative">
+            <mat-icon class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500" style="color: #1E88E5 !important">lock</mat-icon>
+            <input
+              id="confirmPassword"
+              [type]="showConfirmPassword ? 'text' : 'password'"
+              formControlName="confirmPassword"
+              placeholder="Enter Confirm Password"
+              class="bg-gray-100 border border-gray-300 rounded-md p-2 pl-10 pr-10 text-gray-500 w-full focus:outline focus:ring-1 focus:ring-blue-500 focus:border-none"
+              [ngClass]="{'border-red-500': authForm.get('confirmPassword')?.hasError('required') || authForm.hasError('mismatch') && authForm.get('confirmPassword')?.touched}"
+              style="font-family: 'Poppins', sans-serif !important"
+              aria-label="Confirm password"
+            />
+            <button
+              type="button"
+              (click)="toggleConfirmPasswordVisibility()"
+              class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500"
+              aria-label="Toggle confirm password visibility"
+            >
+              <mat-icon style="color: #1E88E5 !important">{{ showConfirmPassword ? 'visibility_off' : 'visibility' }}</mat-icon>
+            </button>
+          </div>
+          <span
+            *ngIf="authForm.get('confirmPassword')?.hasError('required') && authForm.get('confirmPassword')?.touched"
+            class="text-xs text-red-500 mt-1"
+            style="font-family: 'Poppins', sans-serif !important"
+          >
             Confirm Password is required
-          </mat-error>
-          <mat-error *ngIf="authForm.hasError('mismatch') && authForm.get('confirmPassword')?.touched">
+          </span>
+          <span
+            *ngIf="authForm.hasError('mismatch') && authForm.get('confirmPassword')?.touched"
+            class="text-xs text-red-500 mt-1"
+            style="font-family: 'Poppins', sans-serif !important"
+          >
             Passwords must match
-          </mat-error>
-        </mat-form-field>
+          </span>
+        </div>
 
         <!-- Remember Me and Forget Password (only for login) -->
-        <div *ngIf="!isSignupMode" class="flex justify-between items-center">
-          <mat-checkbox formControlName="rememberMe" color="primary">Remember Me</mat-checkbox>
-          <a href="#" class="text-sm text-[#1E88E5] hover:underline" style="font-family: 'Poppins', sans-serif !important">Forget Password?</a>
+        <div *ngIf="!isSignupMode" class="flex justify-between items-center" style="font-family: 'Poppins', sans-serif !important">
+          <mat-checkbox formControlName="rememberMe" color="primary" style="font-family: 'Poppins', sans-serif !important" aria-label="Remember me">Remember Me</mat-checkbox>
+          <a href="#" class="text-sm text-blue-500 hover:underline" style="font-family: 'Poppins', sans-serif !important" aria-label="Forgot password">Forgot password?</a>
         </div>
 
         <!-- Terms Agreement (only for signup) -->
-        <div *ngIf="isSignupMode" class="flex items-center">
-          <mat-checkbox formControlName="agreeTerms" color="primary">
-            I agree to the <a href="#" class="text-[#1E88E5] hover:underline">Terms of Service and Privacy Policy</a>
+        <div *ngIf="isSignupMode" class="flex items-center" style="font-family: 'Poppins', sans-serif !important">
+          <mat-checkbox formControlName="agreeTerms" color="primary" style="font-family: 'Poppins', sans-serif !important" aria-label="Agree to terms of service and privacy policy">
+            I agree to the <a href="#" class="text-[#1E88E5] hover:underline" style="font-family: 'Poppins', sans-serif !important" aria-label="Terms of service and privacy policy link">Terms of Service and Privacy Policy</a>
           </mat-checkbox>
         </div>
       </form>
 
       <!-- Error message -->
-      <div *ngIf="error()" class="text-red-500 text-sm my-4 text-center">{{ error() }}</div>
+      <div *ngIf="error()" class="text-red-500 text-sm my-4 text-center" style="font-family: 'Poppins', sans-serif !important">{{ error() }}</div>
 
       <!-- Tabs for Login/Sign Up -->
       <div class="p-3 flex justify-center mb-6 space-x-2">
@@ -132,6 +186,7 @@
           class="rounded-2xl px-6 py-2 text-base sm:text-lg font-semibold w-full sm:w-auto"
           [ngClass]="!isSignupMode ? 'bg-[#1E88E5] text-white' : 'bg-white text-[#1E88E5] border border-[#1E88E5]'"
           [style]="!isSignupMode ? 'background-color: #1E88E5 !important; color: white !important; font-weight: 600 !important; font-family: \'Poppins\', sans-serif !important' : 'background-color: white !important; color: #1E88E5 !important; border: 1px solid #1E88E5 !important; font-weight: 600 !important; font-family: \'Poppins\', sans-serif !important'"
+          aria-label="Login"
         >
           {{ isLoading() && !isSignupMode ? 'Logging in...' : 'Login' }}
         </button>
@@ -141,6 +196,7 @@
           class="rounded-2xl px-6 py-2 text-base sm:text-lg font-semibold w-full sm:w-auto"
           [ngClass]="isSignupMode ? 'bg-[#1E88E5] text-white' : 'bg-white text-[#1E88E5] border border-[#1E88E5]'"
           [style]="isSignupMode ? 'background-color: #1E88E5 !important; color: white !important; font-weight: 600 !important; font-family: \'Poppins\', sans-serif !important' : 'background-color: white !important; color: #1E88E5 !important; border: 1px solid #1E88E5 !important; font-weight: 600 !important; font-family: \'Poppins\', sans-serif !important'"
+          aria-label="Sign up"
         >
           {{ isLoading() && isSignupMode ? 'Signing up...' : 'Sign Up' }}
         </button>

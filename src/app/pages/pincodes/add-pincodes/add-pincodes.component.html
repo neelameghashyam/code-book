@@ -1,0 +1,227 @@
+<mat-card class="p-6 bg-white dark:bg-gray-800 shadow-3xl rounded-lg">
+  <mat-card-header>
+     <button (click)="cancel()" class="absolute top-0 right-0 flex justify-center items-center p-2 rounded-full hover:bg-gray-100" >
+        <mat-icon>close</mat-icon>
+      </button>
+    <mat-card-title class="flex justify-between items-center">
+      <h2 class="text-2xl font-bold text-gray-900 dark:text-gray-100"style="font-family: 'Roboto, sans-serif';">
+        {{ data?.pincode ? 'Edit Pincode' : 'Add Pincode' }}
+      </h2>
+    </mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    <form #pincodeForm="ngForm" (ngSubmit)="savePincode(pincodeForm)">
+      <div class="grid grid-cols-2 gap-4">
+        <!-- Office Name -->
+        <div class="flex flex-col min-h-[6rem]">
+          <label for="officeName" class="text-sm font-bold text-gray-700 dark:text-gray-200">Office Name</label>
+          <input
+            id="officeName"
+            type="text"
+            [(ngModel)]="formPincode.officeName"
+            name="officeName"
+            required
+            placeholder="Office Name"
+            class="p-2 border rounded text-sm w-full focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-800 dark:border-gray-600 dark:text-gray-100 dark:placeholder-gray-400 h-10"
+            [ngClass]="{
+              'border-[#D7373C] dark:border-[#F87171]': pincodeForm.controls['officeName']?.hasError('required') && pincodeForm.submitted,
+              'bg-gray-100 dark:bg-gray-700': false
+            }"
+            aria-required="true"
+            [attr.aria-invalid]="pincodeForm.controls['officeName']?.hasError('required') && pincodeForm.submitted"
+            aria-describedby="officeNameError"
+          />
+          <small
+            id="officeNameError"
+            class="text-xs text-[#D7373C] dark:text-[#F87171] mt-1 error-message"
+            [ngClass]="{
+              'visible opacity-100': pincodeForm.controls['officeName']?.hasError('required') && pincodeForm.submitted,
+              'invisible opacity-0': !(pincodeForm.controls['officeName']?.hasError('required') && pincodeForm.submitted)
+            }"
+          >
+            Office Name is required
+          </small>
+        </div>
+
+        <!-- Pincode -->
+        <div class="flex flex-col min-h-[6rem]">
+          <label for="pincode" class="text-sm font-bold text-gray-700 dark:text-gray-200">Pincode</label>
+          <input
+            id="pincode"
+            type="text"
+            [(ngModel)]="formPincode.pincode"
+            name="pincode"
+            required
+            pattern="[0-9]{6}"
+            placeholder="Pincode"
+            class="p-2 border rounded text-sm w-full focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-800 dark:border-gray-600 dark:text-gray-100 dark:placeholder-gray-400 h-10"
+            [ngClass]="{
+              'border-[#D7373C] dark:border-[#F87171]': (pincodeForm.controls['pincode']?.hasError('required') || pincodeForm.controls['pincode']?.hasError('pattern')) && pincodeForm.submitted,
+              'bg-gray-100 dark:bg-gray-700': false
+            }"
+            aria-required="true"
+            [attr.aria-invalid]="(pincodeForm.controls['pincode']?.hasError('required') || pincodeForm.controls['pincode']?.hasError('pattern')) && pincodeForm.submitted"
+            aria-describedby="pincodeError"
+          />
+          <small
+            id="pincodeError"
+            class="text-xs text-[#D7373C] dark:text-[#F87171] mt-1 error-message"
+            [ngClass]="{
+              'visible opacity-100': (pincodeForm.controls['pincode']?.hasError('required') || pincodeForm.controls['pincode']?.hasError('pattern')) && pincodeForm.submitted,
+              'invisible opacity-0': !((pincodeForm.controls['pincode']?.hasError('required') || pincodeForm.controls['pincode']?.hasError('pattern')) && pincodeForm.submitted)
+            }"
+          >
+            {{ pincodeForm.controls['pincode']?.hasError('required') ? 'Pincode is required' : 'Pincode must be 6 digits' }}
+          </small>
+        </div>
+
+        <!-- District Name -->
+        <div class="flex flex-col min-h-[6rem]">
+          <label for="districtName" class="text-sm font-bold text-gray-700 dark:text-gray-200">District Name</label>
+          <input
+            id="districtName"
+            type="text"
+            [(ngModel)]="formPincode.districtName"
+            name="districtName"
+            required
+            placeholder="District Name"
+            class="p-2 border rounded text-sm w-full focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-800 dark:border-gray-600 dark:text-gray-100 dark:placeholder-gray-400 h-10"
+            [ngClass]="{
+              'border-[#D7373C] dark:border-[#F87171]': pincodeForm.controls['districtName']?.hasError('required') && pincodeForm.submitted,
+              'bg-gray-100 dark:bg-gray-700': false
+            }"
+            aria-required="true"
+            [attr.aria-invalid]="pincodeForm.controls['districtName']?.hasError('required') && pincodeForm.submitted"
+            aria-describedby="districtNameError"
+          />
+          <small
+            id="districtNameError"
+            class="text-xs text-[#D7373C] dark:text-[#F87171] mt-1 error-message"
+            [ngClass]="{
+              'visible opacity-100': pincodeForm.controls['districtName']?.hasError('required') && pincodeForm.submitted,
+              'invisible opacity-0': !(pincodeForm.controls['districtName']?.hasError('required') && pincodeForm.submitted)
+            }"
+          >
+            District Name is required
+          </small>
+        </div>
+
+        <!-- Taluk -->
+        <div class="flex flex-col min-h-[6rem]">
+          <label for="taluk" class="text-sm font-bold text-gray-700 dark:text-gray-200">Taluk</label>
+          <input
+            id="taluk"
+            type="text"
+            [(ngModel)]="formPincode.taluk"
+            name="taluk"
+            required
+            placeholder="Taluk"
+            class="p-2 border rounded text-sm w-full focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-800 dark:border-gray-600 dark:text-gray-100 dark:placeholder-gray-400 h-10"
+            [ngClass]="{
+              'border-[#D7373C] dark:border-[#F87171]': pincodeForm.controls['taluk']?.hasError('required') && pincodeForm.submitted,
+              'bg-gray-100 dark:bg-gray-700': false
+            }"
+            aria-required="true"
+            [attr.aria-invalid]="pincodeForm.controls['taluk']?.hasError('required') && pincodeForm.submitted"
+            aria-describedby="talukError"
+          />
+          <small
+            id="talukError"
+            class="text-xs text-[#D7373C] dark:text-[#F87171] mt-1 error-message"
+            [ngClass]="{
+              'visible opacity-100': pincodeForm.controls['taluk']?.hasError('required') && pincodeForm.submitted,
+              'invisible opacity-0': !(pincodeForm.controls['taluk']?.hasError('required') && pincodeForm.submitted)
+            }"
+          >
+            Taluk is required
+          </small>
+        </div>
+
+        <!-- State Name -->
+        <div class="flex flex-col min-h-[6rem]">
+          <label for="stateName" class="text-sm font-bold text-gray-700 dark:text-gray-200">State Name</label>
+          <input
+            id="stateName"
+            type="text"
+            [(ngModel)]="formPincode.stateName"
+            name="stateName"
+            required
+            placeholder="State Name"
+            class="p-2 border rounded text-sm w-full focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-800 dark:border-gray-600 dark:text-gray-100 dark:placeholder-gray-400 h-10"
+            [ngClass]="{
+              'border-[#D7373C] dark:border-[#F87171]': pincodeForm.controls['stateName']?.hasError('required') && pincodeForm.submitted,
+              'bg-gray-100 dark:bg-gray-700': false
+            }"
+            aria-required="true"
+            [attr.aria-invalid]="pincodeForm.controls['stateName']?.hasError('required') && pincodeForm.submitted"
+            aria-describedby="stateNameError"
+          />
+          <small
+            id="stateNameError"
+            class="text-xs text-[#D7373C] dark:text-[#F87171] mt-1 error-message"
+            [ngClass]="{
+              'visible opacity-100': pincodeForm.controls['stateName']?.hasError('required') && pincodeForm.submitted,
+              'invisible opacity-0': !(pincodeForm.controls['stateName']?.hasError('required') && pincodeForm.submitted)
+            }"
+          >
+            State Name is required
+          </small>
+        </div>
+
+        <!-- City -->
+        <div class="flex flex-col min-h-[6rem]">
+          <label for="city" class="text-sm font-bold text-gray-700 dark:text-gray-200">City</label>
+          <input
+            id="city"
+            type="text"
+            [(ngModel)]="formPincode.city"
+            name="city"
+            required
+            placeholder="City"
+            class="p-2 border rounded text-sm w-full focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-800 dark:border-gray-600 dark:text-gray-100 dark:placeholder-gray-400 h-10"
+            [ngClass]="{
+              'border-[#D7373C] dark:border-[#F87171]': pincodeForm.controls['city']?.hasError('required') && pincodeForm.submitted,
+              'bg-gray-100 dark:bg-gray-700': false
+            }"
+            aria-required="true"
+            [attr.aria-invalid]="pincodeForm.controls['city']?.hasError('required') && pincodeForm.submitted"
+            aria-describedby="cityError"
+          />
+          <small
+            id="cityError"
+            class="text-xs text-[#D7373C] dark:text-[#F87171] mt-1 error-message"
+            [ngClass]="{
+              'visible opacity-100': pincodeForm.controls['city']?.hasError('required') && pincodeForm.submitted,
+              'invisible opacity-0': !(pincodeForm.controls['city']?.hasError('required') && pincodeForm.submitted)
+            }"
+          >
+            City is required
+          </small>
+        </div>
+      </div>
+      <div class="mt-4 flex justify-end gap-2">
+        <button 
+          mat-button
+          type="button"
+          (click)="cancel()"
+          class="bg-gray-300 text-gray-800 px-4 py-2 rounded-lg hover:bg-gray-400 transition"
+          style="font-family: 'Roboto, sans-serif';"
+          aria-label="Cancel pincode form"
+        >
+          Cancel
+        </button>
+        <button 
+          mat-raised-button
+          color="primary"
+          type="submit"
+          [disabled]="isFormInvalid()"
+          class="hover:bg-blue-700 transition"
+          style="font-family: 'Roboto, sans-serif';"
+          [attr.aria-label]="data?.pincode ? 'Update pincode' : 'Save pincode'"
+        >
+          {{ data?.pincode ? 'Update' : 'Save' }}
+        </button>
+      </div>
+    </form>
+  </mat-card-content>
+</mat-card>

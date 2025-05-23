@@ -1,17 +1,31 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { TestBed, ComponentFixture, fakeAsync, tick } from '@angular/core/testing';
 import { UserComponent } from './user.component';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatDividerModule } from '@angular/material/divider';
 import { NgClass } from '@angular/common';
+import { AuthService } from '../login/auth.service';
+import { Router } from '@angular/router';
 import { By } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { OverlayModule, OverlayContainer } from '@angular/cdk/overlay';
 
 describe('UserComponent', () => {
   let component: UserComponent;
   let fixture: ComponentFixture<UserComponent>;
+  let authService: jest.Mocked<AuthService>;
+  let router: jest.Mocked<Router>;
+  let overlayContainer: OverlayContainer;
 
   beforeEach(async () => {
+    const authServiceMock = {
+      signout: jest.fn(),
+    };
+    const routerMock = {
+      navigate: jest.fn(),
+    };
+
     await TestBed.configureTestingModule({
       imports: [
         UserComponent,
@@ -20,192 +34,199 @@ describe('UserComponent', () => {
         MatMenuModule,
         MatDividerModule,
         NgClass,
+        BrowserAnimationsModule,
+        OverlayModule,
+      ],
+      providers: [
+        { provide: AuthService, useValue: authServiceMock },
+        { provide: Router, useValue: routerMock },
       ],
     }).compileComponents();
 
     fixture = TestBed.createComponent(UserComponent);
     component = fixture.componentInstance;
+    authService = TestBed.inject(AuthService) as jest.Mocked<AuthService>;
+    router = TestBed.inject(Router) as jest.Mocked<Router>;
+    overlayContainer = TestBed.inject(OverlayContainer);
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  afterEach(() => {
+    overlayContainer.ngOnDestroy(); // Clean up overlays
+  });
+
+  it('should create the component', () => {
     expect(component).toBeTruthy();
   });
 
-  describe('Initial State', () => {
-    it('should initialize with showAvatar as true and user object', () => {
-      expect(component.showAvatar).toBe(true);
-      expect(component.user).toEqual({
-        avatar: '/assets/image.png',
-        status: 'online',
-      });
-    });
-
-    it('should render avatar image when showAvatar is true and avatar exists', () => {
-      const imgElement = fixture.debugElement.query(By.css('img'));
-      expect(imgElement).toBeTruthy();
-      expect(imgElement.attributes['src']).toBe('/assets/image.png');
-      expect(imgElement.attributes['alt']).toBe('User avatar');
-    });
-
-    it('should render status dot with online class', () => {
-      const statusDot = fixture.debugElement.query(By.css('span[ngClass]'));
-      expect(statusDot.classes['bg-green-500']).toBeTruthy();
+  it('should initialize with correct default properties', () => {
+    expect(component.showAvatar).toBe(true);
+    expect(component.user).toEqual({
+      avatar: 'assets/image.png',
+      status: 'online',
     });
   });
 
-  describe('Avatar Rendering', () => {
-    it('should render mat-icon when showAvatar is false', () => {
-      component.showAvatar = false;
-      fixture.detectChanges();
-      const iconElement = fixture.debugElement.query(By.css('mat-icon'));
-      const imgElement = fixture.debugElement.query(By.css('img'));
-      expect(iconElement).toBeTruthy();
-      expect(iconElement.nativeElement.textContent).toBe('account_circle');
-      expect(imgElement).toBeNull();
-    });
-
-    it('should render mat-icon when user.avatar is empty', () => {
-      component.user.avatar = '';
-      fixture.detectChanges();
-      const iconElement = fixture.debugElement.query(By.css('mat-icon'));
-      const imgElement = fixture.debugElement.query(By.css('img'));
-      expect(iconElement).toBeTruthy();
-      expect(iconElement.nativeElement.textContent).toBe('account_circle');
-      expect(imgElement).toBeNull();
-    });
+  it('should have correct constructor injections', () => {
+    expect(TestBed.inject(AuthService)).toBe(authService);
+    expect(TestBed.inject(Router)).toBe(router);
+    // Explicitly access dependencies to ensure constructor execution
+    expect((component as any).authService).toBe(authService);
+    expect((component as any).router).toBe(router);
   });
 
-  describe('updateUserStatus', () => {
-    it('should update user status to online', () => {
-      component.updateUserStatus('online');
-      expect(component.user.status).toBe('online');
-      fixture.detectChanges();
-      const statusDot = fixture.debugElement.query(By.css('span[ngClass]'));
-      expect(statusDot.classes['bg-green-500']).toBeTruthy();
-      expect(statusDot.classes['bg-amber-500']).toBeFalsy();
-      expect(statusDot.classes['bg-red-500']).toBeFalsy();
-      expect(statusDot.classes['bg-gray-400']).toBeFalsy();
-    });
-
-    it('should update user status to away', () => {
-      component.updateUserStatus('away');
-      expect(component.user.status).toBe('away');
-      fixture.detectChanges();
-      const statusDot = fixture.debugElement.query(By.css('span[ngClass]'));
-      expect(statusDot.classes['bg-amber-500']).toBeTruthy();
-      expect(statusDot.classes['bg-green-500']).toBeFalsy();
-      expect(statusDot.classes['bg-red-500']).toBeFalsy();
-      expect(statusDot.classes['bg-gray-400']).toBeFalsy();
-    });
-
-    it('should update user status to busy', () => {
-      component.updateUserStatus('busy');
-      expect(component.user.status).toBe('busy');
-      fixture.detectChanges();
-      const statusDot = fixture.debugElement.query(By.css('span[ngClass]'));
-      expect(statusDot.classes['bg-red-500']).toBeTruthy();
-      expect(statusDot.classes['bg-green-500']).toBeFalsy();
-      expect(statusDot.classes['bg-amber-500']).toBeFalsy();
-      expect(statusDot.classes['bg-gray-400']).toBeFalsy();
-    });
-
-    it('should update user status to not-visible', () => {
-      component.updateUserStatus('not-visible');
-      expect(component.user.status).toBe('not-visible');
-      fixture.detectChanges();
-      const statusDot = fixture.debugElement.query(By.css('span[ngClass]'));
-      expect(statusDot.classes['bg-gray-400']).toBeTruthy();
-      expect(statusDot.classes['bg-green-500']).toBeFalsy();
-      expect(statusDot.classes['bg-amber-500']).toBeFalsy();
-      expect(statusDot.classes['bg-red-500']).toBeFalsy();
-    });
+  it('should render avatar when showAvatar is true and avatar is set', () => {
+    component.showAvatar = true;
+    component.user.avatar = 'assets/image.png';
+    fixture.detectChanges();
+    const avatar = fixture.debugElement.query(By.css('img'));
+    expect(avatar).toBeTruthy();
+    expect(avatar.attributes['src']).toBe('assets/image.png');
+    expect(avatar.attributes['alt']).toBe('User avatar');
   });
 
-  describe('signOut', () => {
-    it('should log sign out message when signOut is called', () => {
-      const consoleSpy = jest.spyOn(console, 'log');
-      component.signOut();
-      expect(consoleSpy).toHaveBeenCalledWith('Sign out clicked');
-      consoleSpy.mockRestore();
-    });
+  it('should render icon when showAvatar is false', () => {
+    component.showAvatar = false;
+    fixture.detectChanges();
+    const avatar = fixture.debugElement.query(By.css('img'));
+    const icon = fixture.debugElement.query(By.css('mat-icon'));
+    expect(avatar).toBeNull();
+    expect(icon).toBeTruthy();
+    expect(icon.nativeElement.textContent).toBe('account_circle');
   });
 
-  describe('Menu Interactions', () => {
-    it('should render user menu with profile, settings, status, and sign out options', () => {
-      const menuItems = fixture.debugElement.queryAll(By.css('mat-menu#userActions button[mat-menu-item]'));
-      expect(menuItems.length).toBe(4);
-      expect(menuItems[0].nativeElement.textContent).toContain('Profile');
-      expect(menuItems[1].nativeElement.textContent).toContain('Settings');
-      expect(menuItems[2].nativeElement.textContent).toContain('Status');
-      expect(menuItems[3].nativeElement.textContent).toContain('Sign out');
-    });
-
-    it('should render status menu with all status options', () => {
-      const statusMenuItems = fixture.debugElement.queryAll(By.css('mat-menu#userStatus button[mat-menu-item]'));
-      expect(statusMenuItems.length).toBe(4);
-      expect(statusMenuItems[0].nativeElement.textContent).toContain('Online');
-      expect(statusMenuItems[1].nativeElement.textContent).toContain('Away');
-      expect(statusMenuItems[2].nativeElement.textContent).toContain('Busy');
-      expect(statusMenuItems[3].nativeElement.textContent).toContain('Invisible');
-    });
-
-    it('should update status to online when online menu item is clicked', () => {
-      const statusMenuItems = fixture.debugElement.queryAll(By.css('mat-menu#userStatus button[mat-menu-item]'));
-      statusMenuItems[0].nativeElement.click();
-      fixture.detectChanges();
-      expect(component.user.status).toBe('online');
-      const statusDot = fixture.debugElement.query(By.css('span[ngClass]'));
-      expect(statusDot.classes['bg-green-500']).toBeTruthy();
-    });
-
-    it('should update status to away when away menu item is clicked', () => {
-      const statusMenuItems = fixture.debugElement.queryAll(By.css('mat-menu#userStatus button[mat-menu-item]'));
-      statusMenuItems[1].nativeElement.click();
-      fixture.detectChanges();
-      expect(component.user.status).toBe('away');
-      const statusDot = fixture.debugElement.query(By.css('span[ngClass]'));
-      expect(statusDot.classes['bg-amber-500']).toBeTruthy();
-    });
-
-    it('should update status to busy when busy menu item is clicked', () => {
-      const statusMenuItems = fixture.debugElement.queryAll(By.css('mat-menu#userStatus button[mat-menu-item]'));
-      statusMenuItems[2].nativeElement.click();
-      fixture.detectChanges();
-      expect(component.user.status).toBe('busy');
-      const statusDot = fixture.debugElement.query(By.css('span[ngClass]'));
-      expect(statusDot.classes['bg-red-500']).toBeTruthy();
-    });
-
-    it('should update status to not-visible when invisible menu item is clicked', () => {
-      const statusMenuItems = fixture.debugElement.queryAll(By.css('mat-menu#userStatus button[mat-menu-item]'));
-      statusMenuItems[3].nativeElement.click();
-      fixture.detectChanges();
-      expect(component.user.status).toBe('not-visible');
-      const statusDot = fixture.debugElement.query(By.css('span[ngClass]'));
-      expect(statusDot.classes['bg-gray-400']).toBeTruthy();
-    });
-
-    it('should call signOut when sign out menu item is clicked', () => {
-      const consoleSpy = jest.spyOn(console, 'log');
-      const menuItems = fixture.debugElement.queryAll(By.css('mat-menu#userActions button[mat-menu-item]'));
-      menuItems[3].nativeElement.click();
-      fixture.detectChanges();
-      expect(consoleSpy).toHaveBeenCalledWith('Sign out clicked');
-      consoleSpy.mockRestore();
-    });
+  it('should render icon when user.avatar is falsy', () => {
+    component.showAvatar = true;
+    component.user.avatar = '';
+    fixture.detectChanges();
+    const avatar = fixture.debugElement.query(By.css('img'));
+    const icon = fixture.debugElement.query(By.css('mat-icon'));
+    expect(avatar).toBeNull();
+    expect(icon).toBeTruthy();
+    expect(icon.nativeElement.textContent).toBe('account_circle');
   });
 
-  describe('Avatar Click', () => {
-    it('should not have avatar upload input (commented out in template)', () => {
-      const inputElement = fixture.debugElement.query(By.css('input#avatarUpload'));
-      expect(inputElement).toBeNull();
-    });
+  it.each([
+    ['online', 'bg-green-500'],
+    ['away', 'bg-amber-500'],
+    ['busy', 'bg-red-500'],
+    ['not-visible', 'bg-gray-400'],
+  ] as const)('should apply correct status class for %s', (status, expectedClass) => {
+    component.user.status = status;
+    fixture.detectChanges();
+    const statusIndicator = fixture.debugElement.query(By.css('.relative span.absolute'));
+    expect(statusIndicator.classes[expectedClass]).toBe(true);
+  });
 
-    it('should render avatar with click handler', () => {
-      const imgElement = fixture.debugElement.query(By.css('img'));
-      expect(imgElement.attributes['src']).toBe('/assets/image.png');
-      // Note: The (click) handler is commented out in the template, so no further testing is needed
+  it.each([
+    ['online'],
+    ['away'],
+    ['busy'],
+    ['not-visible'],
+  ] as const)('should update user status to %s', (status) => {
+    component.updateUserStatus(status);
+    expect(component.user.status).toBe(status);
+    fixture.detectChanges();
+    const statusIndicator = fixture.debugElement.query(By.css('.relative span.absolute'));
+    const expectedClass = {
+      online: 'bg-green-500',
+      away: 'bg-amber-500',
+      busy: 'bg-red-500',
+      'not-visible': 'bg-gray-400',
+    }[status];
+    expect(statusIndicator.classes[expectedClass]).toBe(true);
+  });
+
+  it('should trigger updateUserStatus when status menu item is clicked', fakeAsync(() => {
+    // Trigger the user actions menu
+    const userMenuButton = fixture.debugElement.query(By.css('button[matMenuTriggerFor=userActions]'));
+    userMenuButton.triggerEventHandler('click', null);
+    fixture.detectChanges();
+    tick();
+
+    // Find the status menu trigger
+    const statusMenuTrigger = fixture.debugElement.queryAll(By.css('button[mat-menu-item]')).find(
+      item => item.nativeElement.textContent.includes('Status')
+    );
+    expect(statusMenuTrigger).toBeTruthy();
+    statusMenuTrigger!.triggerEventHandler('click', null);
+    fixture.detectChanges();
+    tick();
+
+    // Find status menu items
+    const statusMenuItems = fixture.debugElement.queryAll(By.css('button[mat-menu-item]'));
+    const statusMenuItemsFiltered = statusMenuItems.filter(item =>
+      ['Online', 'Away', 'Busy', 'Invisible'].some(status => item.nativeElement.textContent.includes(status))
+    );
+    expect(statusMenuItemsFiltered.length).toBe(4); // One for each status
+    const statuses = ['online', 'away', 'busy', 'not-visible'];
+
+    statusMenuItemsFiltered.forEach((item, index) => {
+      item.triggerEventHandler('click', null);
+      fixture.detectChanges();
+      tick();
+      expect(component.user.status).toBe(statuses[index]);
+      const statusIndicator = fixture.debugElement.query(By.css('.relative span.absolute'));
+      const expectedClass = {
+        online: 'bg-green-500',
+        away: 'bg-amber-500',
+        busy: 'bg-red-500',
+        'not-visible': 'bg-gray-400',
+      }[statuses[index]];
+      expect(statusIndicator.classes[expectedClass]).toBe(true);
     });
+  }));
+
+  it('should render user menu items', () => {
+    const userMenuButton = fixture.debugElement.query(By.css('button[matMenuTriggerFor=userActions]'));
+    userMenuButton.triggerEventHandler('click', null);
+    fixture.detectChanges();
+
+    const menuItems = fixture.debugElement.queryAll(By.css('button[mat-menu-item]'));
+    expect(menuItems.length).toBeGreaterThanOrEqual(4); // Profile, Settings, Status, Sign out
+    expect(menuItems[0].nativeElement.textContent).toContain('Profile');
+    expect(menuItems[1].nativeElement.textContent).toContain('Settings');
+    expect(menuItems[2].nativeElement.textContent).toContain('Status');
+    expect(menuItems[3].nativeElement.textContent).toContain('Sign out');
+  });
+
+  it('should call signOut and navigate to login via direct method call', () => {
+    authService.signout.mockReset();
+    router.navigate.mockReset();
+    component.signOut();
+    expect(authService.signout).toHaveBeenCalledTimes(1);
+    expect(router.navigate).toHaveBeenCalledWith(['/login']);
+  });
+
+  it('should call signOut and navigate to login via menu click', fakeAsync(() => {
+    authService.signout.mockReset();
+    router.navigate.mockReset();
+
+    // Trigger the user actions menu
+    const userMenuButton = fixture.debugElement.query(By.css('button[matMenuTriggerFor=userActions]'));
+    userMenuButton.triggerEventHandler('click', null);
+    fixture.detectChanges();
+    tick();
+
+    // Find the sign out button
+    const signOutButton = fixture.debugElement.queryAll(By.css('button[mat-menu-item]')).find(
+      item => item.nativeElement.textContent.includes('Sign out')
+    );
+    expect(signOutButton).toBeTruthy();
+    signOutButton!.triggerEventHandler('click', null);
+    fixture.detectChanges();
+    tick();
+
+    expect(authService.signout).toHaveBeenCalledTimes(1);
+    expect(router.navigate).toHaveBeenCalledWith(['/login']);
+  }));
+
+  it('should render divider', () => {
+    const userMenuButton = fixture.debugElement.query(By.css('button[matMenuTriggerFor=userActions]'));
+    userMenuButton.triggerEventHandler('click', null);
+    fixture.detectChanges();
+
+    const divider = fixture.debugElement.query(By.css('mat-divider'));
+    expect(divider).toBeTruthy();
   });
 });

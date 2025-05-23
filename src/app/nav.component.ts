@@ -13,6 +13,9 @@ import { Component, inject } from '@angular/core';
            <li *ngIf="isAuthenticated()">
              <a routerLink="/main-dashboard/dashboard">Dashboard</a>
            </li>
+            <li *ngIf="isAuthenticated()">
+             <a routerLink="/main-dashboard/pincode">Pincodes</a>
+           </li>
            <li *ngIf="isAuthenticated()">
              <a routerLink="/main-dashboard/users">Users</a>
            </li>
