@@ -14,6 +14,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatCardModule } from '@angular/material/card';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatMenuModule } from '@angular/material/menu';
+import { MatSelectModule } from '@angular/material/select';
 import { AddPincodesComponent } from './add-pincodes/add-pincodes.component';
 import { DarkModeService } from '../../services/dark-mode.service';
 import { ResponsiveService } from '@services/responsive/responsive.service';
@@ -36,9 +37,10 @@ import { Subscription } from 'rxjs';
     MatCardModule,
     MatCheckboxModule,
     MatMenuModule,
+    MatSelectModule,
   ],
   templateUrl: './pincodes.component.html',
-  styleUrls: ['./pincodes.component.scss'] 
+  styleUrls: ['./pincodes.component.scss']
 })
 export class PincodesComponent implements OnInit, OnDestroy {
   service = inject(PincodesService);
@@ -58,28 +60,51 @@ export class PincodesComponent implements OnInit, OnDestroy {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
   ngOnInit() {
-    // Subscribe to breakpoint changes
     this.breakpointSubscription = this.responsive.currentBreakpoint().subscribe(breakpoint => {
       this.isMobile = breakpoint === 'xsmall';
       this.isTablet = breakpoint === 'small' || breakpoint === 'medium';
       this.updateDisplayedColumns();
     });
     this.darkModeService.applyTheme();
+    // Debug pagination data
+    console.log('Total Pincodes:', this.service.filteredPincodes().length);
+    console.log('Total Pages:', this.service.totalPages());
+    console.log('Current Page:', this.service.currentPage());
   }
 
   ngOnDestroy() {
-    // Clean up subscription
     this.breakpointSubscription?.unsubscribe();
   }
 
   updateDisplayedColumns() {
     if (this.isMobile) {
-      this.displayedColumns = ['select', 'pincode', 'city', 'actions'];
+      this.displayedColumns = ['pincode', 'city', 'actions'];
     } else if (this.isTablet) {
       this.displayedColumns = ['select', 'officeName', 'pincode', 'city', 'districtName', 'actions'];
     } else {
       this.displayedColumns = ['select', 'officeName', 'pincode', 'districtName', 'taluk', 'stateName', 'city', 'actions'];
     }
+  }
+
+  refreshTable() {
+    // Reset sort state
+    this.sortField = null;
+    this.sortDirection = 'asc';
+    this.service.sortPincodes(null, 'asc');
+    // Reset pagination
+    this.service.setPage(1);
+    // Clear search query
+    this.service.setSearchQuery('');
+    // Clear selected pincodes
+    this.selectedPincodes = [];
+    // Clear search input value
+    const searchInput = document.getElementById('searchPincodes') as HTMLInputElement;
+    if (searchInput) {
+      searchInput.value = '';
+    }
+    // Reload data
+    this.service.getPincodes();
+    console.log('Table refreshed: sort, pagination, search reset, and data reloaded');
   }
 
   openAddPincodeDialog() {
@@ -122,6 +147,7 @@ export class PincodesComponent implements OnInit, OnDestroy {
   onPageChange(event: any) {
     this.service.setPage(event.pageIndex + 1);
     this.selectedPincodes = [];
+    console.log('Page Changed to:', event.pageIndex + 1);
   }
 
   sortColumn(field: string, direction: 'asc' | 'desc') {
@@ -173,9 +199,12 @@ export class PincodesComponent implements OnInit, OnDestroy {
     }
 
     const pages: number[] = [];
-    for (let i = startPage; i <= endPage; i++) {
-      pages.push(i);
+    if (totalPages > 0) {
+      for (let i = startPage; i <= endPage; i++) {
+        pages.push(i);
+      }
     }
+    console.log('Page Numbers:', pages);
     return pages;
   }
 

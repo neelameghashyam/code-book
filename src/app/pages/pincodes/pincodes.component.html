@@ -62,8 +62,8 @@
     <div *ngIf="!service.isLoading()" class="table-container" [class.dark-theme]="darkModeService.isDarkMode()">
       <mat-table [dataSource]="service.paginatedPincodes()" role="grid" class="w-full">
         <!-- Checkbox Column -->
-        <ng-container matColumnDef="select">
-          <mat-header-cell *matHeaderCellDef class="p-8">
+        <ng-container matColumnDef="select" *ngIf="!isMobile">
+          <mat-header-cell *matHeaderCellDef class="p-8" data-label="Select">
             <mat-checkbox
               (change)="toggleAllPincodes($event.checked)"
               [checked]="isAllSelected()"
@@ -71,7 +71,7 @@
               aria-label="Select all pincodes"
             ></mat-checkbox>
           </mat-header-cell>
-          <mat-cell *matCellDef="let pincode" class="p-8">
+          <mat-cell *matCellDef="let pincode" class="p-8" data-label="Select">
             <mat-checkbox
               (change)="togglePincode(pincode)"
               [checked]="isSelected(pincode)"
@@ -82,72 +82,92 @@
 
         <!-- Columns -->
         <ng-container matColumnDef="officeName">
-          <mat-header-cell *matHeaderCellDef class="p-8 text-16" style="font-family: 'Roboto, sans-serif';">Office Name</mat-header-cell>
-          <mat-cell *matCellDef="let pincode" class="p-8 text-16" style="font-family: 'Roboto, sans-serif';">{{ pincode.officeName }}</mat-cell>
+          <mat-header-cell *matHeaderCellDef class="p-8 text-16" style="font-family: 'Roboto, sans-serif';" data-label="Office Name">Office Name</mat-header-cell>
+          <mat-cell *matCellDef="let pincode" class="p-8 text-16" style="font-family: 'Roboto, sans-serif';" data-label="Office Name">{{ pincode.officeName }}</mat-cell>
         </ng-container>
         <ng-container matColumnDef="pincode">
-          <mat-header-cell *matHeaderCellDef class="p-8 text-16 flex items-center"style="font-family: 'Roboto, sans-serif';">
+          <mat-header-cell *matHeaderCellDef class="p-8 text-16 flex items-center" style="font-family: 'Roboto, sans-serif';" data-label="Pincode">
             Pincode
-            <button mat-icon-button [matMenuTriggerFor]="pincodeSortMenu" *ngIf="sortField === 'pincode'"style="font-family: 'Roboto, sans-serif';" aria-label="Sort pincode">
+            <button mat-icon-button [matMenuTriggerFor]="pincodeSortMenu" *ngIf="sortField === 'pincode'" aria-label="Sort pincode">
               <mat-icon style="color: var(--mat-sys-primary);">sort</mat-icon>
             </button>
-            <button mat-icon-button [matMenuTriggerFor]="pincodeSortMenu" *ngIf="sortField !== 'pincode'"style="font-family: 'Roboto, sans-serif';" aria-label="Sort pincode">
+            <button mat-icon-button [matMenuTriggerFor]="pincodeSortMenu" *ngIf="sortField !== 'pincode'" aria-label="Sort pincode">
               <mat-icon style="color: var(--mat-sys-primary);">sort</mat-icon>
             </button>
             <mat-menu #pincodeSortMenu="matMenu">
-              <button mat-menu-item (click)="sortColumn('pincode', 'asc')"style="font-family: 'Roboto, sans-serif';">Ascending</button>
-              <button mat-menu-item (click)="sortColumn('pincode', 'desc')"style="font-family: 'Roboto, sans-serif';">Descending</button>
+              <button mat-menu-item (click)="sortColumn('pincode', 'asc')">Ascending</button>
+              <button mat-menu-item (click)="sortColumn('pincode', 'desc')">Descending</button>
             </mat-menu>
           </mat-header-cell>
-          <mat-cell *matCellDef="let pincode" class="p-8 text-16">{{ pincode.pincode }}</mat-cell>
+          <mat-cell *matCellDef="let pincode" class="p-8 text-16" style="font-family: 'Roboto, sans-serif';" data-label="Pincode">{{ pincode.pincode }}</mat-cell>
         </ng-container>
-        <ng-container matColumnDef="districtName">
-          <mat-header-cell *matHeaderCellDef class="p-8 text-16"style="font-family: 'Roboto, sans-serif';">District</mat-header-cell>
-          <mat-cell *matCellDef="let pincode" class="p-8 text-16"style="font-family: 'Roboto, sans-serif';">{{ pincode.districtName }}</mat-cell>
+        <ng-container matColumnDef="districtName" *ngIf="!isMobile">
+          <mat-header-cell *matHeaderCellDef class="p-8 text-16" style="font-family: 'Roboto, sans-serif';" data-label="District">District</mat-header-cell>
+          <mat-cell *matCellDef="let pincode" class="p-8 text-16" style="font-family: 'Roboto, sans-serif';" data-label="District">{{ pincode.districtName }}</mat-cell>
         </ng-container>
-        <ng-container matColumnDef="taluk">
-          <mat-header-cell *matHeaderCellDef class="p-8 text-16"style="font-family: 'Roboto, sans-serif';">Taluk</mat-header-cell>
-          <mat-cell *matCellDef="let pincode" class="p-8 text-16"style="font-family: 'Roboto, sans-serif';">{{ pincode.taluk }}</mat-cell>
+        <ng-container matColumnDef="taluk" *ngIf="responsive.isDesktop()">
+          <mat-header-cell *matHeaderCellDef class="p-8 text-16" style="font-family: 'Roboto, sans-serif';" data-label="Taluk">Taluk</mat-header-cell>
+          <mat-cell *matCellDef="let pincode" class="p-8 text-16" style="font-family: 'Roboto, sans-serif';" data-label="Taluk">{{ pincode.taluk }}</mat-cell>
         </ng-container>
-        <ng-container matColumnDef="stateName">
-          <mat-header-cell *matHeaderCellDef class="p-8 text-16"style="font-family: 'Roboto, sans-serif';">State</mat-header-cell>
-          <mat-cell *matCellDef="let pincode" class="p-8 text-16"style="font-family: 'Roboto, sans-serif';">{{ pincode.stateName }}</mat-cell>
+        <ng-container matColumnDef="stateName" *ngIf="!isMobile">
+          <mat-header-cell *matHeaderCellDef class="p-8 text-16" style="font-family: 'Roboto, sans-serif';" data-label="State">State</mat-header-cell>
+          <mat-cell *matCellDef="let pincode" class="p-8 text-16" style="font-family: 'Roboto, sans-serif';" data-label="State">{{ pincode.stateName }}</mat-cell>
         </ng-container>
         <ng-container matColumnDef="city">
-          <mat-header-cell *matHeaderCellDef class="p-8 text-16 flex items-center"style="font-family: 'Roboto, sans-serif';">
+          <mat-header-cell *matHeaderCellDef class="p-8 text-16 flex items-center" style="font-family: 'Roboto, sans-serif';" data-label="City">
             City
-            <button mat-icon-button [matMenuTriggerFor]="citySortMenu" *ngIf="sortField === 'city'" aria-label="Sort city"style="font-family: 'Roboto, sans-serif';">
+            <button mat-icon-button [matMenuTriggerFor]="citySortMenu" *ngIf="sortField === 'city'" aria-label="Sort city">
               <mat-icon style="color: var(--mat-sys-primary);">sort</mat-icon>
             </button>
-            <button mat-icon-button [matMenuTriggerFor]="citySortMenu" *ngIf="sortField !== 'city'" aria-label="Sort city"style="font-family: 'Roboto, sans-serif';">
+            <button mat-icon-button [matMenuTriggerFor]="citySortMenu" *ngIf="sortField !== 'city'" aria-label="Sort city">
               <mat-icon style="color: var(--mat-sys-primary);">sort</mat-icon>
             </button>
             <mat-menu #citySortMenu="matMenu">
-              <button mat-menu-item (click)="sortColumn('city', 'asc')"style="font-family: 'Roboto, sans-serif';">Ascending</button>
-              <button mat-menu-item (click)="sortColumn('city', 'desc')"style="font-family: 'Roboto, sans-serif';">Descending</button>
+              <button mat-menu-item (click)="sortColumn('city', 'asc')">Ascending</button>
+              <button mat-menu-item (click)="sortColumn('city', 'desc')">Descending</button>
             </mat-menu>
           </mat-header-cell>
-          <mat-cell *matCellDef="let pincode" class="p-8 text-16"style="font-family: 'Roboto, sans-serif';">{{ pincode.city }}</mat-cell>
+          <mat-cell *matCellDef="let pincode" class="p-8 text-16" style="font-family: 'Roboto, sans-serif';" data-label="City">{{ pincode.city }}</mat-cell>
         </ng-container>
         <ng-container matColumnDef="actions">
-          <mat-header-cell *matHeaderCellDef class="p-8 text-16"style="font-family: 'Roboto, sans-serif';">Actions</mat-header-cell>
-          <mat-cell *matCellDef="let pincode" class="p-8">
-            <button
-              mat-icon-button
-              (click)="startEdit(pincode)"
-              aria-label="Edit pincode"
-              class="edit-button"
-            >
-              <mat-icon>edit</mat-icon>
+          <mat-header-cell *matHeaderCellDef class="p-8 text-16" style="font-family: 'Roboto, sans-serif';" data-label="Actions">
+            Actions
+            <button mat-icon-button (click)="refreshTable()" aria-label="Refresh table">
+              <mat-icon style="color: var(--mat-sys-primary);">refresh</mat-icon>
             </button>
-            <button
-              mat-icon-button
-              (click)="service.deletePincode(pincode.id)"
-              aria-label="Delete pincode"
-              class="delete-button"
-            >
-              <mat-icon>delete</mat-icon>
-            </button>
+          </mat-header-cell>
+          <mat-cell *matCellDef="let pincode" class="p-8" data-label="Actions">
+            <ng-container *ngIf="!isMobile; else mobileActions">
+              <button
+                mat-icon-button
+                (click)="startEdit(pincode)"
+                aria-label="Edit pincode"
+                class="edit-button"
+              >
+                <mat-icon>edit</mat-icon>
+              </button>
+              <button
+                mat-icon-button
+                (click)="service.deletePincode(pincode.id)"
+                aria-label="Delete pincode"
+                class="delete-button"
+              >
+                <mat-icon>delete</mat-icon>
+              </button>
+            </ng-container>
+            <ng-template #mobileActions>
+              <button mat-icon-button [matMenuTriggerFor]="actionMenu" aria-label="Pincode actions">
+                <mat-icon>more_vert</mat-icon>
+              </button>
+              <mat-menu #actionMenu="matMenu">
+                <button mat-menu-item (click)="startEdit(pincode)" aria-label="Edit pincode">
+                  <mat-icon>edit</mat-icon> Edit
+                </button>
+                <button mat-menu-item (click)="service.deletePincode(pincode.id)" aria-label="Delete pincode">
+                  <mat-icon>delete</mat-icon> Delete
+                </button>
+              </mat-menu>
+            </ng-template>
           </mat-cell>
         </ng-container>
         <mat-header-row *matHeaderRowDef="displayedColumns" class="divide-y table-header"></mat-header-row>
@@ -155,38 +175,59 @@
       </mat-table>
 
       <!-- Custom Pagination -->
-      <div class="flex justify-between items-center p-4" style="color: var(--mat-sys-on-surface); font-family: 'Roboto, sans-serif';">
+      <div class="flex justify-between items-center p-4 pagination-container" style="color: var(--mat-sys-on-surface); font-family: 'Roboto, sans-serif';">
         <span class="text-12">
-          Showing {{ (service.currentPage() - 1) * service.pageSize() + 1 }} out of {{ service.filteredPincodes().length }} entries
+          Showing {{ (service.currentPage() - 1) * service.pageSize() + 1 }} to 
+          {{ (service.currentPage() - 1) * service.pageSize() + service.paginatedPincodes().length }} of {{ service.filteredPincodes().length }} entries
         </span>
-        <div class="flex gap-4">
+        <div class="flex gap-4 items-center">
           <button
             mat-button
             (click)="onPageChange({ pageIndex: service.currentPage() - 2 })"
             [disabled]="service.currentPage() === 1"
-            class="px-4 py-2 rounded-4"
+            class="px-4 py-2 rounded-4 pagination-button"
             style="color: var(--mat-sys-on-surface); font-family: 'Roboto, sans-serif';"
             aria-label="Previous page"
           >
             Previous
           </button>
-          <button
-            *ngFor="let page of getPageNumbers()"
-            mat-button
-            (click)="onPageChange({ pageIndex: page - 1 })"
-            [class.bg-blue-600]="service.currentPage() === page"
-            class="px-4 py-2 rounded-4"
-            [style.color]="service.currentPage() === page ? 'var(--mat-sys-on-primary)' : 'var(--mat-sys-on-surface)'"
-            [style.background-color]="service.currentPage() === page ? 'var(--mat-sys-primary)' : 'transparent'"
-            [attr.aria-label]="'Page ' + page"
-          >
-            {{ page }}
-          </button>
+          <ng-container *ngIf="!isMobile; else mobilePagination">
+            <ng-container *ngIf="getPageNumbers().length > 0; else noPages">
+              <button
+                *ngFor="let page of getPageNumbers()"
+                mat-button
+                (click)="onPageChange({ pageIndex: page - 1 })"
+                [class.bg-blue-600]="service.currentPage() === page"
+                class="px-4 py-2 rounded-4 pagination-button"
+                [style.color]="service.currentPage() === page ? 'var(--mat-sys-on-primary)' : 'var(--mat-sys-on-surface)'"
+                [style.background-color]="service.currentPage() === page ? 'var(--mat-sys-primary)' : 'transparent'"
+                [attr.aria-label]="'Page ' + page"
+              >
+                {{ page }}
+              </button>
+            </ng-container>
+            <ng-template #noPages>
+              <span class="text-12">No pages available</span>
+            </ng-template>
+          </ng-container>
+          <ng-template #mobilePagination>
+            <mat-select
+              (selectionChange)="onPageChange({ pageIndex: $event.value - 1 })"
+              [value]="service.currentPage()"
+              class="w-20 pagination-select"
+              aria-label="Select page"
+            >
+              <mat-option *ngFor="let page of getPageNumbers()" [value]="page">
+                {{ page }}
+              </mat-option>
+              <mat-option *ngIf="getPageNumbers().length === 0" disabled>No pages available</mat-option>
+            </mat-select>
+          </ng-template>
           <button
             mat-button
             (click)="onPageChange({ pageIndex: service.currentPage() })"
-            [disabled]="service.currentPage() === service.totalPages()"
-            class="px-4 py-2 rounded-4"
+            [disabled]="service.currentPage() === service.totalPages() || service.totalPages() === 0"
+            class="px-4 py-2 rounded-4 pagination-button"
             style="color: var(--mat-sys-on-surface); font-family: 'Roboto, sans-serif';"
             aria-label="Next page"
           >
