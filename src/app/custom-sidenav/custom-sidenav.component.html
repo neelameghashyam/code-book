@@ -1,40 +1,104 @@
-<div class="h-full  w-full overflow-hidden flex flex-col" style="background-color: var(--mat-sys-surface);">
+<div class="h-full w-full overflow-hidden flex flex-col" [style.background-color]="darkModeService.isDarkMode() ? 'var(--mat-sys-primary)' : 'var(--mat-sys-primary)'">
+  <!-- Sidenav Header -->
+  <div class="p-2 flex items-center justify-between" [style.border-bottom-color]="darkModeService.isDarkMode() ? '#717783' : '#d4e3ff'">
+    <!-- Custom Logo and Label -->
+    <div class="flex items-center justify-center">
+      <button 
+        mat-icon-button 
+        class="bg-[var(--mat-sys-primary)]" 
+        aria-label="Toggle side navigation"
+        (click)="toggleSidenav.emit()"
+        [ngClass]="{
+          'mr-2': !collapsed,
+          'mr-0': collapsed
+        }"
+      >
+        <div class="flex items-center justify-center w-11 h-13 rounded-md" style="background-color: white">
+          <span class="font-bold text-lg" 
+          style="font-size: 28px; font-family: 'Poppins', sans-serif !important"
+          [style.color]="darkModeService.isDarkMode() ? 'var(--mat-sys-primary)' : 'var(--mat-sys-primary)'"
+          >
+          C
+        </span>
+        </div>
+      </button>
+      <a 
+        *ngIf="!collapsed || responsiveService.isMobile()"
+        class="font-semibold"
+        style="font-family: 'Poppins', sans-serif !important"
+      >
+        CODE BOOK
+      </a>
+    </div>
+    <!-- Cancel Button -->
+    <button 
+      *ngIf="!collapsed || responsiveService.isMobile()"
+      mat-icon-button 
+      class="hover:bg-[color-mix(in_srgb,_var(--mat-sys-primary),_transparent_90%)] rounded-full animate-rotate" 
+      aria-label="Collapse side navigation"
+      (click)="closeSidenav.emit()"
+    >
+      <mat-icon class="text-lg"
+         [style.color]="darkModeService.isDarkMode() ? 'var(--mat-sys-on-surface)' : 'var(--mat-sys-surface)'"
+       >
+       close
+      </mat-icon>
+    </button>
+
+    <style>
+      .animate-rotate {
+        animation: rotate 0.3s ease-in-out;
+      }
+
+      @keyframes rotate {
+        from {
+          transform: rotate(0deg);
+        }
+        to {
+          transform: rotate(360deg);
+        }
+      }
+    </style>
+  </div>
+
+  <!-- Menu Items -->
   <nav class="p-2 flex flex-col gap-1" role="navigation" aria-label="Main navigation">
     <a
       *ngFor="let item of menuItems()"
       [routerLink]="item.route"
       routerLinkActive #rla="routerLinkActive"
-      class="rounded-lg p-3 t flex items-center"
+      class="rounded-lg p-3 flex items-center justify-between relative"
       [ngClass]="{
-        'justify-center py-3 px-0': sideNavCollapsed() && !responsiveService.isMobile()
+        'justify-center py-3 px-0': collapsed && !responsiveService.isMobile()
       }"
-      style="color: var(--mat-sys-on-surface);"
-      [style.background-color]="rla.isActive ? 'color-mix(in srgb, var(--mat-sys-primary), transparent 88%)' : 'transparent'"
-      [style.--hover-bg]="rla.isActive ? 'color-mix(in srgb, var(--mat-sys-primary), transparent 80%)' : 'color-mix(in srgb, var(--mat-sys-primary), transparent 92%)'"
+      [style.color]="darkModeService.isDarkMode() ? 'var(--mat-sys-surface)' : 'var(--mat-sys-on-surface)'"
+      [style.background-color]="rla.isActive ? 'white' : 'transparent'"
       [attr.aria-current]="rla.isActive ? 'page' : null"
       [attr.aria-label]="item.label"
     >
-      <span 
-        [class]="rla.isActive ? 'material-icons' : 'material-icons-outlined'"
-        [ngClass]="{
-          'mr-0': sideNavCollapsed() && !responsiveService.isMobile(),
-          'mr-2': !sideNavCollapsed() || responsiveService.isMobile()
-        }"
-        [style.color]="rla.isActive ? 'var(--mat-sys-primary)' : 'var(--mat-sys-on-surface)'"
-        aria-hidden="true"
-      >
-        {{ item.icon }}
-      </span>
-      
-      <span 
-    *ngIf="!sideNavCollapsed() || responsiveService.isMobile()"
-    class="font-medium"
-    style="font-family: 'Poppins', sans-serif !important"
-    [style.color]="rla.isActive ? 'var(--mat-sys-primary)' : 'var(--mat-sys-on-surface)'"
-    [style.font-weight]="rla.isActive ? '600' : '500'"
->
-    {{ item.label }}
-</span>
+      <div class="flex items-center">
+        <span 
+          [class]="rla.isActive ? 'material-icons' : 'material-icons-outlined'"
+          [ngClass]="{
+            'ml-4 mr-0': collapsed && !responsiveService.isMobile(),
+            'ml-4 mr-2': !collapsed || responsiveService.isMobile()
+          }"
+          [style.color]="rla.isActive ? 'var(--mat-sys-primary)' : darkModeService.isDarkMode() ? 'var(--mat-sys-on-surface)' : 'var(--mat-sys-surface)'"
+          [style.font-size]="'28px'"
+          aria-hidden="true"
+        >
+          {{ item.icon }}
+        </span>
+
+        <span 
+          *ngIf="!collapsed || responsiveService.isMobile()"
+          class="font-medium"
+          style="font-family: 'Poppins', sans-serif !important"
+          [style.color]="rla.isActive ? 'var(--mat-sys-primary)' : darkModeService.isDarkMode() ? 'var(--mat-sys-on-surface)' : 'var(--mat-sys-surface)'"
+        >
+          {{ item.label }}
+        </span>
+      </div>
     </a>
   </nav>
 </div>

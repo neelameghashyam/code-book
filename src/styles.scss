@@ -11,6 +11,15 @@ body {
   background-color: var(--mat-sys-background);
   color: var(--mat-sys-on-background);
 
+  
+
+  .mat-toolbar {
+  background-color: var(--mat-sys-primary);
+  color: var(--mat-sys-on-primary);
+  box-shadow: var(--mat-sys-level2);
+ 
+  
+}
  
   .mat-step-header {
     .mat-step-icon,
@@ -26,6 +35,21 @@ body {
   .dark-theme .mat-step-header .mat-step-label {
     color: #ffffff;
   }
+
+  .dark-theme{
+    a{
+    letter-spacing: var(--mat-sys-headline-small-tracking);
+    color: white;
+    
+  }
+
+  }
+   a{
+    letter-spacing: var(--mat-sys-headline-small-tracking);
+    color:rgb(0, 0, 0);
+    
+  }
+
   h1 {
     font: var(--mat-sys-headline-large);
     letter-spacing: var(--mat-sys-headline-large-tracking);
@@ -34,7 +58,7 @@ body {
 
   a{
     letter-spacing: var(--mat-sys-headline-small-tracking);
-    color: var(--mat-sys-on-surface);
+    color: white;
   }
 
   h3 {

@@ -49,12 +49,24 @@ export class ThemeService {
       darkModeClass: 'red-dark-theme',
       lightModeClass: 'red-light-theme'
     },
+    { 
+      id: 'charcoal', 
+      primary: '#333333', 
+      displayName: 'Charcoal',
+      darkModeClass: 'gray-dark-theme',
+      lightModeClass: 'gray-light-theme'
+    },
   ];
 
   currentTheme = signal<Theme>(this.themes[0]);
 
   constructor(private darkModeService: DarkModeService) {
-    // Set up an effect to apply theme whenever dark mode changes
+    // Load theme from local storage
+    const storedThemeId = localStorage.getItem('theme') || 'deep-blue';
+    const theme = this.themes.find(t => t.id === storedThemeId) || this.themes[0];
+    this.currentTheme.set(theme);
+
+    // Set up an effect to apply theme whenever dark mode or theme changes
     effect(() => {
       this.applyCurrentTheme();
     });
@@ -68,6 +80,7 @@ export class ThemeService {
     const theme = this.themes.find((t) => t.id === themeId);
     if (theme) {
       this.currentTheme.set(theme);
+      localStorage.setItem('theme', theme.id); // Persist theme selection
       this.applyCurrentTheme();
     }
   }

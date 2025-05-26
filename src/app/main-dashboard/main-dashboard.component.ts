@@ -9,14 +9,12 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatBadgeModule } from '@angular/material/badge';
 import { MatSidenav } from '@angular/material/sidenav';
-import { TranslocoRootModule } from '../transloco-root.module';
 import { CustomSidenavComponent } from '../custom-sidenav/custom-sidenav.component';
 import { ResponsiveService } from '../services/responsive/responsive.service';
 import { DarkModeService } from '../services/dark-mode.service';
 import { ThemeService } from '../services/theme/theme.service';
 import { UserComponent } from '../user/user.component';
-import { TranslateService } from '@ngx-translate/core';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslateService, TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-main-dashboard',
@@ -31,7 +29,6 @@ import { TranslateModule } from '@ngx-translate/core';
     MatMenuModule,
     MatBadgeModule,
     MatTooltipModule,
-    TranslocoRootModule,
     CustomSidenavComponent,
     UserComponent,
     TranslateModule
@@ -42,28 +39,22 @@ import { TranslateModule } from '@ngx-translate/core';
 export class MainDashboardComponent implements OnInit {
   title = 'Code Book';
   collapsed = signal(false);
-  currentLanguage = signal('English'); // Default language display name
+  currentLanguage = signal('English');
 
   constructor(private translateService: TranslateService) {
-    // Set available languages
     this.translateService.addLangs(['en', 'fr']);
   }
 
   ngOnInit(): void {
-    // Get language from localStorage or default to 'en'
     const storedLang = localStorage.getItem('lang') || 'en';
-    this.translateService.setDefaultLang('en'); // Set default language
-    this.translateService.use(storedLang); // Use stored or default language
-    // Update currentLanguage signal based on stored language
+    this.translateService.setDefaultLang('en');
+    this.translateService.use(storedLang);
     this.currentLanguage.set(storedLang === 'en' ? 'English' : 'French');
   }
 
   ChangeLang(langCode: string) {
-    // Update translation service
     this.translateService.use(langCode);
-    // Update localStorage
     localStorage.setItem('lang', langCode);
-    // Update currentLanguage signal
     this.currentLanguage.set(langCode === 'en' ? 'English' : 'French');
   }
 
@@ -73,12 +64,10 @@ export class MainDashboardComponent implements OnInit {
 
   @ViewChild('sidenav') sidenav!: MatSidenav;
 
-  // Compute aria-label for dark mode themes
   getThemeAriaLabel(themeName: string): string {
     return `${themeName.charAt(0).toUpperCase() + themeName.slice(1)} theme`;
   }
 
-  // Compute aria-label for color themes
   getColorThemeAriaLabel(displayName: string): string {
     return `${displayName} color theme`;
   }
@@ -95,9 +84,17 @@ export class MainDashboardComponent implements OnInit {
     }
   }
 
+  toggleSidenav() {
+    this.collapsed.set(!this.collapsed());
+  }
+
+  closeSidenav() {
+    this.collapsed.set(true);
+  }
+
   sidenavWidth = computed(() => {
     if (this.responsiveService.isMobile()) return '280px';
-    return this.collapsed() ? '64px' : '200px';
+    return this.collapsed() ? '60px' : '200px';
   });
 
   sidenavMode = computed(() => {
@@ -107,8 +104,4 @@ export class MainDashboardComponent implements OnInit {
   sidenavOpened = computed(() => {
     return !this.responsiveService.isMobile() || !this.collapsed();
   });
-
-  toggleSidenav() {
-    this.collapsed.set(!this.collapsed());
-  }
 }

@@ -27,8 +27,9 @@
         [disabled]="!selectedPincodes.length"
         aria-label="Delete selected pincodes"
         style="background-color: #dc3545; color: white; font-family: 'Roboto, sans-serif';"
+        
       >
-        <mat-icon>delete</mat-icon> Delete
+        <mat-icon [style.color]="'#FFFFFF'">delete</mat-icon> Delete
       </button>
       <button
         mat-raised-button
@@ -37,7 +38,7 @@
         aria-label="Add new pincode"
         style="background-color: #28a745; color: white; font-family: 'Roboto, sans-serif';"
       >
-        <mat-icon>add</mat-icon> Add Pincode
+        <mat-icon [style.color]="'#FFFFFF'">add</mat-icon> Add Pincode
       </button>
     </div>
   </mat-card-header>
