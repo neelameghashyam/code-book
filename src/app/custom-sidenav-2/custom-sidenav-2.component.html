@@ -1,0 +1,86 @@
+<div class="h-full w-full overflow-hidden flex flex-col" style="background-color: var(--mat-sys-surface);">
+  <nav class="p-2 flex flex-col gap-1" role="navigation" aria-label="Main navigation">
+    <ng-container *ngFor="let item of menuItems()">
+      <!-- Main menu item -->
+      <a
+        [routerLink]="item.route"
+        routerLinkActive #rla="routerLinkActive"
+        class="rounded-lg p-3 flex items-center"
+        [ngClass]="{
+          'justify-center py-3 px-0': sideNavCollapsed() && !responsiveService.isMobile()
+        }"
+        style="color: var(--mat-sys-on-surface);"
+        [style.background-color]="rla.isActive ? 'color-mix(in srgb, var(--mat-sys-primary), transparent 88%)' : 'transparent'"
+        [style.--hover-bg]="rla.isActive ? 'color-mix(in srgb, var(--mat-sys-primary), transparent 80%)' : 'color-mix(in srgb, var(--mat-sys-primary), transparent 92%)'"
+        [attr.aria-current]="rla.isActive ? 'page' : null"
+        [attr.aria-label]="item.label | translate"
+        [attr.aria-expanded]="item.subItems ? item.isExpanded : null"
+        (click)="item.subItems ? toggleSubMenu(item) : null"
+      >
+        <span
+          [class]="rla.isActive ? 'material-icons' : 'material-icons-outlined'"
+          [ngClass]="{
+            'mr-0': sideNavCollapsed() && !responsiveService.isMobile(),
+            'mr-2': !sideNavCollapsed() || responsiveService.isMobile()
+          }"
+          [style.color]="rla.isActive ? 'var(--mat-sys-primary)' : 'var(--mat-sys-on-surface)'"
+          aria-hidden="true"
+        >
+          {{ item.icon }}
+        </span>
+        <span
+          *ngIf="!sideNavCollapsed() || responsiveService.isMobile()"
+          class="font-medium"
+          style="font-family: 'Poppins', sans-serif !important"
+          [style.color]="rla.isActive ? 'var(--mat-sys-primary)' : 'var(--mat-sys-on-surface)'"
+          [style.font-weight]="rla.isActive ? '600' : '500'"
+        >
+          {{ item.label | translate }}
+        </span>
+        <span
+          *ngIf="item.subItems && (!sideNavCollapsed() || responsiveService.isMobile())"
+          class="ml-auto material-icons-outlined"
+          [style.color]="rla.isActive ? 'var(--mat-sys-primary)' : 'var(--mat-sys-on-surface)'"
+          aria-hidden="true"
+        >
+          {{ item.isExpanded ? 'expand_less' : 'expand_more' }}
+        </span>
+      </a>
+
+      <!-- Submenu items -->
+      <div
+        *ngIf="item.subItems && item.isExpanded && (!sideNavCollapsed() || responsiveService.isMobile())"
+        class="ml-6 flex flex-col gap-1"
+      >
+        <a
+          *ngFor="let subItem of item.subItems"
+          [routerLink]="subItem.route"
+          routerLinkActive #subRla="routerLinkActive"
+          class="rounded-lg p-3 flex items-center"
+          style="color: var(--mat-sys-on-surface);"
+          [style.background-color]="subRla.isActive ? 'color-mix(in srgb, var(--mat-sys-primary), transparent 88%)' : 'transparent'"
+          [style.--hover-bg]="subRla.isActive ? 'color-mix(in srgb, var(--mat-sys-primary), transparent 80%)' : 'color-mix(in srgb, var(--mat-sys-primary), transparent 92%)'"
+          [attr.aria-current]="subRla.isActive ? 'page' : null"
+          [attr.aria-label]="subItem.label | translate"
+        >
+          <span
+            [class]="subRla.isActive ? 'material-icons' : 'material-icons-outlined'"
+            class="mr-2"
+            [style.color]="subRla.isActive ? 'var(--mat-sys-primary)' : 'var(--mat-sys-on-surface)'"
+            aria-hidden="true"
+          >
+            {{ subItem.icon }}
+          </span>
+          <span
+            class="font-medium"
+            style="font-family: 'Poppins', sans-serif !important"
+            [style.color]="subRla.isActive ? 'var(--mat-sys-primary)' : 'var(--mat-sys-on-surface)'"
+            [style.font-weight]="subRla.isActive ? '600' : '500'"
+          >
+            {{ subItem.label | translate }}
+          </span>
+        </a>
+      </div>
+    </ng-container>
+  </nav>
+</div>

@@ -1,0 +1,161 @@
+<mat-card class="p-6 bg-white dark:bg-gray-800 shadow-md rounded-lg">
+  <mat-card-header>
+    <button mat-button (click)="cancel()" class="absolute top-0 right-0 flex justify-center items-center p-2 rounded-full hover:bg-gray-100">
+      <mat-icon>close</mat-icon>
+    </button>
+    <mat-card-title class="flex justify-between items-center">
+      <h2 class="text-2xl font-bold text-gray-900 dark:text-gray-100" style="font-family: 'Roboto, sans-serif';">
+        {{ data?.subcategory ? 'Edit Subcategory' : 'Add Subcategory' }}
+      </h2>
+    </mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    <form #subcategoryForm="ngForm" (ngSubmit)="saveSubcategory(subcategoryForm)">
+      <div class="grid grid-cols-2 gap-4">
+        <div class="flex flex-col min-h-[6rem]">
+          <label for="category" class="text-sm font-medium text-gray-700 dark:text-gray-200">Category</label>
+          <input
+            id="category"
+            type="text"
+            [value]="data?.CategoryName || ''"
+            disabled
+            class="p-2 border rounded-md text-sm w-full bg-gray-100 dark:bg-gray-700 dark:border-gray-600 dark:text-gray-300 h-10"
+            style="font-family: 'Roboto, sans-serif';"
+          />
+        </div>
+        <div class="flex flex-col min-h-[6rem]">
+          <label for="name" class="text-sm font-medium text-gray-700 dark:text-gray-200">Name</label>
+          <input
+            id="name"
+            type="text"
+            [(ngModel)]="formSubcategory.name"
+            name="name"
+            required
+            placeholder="Subcategory Name"
+            class="p-2 border rounded-md text-sm w-full focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-800 dark:border-gray-600 dark:text-gray-100 dark:placeholder-gray-400 h-10"
+            style="font-family: 'Roboto, sans-serif';"
+            [ngClass]="{
+              'border-red-500 dark:border-red-400': subcategoryForm.controls['name']?.errors?.required && subcategoryForm.submitted,
+              'bg-gray-100 dark:bg-gray-700': 'bg-gray-800'
+            }"
+            aria-required="true"
+            [attr.aria-invalid]="subcategoryForm.controls['name']?.errors?.required && subcategoryForm.submitted"
+            aria-describedby="nameError"
+          />
+          <small
+            id="nameError"
+            class="text-xs text-red-500 dark:text-red-400 mt-1"
+            [ngClass]="{
+              'visible opacity-100': subcategoryForm.controls['name']?.errors?.required && subcategoryForm.submitted,
+              'invisible opacity-0': !(subcategoryForm.controls['name']?.errors?.required && subcategoryForm.submitted)
+            }"
+          >
+            Subcategory Name is required
+          </small>
+        </div>
+
+        <div class="flex flex-col min-h-[6rem]">
+          <label for="icon" class="text-sm font-medium text-gray-700 dark:text-gray-200">Icon</label>
+          <input
+            id="icon"
+            type="text"
+            [(ngModel)]="formSubcategory.icon"
+            name="icon"
+            required
+            placeholder="Material Icon Name (e.g., star)"
+            class="p-2 border rounded-md text-sm w-full focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-800 dark:border-gray-600 dark:text-gray-100 dark:placeholder-gray-400 h-10"
+            style="font-family: 'Roboto, sans-serif';"
+            [ngClass]="{
+              'border-red-500 dark:border-red-400': subcategoryForm.controls['icon']?.errors?.required && subcategoryForm.submitted,
+              'bg-gray-100 dark:bg-gray-700': false
+            }"
+            aria-required="true"
+            [attr.aria-invalid]="subcategoryForm.controls['icon']?.errors?.required && subcategoryForm.submitted"
+            aria-describedby="iconError"
+          />
+          <small
+            id="iconError"
+            class="text-xs text-red-500 dark:text-red-400 mt-1"
+            [ngClass]="{
+              'visible opacity-100': subcategoryForm.controls['icon']?.errors?.required && subcategoryForm.submitted,
+              'invisible opacity-0': !(subcategoryForm.controls['icon']?.errors?.required && subcategoryForm.submitted)
+            }"
+          >
+            Icon is required
+          </small>
+        </div>
+
+        <div class="flex flex-col min-h-[6rem]">
+          <label for="imageUrl" class="text-sm font-medium text-gray-700 dark:text-gray-200">Image URL</label>
+          <input
+            id="imageUrl"
+            type="url"
+            [(ngModel)]="formSubcategory.imageUrl"
+            name="imageUrl"
+            required
+            placeholder="Image URL"
+            class="p-2 border rounded-md text-sm w-full focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-800 dark:border-gray-600 dark:text-gray-100 dark:placeholder-gray-400 h-10"
+            style="font-family: 'Roboto, sans-serif';"
+            [ngClass]="{
+              'border-red-500 dark:border-red-400': subcategoryForm.controls['imageUrl']?.errors?.required && subcategoryForm.submitted,
+              'bg-gray-100 dark:bg-gray-700': false
+            }"
+            aria-required="true"
+            [attr.aria-invalid]="subcategoryForm.controls['imageUrl']?.errors?.required && subcategoryForm.submitted"
+            aria-describedby="imageUrlError"
+          />
+          <small
+            id="imageUrlError"
+            class="text-xs text-red-500 dark:text-red-400 mt-1"
+            [ngClass]="{
+              'visible opacity-100': subcategoryForm.controls['imageUrl']?.errors?.required && subcategoryForm.submitted,
+              'invisible opacity-0': !(subcategoryForm.controls['imageUrl']?.errors?.required && subcategoryForm.submitted)
+            }"
+          >
+            Image URL is required
+          </small>
+        </div>
+
+        <div class="flex flex-col min-h-[6rem]">
+          <label for="comments" class="text-sm font-medium text-gray-700 dark:text-gray-200">Comments</label>
+          <input
+            id="comments"
+            type="text"
+            [(ngModel)]="formSubcategory.comments"
+            name="comments"
+            placeholder="Comments"
+            class="p-2 border rounded-md text-sm w-full focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-800 dark:border-gray-600 dark:text-gray-100 dark:placeholder-gray-400 h-10"
+            style="font-family: 'Roboto, sans-serif';"
+            [ngClass]="{
+              'bg-gray-100 dark:bg-gray-700': false
+            }"
+            aria-describedby="commentsError"
+          />
+        </div>
+      </div>
+      <div class="mt-4 flex justify-end gap-2">
+        <button
+          mat-button
+          type="button"
+          (click)="cancel()"
+          class="bg-gray-300 text-gray-800 px-4 py-2 rounded-lg hover:bg-gray-400"
+          style="font-family: 'Roboto, sans-serif';"
+          aria-label="Cancel subcategory form"
+        >
+          Cancel
+        </button>
+        <button
+          mat-raised-button
+          color="primary"
+          type="submit"
+          [disabled]="isFormInvalid()"
+          class="hover:bg-blue-600"
+          style="font-family: 'Roboto, sans-serif';"
+          [attr.aria-label]="data?.subcategory ? 'Update subcategory' : 'Save subcategory'"
+        >
+          {{ data?.subcategory ? 'Update' : 'Save' }}
+        </button>
+      </div>
+    </form>
+  </mat-card-content>
+</mat-card>

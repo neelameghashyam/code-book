@@ -1,0 +1,138 @@
+<div class="flex flex-col min-h-screen" [class.dark-theme]="darkModeService.isDarkMode()">
+  <!-- Header -->
+  <mat-toolbar class="bg-primary text-white shadow-md sticky top-0 z-50 px-2 sm:px-4">
+    <div class="flex items-center justify-between w-full">
+      <!-- Left section -->
+      <div class="flex items-center space-x-2 sm:space-x-4">
+        <button mat-icon-button class="text-white hover:bg-white/10 rounded-full" (click)="toggleSidenav()" aria-label="Toggle side navigation">
+          <mat-icon class="text-lg sm:text-xl">menu</mat-icon>
+        </button>
+        <span class="text-lg sm:text-xl font-semibold truncate">{{ title }}</span>
+      </div>
+
+      <!-- Right section -->
+      <div class="flex items-center space-x-1 sm:space-x-2">
+        <!-- Mobile menu button -->
+        <button *ngIf="responsiveService.isMobile()" mat-icon-button class="text-white hover:bg-white/10 rounded-full sm:hidden" 
+                [matMenuTriggerFor]="mobileMenu" aria-label="Open mobile menu">
+          <mat-icon>more_vert</mat-icon>
+        </button>
+        <mat-menu #mobileMenu="matMenu">
+          <button mat-menu-item (click)="toggleFullScreen()" aria-label="Toggle full screen">
+            <mat-icon>fullscreen</mat-icon>
+            <span>Full Screen</span>
+          </button>
+          <button mat-menu-item [matMenuTriggerFor]="darkModeMenu" aria-label="Select theme">
+            <mat-icon>{{ darkModeService.selectedTheme()?.icon }}</mat-icon>
+            <span>Theme</span>
+          </button>
+          <button mat-menu-item [matMenuTriggerFor]="colorThemeMenu" aria-label="Select color theme">
+            <mat-icon>format_color_fill</mat-icon>
+            <span>Color Theme</span>
+          </button>
+          <button mat-menu-item [matMenuTriggerFor]="languageMenu" aria-label="Select language">
+            <mat-icon>language</mat-icon>
+            <span>Language</span>
+          </button>
+        </mat-menu>
+
+        <!-- Right section buttons (non-mobile) -->
+        <div class="hidden sm:flex items-center space-x-1 sm:space-x-2">
+          <button
+
+ mat-icon-button class="text-white hover:bg-white/10 rounded-full" 
+                  (click)="toggleFullScreen()" aria-label="Toggle full screen">
+            <mat-icon class="text-lg sm:text-xl">fullscreen</mat-icon>
+          </button>
+
+          <button mat-icon-button class="text-white hover:bg-white/10 rounded-full" 
+                  [matMenuTriggerFor]="darkModeMenu" aria-label="Select light or dark theme">
+            <mat-icon class="text-lg sm:text-xl">{{ darkModeService.selectedTheme()?.icon }}</mat-icon>
+          </button>
+          <mat-menu #darkModeMenu="matMenu">
+            @for (theme of darkModeService.getThemes(); track theme.name) {
+              <button mat-menu-item 
+                      [class.selected-theme]="darkModeService.selectedTheme()?.name === theme.name"
+                      (click)="darkModeService.setTheme(theme.name)"
+                      [attr.aria-label]="getThemeAriaLabel(theme.name)">
+                <mat-icon>{{ theme.icon }}</mat-icon>
+                <span>{{ theme.name | titlecase }}</span>
+              </button>
+            }
+          </mat-menu>
+
+          <button mat-icon-button class="text-white hover:bg-white/10 rounded-full" 
+                  [matMenuTriggerFor]="colorThemeMenu" aria-label="Select color theme">
+            <mat-icon class="text-lg sm:text-xl">format_color_fill</mat-icon>
+          </button>
+          <mat-menu #colorThemeMenu="matMenu">
+            @for (theme of themeService.getThemes(); track theme.id) {
+              <button mat-menu-item 
+                      (click)="themeService.setTheme(theme.id)" 
+                      [attr.aria-label]="getColorThemeAriaLabel(theme.displayName)">
+                <div class="theme-menu-item">
+                  <div class="color-preview" [style.background-color]="theme.primary"></div>
+                  <span>{{ theme.displayName }}</span>
+                </div>
+              </button>
+            }
+          </mat-menu>
+
+         <button mat-button [matMenuTriggerFor]="languageMenu"
+        class="text-white hover:bg-white/10 rounded-full flex items-center"
+        aria-label="Select language">
+  <span class="text-sm sm:text-base">{{ currentLanguage() }}</span>
+  <mat-icon class="text-lg sm:text-xl">arrow_drop_down</mat-icon>
+</button>
+<mat-menu #languageMenu="matMenu">
+  <button mat-menu-item (click)="ChangeLang('en')" aria-label="Select English language">
+    <span>English</span>
+  </button>
+  <button mat-menu-item (click)="ChangeLang('fr')" aria-label="Select French language">
+    <span>French</span>
+  </button>
+</mat-menu>
+        </div>
+
+        <app-user></app-user>
+      </div>
+    </div>
+  </mat-toolbar>
+
+  <!-- Main content area -->
+  <main class="flex-grow">
+    <mat-sidenav-container class="h-full">
+      <mat-sidenav 
+        #sidenav
+        [mode]="sidenavMode()"
+        [opened]="sidenavOpened()"
+        [style.width]="sidenavWidth()" 
+        class="transition-all duration-300 shadow-lg transform-gpu"
+        [fixedInViewport]="responsiveService.isMobile()"
+        [fixedTopGap]="48">
+        <app-custom-sidenav-2 [collapsed]="collapsed()"></app-custom-sidenav-2>
+      </mat-sidenav>
+      
+      <mat-sidenav-content 
+        [style.margin-left]="responsiveService.isMobile() ? '0px' : sidenavWidth()" 
+        class="p-2 sm:p-4 transform-gpu"
+        (click)="responsiveService.isMobile() && sidenav.close()">
+        <router-outlet></router-outlet>
+      </mat-sidenav-content>
+    </mat-sidenav-container>
+  </main>
+
+  <!-- Footer -->
+  <footer class="py-2 sm:py-4 bg-gray-100 dark:bg-gray-800">
+    <div class="container mx-auto px-2 sm:px-4 flex flex-col sm:flex-row justify-between items-center text-sm sm:text-base">
+      <div class="mb-2 sm:mb-0 text-center sm:text-left">
+          {{ 'footerCopyright' | translate }}
+      </div>
+      <div class="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-4 text-center">
+        <a class="hover:text-primary transition-colors">{{ 'footerContactUs' | translate }}</a>
+        <a class="hover:text-primary transition-colors">{{ 'footerTermsOfService' | translate }}</a>
+        <a class="hover:text-primary transition-colors">{{ 'footerPrivacyPolicy' | translate }}</a>
+      </div>
+    </div>
+  </footer>
+</div>

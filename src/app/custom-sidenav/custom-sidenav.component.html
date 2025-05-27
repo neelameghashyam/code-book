@@ -13,13 +13,13 @@
           'mr-0': collapsed
         }"
       >
-        <div class="flex items-center justify-center w-11 h-13 rounded-md" style="background-color: white">
+        <div class="flex items-center justify-center w-11 h-11 rounded-md" style="background-color: white">
           <span class="font-bold text-lg" 
-          style="font-size: 28px; font-family: 'Poppins', sans-serif !important"
-          [style.color]="darkModeService.isDarkMode() ? 'var(--mat-sys-primary)' : 'var(--mat-sys-primary)'"
+            style="font-size: 28px; font-family: 'Poppins', sans-serif !important"
+            [style.color]="darkModeService.isDarkMode() ? 'var(--mat-sys-primary)' : 'var(--mat-sys-primary)'"
           >
-          C
-        </span>
+            C
+          </span>
         </div>
       </button>
       <a 
@@ -39,66 +39,149 @@
       (click)="closeSidenav.emit()"
     >
       <mat-icon class="text-lg"
-         [style.color]="darkModeService.isDarkMode() ? 'var(--mat-sys-on-surface)' : 'var(--mat-sys-surface)'"
-       >
-       close
+        [style.color]="darkModeService.isDarkMode() ? 'var(--mat-sys-on-surface)' : 'var(--mat-sys-surface)'"
+      >
+        close
       </mat-icon>
     </button>
-
-    <style>
-      .animate-rotate {
-        animation: rotate 0.3s ease-in-out;
-      }
-
-      @keyframes rotate {
-        from {
-          transform: rotate(0deg);
-        }
-        to {
-          transform: rotate(360deg);
-        }
-      }
-    </style>
   </div>
 
   <!-- Menu Items -->
   <nav class="p-2 flex flex-col gap-1" role="navigation" aria-label="Main navigation">
-    <a
-      *ngFor="let item of menuItems()"
-      [routerLink]="item.route"
-      routerLinkActive #rla="routerLinkActive"
-      class="rounded-lg p-3 flex items-center justify-between relative"
-      [ngClass]="{
-        'justify-center py-3 px-0': collapsed && !responsiveService.isMobile()
-      }"
-      [style.color]="darkModeService.isDarkMode() ? 'var(--mat-sys-surface)' : 'var(--mat-sys-on-surface)'"
-      [style.background-color]="rla.isActive ? 'white' : 'transparent'"
-      [attr.aria-current]="rla.isActive ? 'page' : null"
-      [attr.aria-label]="item.label"
-    >
-      <div class="flex items-center">
-        <span 
-          [class]="rla.isActive ? 'material-icons' : 'material-icons-outlined'"
+    <ng-container *ngFor="let item of menuItems()">
+      <div class="relative">
+        <!-- Menu item without sub-items -->
+        <a
+          *ngIf="!item.subItems"
+          [routerLink]="['/main-dashboard', item.route]"
+          routerLinkActive #rla="routerLinkActive"
+          class="rounded-lg p-3 flex items-center justify-between relative"
           [ngClass]="{
-            'ml-4 mr-0': collapsed && !responsiveService.isMobile(),
-            'ml-4 mr-2': !collapsed || responsiveService.isMobile()
+            'justify-center py-3 px-0': collapsed && !responsiveService.isMobile()
           }"
-          [style.color]="rla.isActive ? 'var(--mat-sys-primary)' : darkModeService.isDarkMode() ? 'var(--mat-sys-on-surface)' : 'var(--mat-sys-surface)'"
-          [style.font-size]="'28px'"
-          aria-hidden="true"
+          [style.color]="darkModeService.isDarkMode() ? 'var(--mat-sys-surface)' : 'var(--mat-sys-on-surface)'"
+          [style.background-color]="rla.isActive ? 'white' : 'transparent'"
+          [attr.aria-current]="rla.isActive ? 'page' : null"
+          [attr.aria-label]="item.label"
         >
-          {{ item.icon }}
-        </span>
+          <div class="flex items-center">
+            <span 
+              [class]="rla.isActive ? 'material-icons' : 'material-icons-outlined'"
+              [ngClass]="{
+                'ml-4 mr-0': collapsed && !responsiveService.isMobile(),
+                'ml-4 mr-2': !collapsed || responsiveService.isMobile()
+              }"
+              [style.color]="rla.isActive ? 'var(--mat-sys-primary)' : darkModeService.isDarkMode() ? 'var(--mat-sys-on-surface)' : 'var(--mat-sys-surface)'"
+              [style.font-size]="'20px'"
+              aria-hidden="true"
+            >
+              {{ item.icon }}
+            </span>
+            <span 
+              *ngIf="!collapsed || responsiveService.isMobile()"
+              class="font-medium"
+              style="font-family: 'Poppins', sans-serif !important"
+              [style.color]="rla.isActive ? 'var(--mat-sys-primary)' : darkModeService.isDarkMode() ? 'var(--mat-sys-on-surface)' : 'var(--mat-sys-surface)'"
+            >
+              {{ item.label }}
+            </span>
+          </div>
+        </a>
 
-        <span 
-          *ngIf="!collapsed || responsiveService.isMobile()"
-          class="font-medium"
-          style="font-family: 'Poppins', sans-serif !important"
-          [style.color]="rla.isActive ? 'var(--mat-sys-primary)' : darkModeService.isDarkMode() ? 'var(--mat-sys-on-surface)' : 'var(--mat-sys-surface)'"
+        <!-- Menu item with sub-items -->
+        <div
+          *ngIf="item.subItems"
+          class="rounded-lg p-3 flex items-center justify-between relative cursor-pointer"
+          [ngClass]="{
+            'justify-center py-3 px-0': collapsed && !responsiveService.isMobile()
+          }"
+          [style.color]="darkModeService.isDarkMode() ? 'var(--mat-sys-surface)' : 'var(--mat-sys-on-surface)'"
+          [style.background-color]="rla.isActive ? 'white' : 'transparent'"
+          [attr.aria-label]="item.label"
+          [routerLink]="['/main-dashboard', item.route]"
+          routerLinkActive #rla="routerLinkActive"
         >
-          {{ item.label }}
-        </span>
+          <div class="flex items-center">
+            <span 
+              [class]="rla.isActive ? 'material-icons' : 'material-icons-outlined'"
+              [ngClass]="{
+                'ml-4 mr-0': collapsed && !responsiveService.isMobile(),
+                'ml-4 mr-2': !collapsed || responsiveService.isMobile()
+              }"
+              [style.color]="rla.isActive ? 'var(--mat-sys-primary)' : darkModeService.isDarkMode() ? 'var(--mat-sys-on-surface)' : 'var(--mat-sys-surface)'"
+              [style.font-size]="'20px'"
+              aria-hidden="true"
+            >
+              {{ item.icon }}
+            </span>
+            <span 
+              *ngIf="!collapsed || responsiveService.isMobile()"
+              class="font-medium"
+              style="font-family: 'Poppins', sans-serif !important"
+              [style.color]="rla.isActive ? 'var(--mat-sys-primary)' : darkModeService.isDarkMode() ? 'var(--mat-sys-on-surface)' : 'var(--mat-sys-surface)'"
+            >
+              {{ item.label }}
+            </span>
+          </div>
+          <mat-icon
+            *ngIf="(!collapsed || responsiveService.isMobile()) && item.subItems"
+            [style.color]="darkModeService.isDarkMode() ? 'var(--mat-sys-on-surface)' : 'var(--mat-sys-surface)'"
+            [style.font-size]="'20px'"
+            (click)="toggleSubMenu(item); $event.stopPropagation()"
+          >
+            {{ item.isExpanded ? 'expand_less' : 'expand_more' }}
+          </mat-icon>
+        </div>
+
+        <!-- Sub-menu items -->
+        <div 
+          *ngIf="item.subItems && item.isExpanded && (!collapsed || responsiveService.isMobile())"
+          class="ml-4 flex flex-col gap-1"
+        >
+          <a
+            *ngFor="let subItem of item.subItems"
+            [routerLink]="['/main-dashboard', subItem.route]"
+            routerLinkActive #rlaSub="routerLinkActive"
+            class="rounded-lg p-2 flex items-center"
+            [style.color]="darkModeService.isDarkMode() ? 'var(--mat-sys-surface)' : 'var(--mat-sys-on-surface)'"
+            [style.background-color]="rlaSub.isActive ? 'white' : 'transparent'"
+            [attr.aria-current]="rlaSub.isActive ? 'page' : null"
+            [attr.aria-label]="subItem.label"
+          >
+            <span 
+              [class]="rlaSub.isActive ? 'material-icons' : 'material-icons-outlined'"
+              class="ml-4 mr-2"
+              [style.color]="rlaSub.isActive ? 'var(--mat-sys-primary)' : darkModeService.isDarkMode() ? 'var(--mat-sys-on-surface)' : 'var(--mat-sys-surface)'"
+              [style.font-size]="'20px'"
+              aria-hidden="true"
+            >
+              {{ subItem.icon }}
+            </span>
+            <span 
+              class="font-medium"
+              style="font-family: 'Poppins', sans-serif !important"
+              [style.color]="rlaSub.isActive ? 'var(--mat-sys-primary)' : darkModeService.isDarkMode() ? 'var(--mat-sys-on-surface)' : 'var(--mat-sys-surface)'"
+            >
+              {{ subItem.label }}
+            </span>
+          </a>
+        </div>
       </div>
-    </a>
+    </ng-container>
   </nav>
+
+  <style>
+    .animate-rotate {
+      animation: rotate 0.3s ease-in-out;
+    }
+
+    @keyframes rotate {
+      from {
+        transform: rotate(0deg);
+      }
+      to {
+        transform: rotate(360deg);
+      }
+    }
+  </style>
 </div>

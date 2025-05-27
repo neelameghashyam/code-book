@@ -1,6 +1,6 @@
 import { Component, inject, ViewChild, OnInit, OnDestroy } from '@angular/core';
-import { PincodesService } from './pincodes.service';
-import { Pincode } from './pincode';
+import { CategoriesService } from './categories.service';
+import { Category } from './category';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { MatTableModule } from '@angular/material/table';
@@ -15,13 +15,13 @@ import { MatCardModule } from '@angular/material/card';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatSelectModule } from '@angular/material/select';
-import { AddPincodesComponent } from './add-pincodes/add-pincodes.component';
+import { AddCategoriesComponent } from './add-categories/add-categories.component';
 import { DarkModeService } from '../../services/dark-mode.service';
 import { ResponsiveService } from '@services/responsive/responsive.service';
 import { Subscription } from 'rxjs';
 
 @Component({
-  selector: 'app-pincodes',
+  selector: 'app-categories',
   standalone: true,
   imports: [
     CommonModule,
@@ -39,17 +39,17 @@ import { Subscription } from 'rxjs';
     MatMenuModule,
     MatSelectModule,
   ],
-  templateUrl: './pincodes.component.html',
-  styleUrls: ['./pincodes.component.scss']
+  templateUrl: './categories.component.html',
+  styleUrls: ['./categories.component.scss'],
 })
-export class PincodesComponent implements OnInit, OnDestroy {
-  service = inject(PincodesService);
+export class CategoriesComponent implements OnInit, OnDestroy {
+  service = inject(CategoriesService);
   dialog = inject(MatDialog);
   responsive = inject(ResponsiveService);
   darkModeService = inject(DarkModeService);
 
-  editingPincode: Pincode | null = null;
-  selectedPincodes: Pincode[] = [];
+  editingCategory: Category | null = null;
+  selectedCategories: Category[] = [];
   displayedColumns: string[] = [];
   sortField: string | null = null;
   sortDirection: 'asc' | 'desc' = 'asc';
@@ -66,7 +66,6 @@ export class PincodesComponent implements OnInit, OnDestroy {
       this.updateDisplayedColumns();
     });
     this.darkModeService.applyTheme();
-    
   }
 
   ngOnDestroy() {
@@ -75,38 +74,31 @@ export class PincodesComponent implements OnInit, OnDestroy {
 
   updateDisplayedColumns() {
     if (this.isMobile) {
-      this.displayedColumns = ['pincode', 'city', 'actions'];
+      this.displayedColumns = ['name', 'icon', 'actions'];
     } else if (this.isTablet) {
-      this.displayedColumns = ['select', 'officeName', 'pincode', 'city', 'districtName', 'actions'];
+      this.displayedColumns = ['select', 'name', 'icon', 'imageUrl', 'actions'];
     } else {
-      this.displayedColumns = ['select', 'officeName', 'pincode', 'districtName', 'taluk', 'stateName', 'city', 'actions'];
+      this.displayedColumns = ['select', 'name', 'icon', 'imageUrl', 'createdAt', 'modifiedAt', 'comments', 'actions'];
     }
   }
 
   refreshTable() {
-    // Reset sort state
     this.sortField = null;
     this.sortDirection = 'asc';
-    this.service.sortPincodes(null, 'asc');
-    // Reset pagination
+    this.service.sortCategories(null, 'asc');
     this.service.setPage(1);
-    // Clear search query
     this.service.setSearchQuery('');
-    // Clear selected pincodes
-    this.selectedPincodes = [];
-    // Clear search input value
-    const searchInput = document.getElementById('searchPincodes') as HTMLInputElement;
+    this.selectedCategories = [];
+    const searchInput = document.getElementById('searchCategories') as HTMLInputElement;
     if (searchInput) {
       searchInput.value = '';
     }
-    // Reload data
-    this.service.getPincodes();
-    console.log('Table refreshed: sort, pagination, search reset, and data reloaded');
+    this.service.getCategories();
   }
 
-  openAddPincodeDialog() {
+  openAddCategoryDialog() {
     const dialogWidth = this.isMobile ? '90vw' : this.isTablet ? '80vw' : '800px';
-    const dialogRef = this.dialog.open(AddPincodesComponent, {
+    const dialogRef = this.dialog.open(AddCategoriesComponent, {
       width: dialogWidth,
       maxWidth: '100vw',
       data: {},
@@ -114,25 +106,25 @@ export class PincodesComponent implements OnInit, OnDestroy {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this.service.addPincode(result);
+        this.service.addCategory(result);
       }
     });
   }
 
-  startEdit(pincode: Pincode) {
-    this.editingPincode = { ...pincode };
+  startEdit(category: Category) {
+    this.editingCategory = { ...category };
     const dialogWidth = this.isMobile ? '90vw' : this.isTablet ? '80vw' : '800px';
-    const dialogRef = this.dialog.open(AddPincodesComponent, {
+    const dialogRef = this.dialog.open(AddCategoriesComponent, {
       width: dialogWidth,
       maxWidth: '100vw',
-      data: { pincode: this.editingPincode },
+      data: { category: this.editingCategory },
     });
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this.service.updatePincode(result as Pincode);
+        this.service.updateCategory(result as Category);
       }
-      this.editingPincode = null;
+      this.editingCategory = null;
     });
   }
 
@@ -143,45 +135,44 @@ export class PincodesComponent implements OnInit, OnDestroy {
 
   onPageChange(event: any) {
     this.service.setPage(event.pageIndex + 1);
-    this.selectedPincodes = [];
-    console.log('Page Changed to:', event.pageIndex + 1);
+    this.selectedCategories = [];
   }
 
   sortColumn(field: string, direction: 'asc' | 'desc') {
     this.sortField = field;
     this.sortDirection = direction;
-    this.service.sortPincodes(this.sortField, this.sortDirection);
+    this.service.sortCategories(this.sortField, this.sortDirection);
   }
 
-  togglePincode(pincode: Pincode) {
-    const index = this.selectedPincodes.findIndex(p => p.id === pincode.id);
+  toggleCategory(category: Category) {
+    const index = this.selectedCategories.findIndex(c => c.id === category.id);
     if (index === -1) {
-      this.selectedPincodes.push(pincode);
+      this.selectedCategories.push(category);
     } else {
-      this.selectedPincodes.splice(index, 1);
+      this.selectedCategories.splice(index, 1);
     }
   }
 
-  isSelected(pincode: Pincode): boolean {
-    return this.selectedPincodes.some(p => p.id === pincode.id);
+  isSelected(category: Category): boolean {
+    return this.selectedCategories.some(c => c.id === category.id);
   }
 
-  toggleAllPincodes(checked: boolean) {
+  toggleAllCategories(checked: boolean) {
     if (checked) {
-      this.selectedPincodes = [...this.service.paginatedPincodes()];
+      this.selectedCategories = [...this.service.paginatedCategories()];
     } else {
-      this.selectedPincodes = [];
+      this.selectedCategories = [];
     }
   }
 
   isAllSelected(): boolean {
-    return this.service.paginatedPincodes().length > 0 &&
-           this.service.paginatedPincodes().every(pincode => this.isSelected(pincode));
+    return this.service.paginatedCategories().length > 0 &&
+           this.service.paginatedCategories().every(category => this.isSelected(category));
   }
 
-  deleteSelectedPincodes() {
-    this.selectedPincodes.forEach(pincode => this.service.deletePincode(pincode.id));
-    this.selectedPincodes = [];
+  deleteSelectedCategories() {
+    this.selectedCategories.forEach(category => this.service.deleteCategory(category.id));
+    this.selectedCategories = [];
   }
 
   getPageNumbers(): number[] {
@@ -204,7 +195,7 @@ export class PincodesComponent implements OnInit, OnDestroy {
     return pages;
   }
 
-  trackById(index: number, pincode: Pincode): number {
-    return pincode.id;
+  trackById(index: number, category: Category): number {
+    return category.id;
   }
 }

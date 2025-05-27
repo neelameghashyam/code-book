@@ -1,0 +1,44 @@
+<div class="flex flex-col items-center justify-center min-h-screen px-4 py-8">
+  <h1 class="mat-headline-5 text-center mb-8 text-gray-900">Select a Dashboard</h1>
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-5xl w-full">
+    <!-- Dashboard 1 Card -->
+    <mat-card class="mat-elevation-z4 hover:mat-elevation-z8 transition-all duration-300 square-card">
+      <mat-card-header>
+        <div matCardAvatar class="flex items-center justify-center">
+          <mat-icon class="text-4xl text-blue-700">dashboard</mat-icon>
+        </div>
+        <mat-card-title class="mat-headline-6 text-gray-900">Dashboard 1</mat-card-title>
+        <mat-card-subtitle class="mat-body-2 text-gray-600">without title in header</mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content class="mt-4 flex justify-center items-center">
+        <img src="assets/dashboard1.png" alt="Dashboard 1 Preview" class="object-contain w-full h-full">
+      </mat-card-content>
+      <mat-card-actions align="end" class="mt-4">
+        <button mat-raised-button color="primary" (click)="navigateToDashboard1()">
+          Go to Dashboard 1
+          <mat-icon>arrow_forward</mat-icon>
+        </button>
+      </mat-card-actions>
+    </mat-card>
+
+    <!-- Dashboard 2 Card -->
+    <mat-card class="mat-elevation-z4 hover:mat-elevation-z8 transition-all duration-300 square-card">
+      <mat-card-header>
+        <div matCardAvatar class="flex items-center justify-center">
+          <mat-icon class="text-4xl text-green-700">dashboard</mat-icon>
+        </div>
+        <mat-card-title class="mat-headline-6 text-gray-900">Dashboard 2</mat-card-title>
+        <mat-card-subtitle class="mat-body-2 text-gray-600">with title</mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content class="mt-4 flex justify-center items-center">
+        <img src="assets/dashboard2.png" alt="Dashboard 2 Preview" class="object-contain w-full h-full">
+      </mat-card-content>
+      <mat-card-actions align="end" class="mt-4">
+        <button mat-raised-button color="primary" (click)="navigateToDashboard2()">
+          Go to Dashboard 2
+          <mat-icon>arrow_forward</mat-icon>
+        </button>
+      </mat-card-actions>
+    </mat-card>
+  </div>
+</div>

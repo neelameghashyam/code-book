@@ -9,6 +9,9 @@ export interface Theme {
   providedIn: 'root'
 })
 export class DarkModeService {
+isVisible() {
+throw new Error('Method not implemented.');
+}
   private theme = signal<'light' | 'dark' | 'system'>('system');
   private themes: Theme[] = [
     { name: 'light', icon: 'light_mode' },

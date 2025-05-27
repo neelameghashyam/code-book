@@ -11,7 +11,9 @@ import { Inject } from '@angular/core';
 interface MenuItem {
   icon: string;
   label: string;
-  route: string;
+  route?: string;
+  subItems?: MenuItem[];
+  isExpanded?: boolean;
 }
 
 @Component({
@@ -26,7 +28,21 @@ export class CustomSidenavComponent {
   public darkModeService = inject(DarkModeService);
 
   menuItems = signal<MenuItem[]>([
-    { icon: 'dashboard', label: 'Dashboard', route: 'dashboard' },
+    {
+      icon: 'dashboard',
+      label: 'Dashboard',
+      route: 'dashboard',
+      subItems: [
+        { icon: 'dashboard_customize', label: 'Dashboard 1', route: 'dashboard-1' },
+      ],
+      isExpanded: false,
+    },
+    { icon: 'category', label: 'categories', route: 'categories',
+      subItems: [
+        { icon: 'dashboard_customize', label: 'SubCategories ', route: 'sub-categories' },
+      ],
+      isExpanded: false,
+     },
     { icon: 'pin_drop', label: 'Pincodes', route: 'pincode' },
     { icon: 'group', label: 'Users', route: 'users' },
     { icon: 'business_center', label: 'Business', route: 'business' },
@@ -40,4 +56,15 @@ export class CustomSidenavComponent {
   @Output() closeSidenav = new EventEmitter<void>();
 
   constructor(@Inject(TranslateService) private translateService: TranslateService) {}
+
+  toggleSubMenu(item: MenuItem): void {
+    this.menuItems.update(items =>
+      items.map(menuItem => {
+        if (menuItem === item) {
+          return { ...menuItem, isExpanded: !menuItem.isExpanded };
+        }
+        return { ...menuItem, isExpanded: false }; // Collapse other menus
+      })
+    );
+  }
 }

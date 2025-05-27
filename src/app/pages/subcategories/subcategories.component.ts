@@ -1,6 +1,8 @@
 import { Component, inject, ViewChild, OnInit, OnDestroy } from '@angular/core';
-import { PincodesService } from './pincodes.service';
-import { Pincode } from './pincode';
+import { SubcategoriesService } from './subcategories.service';
+import { Subcategory } from './subcategories';
+import { CategoriesService } from '../categories/categories.service';
+import { Category } from '../categories/category';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { MatTableModule } from '@angular/material/table';
@@ -15,13 +17,13 @@ import { MatCardModule } from '@angular/material/card';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatSelectModule } from '@angular/material/select';
-import { AddPincodesComponent } from './add-pincodes/add-pincodes.component';
+import { AddSubcategoriesComponent } from './add-subcategories/add-subcategories.component';
 import { DarkModeService } from '../../services/dark-mode.service';
-import { ResponsiveService } from '@services/responsive/responsive.service';
+import { ResponsiveService } from '../../services/responsive/responsive.service';
 import { Subscription } from 'rxjs';
 
 @Component({
-  selector: 'app-pincodes',
+  selector: 'app-subcategories',
   standalone: true,
   imports: [
     CommonModule,
@@ -39,23 +41,26 @@ import { Subscription } from 'rxjs';
     MatMenuModule,
     MatSelectModule,
   ],
-  templateUrl: './pincodes.component.html',
-  styleUrls: ['./pincodes.component.scss']
+  templateUrl: './subcategories.component.html',
+  styleUrls: ['./subcategories.component.scss'],
 })
-export class PincodesComponent implements OnInit, OnDestroy {
-  service = inject(PincodesService);
+export class SubcategoriesComponent implements OnInit, OnDestroy {
+  service = inject(SubcategoriesService);
+  categoryService = inject(CategoriesService);
   dialog = inject(MatDialog);
   responsive = inject(ResponsiveService);
   darkModeService = inject(DarkModeService);
 
-  editingPincode: Pincode | null = null;
-  selectedPincodes: Pincode[] = [];
+  editingSubcategory: Subcategory | null = null;
+  selectedSubcategories: Subcategory[] = [];
   displayedColumns: string[] = [];
   sortField: string | null = null;
   sortDirection: 'asc' | 'desc' = 'asc';
   isMobile: boolean = false;
   isTablet: boolean = false;
   breakpointSubscription: Subscription | undefined;
+  categories: Category[] = [];
+  selectedCategoryId: number | null = null;
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
@@ -66,7 +71,9 @@ export class PincodesComponent implements OnInit, OnDestroy {
       this.updateDisplayedColumns();
     });
     this.darkModeService.applyTheme();
-    
+    this.categoryService.getCategories();
+    this.categories = this.categoryService.categories();
+    this.service.getSubcategories();
   }
 
   ngOnDestroy() {
@@ -75,64 +82,68 @@ export class PincodesComponent implements OnInit, OnDestroy {
 
   updateDisplayedColumns() {
     if (this.isMobile) {
-      this.displayedColumns = ['pincode', 'city', 'actions'];
+      this.displayedColumns = ['name', 'icon', 'actions'];
     } else if (this.isTablet) {
-      this.displayedColumns = ['select', 'officeName', 'pincode', 'city', 'districtName', 'actions'];
+      this.displayedColumns = ['select', 'name', 'icon', 'imageUrl', 'CategoryName', 'actions'];
     } else {
-      this.displayedColumns = ['select', 'officeName', 'pincode', 'districtName', 'taluk', 'stateName', 'city', 'actions'];
+      this.displayedColumns = ['select', 'name', 'icon', 'imageUrl', 'CategoryName', 'createdAt', 'modifiedAt', 'comments', 'actions'];
     }
+  }
+
+  onCategoryChange(categoryId: number | null) {
+    this.selectedCategoryId = categoryId;
+    this.service.setSelectedCategoryId(categoryId);
+    this.selectedSubcategories = [];
   }
 
   refreshTable() {
-    // Reset sort state
     this.sortField = null;
     this.sortDirection = 'asc';
-    this.service.sortPincodes(null, 'asc');
-    // Reset pagination
+    this.service.sortSubcategories(null, 'asc');
     this.service.setPage(1);
-    // Clear search query
     this.service.setSearchQuery('');
-    // Clear selected pincodes
-    this.selectedPincodes = [];
-    // Clear search input value
-    const searchInput = document.getElementById('searchPincodes') as HTMLInputElement;
+    this.selectedSubcategories = [];
+    const searchInput = document.getElementById('searchSubcategories') as HTMLInputElement;
     if (searchInput) {
       searchInput.value = '';
     }
-    // Reload data
-    this.service.getPincodes();
-    console.log('Table refreshed: sort, pagination, search reset, and data reloaded');
+    this.service.getSubcategories();
   }
 
-  openAddPincodeDialog() {
+  openAddSubcategoryDialog() {
+    if (this.selectedCategoryId === null) {
+      alert('Please select a category first.');
+      return;
+    }
     const dialogWidth = this.isMobile ? '90vw' : this.isTablet ? '80vw' : '800px';
-    const dialogRef = this.dialog.open(AddPincodesComponent, {
+    const category = this.categories.find(c => c.id === this.selectedCategoryId);
+    const dialogRef = this.dialog.open(AddSubcategoriesComponent, {
       width: dialogWidth,
       maxWidth: '100vw',
-      data: {},
+      data: { categoryId: this.selectedCategoryId, CategoryName: category?.name },
     });
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this.service.addPincode(result);
+        this.service.addSubcategory(result);
       }
     });
   }
 
-  startEdit(pincode: Pincode) {
-    this.editingPincode = { ...pincode };
+  startEdit(subcategory: Subcategory) {
+    this.editingSubcategory = { ...subcategory };
     const dialogWidth = this.isMobile ? '90vw' : this.isTablet ? '80vw' : '800px';
-    const dialogRef = this.dialog.open(AddPincodesComponent, {
+    const dialogRef = this.dialog.open(AddSubcategoriesComponent, {
       width: dialogWidth,
       maxWidth: '100vw',
-      data: { pincode: this.editingPincode },
+      data: { subcategory: this.editingSubcategory, categoryId: subcategory.categoryId, CategoryName: subcategory.CategoryName },
     });
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this.service.updatePincode(result as Pincode);
+        this.service.updateSubcategory(result as Subcategory);
       }
-      this.editingPincode = null;
+      this.editingSubcategory = null;
     });
   }
 
@@ -143,45 +154,44 @@ export class PincodesComponent implements OnInit, OnDestroy {
 
   onPageChange(event: any) {
     this.service.setPage(event.pageIndex + 1);
-    this.selectedPincodes = [];
-    console.log('Page Changed to:', event.pageIndex + 1);
+    this.selectedSubcategories = [];
   }
 
   sortColumn(field: string, direction: 'asc' | 'desc') {
     this.sortField = field;
     this.sortDirection = direction;
-    this.service.sortPincodes(this.sortField, this.sortDirection);
+    this.service.sortSubcategories(this.sortField, this.sortDirection);
   }
 
-  togglePincode(pincode: Pincode) {
-    const index = this.selectedPincodes.findIndex(p => p.id === pincode.id);
+  toggleSubcategory(subcategory: Subcategory) {
+    const index = this.selectedSubcategories.findIndex(s => s.id === subcategory.id);
     if (index === -1) {
-      this.selectedPincodes.push(pincode);
+      this.selectedSubcategories.push(subcategory);
     } else {
-      this.selectedPincodes.splice(index, 1);
+      this.selectedSubcategories.splice(index, 1);
     }
   }
 
-  isSelected(pincode: Pincode): boolean {
-    return this.selectedPincodes.some(p => p.id === pincode.id);
+  isSelected(subcategory: Subcategory): boolean {
+    return this.selectedSubcategories.some(s => s.id === subcategory.id);
   }
 
-  toggleAllPincodes(checked: boolean) {
+  toggleAllSubcategories(checked: boolean) {
     if (checked) {
-      this.selectedPincodes = [...this.service.paginatedPincodes()];
+      this.selectedSubcategories = [...this.service.paginatedSubcategories()];
     } else {
-      this.selectedPincodes = [];
+      this.selectedSubcategories = [];
     }
   }
 
   isAllSelected(): boolean {
-    return this.service.paginatedPincodes().length > 0 &&
-           this.service.paginatedPincodes().every(pincode => this.isSelected(pincode));
+    return this.service.paginatedSubcategories().length > 0 &&
+           this.service.paginatedSubcategories().every(subcategory => this.isSelected(subcategory));
   }
 
-  deleteSelectedPincodes() {
-    this.selectedPincodes.forEach(pincode => this.service.deletePincode(pincode.id));
-    this.selectedPincodes = [];
+  deleteSelectedSubcategories() {
+    this.selectedSubcategories.forEach(subcategory => this.service.deleteSubcategory(subcategory.id));
+    this.selectedSubcategories = [];
   }
 
   getPageNumbers(): number[] {
@@ -204,7 +214,7 @@ export class PincodesComponent implements OnInit, OnDestroy {
     return pages;
   }
 
-  trackById(index: number, pincode: Pincode): number {
-    return pincode.id;
+  trackById(index: number, subcategory: Subcategory): number {
+    return subcategory.id;
   }
 }

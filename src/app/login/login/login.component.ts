@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators, ValidationErrors } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 import { AuthService } from '../auth.service';
-import { ResponsiveService } from '../../services/responsive/responsive.service'; // Import ResponsiveService
+import { ResponsiveService } from '../../services/responsive/responsive.service';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
@@ -41,7 +41,7 @@ export class LoginComponent implements OnInit {
     private fb: FormBuilder,
     private authService: AuthService,
     private router: Router,
-    private responsiveService: ResponsiveService // Inject ResponsiveService
+    private responsiveService: ResponsiveService
   ) {
     this.authForm = this.fb.group({
       name: [''],
@@ -58,7 +58,6 @@ export class LoginComponent implements OnInit {
 
   ngOnInit() {
     this.toggleMode(this.isSignupMode);
-    // Subscribe to breakpoint changes
     this.responsiveService.currentBreakpoint().subscribe(breakpoint => {
       this.isMobile = breakpoint === 'xsmall';
       this.isTablet = breakpoint === 'small' || breakpoint === 'medium';
@@ -111,7 +110,7 @@ export class LoginComponent implements OnInit {
     } else {
       try {
         await this.authService.login(this.authForm.value);
-        this.router.navigate(['/main-dashboard']);
+        this.router.navigate(['/dashboard-selector']);
       } catch {
         this.authForm.get('password')?.reset();
       }
@@ -124,7 +123,7 @@ export class LoginComponent implements OnInit {
     } else {
       try {
         await this.authService.signup(this.authForm.value);
-        this.router.navigate(['/main-dashboard']);
+        this.router.navigate(['/dashboard-selector']);
       } catch {
         this.authForm.reset();
       }
@@ -135,7 +134,7 @@ export class LoginComponent implements OnInit {
     if (this.authForm.valid) {
       try {
         await this.authService.login(this.authForm.value);
-        this.router.navigate(['/main-dashboard']);
+        this.router.navigate(['/dashboard-selector']);
       } catch {
         this.authForm.get('password')?.reset();
       }
@@ -146,7 +145,7 @@ export class LoginComponent implements OnInit {
     if (this.authForm.valid) {
       try {
         await this.authService.signup(this.authForm.value);
-        this.router.navigate(['/main-dashboard']);
+        this.router.navigate(['/dashboard-selector']);
       } catch {
         this.authForm.reset();
       }

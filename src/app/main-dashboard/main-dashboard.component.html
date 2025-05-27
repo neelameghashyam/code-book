@@ -24,27 +24,26 @@
         [ngClass]="{'m-0 p-0 transform-gpu': true}"
         (click)="responsiveService.isMobile() && sidenav.close()">
         <!-- Header -->
-        <mat-toolbar class="sm:px-0 sm:pr-4">
-          <div class="flex items-center justify-between w-full max-w-7xl mx-auto">
+        <mat-toolbar class="flex items-center justify-center w-11 h-11">
+          <div class="flex items-center justify-between w-full">
             <!-- Left section: Title -->
             <div class="flex items-center">
             </div>
 
             <!-- Right section -->
-            <div class="flex items-center space-x-2 md:space-x-3">
+            <div class="flex items-center space-x-1 md:space-x-3 ml-auto ">
               <!-- Language dropdown -->
               <button mat-button [matMenuTriggerFor]="languageMenu"
                       class="hover:bg-[color-mix(in_srgb,_var(--mat-sys-primary),_transparent_90%)] rounded-full flex items-center text-sm md:text-base"
                       aria-label="Select language">
                 <a>{{ currentLanguage() }}</a>
-                <mat-icon class="text-lg md:text-xl"
+                <mat-icon class="text-base md:text-lg"
                       [style.color]="darkModeService.isDarkMode() ? 'var(--mat-sys-on-surface)' : 'var(--mat-sys-surface)'"
-
                 >arrow_drop_down</mat-icon>
               </button>
               <mat-menu #languageMenu="matMenu">
                 <button mat-menu-item (click)="ChangeLang('en')" aria-label="Select English language">
-                  <span >English</span>
+                  <span>English</span>
                 </button>
                 <button mat-menu-item (click)="ChangeLang('fr')" aria-label="Select French language">
                   <span>French</span>
@@ -54,20 +53,17 @@
               <!-- Fullscreen button -->
               <button mat-icon-button class="hover:bg-[color-mix(in_srgb,_var(--mat-sys-primary),_transparent_90%)] rounded-full" 
                     [style.color]="darkModeService.isDarkMode() ? 'var(--mat-sys-surface)' : 'var(--mat-sys-on-surface)'"
-
-                      (click)="toggleFullScreen()" aria-label="Toggle full screen">
-                <mat-icon
+                    (click)="toggleFullScreen()" aria-label="Toggle full screen">
+                <mat-icon class="text-base md:text-lg"
                       [style.color]="darkModeService.isDarkMode() ? 'var(--mat-sys-on-surface)' : 'var(--mat-sys-surface)'"
-
-                class="text-lg md:text-xl">fullscreen</mat-icon>
+                >fullscreen</mat-icon>
               </button>
 
               <!-- Theme toggle button -->
               <button mat-icon-button class="hover:bg-[color-mix(in_srgb,_var(--mat-sys-primary),_transparent_90%)] rounded-full" 
                       [matMenuTriggerFor]="darkModeMenu" aria-label="Select light or dark theme">
-                <mat-icon class="text-lg md:text-xl"
+                <mat-icon class="text-base md:text-lg"
                       [style.color]="darkModeService.isDarkMode() ? 'var(--mat-sys-on-surface)' : 'var(--mat-sys-surface)'"
-
                 >{{ darkModeService.selectedTheme()?.icon }}</mat-icon>
               </button>
               <mat-menu #darkModeMenu="matMenu">
@@ -84,7 +80,7 @@
 
               <button mat-icon-button class="hover:bg-[color-mix(in_srgb,_var(--mat-sys-primary),_transparent_90%)] rounded-full" 
                   [matMenuTriggerFor]="colorThemeMenu" aria-label="Select color theme">
-                <mat-icon class="text-lg sm:text-xl"
+                <mat-icon class="text-base md:text-lg"
                       [style.color]="darkModeService.isDarkMode() ? 'var(--mat-sys-on-surface)' : 'var(--mat-sys-surface)'"
                 >format_color_fill</mat-icon>
               </button>
