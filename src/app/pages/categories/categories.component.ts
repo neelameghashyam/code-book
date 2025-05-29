@@ -17,7 +17,7 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatSelectModule } from '@angular/material/select';
 import { AddCategoriesComponent } from './add-categories/add-categories.component';
 import { DarkModeService } from '../../services/dark-mode.service';
-import { ResponsiveService } from '@services/responsive/responsive.service';
+import { ResponsiveService } from '../../services/responsive/responsive.service';
 import { Subscription } from 'rxjs';
 
 @Component({
@@ -31,7 +31,7 @@ import { Subscription } from 'rxjs';
     MatFormFieldModule,
     MatInputModule,
     MatPaginatorModule,
-    MatIcon,
+    MatIcon, 
     MatDialogModule,
     MatProgressSpinnerModule,
     MatCardModule,
@@ -104,11 +104,11 @@ export class CategoriesComponent implements OnInit, OnDestroy {
       data: {},
     });
 
-    dialogRef.afterClosed().subscribe(result => {
-      if (result) {
-        this.service.addCategory(result);
-      }
-    });
+    // dialogRef.afterClosed().subscribe(result => {
+    //   if (result) {
+    //     this.service.addCategory(result);
+    //   }
+    // });
   }
 
   startEdit(category: Category) {
@@ -120,12 +120,12 @@ export class CategoriesComponent implements OnInit, OnDestroy {
       data: { category: this.editingCategory },
     });
 
-    dialogRef.afterClosed().subscribe(result => {
-      if (result) {
-        this.service.updateCategory(result as Category);
-      }
-      this.editingCategory = null;
-    });
+    // dialogRef.afterClosed().subscribe(result => {
+    //   if (result) {
+    //     this.service.updateCategory(result as Category);
+    //   }
+    //   this.editingCategory = null;
+    // });
   }
 
   onSearchQueryChange(event: Event) {

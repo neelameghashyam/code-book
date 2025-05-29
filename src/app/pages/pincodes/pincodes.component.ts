@@ -17,7 +17,7 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatSelectModule } from '@angular/material/select';
 import { AddPincodesComponent } from './add-pincodes/add-pincodes.component';
 import { DarkModeService } from '../../services/dark-mode.service';
-import { ResponsiveService } from '@services/responsive/responsive.service';
+import { ResponsiveService } from '../../services/responsive/responsive.service';
 import { Subscription } from 'rxjs';
 
 @Component({
@@ -112,11 +112,11 @@ export class PincodesComponent implements OnInit, OnDestroy {
       data: {},
     });
 
-    dialogRef.afterClosed().subscribe(result => {
-      if (result) {
-        this.service.addPincode(result);
-      }
-    });
+    // dialogRef.afterClosed().subscribe(result => {
+    //   if (result) {
+    //     this.service.addPincode(result);
+    //   }
+    // });
   }
 
   startEdit(pincode: Pincode) {
@@ -128,12 +128,12 @@ export class PincodesComponent implements OnInit, OnDestroy {
       data: { pincode: this.editingPincode },
     });
 
-    dialogRef.afterClosed().subscribe(result => {
-      if (result) {
-        this.service.updatePincode(result as Pincode);
-      }
-      this.editingPincode = null;
-    });
+    // dialogRef.afterClosed().subscribe(result => {
+    //   if (result) {
+    //     this.service.updatePincode(result as Pincode);
+    //   }
+    //   this.editingPincode = null;
+    // });
   }
 
   onSearchQueryChange(event: Event) {

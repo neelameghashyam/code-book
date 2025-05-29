@@ -18,18 +18,18 @@ export class AuthService {
   }
 
   get getUser() {
-    return this.authStore.user;
+    return this.authStore.user; // Signal
   }
 
   get getIsAuthenticated() {
-    return this.authStore.isAuthenticated;
+    return this.authStore.isAuthenticated; // Signal
   }
 
   get getIsLoading() {
-    return this.authStore.isLoading;
+    return this.authStore.isLoading; // Signal
   }
 
   get error() {
-    return this.authStore.error;
+    return this.authStore.error; // Signal
   }
 }

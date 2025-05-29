@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { DashboardComponent } from './dashboard.component';
-import { ReactiveFormsModule, FormArray } from '@angular/forms';
+import { FormBuilder, ReactiveFormsModule, FormArray } from '@angular/forms';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTableModule } from '@angular/material/table';
@@ -13,30 +13,80 @@ import { ToastrService } from 'ngx-toastr';
 import { ResponsiveService } from '../../services/responsive/responsive.service';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { CommonModule } from '@angular/common';
-import { of } from 'rxjs';
+import { BehaviorSubject, of, Subject } from 'rxjs';
 import { ServiceProviderComponent } from './service-provider/service-provider.component';
+import { ServiceProvider, BusinessForm } from './interfaces';
+import { ChangeDetectorRef } from '@angular/core';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 describe('DashboardComponent', () => {
   let component: DashboardComponent;
   let fixture: ComponentFixture<DashboardComponent>;
-  let toastrService: jest.Mocked<ToastrService>;
-  let responsiveService: jest.Mocked<ResponsiveService>;
-  let dialog: MatDialog;
-  let translateService: TranslateService;
+  let mockToastr: { success: jest.Mock; error: jest.Mock; info: jest.Mock };
+  let mockResponsiveService: { currentBreakpoint: jest.Mock };
+  let mockTranslateService: {
+    use: jest.Mock;
+    get: jest.Mock;
+    instant: jest.Mock;
+    onLangChange: Subject<any>;
+    onTranslationChange: Subject<any>;
+    onDefaultLangChange: Subject<any>;
+    stream: jest.Mock;
+  };
+  let mockDialog: { open: jest.Mock };
+  let mockCdr: { markForCheck: jest.Mock };
+  let breakpointSubject: BehaviorSubject<string>;
+  let localStorageMock: { getItem: jest.Mock; setItem: jest.Mock; clear: jest.Mock };
+
+  const mockServiceProvider: ServiceProvider = {
+    id: '1',
+    spName: 'Test Provider',
+    country: 'USA',
+    addressLine1: '123 Main St',
+    addressLine2: '',
+    addressLine3: '',
+    city: 'Test City',
+    state: 'CA',
+    postalCode: '12345',
+    businessName: '',
+  };
+
+  const validFormData: BusinessForm = {
+    country: 'USA',
+    businessName: 'Test Business',
+    addressLine1: '123 Main St',
+    addressLine2: '',
+    addressLine3: '',
+    city: 'Test City',
+    state: 'CA',
+    postalCode: '12345',
+    serviceProviders: [],
+  };
 
   beforeEach(async () => {
-    // Mock services
-    toastrService = {
-      success: jest.fn(),
-      error: jest.fn(),
-      info: jest.fn(),
-    } as any;
-    responsiveService = {
-      currentBreakpoint: jest.fn(),
-    } as any;
+    mockToastr = { success: jest.fn(), error: jest.fn(), info: jest.fn() };
+    mockResponsiveService = { currentBreakpoint: jest.fn() };
+    mockTranslateService = {
+      use: jest.fn(),
+      get: jest.fn().mockReturnValue(of('translated')),
+      instant: jest.fn().mockReturnValue('translated'),
+      onLangChange: new Subject(),
+      onTranslationChange: new Subject(),
+      onDefaultLangChange: new Subject(),
+      stream: jest.fn().mockReturnValue(of('translated')),
+    };
+    mockDialog = { open: jest.fn() };
+    mockCdr = { markForCheck: jest.fn() };
+    breakpointSubject = new BehaviorSubject<string>('medium');
+    mockResponsiveService.currentBreakpoint.mockReturnValue(breakpointSubject.asObservable());
 
-    // Configure testing module
+    localStorageMock = {
+      getItem: jest.fn().mockReturnValue(null),
+      setItem: jest.fn(),
+      clear: jest.fn(),
+    };
+    Object.defineProperty(window, 'localStorage', { value: localStorageMock });
+
     await TestBed.configureTestingModule({
       imports: [
         ReactiveFormsModule,
@@ -52,357 +102,320 @@ describe('DashboardComponent', () => {
         BrowserAnimationsModule,
         TranslateModule.forRoot(),
         DashboardComponent,
+        ServiceProviderComponent,
       ],
       providers: [
-        { provide: ToastrService, useValue: toastrService },
-        { provide: ResponsiveService, useValue: responsiveService },
-        TranslateService,
+        FormBuilder,
+        { provide: ToastrService, useValue: mockToastr },
+        { provide: ResponsiveService, useValue: mockResponsiveService },
+        { provide: TranslateService, useValue: mockTranslateService },
+        { provide: MatDialog, useValue: mockDialog },
+        { provide: ChangeDetectorRef, useValue: mockCdr },
       ],
     }).compileComponents();
 
     fixture = TestBed.createComponent(DashboardComponent);
     component = fixture.componentInstance;
-    dialog = TestBed.inject(MatDialog);
-    translateService = TestBed.inject(TranslateService);
-
-    // Mock localStorage
-    jest.spyOn(localStorage, 'getItem').mockImplementation((key: string) => {
-      if (key === 'lang') return 'en';
-      if (key === 'serviceProviders') return JSON.stringify([]);
-      if (key === 'businessForm') return null;
-      return null;
-    });
-    jest.spyOn(localStorage, 'setItem').mockImplementation(() => {});
+    jest.spyOn(console, 'error').mockImplementation();
   });
 
-  beforeEach(() => {
-    responsiveService.currentBreakpoint.mockReturnValue(of('large'));
-    fixture.detectChanges();
+  afterEach(() => {
+    jest.clearAllMocks();
+    localStorageMock.clear.mockReset();
   });
 
   it('should create', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should initialize with correct form controls', () => {
-    expect(component.providerForm.get('country')).toBeTruthy();
-    expect(component.providerForm.get('businessName')).toBeTruthy();
-    expect(component.providerForm.get('addressLine1')).toBeTruthy();
-    expect(component.providerForm.get('addressLine2')).toBeTruthy();
-    expect(component.providerForm.get('addressLine3')).toBeTruthy();
-    expect(component.providerForm.get('city')).toBeTruthy();
-    expect(component.providerForm.get('state')).toBeTruthy();
-    expect(component.providerForm.get('postalCode')).toBeTruthy();
-    expect(component.providerForm.get('serviceProviders')).toBeTruthy();
-  });
-
-  it('should set translation language from localStorage on init', () => {
-    const useSpy = jest.spyOn(translateService, 'use');
-    component.ngOnInit();
-    expect(useSpy).toHaveBeenCalledWith('en');
-  });
-
-  it('should initialize countries array', () => {
+  it('should initialize form and countries', () => {
+    fixture.detectChanges();
+    expect(component.providerForm).toBeDefined();
     expect(component.countries).toEqual(['USA', 'Canada', 'UK', 'Australia', 'India']);
+    expect(component.providerForm.get('country')?.value).toBe('');
   });
 
-  it('should set responsive class based on breakpoint', () => {
-    responsiveService.currentBreakpoint.mockReturnValue(of('small'));
+  it('should set language from localStorage on init', () => {
+    localStorageMock.getItem.mockReturnValue('fr');
     component.ngOnInit();
-    expect(component.responsiveClass).toBe('flex-col');
+    expect(mockTranslateService.use).toHaveBeenCalledWith('fr');
+  });
 
-    responsiveService.currentBreakpoint.mockReturnValue(of('xsmall'));
+  it('should set default language to en if no lang in localStorage', () => {
+    localStorageMock.getItem.mockReturnValue(null);
     component.ngOnInit();
-    expect(component.responsiveClass).toBe('flex-col');
+    expect(mockTranslateService.use).toHaveBeenCalledWith('en');
+  });
 
-    responsiveService.currentBreakpoint.mockReturnValue(of('large'));
+  it('should update responsiveClass based on breakpoint', () => {
     component.ngOnInit();
+    breakpointSubject.next('small');
+    expect(component.responsiveClass).toBe('flex-col');
+    breakpointSubject.next('xsmall');
+    expect(component.responsiveClass).toBe('flex-col');
+    breakpointSubject.next('medium');
     expect(component.responsiveClass).toBe('md:flex-row');
+    expect(mockCdr.markForCheck).toHaveBeenCalledTimes(3);
   });
 
   it('should load service providers from localStorage', () => {
-    const mockProviders = [
-      {
-        id: '1',
-        spName: 'Provider1',
-        businessName: 'Business1', // Added businessName
-        addressLine1: '123 Street',
-        addressLine2: '',
-        addressLine3: '',
-        city: 'City',
-        state: 'CA',
-        postalCode: '12345',
-        country: 'USA',
-      },
-    ];
-    jest.spyOn(localStorage, 'getItem').mockImplementation((key: string) => {
-      if (key === 'serviceProviders') return JSON.stringify(mockProviders);
-      return null;
-    });
-
+    const providers = [mockServiceProvider];
+    localStorageMock.getItem.mockReturnValue(JSON.stringify(providers));
     component.loadFromLocalStorage();
-    expect(component.serviceProviders).toEqual(mockProviders);
+    expect(component.serviceProviders).toEqual(providers);
     expect(component.serviceProvidersArray.length).toBe(1);
-    expect(component.serviceProvidersArray.at(0).value).toEqual(mockProviders[0]);
+    expect(component.serviceProvidersArray.at(0).value).toEqual(mockServiceProvider);
   });
 
-  it('should handle empty service providers in localStorage', () => {
-    jest.spyOn(localStorage, 'getItem').mockImplementation((key: string) => {
-      if (key === 'serviceProviders') return '[]';
-      return null;
-    });
+  it('should handle null service providers in localStorage', () => {
+    localStorageMock.getItem.mockReturnValue(null);
     component.loadFromLocalStorage();
     expect(component.serviceProviders).toEqual([]);
     expect(component.serviceProvidersArray.length).toBe(0);
   });
 
   it('should handle localStorage error in loadFromLocalStorage', () => {
-    jest.spyOn(localStorage, 'getItem').mockImplementation(() => {
+    localStorageMock.getItem.mockImplementation(() => {
       throw new Error('Storage error');
     });
     component.loadFromLocalStorage();
-    expect(toastrService.error).toHaveBeenCalledWith('Error loading saved data');
-    expect(console.error).toHaveBeenCalledWith('LocalStorage error:', expect.any(Error));
+    expect(mockToastr.error).toHaveBeenCalledWith('Error loading saved data');
   });
 
-  it('should open service provider dialog', () => {
-    const dialogOpenSpy = jest.spyOn(dialog, 'open').mockReturnValue({
-      afterClosed: () => of({
-        id: '1',
-        spName: 'New Provider',
-        businessName: 'Business1', // Added businessName
-        addressLine1: '123 Street',
-        addressLine2: '',
-        addressLine3: '',
-        city: 'City',
-        state: 'CA',
-        postalCode: '12345',
-        country: 'USA',
-      }),
-    } as any);
+  describe('openPopup afterClosed subscription', () => {
+    it('should add new provider when result is truthy and index is undefined', fakeAsync(() => {
+      const dialogRefSpy = { afterClosed: jest.fn().mockReturnValue(of(mockServiceProvider)) };
+      mockDialog.open.mockReturnValue(dialogRefSpy);
 
-    component.openPopup();
-    expect(dialogOpenSpy).toHaveBeenCalledWith(ServiceProviderComponent, {
+      component.openPopup();
+      tick();
+
+      expect(mockDialog.open).toHaveBeenCalledWith(ServiceProviderComponent, {
+        width: '90%',
+        maxWidth: '1200px',
+        height: 'auto',
+        maxHeight: '120vh',
+        enterAnimationDuration: '300ms',
+        exitAnimationDuration: '300ms',
+        data: { isPopup: true, provider: undefined, index: undefined },
+        autoFocus: true,
+        restoreFocus: true,
+        panelClass: 'custom-service-provider-dialog-large',
+      });
+      expect(component.serviceProviders).toEqual([mockServiceProvider]);
+      expect(component.serviceProvidersArray.length).toBe(1);
+      expect(component.serviceProvidersArray.at(0).value).toEqual(mockServiceProvider);
+      expect(localStorageMock.setItem).toHaveBeenCalledWith(
+        'businessForm',
+        JSON.stringify({
+          ...component.providerForm.value,
+          serviceProviders: [mockServiceProvider],
+        })
+      );
+      }));
+
+    it('should update existing provider when result is truthy and index is defined', fakeAsync(() => {
+      component.serviceProviders = [mockServiceProvider];
+      component.serviceProvidersArray.push(component.createServiceProviderFormGroup(mockServiceProvider));
+      const updatedProvider = { ...mockServiceProvider, spName: 'Updated Provider' };
+      const dialogRefSpy = { afterClosed: jest.fn().mockReturnValue(of(updatedProvider)) };
+      mockDialog.open.mockReturnValue(dialogRefSpy);
+
+      component.openPopup(mockServiceProvider, 0);
+      tick();
+
+      expect(mockDialog.open).toHaveBeenCalledWith(ServiceProviderComponent, {
+        width: '90%',
+        maxWidth: '1200px',
+        height: 'auto',
+        maxHeight: '120vh',
+        enterAnimationDuration: '300ms',
+        exitAnimationDuration: '300ms',
+        data: { isPopup: true, provider: mockServiceProvider, index: 0 },
+        autoFocus: true,
+        restoreFocus: true,
+        panelClass: 'custom-service-provider-dialog-large',
+      });
+      expect(component.serviceProviders[0].spName).toBe('Updated Provider');
+      expect(component.serviceProvidersArray.at(0).value.spName).toBe('Updated Provider');
+      expect(localStorageMock.setItem).toHaveBeenCalledWith(
+        'businessForm',
+        JSON.stringify({
+          ...component.providerForm.value,
+          serviceProviders: [updatedProvider],
+        })
+      );
+      expect(mockCdr.markForCheck).toHaveBeenCalled();
+    }));
+
+    it('should not modify providers when result is falsy', fakeAsync(() => {
+      const dialogRefSpy = { afterClosed: jest.fn().mockReturnValue(of(undefined)) };
+      mockDialog.open.mockReturnValue(dialogRefSpy);
+
+      component.serviceProviders = [mockServiceProvider];
+      component.serviceProvidersArray.push(component.createServiceProviderFormGroup(mockServiceProvider));
+      const initialProviders = [...component.serviceProviders];
+      const initialFormArrayLength = component.serviceProvidersArray.length;
+
+      component.openPopup();
+      tick();
+
+      expect(mockDialog.open).toHaveBeenCalledWith(ServiceProviderComponent, {
+        width: '90%',
+        maxWidth: '1200px',
+        height: 'auto',
+        maxHeight: '120vh',
+        enterAnimationDuration: '300ms',
+        exitAnimationDuration: '300ms',
+        data: { isPopup: true, provider: undefined, index: undefined },
+        autoFocus: true,
+        restoreFocus: true,
+        panelClass: 'custom-service-provider-dialog-large',
+      });
+      expect(component.serviceProviders).toEqual(initialProviders);
+      expect(component.serviceProvidersArray.length).toBe(initialFormArrayLength);
+      expect(localStorageMock.setItem).not.toHaveBeenCalled();
+      expect(mockCdr.markForCheck).not.toHaveBeenCalled();
+    }));
+
+    it('should handle null result without modifying providers', fakeAsync(() => {
+      const dialogRefSpy = { afterClosed: jest.fn().mockReturnValue(of(null)) };
+      mockDialog.open.mockReturnValue(dialogRefSpy);
+
+      component.serviceProviders = [mockServiceProvider];
+      component.serviceProvidersArray.push(component.createServiceProviderFormGroup(mockServiceProvider));
+      const initialProviders = [...component.serviceProviders];
+      const initialFormArrayLength = component.serviceProvidersArray.length;
+
+      component.openPopup();
+      tick();
+
+      expect(mockDialog.open).toHaveBeenCalledWith(ServiceProviderComponent, {
+        width: '90%',
+        maxWidth: '1200px',
+        height: 'auto',
+        maxHeight: '120vh',
+        enterAnimationDuration: '300ms',
+        exitAnimationDuration: '300ms',
+        data: { isPopup: true, provider: undefined, index: undefined },
+        autoFocus: true,
+        restoreFocus: true,
+        panelClass: 'custom-service-provider-dialog-large',
+      });
+      expect(component.serviceProviders).toEqual(initialProviders);
+      expect(component.serviceProvidersArray.length).toBe(initialFormArrayLength);
+      expect(localStorageMock.setItem).not.toHaveBeenCalled();
+      expect(mockCdr.markForCheck).not.toHaveBeenCalled();
+    }));
+  });
+
+  it('should create service provider form group', () => {
+    const formGroup = component.createServiceProviderFormGroup(mockServiceProvider);
+    expect(formGroup.get('spName')?.value).toBe('Test Provider');
+    expect(formGroup.get('country')?.value).toBe('USA');
+    expect(formGroup.get('id')?.value).toBe('1');
+    expect(formGroup.get('addressLine1')?.value).toBe('123 Main St');
+    expect(formGroup.get('addressLine2')?.value).toBe('');
+    expect(formGroup.get('addressLine3')?.value).toBe('');
+    expect(formGroup.get('city')?.value).toBe('Test City');
+    expect(formGroup.get('state')?.value).toBe('CA');
+    expect(formGroup.get('postalCode')?.value).toBe('12345');
+    expect(formGroup.get('businessName')?.value).toBe('');
+  });
+
+  it('should edit service provider', fakeAsync(() => {
+    component.serviceProviders = [mockServiceProvider];
+    component.serviceProvidersArray.push(component.createServiceProviderFormGroup(mockServiceProvider));
+    const updatedProvider = { ...mockServiceProvider, spName: 'Edited Provider' };
+    const dialogRefSpy = { afterClosed: jest.fn().mockReturnValue(of(updatedProvider)) };
+    mockDialog.open.mockReturnValue(dialogRefSpy);
+    component.editServiceProvider(0);
+    tick();
+    expect(mockDialog.open).toHaveBeenCalledWith(ServiceProviderComponent, {
       width: '90%',
       maxWidth: '1200px',
       height: 'auto',
       maxHeight: '120vh',
       enterAnimationDuration: '300ms',
       exitAnimationDuration: '300ms',
-      data: { isPopup: true, provider: undefined, index: undefined },
+      data: { isPopup: true, provider: mockServiceProvider, index: 0 },
       autoFocus: true,
       restoreFocus: true,
       panelClass: 'custom-service-provider-dialog-large',
     });
-  });
-
-  it('should add new service provider from dialog', fakeAsync(() => {
-    const newProvider = {
-      id: '1',
-      spName: 'New Provider',
-      businessName: 'Business1', // Added businessName
-      addressLine1: '123 Street',
-      addressLine2: '',
-      addressLine3: '',
-      city: 'City',
-      state: 'CA',
-      postalCode: '12345',
-      country: 'USA',
-    };
-    jest.spyOn(dialog, 'open').mockReturnValue({
-      afterClosed: () => of(newProvider),
-    } as any);
-
-    component.openPopup();
-    tick();
-    expect(component.serviceProviders).toContain(newProvider);
-    expect(component.serviceProvidersArray.length).toBe(1);
-    expect(component.serviceProvidersArray.at(0).value).toEqual(newProvider);
-    expect(localStorage.setItem).toHaveBeenCalledWith('businessForm', expect.any(String));
-  }));
-
-  it('should update existing service provider from dialog', fakeAsync(() => {
-    const existingProvider = {
-      id: '1',
-      spName: 'Provider1',
-      businessName: 'Business1', // Added businessName
-      addressLine1: '123 Street',
-      addressLine2: '',
-      addressLine3: '',
-      city: 'City',
-      state: 'CA',
-      postalCode: '12345',
-      country: 'USA',
-    };
-    component.serviceProviders = [existingProvider];
-    (component.providerForm.get('serviceProviders') as FormArray).push(
-      component['createServiceProviderFormGroup'](existingProvider)
+    expect(component.serviceProviders[0].spName).toBe('Edited Provider');
+    expect(component.serviceProvidersArray.at(0).value.spName).toBe('Edited Provider');
+    expect(localStorageMock.setItem).toHaveBeenCalledWith(
+      'businessForm',
+      JSON.stringify({
+        ...component.providerForm.value,
+        serviceProviders: [updatedProvider],
+      })
     );
-
-    const updatedProvider = {
-      id: '1',
-      spName: 'Updated Provider',
-      businessName: 'Business2', // Added businessName
-      addressLine1: '456 Street',
-      addressLine2: '',
-      addressLine3: '',
-      city: 'New City',
-      state: 'NY',
-      postalCode: '67890',
-      country: 'Canada',
-    };
-    jest.spyOn(dialog, 'open').mockReturnValue({
-      afterClosed: () => of(updatedProvider),
-    } as any);
-
-    component.openPopup(existingProvider, 0);
-    tick();
-    expect(component.serviceProviders[0]).toEqual(updatedProvider);
-    expect(component.serviceProvidersArray.at(0).value).toEqual(updatedProvider);
-    expect(localStorage.setItem).toHaveBeenCalledWith('businessForm', expect.any(String));
+    expect(mockCdr.markForCheck).toHaveBeenCalled();
   }));
-
-  it('should not add provider if dialog returns undefined', fakeAsync(() => {
-    jest.spyOn(dialog, 'open').mockReturnValue({
-      afterClosed: () => of(undefined),
-    } as any);
-
-    component.openPopup();
-    tick();
-    expect(component.serviceProviders.length).toBe(0);
-    expect(component.serviceProvidersArray.length).toBe(0);
-  }));
-
-  it('should edit service provider', () => {
-    const provider = {
-      id: '1',
-      spName: 'Provider1',
-      businessName: 'Business1', // Added businessName
-      addressLine1: '123 Street',
-      addressLine2: '',
-      addressLine3: '',
-      city: 'City',
-      state: 'CA',
-      postalCode: '12345',
-      country: 'USA',
-    };
-    component.serviceProviders = [provider];
-    const openPopupSpy = jest.spyOn(component, 'openPopup');
-    component.editServiceProvider(0);
-    expect(openPopupSpy).toHaveBeenCalledWith(provider, 0);
-  });
 
   it('should delete service provider', () => {
-    const provider = {
-      id: '1',
-      spName: 'Provider1',
-      businessName: 'Business1', // Added businessName
-      addressLine1: '123 Street',
-      addressLine2: '',
-      addressLine3: '',
-      city: 'City',
-      state: 'CA',
-      postalCode: '12345',
-      country: 'USA',
-    };
-    component.serviceProviders = [provider];
-    (component.providerForm.get('serviceProviders') as FormArray).push(
-      component['createServiceProviderFormGroup'](provider)
-    );
-
-    jest.spyOn(localStorage, 'getItem').mockReturnValue(JSON.stringify([provider]));
+    component.serviceProviders = [mockServiceProvider];
+    component.serviceProvidersArray.push(component.createServiceProviderFormGroup(mockServiceProvider));
+    localStorageMock.getItem.mockReturnValue(JSON.stringify([mockServiceProvider]));
     component.deleteServiceProvider(0);
     expect(component.serviceProviders.length).toBe(0);
     expect(component.serviceProvidersArray.length).toBe(0);
-    expect(toastrService.success).toHaveBeenCalledWith('Service provider deleted successfully');
-    expect(localStorage.setItem).toHaveBeenCalledWith('serviceProviders', JSON.stringify([]));
-    expect(localStorage.setItem).toHaveBeenCalledWith('businessForm', expect.any(String));
+    expect(localStorageMock.setItem).toHaveBeenCalledTimes(2);
+    expect(localStorageMock.setItem).toHaveBeenCalledWith('serviceProviders', JSON.stringify([]));
+    expect(mockToastr.success).toHaveBeenCalledWith('Service provider deleted successfully');
   });
 
-  it('should handle error when deleting service provider', () => {
-    const provider = {
-      id: '1',
-      spName: 'Provider1',
-      businessName: 'Business1', // Added businessName
-      addressLine1: '123 Street',
-      addressLine2: '',
-      addressLine3: '',
-      city: 'City',
-      state: 'CA',
-      postalCode: '12345',
-      country: 'USA',
-    };
-    component.serviceProviders = [provider];
-    (component.providerForm.get('serviceProviders') as FormArray).push(
-      component['createServiceProviderFormGroup'](provider)
-    );
-
-    jest.spyOn(localStorage, 'getItem').mockImplementation(() => {
+  it('should handle error in deleteServiceProvider', () => {
+    component.serviceProviders = [mockServiceProvider];
+    component.serviceProvidersArray.push(component.createServiceProviderFormGroup(mockServiceProvider));
+    localStorageMock.getItem.mockImplementation(() => {
       throw new Error('Storage error');
     });
     component.deleteServiceProvider(0);
-    expect(toastrService.error).toHaveBeenCalledWith('Error deleting service provider');
-    expect(console.error).toHaveBeenCalledWith('LocalStorage error:', expect.any(Error));
+    expect(component.serviceProviders.length).toBe(0);
+    expect(component.serviceProvidersArray.length).toBe(0);
+    expect(mockToastr.error).toHaveBeenCalledWith('Error deleting service provider');
   });
 
   it('should submit valid form', () => {
-    component.providerForm.setValue({
-      country: 'USA',
-      businessName: 'Test Business',
-      addressLine1: '123 Street',
-      addressLine2: '',
-      addressLine3: '',
-      city: 'City',
-      state: 'CA',
-      postalCode: '12345',
-      serviceProviders: [],
-    });
-
+    component.providerForm.setValue(validFormData);
     component.onSubmit();
-    expect(localStorage.setItem).toHaveBeenCalledWith('businessForm', expect.any(String));
-    expect(toastrService.success).toHaveBeenCalledWith('Business form submitted successfully');
+    expect(localStorageMock.setItem).toHaveBeenCalledWith('businessForm', JSON.stringify(validFormData));
+    expect(mockToastr.success).toHaveBeenCalledWith('Business form submitted successfully');
     expect(component.readOnly).toBe(true);
     expect(component.providerForm.disabled).toBe(true);
   });
 
-  it('should show error for invalid form submission', () => {
-    component.providerForm.setValue({
-      country: '',
-      businessName: '',
-      addressLine1: '',
-      addressLine2: '',
-      addressLine3: '',
-      city: '',
-      state: '',
-      postalCode: '',
-      serviceProviders: [],
-    });
-
+  it('should handle invalid form submission', () => {
+    component.providerForm.get('country')?.setValue('');
     component.onSubmit();
-    expect(toastrService.error).toHaveBeenCalledWith('Please fill all required fields');
+    expect(mockToastr.error).toHaveBeenCalledWith('Please fill all required fields');
     expect(component.providerForm.touched).toBe(true);
-    expect(localStorage.setItem).not.toHaveBeenCalled();
+    expect(localStorageMock.setItem).not.toHaveBeenCalled();
+    expect(component.readOnly).toBe(false);
+    expect(component.providerForm.enabled).toBe(true);
   });
 
-  it('should handle localStorage error on form submission', () => {
-    component.providerForm.setValue({
-      country: 'USA',
-      businessName: 'Test Business',
-      addressLine1: '123 Street',
-      addressLine2: '',
-      addressLine3: '',
-      city: 'City',
-      state: 'CA',
-      postalCode: '12345',
-      serviceProviders: [],
-    });
+  it('should handle specific form validation errors', () => {
+    component.providerForm.get('businessName')?.setValue('ab'); // Too short
+    component.providerForm.get('state')?.setValue('Invalid@State'); // Invalid pattern
+    component.onSubmit();
+    expect(component.providerForm.get('businessName')?.errors).toHaveProperty('minlength');
+    expect(component.providerForm.get('state')?.errors).toHaveProperty('pattern');
+    expect(mockToastr.error).toHaveBeenCalledWith('Please fill all required fields');
+  });
 
-    jest.spyOn(localStorage, 'setItem').mockImplementation(() => {
+  it('should handle localStorage error in onSubmit', () => {
+    component.providerForm.setValue(validFormData);
+    localStorageMock.setItem.mockImplementation(() => {
       throw new Error('Storage error');
     });
     component.onSubmit();
-    expect(toastrService.error).toHaveBeenCalledWith('Error saving business form');
-    expect(console.error).toHaveBeenCalledWith('LocalStorage error:', expect.any(Error));
+    expect(mockToastr.error).toHaveBeenCalledWith('Error saving business form');
+    expect(component.readOnly).toBe(false);
+    expect(component.providerForm.enabled).toBe(true);
   });
 
   it('should enable edit mode', () => {
@@ -413,83 +426,84 @@ describe('DashboardComponent', () => {
     expect(component.providerForm.enabled).toBe(true);
   });
 
-  it('should reset form on cancel', () => {
-    component.providerForm.setValue({
-      country: 'USA',
-      businessName: 'Test Business',
-      addressLine1: '123 Street',
-      addressLine2: 'Apt 1',
-      addressLine3: '',
-      city: 'City',
-      state: 'CA',
-      postalCode: '12345',
-      serviceProviders: [],
-    });
-    component.readOnly = true;
-    component.providerForm.disable();
-
+  it('should cancel form', () => {
+    component.serviceProvidersArray.push(component.createServiceProviderFormGroup(mockServiceProvider));
+    component.providerForm.patchValue(validFormData);
     component.onCancel();
-    expect(component.providerForm.value).toEqual({
-      country: 'USA',
-      businessName: '',
-      addressLine1: '',
-      addressLine2: '',
-      addressLine3: '',
-      city: '',
-      state: '',
-      postalCode: '',
-      serviceProviders: [],
-    });
+    expect(component.providerForm.get('country')?.value).toBe('');
+    expect(component.providerForm.get('businessName')?.value).toBe('');
     expect(component.readOnly).toBe(false);
     expect(component.providerForm.enabled).toBe(true);
-    expect(toastrService.info).toHaveBeenCalledWith('Form reset');
+    expect(mockToastr.info).toHaveBeenCalledWith('Form reset');
   });
 
-  it('should handle localStorage error in saveToLocalStorage', () => {
-    jest.spyOn(localStorage, 'setItem').mockImplementation(() => {
+  it('should save to localStorage', () => {
+    component.serviceProviders = [mockServiceProvider];
+    component.providerForm.setValue(validFormData);
+    component.saveToLocalStorage();
+    expect(localStorageMock.setItem).toHaveBeenCalledWith(
+      'businessForm',
+      JSON.stringify({
+        ...validFormData,
+        serviceProviders: [mockServiceProvider],
+      })
+    );
+  });
+
+  it('should handle error in saveToLocalStorage', () => {
+    localStorageMock.setItem.mockImplementation(() => {
       throw new Error('Storage error');
     });
-    jest.spyOn(console, 'error').mockImplementation(() => {});
-    component.serviceProviders = [
-      {
-        id: '1',
-        spName: 'Provider1',
-        businessName: 'Business1', // Added businessName
-        addressLine1: '123 Street',
-        addressLine2: '',
-        addressLine3: '',
-        city: 'City',
-        state: 'CA',
-        postalCode: '12345',
-        country: 'USA',
-      },
-    ];
-    component.openPopup();
+    component.saveToLocalStorage();
     expect(console.error).toHaveBeenCalledWith('Error saving to localStorage:', expect.any(Error));
   });
 
-  it('should track providers by id', () => {
-    const provider = {
-      id: '1',
-      spName: 'Provider1',
-      businessName: 'Business1', // Added businessName
-      addressLine1: '123 Street',
-      addressLine2: '',
-      addressLine3: '',
-      city: 'City',
-      state: 'CA',
-      postalCode: '12345',
-      country: 'USA',
-    };
-    expect(component.trackByProvider(0, provider)).toBe('1');
-    expect(component.trackByProvider(0, { ...provider, id: undefined } as any)).toBe('0');
+  it('should track by provider id', () => {
+    expect(component.trackByProvider(0, mockServiceProvider)).toBe('1');
+    expect(component.trackByProvider(0, { ...mockServiceProvider, id: undefined })).toBe('0');
   });
 
-  it('should return countries getter', () => {
-    expect(component.countries).toEqual(['USA', 'Canada', 'UK', 'Australia', 'India']);
+  it('should get serviceProvidersArray', () => {
+    expect(component.serviceProvidersArray).toBeInstanceOf(FormArray);
+    expect(component.serviceProvidersArray).toEqual(component.providerForm.get('serviceProviders'));
   });
 
-  it('should return serviceProvidersArray', () => {
-    expect(component.serviceProvidersArray).toBe(component.providerForm.get('serviceProviders'));
+  // Additional tests for uncovered branches and edge cases
+  it('should handle empty service providers in loadFromLocalStorage', () => {
+    localStorageMock.getItem.mockReturnValue(JSON.stringify([]));
+    component.loadFromLocalStorage();
+    expect(component.serviceProviders).toEqual([]);
+    expect(component.serviceProvidersArray.length).toBe(0);
+  });
+
+  it('should handle duplicate service providers in loadFromLocalStorage', () => {
+    const providers = [mockServiceProvider, mockServiceProvider];
+    localStorageMock.getItem.mockReturnValue(JSON.stringify(providers));
+    component.loadFromLocalStorage();
+    expect(component.serviceProviders.length).toBe(1);
+    expect(component.serviceProvidersArray.length).toBe(1);
+  });
+
+  it('should handle invalid JSON in loadFromLocalStorage', () => {
+    localStorageMock.getItem.mockReturnValue('invalid-json');
+    component.loadFromLocalStorage();
+    expect(component.serviceProviders).toEqual([]);
+  });
+
+  it('should handle null provider in createServiceProviderFormGroup', () => {
+    const formGroup = component.createServiceProviderFormGroup({} as ServiceProvider);
+    expect(formGroup.get('spName')?.value).toBe("");
+    expect(formGroup.get('country')?.value).toBe("");
+    expect(formGroup.valid).toBe(false);
+  });
+
+  it('should handle missing businessForm in loadFromLocalStorage', () => {
+    localStorageMock.getItem.mockImplementation((key) => {
+      if (key === 'serviceProviders') return JSON.stringify([mockServiceProvider]);
+      return null;
+    });
+    component.loadFromLocalStorage();
+    expect(component.serviceProviders).toEqual([mockServiceProvider]);
+    expect(component.serviceProvidersArray.length).toBe(1);
   });
 });

@@ -1,5 +1,5 @@
-import { patchState, signalStore, withComputed, withHooks, withMethods, withState } from '@ngrx/signals';
-import { computed, inject } from '@angular/core';
+import { patchState, signalStore, withHooks, withMethods, withState } from '@ngrx/signals';
+import { inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { lastValueFrom } from 'rxjs';
 
@@ -30,11 +30,6 @@ const apiUrl = 'https://api.escuelajs.co';
 export const AuthStore = signalStore(
   { providedIn: 'root' },
   withState(initialState),
-  withComputed(({ user, isAuthenticated, isLoading }) => ({
-    user: computed(() => user()),
-    isAuthenticated: computed(() => isAuthenticated()),
-    isLoading: computed(() => isLoading()),
-  })),
   withMethods((store, http = inject(HttpClient)) => ({
     async login(credentials: { email: string; password: string }) {
       try {
@@ -52,9 +47,8 @@ export const AuthStore = signalStore(
           error: null,
         });
       } catch (error: any) {
-        const errorMessage = error.status === 401
-          ? 'Invalid email or password'
-          : error.error?.message || error.message || 'Login failed';
+        const errorMessage =
+          error.status === 401 ? 'Invalid email or password' : error.error?.message || error.message || 'Login failed';
         patchState(store, {
           error: errorMessage,
           isLoading: false,
@@ -69,9 +63,7 @@ export const AuthStore = signalStore(
           ...userData,
           avatar: 'https://i.imgur.com/LDOe7r5.png', // Default avatar URL
         };
-        const response = await lastValueFrom(
-          http.post<User>(`${apiUrl}/api/v1/users/`, payload)
-        );
+        const response = await lastValueFrom(http.post<User>(`${apiUrl}/api/v1/users/`, payload));
         localStorage.setItem('auth', JSON.stringify({ user: response, token: '' }));
         patchState(store, {
           user: response,

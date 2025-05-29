@@ -45,7 +45,5 @@ export class PincodesService {
 
   sortPincodes(field: string, direction: 'asc' | 'desc') {
     this.pincodeStore.sortPincodes(field, direction);
-  }
-
-  
+  } 
 }

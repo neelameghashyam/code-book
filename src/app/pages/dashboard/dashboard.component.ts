@@ -29,7 +29,7 @@ import { TranslateModule, TranslateService } from '@ngx-translate/core';
     MatSelectModule,
     MatButtonModule,
     MatCardModule,
-    TranslateModule 
+    TranslateModule,
   ],
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.scss'],
@@ -56,7 +56,7 @@ export class DashboardComponent implements OnInit {
     private fb: FormBuilder,
     private toastr: ToastrService,
     private responsiveService: ResponsiveService,
-    private translateService: TranslateService // Inject TranslateService
+    private translateService: TranslateService
   ) {
     this.providerForm = this.fb.group({
       country: ['', Validators.required],
@@ -72,20 +72,18 @@ export class DashboardComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    // Initialize translation
     const lang = localStorage.getItem('lang') || 'en';
     this.translateService.use(lang);
 
     this._countries = ['USA', 'Canada', 'UK', 'Australia', 'India'];
     this.loadFromLocalStorage();
 
-    this.responsiveService.currentBreakpoint().subscribe(breakpoint => {
+    this.responsiveService.currentBreakpoint().subscribe((breakpoint) => {
       this.responsiveClass = breakpoint === 'xsmall' || breakpoint === 'small' ? 'flex-col' : 'md:flex-row';
       this.cdr.markForCheck();
     });
   }
 
-  // Rest of the component remains unchanged
   openPopup(provider?: ServiceProvider, index?: number): void {
     const dialogRef = this.dialog.open(ServiceProviderComponent, {
       width: '90%',
@@ -97,57 +95,53 @@ export class DashboardComponent implements OnInit {
       data: { isPopup: true, provider, index },
       autoFocus: true,
       restoreFocus: true,
-      panelClass: 'custom-service-provider-dialog-large'
+      panelClass: 'custom-service-provider-dialog-large',
     });
 
-    dialogRef.afterClosed().subscribe(result => {
-      if (result) {
-        if (index !== undefined) {
-          this.serviceProviders[index] = result;
-          this.serviceProvidersArray.at(index).patchValue(result);
-        } else {
-          this.serviceProviders.push(result);
-          this.serviceProvidersArray.push(this.createServiceProviderFormGroup(result));
-        }
-        this.saveToLocalStorage();
-        this.cdr.markForCheck();
-      }
-    });
+    
   }
 
-  private createServiceProviderFormGroup(provider: ServiceProvider): FormGroup {
+  public createServiceProviderFormGroup(provider: ServiceProvider): FormGroup {
     return this.fb.group({
-      id: [provider.id],
-      spName: [provider.spName, Validators.required],
-      addressLine1: [provider.addressLine1, Validators.required],
-      addressLine2: [provider.addressLine2],
-      addressLine3: [provider.addressLine3],
-      city: [provider.city, Validators.required],
-      state: [provider.state],
-      postalCode: [provider.postalCode, Validators.required],
-      country: [provider.country, Validators.required]
+      id: [provider?.id || ''],
+      spName: [provider?.spName || '', Validators.required],
+      addressLine1: [provider?.addressLine1 || '', Validators.required],
+      addressLine2: [provider?.addressLine2 || ''],
+      addressLine3: [provider?.addressLine3 || ''],
+      city: [provider?.city || '', Validators.required],
+      state: [provider?.state || ''],
+      postalCode: [provider?.postalCode || '', Validators.required],
+      country: [provider?.country || '', Validators.required],
+      businessName: [provider?.businessName || ''],
     });
   }
 
   editServiceProvider(index: number): void {
-    this.openPopup(this.serviceProviders[index], index);
+    if (index >= 0 && index < this.serviceProviders.length) {
+      this.openPopup(this.serviceProviders[index], index);
+    }
   }
 
   deleteServiceProvider(index: number): void {
     try {
-      const deletedProvider = this.serviceProviders.splice(index, 1)[0];
-      this.serviceProvidersArray.removeAt(index);
+      if (index >= 0 && index < this.serviceProviders.length) {
+        const deletedProvider = this.serviceProviders.splice(index, 1)[0];
+        this.serviceProvidersArray.removeAt(index);
 
-      const existingProviders: ServiceProvider[] = JSON.parse(localStorage.getItem('serviceProviders') || '[]');
-      const updatedProviders = existingProviders.filter(provider => provider.id !== deletedProvider.id);
-      localStorage.setItem('serviceProviders', JSON.stringify(updatedProviders));
+        const existingProviders: ServiceProvider[] = JSON.parse(localStorage.getItem('serviceProviders') || '[]');
+        const updatedProviders = existingProviders.filter((provider) => provider.id !== deletedProvider.id);
+        localStorage.setItem('serviceProviders', JSON.stringify(updatedProviders));
 
-      this.saveToLocalStorage();
-      this.toastr.success('Service provider deleted successfully');
+        this.saveToLocalStorage();
+        this.toastr.success('Service provider deleted successfully');
+      } else {
+        this.toastr.error('Invalid provider index');
+      }
       this.cdr.markForCheck();
     } catch (error) {
       this.toastr.error('Error deleting service provider');
       console.error('LocalStorage error:', error);
+      this.cdr.markForCheck();
     }
   }
 
@@ -166,6 +160,7 @@ export class DashboardComponent implements OnInit {
       } catch (error) {
         this.toastr.error('Error saving business form');
         console.error('LocalStorage error:', error);
+        this.cdr.markForCheck();
       }
     } else {
       this.toastr.error('Please fill all required fields');
@@ -182,7 +177,7 @@ export class DashboardComponent implements OnInit {
 
   onCancel(): void {
     this.providerForm.reset({
-      country: this.countries[0],
+      country: this.countries[0] || '',
       businessName: '',
       addressLine1: '',
       addressLine2: '',
@@ -190,7 +185,7 @@ export class DashboardComponent implements OnInit {
       city: '',
       state: '',
       postalCode: '',
-      serviceProviders: this.serviceProvidersArray.value
+      serviceProviders: this.serviceProvidersArray.value,
     });
     this.readOnly = false;
     this.providerForm.enable();
@@ -204,28 +199,33 @@ export class DashboardComponent implements OnInit {
       const providerData = localStorage.getItem('serviceProviders');
       let standaloneProviders: ServiceProvider[] = [];
       if (providerData) {
-        standaloneProviders = JSON.parse(providerData) || [];
+        try {
+          standaloneProviders = JSON.parse(providerData) || [];
+        } catch (parseError) {
+          console.error('Error parsing serviceProviders:', parseError);
+          standaloneProviders = [];
+        }
       }
 
       const allProviders = [...businessProviders, ...standaloneProviders];
       const uniqueProviders = Array.from(
-        new Map(allProviders.map(provider => [provider.id, provider])).values()
+        new Map(allProviders.map((provider) => [provider.id, provider])).values()
       );
 
-      this.serviceProviders = Array.from(uniqueProviders);
+      this.serviceProviders = uniqueProviders;
       this.serviceProvidersArray.clear();
-      this.serviceProviders.forEach(provider => {
+      this.serviceProviders.forEach((provider) => {
         this.serviceProvidersArray.push(this.createServiceProviderFormGroup(provider));
       });
-
-      this.cdr.markForCheck();
     } catch (error) {
       this.toastr.error('Error loading saved data');
       console.error('LocalStorage error:', error);
+    } finally {
+      this.cdr.markForCheck();
     }
   }
 
-  private saveToLocalStorage(): void {
+  public saveToLocalStorage(): void {
     try {
       const formData: BusinessForm = {
         ...this.providerForm.value,
@@ -234,10 +234,11 @@ export class DashboardComponent implements OnInit {
       localStorage.setItem('businessForm', JSON.stringify(formData));
     } catch (error) {
       console.error('Error saving to localStorage:', error);
+      this.toastr.error('Error saving data');
     }
   }
 
   trackByProvider(index: number, provider: ServiceProvider): string {
-    return provider.id || index.toString();
+    return provider?.id || index.toString();
   }
 }

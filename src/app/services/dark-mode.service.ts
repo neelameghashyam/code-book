@@ -9,9 +9,6 @@ export interface Theme {
   providedIn: 'root'
 })
 export class DarkModeService {
-isVisible() {
-throw new Error('Method not implemented.');
-}
   private theme = signal<'light' | 'dark' | 'system'>('system');
   private themes: Theme[] = [
     { name: 'light', icon: 'light_mode' },
@@ -19,7 +16,7 @@ throw new Error('Method not implemented.');
     { name: 'system', icon: 'desktop_windows' }
   ];
 
-  selectedTheme = computed(() => this.themes.find(t => t.name === this.theme()));
+  selectedTheme = computed(() => this.themes.find(t => t.name === this.theme())!);
   isDarkMode = computed(() => {
     if (this.theme() === 'system') {
       return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
@@ -38,8 +35,8 @@ throw new Error('Method not implemented.');
   }
 
   private initializeTheme() {
-    const savedTheme = localStorage.getItem('theme') || 'system';
-    this.theme.set(savedTheme as 'light' | 'dark' | 'system');
+    const savedTheme = localStorage.getItem('theme');
+    this.theme.set(savedTheme as 'light' | 'dark' | 'system' || 'system');
     this.applyTheme();
   }
 
@@ -59,5 +56,9 @@ throw new Error('Method not implemented.');
     document.body.classList.toggle('dark-theme', isDark);
     document.body.classList.toggle('light-theme', !isDark);
     document.body.setAttribute('data-theme', isDark ? 'dark-theme' : 'light-theme');
+  }
+
+  isVisible() {
+    return true; // Theme toggle is always visible
   }
 }

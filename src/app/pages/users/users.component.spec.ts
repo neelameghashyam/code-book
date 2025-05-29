@@ -1,61 +1,62 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { UsersComponent } from './users.component';
-import { UserStore } from './store/user-store';
-import { ToastrService } from 'ngx-toastr';
-import { DarkModeService } from '../../services/dark-mode.service';
-import { TranslateService, TranslateModule } from '@ngx-translate/core';
-import { MatDialog, MatDialogModule } from '@angular/material/dialog';
-import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
-import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
-import { MatInputModule } from '@angular/material/input';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { MatTableModule } from '@angular/material/table';
+import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { ChangeDetectorRef } from '@angular/core';
+import { MatInputModule } from '@angular/material/input';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { ToastrService } from 'ngx-toastr';
+import { DarkModeService } from '../../services/dark-mode.service';
+import { UserStore } from './store/user-store';
 import { User } from './user';
-import { AddUserComponent } from './add-user/add-user.component';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ChangeDetectorRef } from '@angular/core';
+import { MatTableDataSource } from '@angular/material/table';
+import { of } from 'rxjs';
 
-interface UserStoreMock {
-  loadUsers: jest.Mock;
-  deleteUser: jest.Mock;
-  users: jest.Mock;
-  error: jest.Mock;
+// Mock dependencies
+class MockUserStore {
+  users = jest.fn().mockReturnValue([]);
+  error = jest.fn().mockReturnValue(null);
+  loadUsers = jest.fn();
+  deleteuser = jest.fn();
 }
+
+class MockToastrService {
+  error = jest.fn();
+}
+
+class MockMatDialog {
+  open = jest.fn().mockReturnValue({ afterClosed: () => of({}) });
+}
+
+class MockChangeDetectorRef {
+  detectChanges = jest.fn();
+}
+
+class MockDarkModeService {}
+class MockTranslateService {}
 
 describe('UsersComponent', () => {
   let component: UsersComponent;
   let fixture: ComponentFixture<UsersComponent>;
-  let userStoreMock: UserStoreMock;
-  let toastrServiceMock: { error: jest.Mock };
-  let darkModeServiceMock: { isDarkMode: jest.Mock };
-  let translateServiceMock: { instant: jest.Mock };
-  let dialogMock: { open: jest.Mock };
-  let cdrMock: { detectChanges: jest.Mock };
-
-  const mockUsers: User[] = [
-    { id: 1, name: 'John Doe', company: 'Acme Corp', bs: 'Synergy', website: 'www.acme.com' },
-    { id: 2, name: 'Jane Smith', company: 'Tech Inc', bs: 'Innovation', website: 'www.tech.com' },
-  ];
+  let mockUserStore: MockUserStore;
+  let mockToastr: MockToastrService;
+  let mockDialog: MockMatDialog;
+  let mockCdr: MockChangeDetectorRef;
 
   beforeEach(async () => {
-    userStoreMock = {
-      loadUsers: jest.fn(),
-      deleteUser: jest.fn(),
-      users: jest.fn().mockReturnValue(mockUsers),
-      error: jest.fn().mockReturnValue(null),
-    };
-    toastrServiceMock = { error: jest.fn() };
-    darkModeServiceMock = { isDarkMode: jest.fn() };
-    translateServiceMock = { instant: jest.fn() };
-    dialogMock = {
-      open: jest.fn().mockReturnValue({ afterClosed: () => ({ subscribe: jest.fn() }) }),
-    };
-    cdrMock = { detectChanges: jest.fn() };
+    mockUserStore = new MockUserStore();
+    mockToastr = new MockToastrService();
+    mockDialog = new MockMatDialog();
+    mockCdr = new MockChangeDetectorRef();
 
     await TestBed.configureTestingModule({
       imports: [
+        UsersComponent,
         MatCardModule,
         MatButtonModule,
         MatDialogModule,
@@ -64,18 +65,16 @@ describe('UsersComponent', () => {
         CommonModule,
         FormsModule,
         MatInputModule,
-        TranslateModule.forRoot(),
-        BrowserAnimationsModule,
+        TranslateModule.forRoot()
       ],
-      declarations: [UsersComponent, AddUserComponent],
       providers: [
-        { provide: UserStore, useValue: userStoreMock },
-        { provide: ToastrService, useValue: toastrServiceMock },
-        { provide: DarkModeService, useValue: darkModeServiceMock },
-        { provide: TranslateService, useValue: translateServiceMock },
-        { provide: MatDialog, useValue: dialogMock },
-        { provide: ChangeDetectorRef, useValue: cdrMock },
-      ],
+        { provide: UserStore, useValue: mockUserStore },
+        { provide: ToastrService, useValue: mockToastr },
+        { provide: MatDialog, useValue: mockDialog },
+        { provide: ChangeDetectorRef, useValue: mockCdr },
+        { provide: DarkModeService, useClass: MockDarkModeService },
+        { provide: TranslateService, useClass: MockTranslateService }
+      ]
     }).compileComponents();
 
     fixture = TestBed.createComponent(UsersComponent);
@@ -86,119 +85,116 @@ describe('UsersComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should initialize with correct defaults', () => {
-    expect(component.displayedColumns).toEqual(['id', 'name', 'company', 'bs', 'website', 'action']);
-    expect(component.pageSizeOptions).toEqual([5, 10, 25]);
-    expect(component.pageSize).toBe(5);
-    expect(component.searchTerm).toBe('');
-    expect(component.dataSource).toBeInstanceOf(MatTableDataSource);
-  });
-
-  it('should call loadUsers on ngOnInit', () => {
-    component.ngOnInit();
-    expect(userStoreMock.loadUsers).toHaveBeenCalled();
-  });
-
-  it('should set up filter predicate in ngOnInit', () => {
-    component.ngOnInit();
-    const filterPredicate = component.dataSource.filterPredicate;
-    const user = mockUsers[0];
-    expect(filterPredicate(user, 'john')).toBe(true);
-    expect(filterPredicate(user, 'acme')).toBe(true);
-    expect(filterPredicate(user, 'synergy')).toBe(true);
-    expect(filterPredicate(user, 'www.acme.com')).toBe(true);
-    expect(filterPredicate(user, '1')).toBe(true);
-    expect(filterPredicate(user, 'nonexistent')).toBe(false);
-  });
-
-  it('should update dataSource and paginator when users signal changes', () => {
-    component.paginator = { firstPage: jest.fn() } as any;
+  it('should initialize dataSource and set up effect in constructor', () => {
+    const users: User[] = [{ id: 1, name: 'John', company: 'ABC', bs: 'Consulting', website: 'example.com' }];
+    mockUserStore.users.mockReturnValue(users);
     fixture.detectChanges();
-    expect(component.dataSource.data).toEqual(mockUsers);
-    expect(component.dataSource.paginator).toBe(component.paginator);
-    expect(cdrMock.detectChanges).toHaveBeenCalled();
+
+    expect(component.dataSource.data).toEqual(users);
+    expect(mockCdr.detectChanges).toHaveBeenCalled();
   });
 
-  it('should log warning if paginator is not initialized', () => {
-    console.warn = jest.fn();
+  it('should handle error in effect when store.error is set', () => {
+    mockUserStore.error.mockReturnValue('Failed to load users');
+    fixture.detectChanges();
+
+    expect(mockToastr.error).toHaveBeenCalledWith('Failed to load users');
+    expect(mockCdr.detectChanges).toHaveBeenCalled();
+  });
+
+  it('should log warning when paginator is not initialized in effect', () => {
+    const consoleWarnSpy = jest.spyOn(console, 'warn').mockImplementation();
     component.paginator = undefined;
     fixture.detectChanges();
-    expect(console.warn).toHaveBeenCalledWith('Paginator not initialized');
+
+    expect(consoleWarnSpy).toHaveBeenCalledWith('Paginator not initialized');
+    consoleWarnSpy.mockRestore();
   });
 
-  it('should show error toast when error signal is present', () => {
-    userStoreMock.error.mockReturnValue('Failed to load users');
+  it('should set paginator when initialized in effect', () => {
+    const mockPaginator = { pageSize: 5 } as MatPaginator;
+    component.paginator = mockPaginator;
     fixture.detectChanges();
-    expect(toastrServiceMock.error).toHaveBeenCalledWith('Failed to load users');
-    expect(cdrMock.detectChanges).toHaveBeenCalled();
+
+    expect(component.dataSource.paginator).toEqual(mockPaginator);
+    expect(mockCdr.detectChanges).toHaveBeenCalled();
   });
 
-  it('should call openPopup with userId 0 on addUser', () => {
-    jest.spyOn(component, 'openPopup');
+  it('should call loadUsers and set filterPredicate in ngOnInit', () => {
+    const user: User = { id: 1, name: 'John', company: 'ABC', bs: 'Consulting', website: 'example.com' };
+    component.dataSource.data = [user];
+    component.ngOnInit();
+
+    expect(mockUserStore.loadUsers).toHaveBeenCalled();
+
+    // Test filter predicate
+    const filterPredicate = component.dataSource.filterPredicate;
+    expect(filterPredicate(user, 'john')).toBe(true);
+    expect(filterPredicate(user, 'abc')).toBe(true);
+    expect(filterPredicate(user, 'consulting')).toBe(true);
+    expect(filterPredicate(user, 'example.com')).toBe(true);
+    expect(filterPredicate(user, '1')).toBe(true);
+    expect(filterPredicate(user, 'xyz')).toBe(false);
+  });
+
+  it('should log message in ngOnDestroy', () => {
+    const consoleLogSpy = jest.spyOn(console, 'log').mockImplementation();
+    component.ngOnDestroy();
+
+    expect(consoleLogSpy).toHaveBeenCalledWith('Destroying UsersComponent');
+    consoleLogSpy.mockRestore();
+  });
+
+  it('should call openPopup with userId 0 in addUser', () => {
+    const openPopupSpy = jest.spyOn(component, 'openPopup');
     component.addUser();
-    expect(component.openPopup).toHaveBeenCalledWith(0);
+
+    expect(openPopupSpy).toHaveBeenCalledWith(0);
   });
 
-  it('should call deleteUser on store with correct userId', () => {
+  it('should call deleteUser in store when deleteUser is called', () => {
     component.deleteUser(1);
-    expect(userStoreMock.deleteUser).toHaveBeenCalledWith(1);
+
+    expect(mockUserStore.deleteuser).toHaveBeenCalledWith(1);
   });
 
-  it('should call openPopup with correct userId on editUser', () => {
-    jest.spyOn(component, 'openPopup');
+  it('should call openPopup with userId in editUser', () => {
+    const openPopupSpy = jest.spyOn(component, 'openPopup');
     component.editUser(2);
-    expect(component.openPopup).toHaveBeenCalledWith(2);
+
+    expect(openPopupSpy).toHaveBeenCalledWith(2);
   });
 
   it('should open dialog with correct config in openPopup', () => {
     component.openPopup(3);
-    expect(dialogMock.open).toHaveBeenCalledWith(AddUserComponent, {
+
+    expect(mockDialog.open).toHaveBeenCalledWith(expect.anything(), {
       width: '50%',
       exitAnimationDuration: '1000ms',
       enterAnimationDuration: '1000ms',
-      data: { userId: 3 },
+      data: { userId: 3 }
     });
   });
 
-  it('should apply filter and reset paginator on applyFilter', () => {
-    component.paginator = { firstPage: jest.fn() } as any;
-    component.dataSource.paginator = component.paginator;
-    const event = { target: { value: 'test' } } as any;
+  it('should apply filter and reset paginator when applyFilter is called', () => {
+    const mockPaginator = { firstPage: jest.fn() } as any;
+    component.dataSource.paginator = mockPaginator;
+    const event = { target: { value: ' test ' } } as any;
+
     component.applyFilter(event);
+
     expect(component.dataSource.filter).toBe('test');
-    expect(component.paginator.firstPage).toHaveBeenCalled();
-    expect(cdrMock.detectChanges).toHaveBeenCalled();
+    expect(mockPaginator.firstPage).toHaveBeenCalled();
+    expect(mockCdr.detectChanges).toHaveBeenCalled();
   });
 
-  it('should handle applyFilter without paginator', () => {
+  it('should not call firstPage when paginator is not set in applyFilter', () => {
     component.dataSource.paginator = null;
     const event = { target: { value: 'test' } } as any;
+
     component.applyFilter(event);
+
     expect(component.dataSource.filter).toBe('test');
-    expect(cdrMock.detectChanges).toHaveBeenCalled();
-  });
-
-  it('should log message on ngOnDestroy', () => {
-    console.log = jest.fn();
-    component.ngOnDestroy();
-    expect(console.log).toHaveBeenCalledWith('Destroying UsersComponent');
-  });
-
-  it('should handle filter predicate case insensitivity', () => {
-    component.ngOnInit();
-    const filterPredicate = component.dataSource.filterPredicate;
-    const user = mockUsers[0];
-    expect(filterPredicate(user, 'JOHN')).toBe(true);
-    expect(filterPredicate(user, 'ACME')).toBe(true);
-  });
-
-  it('should handle empty filter in applyFilter', () => {
-    component.paginator = { firstPage: jest.fn() } as any;
-    component.dataSource.paginator = component.paginator;
-    const event = { target: { value: '  ' } } as any;
-    component.applyFilter(event);
-    expect(component.dataSource.filter).toBe('');
-    expect(component.paginator.firstPage).toHaveBeenCalled();
-    expect(cdrMock.detectChanges).toHaveBeenCalled();
+    expect(mockCdr.detectChanges).toHaveBeenCalled();
   });
 });

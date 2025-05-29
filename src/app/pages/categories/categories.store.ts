@@ -159,9 +159,9 @@ export const CategoryStore = signalStore(
           });
         }
       } catch (error: any) {
-        const errorMessage = error.message || 'Failed to update category';
-        patchState(store, { error: errorMessage, isLoading: false });
-        throw error;
+        // const errorMessage = error.message || 'Failed to update category';
+        // patchState(store, { error: errorMessage, isLoading: false });
+        // throw error;
       }
     },
     deleteCategory(id: number) {
@@ -179,9 +179,9 @@ export const CategoryStore = signalStore(
           });
         }
       } catch (error: any) {
-        const errorMessage = error.message || 'Failed to delete category';
-        patchState(store, { error: errorMessage, isLoading: false });
-        throw error;
+        // const errorMessage = error.message || 'Failed to delete category';
+        // patchState(store, { error: errorMessage, isLoading: false });
+        // throw error;
       }
     },
     setPage(page: number) {

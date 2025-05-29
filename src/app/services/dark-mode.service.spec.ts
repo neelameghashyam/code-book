@@ -34,14 +34,8 @@ describe('DarkModeService', () => {
 
     // Mock localStorage
     const localStorageMock = {
-      store: {} as { [key: string]: string },
-      getItem: jest.fn((key: string) => localStorageMock.store[key] || null),
-      setItem: jest.fn((key: string, value: string) => {
-        localStorageMock.store[key] = value;
-      }),
-      clear: jest.fn(() => {
-        localStorageMock.store = {};
-      }),
+      getItem: jest.fn().mockReturnValue(null),
+      setItem: jest.fn(),
     };
     Object.defineProperty(window, 'localStorage', {
       value: localStorageMock,
@@ -82,7 +76,9 @@ describe('DarkModeService', () => {
     });
 
     it('should initialize with saved theme from localStorage', () => {
-      localStorage.setItem('theme', 'dark');
+      // Reset mocks and set localStorage before creating service
+      jest.clearAllMocks();
+      (localStorage.getItem as jest.Mock).mockReturnValue('dark');
       const newService = TestBed.inject(DarkModeService);
       expect(newService['theme']()).toBe('dark');
       expect(localStorage.getItem).toHaveBeenCalledWith('theme');
@@ -202,7 +198,6 @@ describe('DarkModeService', () => {
     it('should apply theme when system preference changes in system mode', () => {
       service.setTheme('system');
       mediaQueryList.matches = true;
-      // Access the event handler with type assertion
       const changeHandler = (mediaQueryList.addEventListener as jest.Mock).mock.calls[0][1];
       jest.spyOn(service as any, 'applyTheme').mockImplementation();
       changeHandler();
@@ -212,7 +207,6 @@ describe('DarkModeService', () => {
     it('should not apply theme when system preference changes in non-system mode', () => {
       service.setTheme('light');
       mediaQueryList.matches = true;
-      // Access the event handler with type assertion
       const changeHandler = (mediaQueryList.addEventListener as jest.Mock).mock.calls[0][1];
       jest.spyOn(service as any, 'applyTheme').mockImplementation();
       changeHandler();
@@ -249,6 +243,12 @@ describe('DarkModeService', () => {
       expect(document.body.classList.toggle).toHaveBeenCalledWith('dark-theme', false);
       expect(document.body.classList.toggle).toHaveBeenCalledWith('light-theme', true);
       expect(document.body.setAttribute).toHaveBeenCalledWith('data-theme', 'light-theme');
+    });
+  });
+
+  describe('isVisible', () => {
+    it('should return true indicating theme toggle is visible', () => {
+      expect(service.isVisible()).toBe(true);
     });
   });
 });

@@ -6,7 +6,6 @@ import { RouterModule } from '@angular/router';
 import { ResponsiveService } from '../services/responsive/responsive.service';
 import { DarkModeService } from '../services/dark-mode.service';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
-import { Inject } from '@angular/core';
 
 interface MenuItem {
   icon: string;
@@ -37,12 +36,15 @@ export class CustomSidenavComponent {
       ],
       isExpanded: false,
     },
-    { icon: 'category', label: 'categories', route: 'categories',
+    {
+      icon: 'category',
+      label: 'categories',
+      route: 'categories',
       subItems: [
-        { icon: 'dashboard_customize', label: 'SubCategories ', route: 'sub-categories' },
+        { icon: 'dashboard_customize', label: 'SubCategories', route: 'sub-categories' },
       ],
       isExpanded: false,
-     },
+    },
     { icon: 'pin_drop', label: 'Pincodes', route: 'pincode' },
     { icon: 'group', label: 'Users', route: 'users' },
     { icon: 'business_center', label: 'Business', route: 'business' },
@@ -55,7 +57,7 @@ export class CustomSidenavComponent {
   @Output() toggleSidenav = new EventEmitter<void>();
   @Output() closeSidenav = new EventEmitter<void>();
 
-  constructor(@Inject(TranslateService) private translateService: TranslateService) {}
+  constructor(private translateService: TranslateService) {}
 
   toggleSubMenu(item: MenuItem): void {
     this.menuItems.update(items =>

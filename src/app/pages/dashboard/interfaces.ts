@@ -1,5 +1,4 @@
 export interface ServiceProvider {
-businessName: any;
   id?: string;
   country: string;
   spName: string;
@@ -9,6 +8,7 @@ businessName: any;
   city: string;
   state: string;
   postalCode: string;
+  businessName: string;
 }
 
 export interface BusinessForm {

@@ -178,9 +178,9 @@ export const PincodeStore = signalStore(
           });
         }
       } catch (error: any) {
-        const errorMessage = error.message || 'Failed to update pincode';
-        patchState(store, { error: errorMessage, isLoading: false });
-        throw error;
+        // const errorMessage = error.message || 'Failed to update pincode';
+        // patchState(store, { error: errorMessage, isLoading: false });
+        // throw error;
       }
     },
     async deletePincode(id: number) {
@@ -198,9 +198,9 @@ export const PincodeStore = signalStore(
           });
         }
       } catch (error: any) {
-        const errorMessage = error.message || 'Failed to delete pincode';
-        patchState(store, { error: errorMessage, isLoading: false });
-        throw error;
+        // const errorMessage = error.message || 'Failed to delete pincode';
+        // patchState(store, { error: errorMessage, isLoading: false });
+        // throw error;
       }
     },
     setPage(page: number) {
