@@ -14,13 +14,22 @@
     "lib": ["dom", "es2019"],
     "paths": {
       "@services/*": ["app/services/*"]
-    }
+    },
+    "types": [
+      "aria-query",
+      "conventional-commits-parser",
+      "estree",
+      "json-schema",
+      "mdx",
+      "prop-types",
+      "uuid",
+      "webpack-env"
+    ]
   },
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,
     "strictInjectionParameters": true,
     "strictInputAccessModifiers": true,
     "strictTemplates": true
-  },
-  
+  }
 }
