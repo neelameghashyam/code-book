@@ -22,8 +22,10 @@ jobs:
         run: npm install
 
       - name: Run unit tests with coverage
-        run: npm run test -- --watch=false --coverage
-
+        run: npm run test -- --watch=false --coverage --silent --reporters=jest-silent-reporter
+        env:
+          JEST_SILENT_REPORTER_SHOW_SUMMARY: false
+          JEST_SILENT_REPORTER_SHOW_COVERAGE: true
 
       - name: Upload coverage report
         uses: actions/upload-artifact@v4
@@ -43,7 +45,6 @@ jobs:
 
       - name: Download coverage report
         uses: actions/download-artifact@v4
-
         with:
           name: coverage-report
 
