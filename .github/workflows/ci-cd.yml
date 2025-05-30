@@ -24,6 +24,13 @@ jobs:
       - name: Install jest-silent-reporter
         run: npm install --save-dev jest-silent-reporter
 
+      - name: Update tsconfig.json
+        run: |
+          jq '.compilerOptions.esModuleInterop = true' tsconfig.json > tmp.json && mv tmp.json tsconfig.json
+        env:
+          JQ_VERSION: 1.6
+        if: '!contains(fromJSON(readFile("tsconfig.json")).compilerOptions.esModuleInterop, true)'
+
       - name: Run unit tests with coverage
         run: npm run test -- --watch=false --coverage --silent --reporters=jest-silent-reporter
         env:
