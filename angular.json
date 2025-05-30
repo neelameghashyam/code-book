@@ -17,9 +17,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:application",
           "options": {
-            "outputPath": {
-              "base": "dist/angular-starter"
-            },
+            "outputPath":"dist/angular-starter",
             "index": "src/index.html",
             "polyfills": [
               "src/polyfills.ts"
