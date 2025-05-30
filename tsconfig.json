@@ -15,6 +15,7 @@
     "paths": {
       "@services/*": ["app/services/*"]
     },
+    "skipLibCheck": true,
     "types": [
       "aria-query",
       "conventional-commits-parser",
