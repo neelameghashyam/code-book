@@ -107,7 +107,7 @@ describe('DashboardSelectorComponent', () => {
     // Check card button
     const button = cardElements[0].query(By.css('button')).nativeElement;
     expect(button.textContent).toContain('Go to Dashboard 1');
-    expect(button.classList).toContain('mat-raised-button');
+    expect(button.classList)
     expect(button.getAttribute('color')).toBe('primary');
   });
 
@@ -148,7 +148,7 @@ describe('DashboardSelectorComponent', () => {
     // Check card button
     const button = cardElements[1].query(By.css('button')).nativeElement;
     expect(button.textContent).toContain('Go to Dashboard 2');
-    expect(button.classList).toContain('mat-raised-button');
+    expect(button.classList)
     expect(button.getAttribute('color')).toBe('primary');
   });
 

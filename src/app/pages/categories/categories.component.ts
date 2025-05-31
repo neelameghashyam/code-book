@@ -9,7 +9,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatIcon } from '@angular/material/icon';
-import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { MatDialog, MatDialogModule, MatDialogConfig } from '@angular/material/dialog';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatCardModule } from '@angular/material/card';
 import { MatCheckboxModule } from '@angular/material/checkbox';
@@ -31,7 +31,7 @@ import { Subscription } from 'rxjs';
     MatFormFieldModule,
     MatInputModule,
     MatPaginatorModule,
-    MatIcon, 
+    MatIcon,
     MatDialogModule,
     MatProgressSpinnerModule,
     MatCardModule,
@@ -96,34 +96,27 @@ export class CategoriesComponent implements OnInit, OnDestroy {
     this.service.getCategories();
   }
 
-  openAddCategoryDialog() {
+  private openCategoryDialog(config: MatDialogConfig) {
     const dialogWidth = this.isMobile ? '90vw' : this.isTablet ? '80vw' : '800px';
-    const dialogRef = this.dialog.open(AddCategoriesComponent, {
+    const defaultConfig: MatDialogConfig = {
       width: dialogWidth,
       maxWidth: '100vw',
-      data: {},
-    });
+      disableClose: false,
+      hasBackdrop: true,
+    };
+    return this.dialog.open(AddCategoriesComponent, { ...defaultConfig, ...config });
+  }
 
-    dialogRef.afterClosed().subscribe(result => {
-      if (result) {
-        this.service.addCategory(result);
-      }
+  openAddCategoryDialog() {
+    this.openCategoryDialog({ data: {} }).afterClosed().subscribe(result => {
+      if (result) this.service.addCategory(result);
     });
   }
 
   startEdit(category: Category) {
     this.editingCategory = { ...category };
-    const dialogWidth = this.isMobile ? '90vw' : this.isTablet ? '80vw' : '800px';
-    const dialogRef = this.dialog.open(AddCategoriesComponent, {
-      width: dialogWidth,
-      maxWidth: '100vw',
-      data: { category: this.editingCategory },
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      if (result) {
-        this.service.updateCategory(result as Category);
-      }
+    this.openCategoryDialog({ data: { category: this.editingCategory } }).afterClosed().subscribe(result => {
+      if (result) this.service.updateCategory(result as Category);
       this.editingCategory = null;
     });
   }
@@ -195,7 +188,7 @@ export class CategoriesComponent implements OnInit, OnDestroy {
     return pages;
   }
 
-  trackById(index: number, category: Category): number {
-    return category.id;
+  trackById(index: number, category: Category | null): number | undefined {
+    return category ? category.id : undefined;
   }
 }

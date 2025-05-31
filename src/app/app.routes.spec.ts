@@ -40,7 +40,7 @@ describe('App Routes', () => {
   it('should define routes with correct configurations', () => {
     expect(routes).toBeDefined();
     expect(Array.isArray(routes)).toBe(true);
-    expect(routes.length).toBe(5); // 3 main routes + login + wildcard
+    expect(routes.length).toBe(6); // 3 main routes + login + wildcard
 
     // Test dashboard-selector route
     const dashboardSelectorRoute = routes.find((route) => route.path === 'dashboard-selector');

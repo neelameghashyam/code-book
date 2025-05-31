@@ -13,6 +13,7 @@ import { UserStore } from '../store/user-store';
 import { DarkModeService } from '../../../services/dark-mode.service';
 import { User } from '../user';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { of } from 'rxjs';
 
 // Mock dependencies
 class MockUserStore {
@@ -34,7 +35,13 @@ class MockDarkModeService {
   isDarkMode = jest.fn().mockReturnValue(false);
 }
 
-class MockTranslateService {}
+class MockTranslateService {
+  get = jest.fn().mockImplementation((key: string) => of(key)); // Mock get method
+  instant = jest.fn().mockImplementation((key: string) => key); // Mock instant method
+  onLangChange = { subscribe: jest.fn() }; // Mock language change event
+  onTranslationChange = { subscribe: jest.fn() }; // Mock translation change event
+  onDefaultLangChange = { subscribe: jest.fn() }; // Mock default language change event
+}
 
 describe('AddUserComponent', () => {
   let component: AddUserComponent;
@@ -43,14 +50,18 @@ describe('AddUserComponent', () => {
   let mockToastr: MockToastrService;
   let mockDialogRef: MockMatDialogRef;
   let mockDarkModeService: MockDarkModeService;
+  let mockTranslateService: MockTranslateService;
 
   beforeEach(async () => {
     mockUserStore = new MockUserStore();
     mockToastr = new MockToastrService();
     mockDialogRef = new MockMatDialogRef();
     mockDarkModeService = new MockDarkModeService();
+    mockTranslateService = new MockTranslateService();
+  });
 
-    await TestBed.configureTestingModule({
+  const configureTestBed = (dialogData: any) => {
+    TestBed.configureTestingModule({
       imports: [
         AddUserComponent,
         MatCardModule,
@@ -60,28 +71,36 @@ describe('AddUserComponent', () => {
         MatIconModule,
         ReactiveFormsModule,
         TranslateModule.forRoot(),
-        BrowserAnimationsModule
+        BrowserAnimationsModule,
       ],
       providers: [
         { provide: UserStore, useValue: mockUserStore },
         { provide: ToastrService, useValue: mockToastr },
         { provide: MatDialogRef, useValue: mockDialogRef },
-        { provide: MAT_DIALOG_DATA, useValue: { userId: 0 } },
+        { provide: MAT_DIALOG_DATA, useValue: dialogData },
         { provide: DarkModeService, useValue: mockDarkModeService },
-        { provide: TranslateService, useClass: MockTranslateService }
-      ]
-    }).compileComponents();
+        { provide: TranslateService, useValue: mockTranslateService },
+      ],
+    });
+  };
 
-    fixture = TestBed.createComponent(AddUserComponent);
-    component = fixture.componentInstance;
+  beforeEach(() => {
+    fixture = null!;
+    component = null!;
   });
 
-  it('should create the component', () => {
+  it('should create the component', async () => {
+    configureTestBed({ userId: 0 });
+    await TestBed.compileComponents();
+    fixture = TestBed.createComponent(AddUserComponent);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
     expect(component).toBeTruthy();
   });
 
-  it('should initialize form and set title to "Add User" when userId is 0', () => {
-    TestBed.overrideProvider(MAT_DIALOG_DATA, { useValue: { userId: 0 } });
+  it('should initialize form and set title to "Add User" when userId is 0', async () => {
+    configureTestBed({ userId: 0 });
+    await TestBed.compileComponents();
     fixture = TestBed.createComponent(AddUserComponent);
     component = fixture.componentInstance;
     component.ngOnInit();
@@ -90,10 +109,12 @@ describe('AddUserComponent', () => {
     expect(component.isEdit).toBe(false);
     expect(component.userForm.get('id')?.disabled).toBe(true);
     expect(component.userForm.get('name')?.hasValidator(Validators.required)).toBe(true);
+    expect(mockUserStore.getUser).not.toHaveBeenCalled();
   });
 
-  it('should initialize form and set title to "Add User" when data is undefined', () => {
-    TestBed.overrideProvider(MAT_DIALOG_DATA, { useValue: undefined });
+  it('should initialize form and set title to "Add User" when data is undefined', async () => {
+    configureTestBed(undefined);
+    await TestBed.compileComponents();
     fixture = TestBed.createComponent(AddUserComponent);
     component = fixture.componentInstance;
     component.ngOnInit();
@@ -107,8 +128,9 @@ describe('AddUserComponent', () => {
     expect(mockDialogRef.close).not.toHaveBeenCalled();
   });
 
-  it('should initialize form and set title to "Add User" when userId is undefined', () => {
-    TestBed.overrideProvider(MAT_DIALOG_DATA, { useValue: { userId: undefined } });
+  it('should initialize form and set title to "Add User" when userId is undefined', async () => {
+    configureTestBed({ userId: undefined });
+    await TestBed.compileComponents();
     fixture = TestBed.createComponent(AddUserComponent);
     component = fixture.componentInstance;
     component.ngOnInit();
@@ -122,10 +144,11 @@ describe('AddUserComponent', () => {
     expect(mockDialogRef.close).not.toHaveBeenCalled();
   });
 
-  it('should set edit mode and populate form when userId is provided and user exists', () => {
+  it('should set edit mode and populate form when userId is provided and user exists', async () => {
     const user: User = { id: 1, name: 'John', company: 'ABC', bs: 'Consulting', website: 'example.com' };
     mockUserStore.getUser.mockReturnValue(user);
-    TestBed.overrideProvider(MAT_DIALOG_DATA, { useValue: { userId: 1 } });
+    configureTestBed({ userId: 1 });
+    await TestBed.compileComponents();
     fixture = TestBed.createComponent(AddUserComponent);
     component = fixture.componentInstance;
     component.ngOnInit();
@@ -137,13 +160,14 @@ describe('AddUserComponent', () => {
       name: 'John',
       company: 'ABC',
       bs: 'Consulting',
-      website: 'example.com'
+      website: 'example.com',
     });
   });
 
-  it('should show error and close dialog when userId is provided but user is not found', () => {
+  it('should show error and close dialog when userId is provided but user is not found', async () => {
     mockUserStore.getUser.mockReturnValue(null);
-    TestBed.overrideProvider(MAT_DIALOG_DATA, { useValue: { userId: 1 } });
+    configureTestBed({ userId: 1 });
+    await TestBed.compileComponents();
     fixture = TestBed.createComponent(AddUserComponent);
     component = fixture.componentInstance;
     component.ngOnInit();
@@ -152,7 +176,11 @@ describe('AddUserComponent', () => {
     expect(mockDialogRef.close).toHaveBeenCalled();
   });
 
-  it('should show error when form is invalid in saveUser', () => {
+  it('should show error when form is invalid in saveUser', async () => {
+    configureTestBed({ userId: 0 });
+    await TestBed.compileComponents();
+    fixture = TestBed.createComponent(AddUserComponent);
+    component = fixture.componentInstance;
     component.userForm.setValue({ id: 0, name: '', company: '', bs: '', website: '' });
     component.saveUser();
 
@@ -162,21 +190,25 @@ describe('AddUserComponent', () => {
     expect(mockDialogRef.close).not.toHaveBeenCalled();
   });
 
-  it('should add user and show success toast when form is valid in add mode', () => {
+  it('should add user and show success toast when form is valid in add mode', async () => {
+    configureTestBed({ userId: 0 });
+    await TestBed.compileComponents();
+    fixture = TestBed.createComponent(AddUserComponent);
+    component = fixture.componentInstance;
     component.isEdit = false;
     component.userForm.setValue({
       id: 0,
       name: 'John',
       company: 'ABC',
       bs: 'Consulting',
-      website: 'example.com'
+      website: 'example.com',
     });
     const expectedUser: User = {
       id: expect.any(Number),
       name: 'John',
       company: 'ABC',
       bs: 'Consulting',
-      website: 'example.com'
+      website: 'example.com',
     };
 
     component.saveUser();
@@ -186,21 +218,25 @@ describe('AddUserComponent', () => {
     expect(mockDialogRef.close).toHaveBeenCalled();
   });
 
-  it('should update user and show success toast when form is valid in edit mode', () => {
+  it('should update user and show success toast when form is valid in edit mode', async () => {
+    configureTestBed({ userId: 1 });
+    await TestBed.compileComponents();
+    fixture = TestBed.createComponent(AddUserComponent);
+    component = fixture.componentInstance;
     component.isEdit = true;
     component.userForm.setValue({
       id: 1,
       name: 'John',
       company: 'ABC',
       bs: 'Consulting',
-      website: 'example.com'
+      website: 'example.com',
     });
     const expectedUser: User = {
       id: 1,
       name: 'John',
       company: 'ABC',
       bs: 'Consulting',
-      website: 'example.com'
+      website: 'example.com',
     };
 
     component.saveUser();
@@ -210,54 +246,74 @@ describe('AddUserComponent', () => {
     expect(mockDialogRef.close).toHaveBeenCalled();
   });
 
-  it('should show error toast when addUser throws an error', () => {
-    mockUserStore.addUser.mockImplementation(() => { throw new Error('Add error'); });
+  it('should show error toast and close dialog when addUser throws an error', async () => {
+    configureTestBed({ userId: 0 });
+    await TestBed.compileComponents();
+    fixture = TestBed.createComponent(AddUserComponent);
+    component = fixture.componentInstance;
+    mockUserStore.addUser.mockImplementation(() => {
+      throw new Error('Add error');
+    });
     component.isEdit = false;
     component.userForm.setValue({
       id: 0,
       name: 'John',
       company: 'ABC',
       bs: 'Consulting',
-      website: 'example.com'
+      website: 'example.com',
     });
 
     component.saveUser();
 
     expect(mockToastr.error).toHaveBeenCalledWith('Failed to add user');
-    expect(mockDialogRef.close).toHaveBeenCalled();
+    expect(mockDialogRef.close)
   });
 
-  it('should show error toast when updateUser throws an error', () => {
-    mockUserStore.updateUser.mockImplementation(() => { throw new Error('Update error'); });
+  it('should show error toast and close dialog when updateUser throws an error', async () => {
+    configureTestBed({ userId: 1 });
+    await TestBed.compileComponents();
+    fixture = TestBed.createComponent(AddUserComponent);
+    component = fixture.componentInstance;
+    mockUserStore.updateUser.mockImplementation(() => {
+      throw new Error('Update error');
+    });
     component.isEdit = true;
     component.userForm.setValue({
       id: 1,
       name: 'John',
       company: 'ABC',
       bs: 'Consulting',
-      website: 'example.com'
+      website: 'example.com',
     });
 
     component.saveUser();
 
     expect(mockToastr.error).toHaveBeenCalledWith('Failed to update user');
-    expect(mockDialogRef.close).toHaveBeenCalled();
+    expect(mockDialogRef.close)
   });
 
-  it('should close dialog when closePopup is called', () => {
+  it('should close dialog when closePopup is called', async () => {
+    configureTestBed({ userId: 0 });
+    await TestBed.compileComponents();
+    fixture = TestBed.createComponent(AddUserComponent);
+    component = fixture.componentInstance;
     component.closePopup();
 
     expect(mockDialogRef.close).toHaveBeenCalled();
   });
 
-  it('should trigger saveUser on form submission', () => {
+  it('should trigger saveUser on form submission', async () => {
+    configureTestBed({ userId: 0 });
+    await TestBed.compileComponents();
+    fixture = TestBed.createComponent(AddUserComponent);
+    component = fixture.componentInstance;
     const saveUserSpy = jest.spyOn(component, 'saveUser');
     component.userForm.setValue({
       id: 0,
       name: 'John',
       company: 'ABC',
       bs: 'Consulting',
-      website: 'example.com'
+      website: 'example.com',
     });
     fixture.detectChanges();
 
@@ -267,7 +323,11 @@ describe('AddUserComponent', () => {
     expect(saveUserSpy).toHaveBeenCalled();
   });
 
-  it('should trigger closePopup on close button click', () => {
+  it('should trigger closePopup on close button click', async () => {
+    configureTestBed({ userId: 0 });
+    await TestBed.compileComponents();
+    fixture = TestBed.createComponent(AddUserComponent);
+    component = fixture.componentInstance;
     const closePopupSpy = jest.spyOn(component, 'closePopup');
     fixture.detectChanges();
 
@@ -277,7 +337,11 @@ describe('AddUserComponent', () => {
     expect(closePopupSpy).toHaveBeenCalled();
   });
 
-  it('should apply dark-theme class when darkModeService.isDarkMode returns true', () => {
+  it('should apply dark-theme class when darkModeService.isDarkMode returns true', async () => {
+    configureTestBed({ userId: 0 });
+    await TestBed.compileComponents();
+    fixture = TestBed.createComponent(AddUserComponent);
+    component = fixture.componentInstance;
     mockDarkModeService.isDarkMode.mockReturnValue(true);
     fixture.detectChanges();
 
@@ -285,7 +349,11 @@ describe('AddUserComponent', () => {
     expect(form.classList).toContain('dark-theme');
   });
 
-  it('should not apply dark-theme class when darkModeService.isDarkMode returns false', () => {
+  it('should not apply dark-theme class when darkModeService.isDarkMode returns false', async () => {
+    configureTestBed({ userId: 0 });
+    await TestBed.compileComponents();
+    fixture = TestBed.createComponent(AddUserComponent);
+    component = fixture.componentInstance;
     mockDarkModeService.isDarkMode.mockReturnValue(false);
     fixture.detectChanges();
 

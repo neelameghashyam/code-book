@@ -1,18 +1,30 @@
 import { TestBed } from '@angular/core/testing';
-import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { PincodesService } from './pincodes.service';
 import { PincodeStore } from './pincodes.store';
 import { Pincode } from './pincode';
+import { signal, WritableSignal } from '@angular/core';
 
 interface PincodeStoreMock {
-  setPincodes?: jest.Mock;
-  getPincodes?: jest.Mock;
-  // Add other methods or properties as needed
+  pincodes: WritableSignal<Pincode[]>;
+  filteredPincodes: WritableSignal<Pincode[]>;
+  paginatedPincodes: WritableSignal<Pincode[]>;
+  totalPages: WritableSignal<number>;
+  currentPage: WritableSignal<number>;
+  pageSize: WritableSignal<number>;
+  isLoading: WritableSignal<boolean>;
+  error: WritableSignal<string | null>;
+  loadPincodes: jest.Mock<Promise<Pincode[]>>;
+  addPincode: jest.Mock<Pincode, [Omit<Pincode, 'id'>]>;
+  updatePincode: jest.Mock<void, [Pincode]>;
+  deletePincode: jest.Mock<void, [number]>;
+  setPage: jest.Mock<void, [number]>;
+  setPageSize: jest.Mock<void, [number]>;
+  setSearchQuery: jest.Mock<void, [string]>;
+  sortPincodes: jest.Mock<void, [string, 'asc' | 'desc']>;
 }
 
 describe('PincodesService', () => {
   let service: PincodesService;
-  let httpTestingController: HttpTestingController;
   let pincodeStore: PincodeStoreMock;
 
   const mockPincodes: Pincode[] = [
@@ -36,8 +48,6 @@ describe('PincodesService', () => {
     },
   ];
 
-  const apiUrl = 'https://dbapiservice.onrender.com/dbapis/v1/pincodes';
-
   beforeEach(() => {
     // Mock localStorage
     const localStorageMock = {
@@ -48,13 +58,29 @@ describe('PincodesService', () => {
     jest.spyOn(window.localStorage.__proto__, 'setItem').mockImplementation(localStorageMock.setItem);
 
     // Mock PincodeStore
-    const pincodeStoreMock = {
-      setPincodes: jest.fn(),
-      getPincodes: jest.fn().mockReturnValue(mockPincodes),
+    const pincodeStoreMock: PincodeStoreMock = {
+      pincodes: signal(mockPincodes),
+      filteredPincodes: signal(mockPincodes),
+      paginatedPincodes: signal(mockPincodes),
+      totalPages: signal(1),
+      currentPage: signal(1),
+      pageSize: signal(10),
+      isLoading: signal(false),
+      error: signal(null),
+      loadPincodes: jest.fn().mockResolvedValue(mockPincodes),
+      addPincode: jest.fn().mockImplementation(pincode => ({
+        id: Date.now(),
+        ...pincode,
+      })),
+      updatePincode: jest.fn(),
+      deletePincode: jest.fn(),
+      setPage: jest.fn(),
+      setPageSize: jest.fn(),
+      setSearchQuery: jest.fn(),
+      sortPincodes: jest.fn(),
     };
 
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule],
       providers: [
         PincodesService,
         { provide: PincodeStore, useValue: pincodeStoreMock },
@@ -62,16 +88,9 @@ describe('PincodesService', () => {
     });
 
     service = TestBed.inject(PincodesService);
-    pincodeStore = TestBed.inject(PincodeStore) as unknown as PincodeStoreMock;
-    httpTestingController = TestBed.inject(HttpTestingController);
-
-    // Clear localStorage mock before each test
+    pincodeStore = pincodeStoreMock;
     localStorageMock.getItem.mockReset();
     localStorageMock.setItem.mockReset();
-  });
-
-  afterEach(() => {
-    httpTestingController.verify();
   });
 
   it('should be created', () => {
@@ -79,100 +98,68 @@ describe('PincodesService', () => {
   });
 
   describe('signals', () => {
-    it('should expose pincodes signal', async () => {
-      jest.spyOn(window.localStorage.__proto__, 'getItem').mockReturnValue(null);
-      const req = httpTestingController.expectOne(apiUrl);
-      req.flush(mockPincodes);
-      await new Promise(resolve => setTimeout(resolve, 0));
+    it('should expose pincodes signal', () => {
       expect(service.pincodes()).toEqual(mockPincodes);
     });
 
-    it('should expose filteredPincodes signal', async () => {
-      jest.spyOn(window.localStorage.__proto__, 'getItem').mockReturnValue(null);
-      const req = httpTestingController.expectOne(apiUrl);
-      req.flush(mockPincodes);
-      await new Promise(resolve => setTimeout(resolve, 0));
-      service.setSearchQuery('Office1');
+    it('should expose filteredPincodes signal', () => {
+      pincodeStore.filteredPincodes.set([mockPincodes[0]]);
       expect(service.filteredPincodes()).toEqual([mockPincodes[0]]);
     });
 
-    it('should expose paginatedPincodes signal', async () => {
-      jest.spyOn(window.localStorage.__proto__, 'getItem').mockReturnValue(null);
-      const req = httpTestingController.expectOne(apiUrl);
-      req.flush(mockPincodes);
-      await new Promise(resolve => setTimeout(resolve, 0));
-      service.setPageSize(1);
-      service.setPage(1);
+    it('should expose paginatedPincodes signal', () => {
+      pincodeStore.paginatedPincodes.set([mockPincodes[0]]);
       expect(service.paginatedPincodes()).toEqual([mockPincodes[0]]);
     });
 
-    it('should expose totalPages signal', async () => {
-      jest.spyOn(window.localStorage.__proto__, 'getItem').mockReturnValue(null);
-      const req = httpTestingController.expectOne(apiUrl);
-      req.flush(mockPincodes);
-      await new Promise(resolve => setTimeout(resolve, 0));
-      service.setPageSize(1);
+    it('should expose totalPages signal', () => {
+      pincodeStore.totalPages.set(2);
       expect(service.totalPages()).toEqual(2);
     });
 
-    it('should expose currentPage signal', async () => {
-      jest.spyOn(window.localStorage.__proto__, 'getItem').mockReturnValue(null);
-      const req = httpTestingController.expectOne(apiUrl);
-      req.flush(mockPincodes);
-      await new Promise(resolve => setTimeout(resolve, 0));
-      service.setPage(2);
+    it('should expose currentPage signal', () => {
+      pincodeStore.currentPage.set(2);
       expect(service.currentPage()).toEqual(2);
     });
 
-    it('should expose pageSize signal', async () => {
-      jest.spyOn(window.localStorage.__proto__, 'getItem').mockReturnValue(null);
-      const req = httpTestingController.expectOne(apiUrl);
-      req.flush(mockPincodes);
-      await new Promise(resolve => setTimeout(resolve, 0));
-      service.setPageSize(20);
+    it('should expose pageSize signal', () => {
+      pincodeStore.pageSize.set(20);
       expect(service.pageSize()).toEqual(20);
     });
 
     it('should expose isLoading signal', () => {
-      jest.spyOn(window.localStorage.__proto__, 'getItem').mockReturnValue(JSON.stringify(mockPincodes));
-      service.getPincodes();
+      pincodeStore.isLoading.set(true);
       expect(service.isLoading()).toEqual(true);
-      httpTestingController.expectNone(apiUrl);
     });
 
-    it('should expose error signal', async () => {
-      jest.spyOn(window.localStorage.__proto__, 'getItem').mockReturnValue(null);
-      const req = httpTestingController.expectOne(apiUrl);
-      req.error(new ErrorEvent('Network error'));
-      await new Promise(resolve => setTimeout(resolve, 0));
-      expect(service.error()).toEqual('Failed to load pincodes');
+    it('should expose error signal', () => {
+      pincodeStore.error.set('Test error');
+      expect(service.error()).toEqual('Test error');
     });
   });
 
   describe('getPincodes', () => {
-    it('should call loadPincodes and fetch pincodes from API', async () => {
-      jest.spyOn(window.localStorage.__proto__, 'getItem').mockReturnValue(null);
-      service.getPincodes();
-      const req = httpTestingController.expectOne(apiUrl);
-      expect(req.request.method).toEqual('GET');
-      req.flush(mockPincodes);
-      await new Promise(resolve => setTimeout(resolve, 0));
+    it('should call loadPincodes and update pincodes', async () => {
+      await service.getPincodes();
+      expect(pincodeStore.loadPincodes).toHaveBeenCalled();
       expect(service.pincodes()).toEqual(mockPincodes);
-      expect(window.localStorage.setItem).toHaveBeenCalledWith('pincodes', JSON.stringify(mockPincodes));
     });
 
     it('should load pincodes from localStorage if available', async () => {
-      jest.spyOn(window.localStorage.__proto__, 'getItem').mockReturnValue(JSON.stringify(mockPincodes));
-      service.getPincodes();
-      await new Promise(resolve => setTimeout(resolve, 0));
+      const storedPincodes = JSON.stringify(mockPincodes);
+      jest.spyOn(window.localStorage.__proto__, 'getItem').mockReturnValue(storedPincodes);
+      pincodeStore.loadPincodes.mockImplementation(() => {
+        pincodeStore.pincodes.set(JSON.parse(storedPincodes));
+        return Promise.resolve(mockPincodes);
+      });
+      await service.getPincodes();
+      expect(pincodeStore.loadPincodes).toHaveBeenCalled();
       expect(service.pincodes()).toEqual(mockPincodes);
-      httpTestingController.expectNone(apiUrl);
     });
   });
 
   describe('addPincode', () => {
-    it('should add a pincode and update localStorage', async () => {
-      jest.spyOn(window.localStorage.__proto__, 'getItem').mockReturnValue(JSON.stringify(mockPincodes));
+    it('should add a pincode and return it', async () => {
       const newPincode: Omit<Pincode, 'id'> = {
         officeName: 'Office3',
         pincode: '789012',
@@ -182,81 +169,60 @@ describe('PincodesService', () => {
         city: 'City3',
       };
       const addedPincode = await service.addPincode(newPincode);
-      await new Promise(resolve => setTimeout(resolve, 0));
+      expect(pincodeStore.addPincode).toHaveBeenCalledWith(newPincode);
       expect(addedPincode.id).toBeDefined();
-      expect(service.pincodes()).toContainEqual(addedPincode);
-      expect(window.localStorage.setItem).toHaveBeenCalledWith('pincodes', expect.any(String));
+      expect(addedPincode.officeName).toEqual('Office3');
     });
   });
 
   describe('updatePincode', () => {
-    it('should update a pincode and save to localStorage', async () => {
-      jest.spyOn(window.localStorage.__proto__, 'getItem').mockReturnValue(JSON.stringify(mockPincodes));
+    it('should update a pincode', async () => {
       const updatedPincode: Pincode = {
         ...mockPincodes[0],
         officeName: 'Updated Office',
       };
-      service.updatePincode(updatedPincode);
-      await new Promise(resolve => setTimeout(resolve, 0));
-      expect(service.pincodes().find(p => p.id === 1)?.officeName).toEqual('Updated Office');
-      expect(window.localStorage.setItem).toHaveBeenCalledWith(
-        'pincodes',
-        JSON.stringify(expect.arrayContaining([updatedPincode]))
-      );
+      await service.updatePincode(updatedPincode);
+      expect(pincodeStore.updatePincode).toHaveBeenCalledWith(updatedPincode);
     });
   });
 
   describe('deletePincode', () => {
-    it('should delete a pincode and update localStorage', async () => {
-      jest.spyOn(window.localStorage.__proto__, 'getItem').mockReturnValue(JSON.stringify(mockPincodes));
-      service.deletePincode(1);
-      await new Promise(resolve => setTimeout(resolve, 0));
-      expect(service.pincodes()).toEqual([mockPincodes[1]]);
-      expect(window.localStorage.setItem).toHaveBeenCalledWith('pincodes', expect.any(String));
+    it('should delete a pincode', async () => {
+      await service.deletePincode(1);
+      expect(pincodeStore.deletePincode).toHaveBeenCalledWith(1);
     });
   });
 
   describe('setPage', () => {
-    it('should set the current page', async () => {
-      jest.spyOn(window.localStorage.__proto__, 'getItem').mockReturnValue(JSON.stringify(mockPincodes));
+    it('should set the current page', () => {
       service.setPage(2);
-      expect(service.currentPage()).toEqual(2);
+      expect(pincodeStore.setPage).toHaveBeenCalledWith(2);
     });
   });
 
   describe('setPageSize', () => {
-    it('should set page size and reset to page 1', async () => {
-      jest.spyOn(window.localStorage.__proto__, 'getItem').mockReturnValue(JSON.stringify(mockPincodes));
+    it('should set page size', () => {
       service.setPageSize(5);
-      expect(service.pageSize()).toEqual(5);
-      expect(service.currentPage()).toEqual(1);
+      expect(pincodeStore.setPageSize).toHaveBeenCalledWith(5);
     });
   });
 
   describe('setSearchQuery', () => {
-    it('should set search query and reset to page 1', async () => {
-      jest.spyOn(window.localStorage.__proto__, 'getItem').mockReturnValue(JSON.stringify(mockPincodes));
+    it('should set search query', () => {
       service.setSearchQuery('Office2');
-      expect(service.filteredPincodes()).toEqual([mockPincodes[1]]);
-      expect(service.currentPage()).toEqual(1);
+      expect(pincodeStore.setSearchQuery).toHaveBeenCalledWith('Office2');
     });
   });
 
   describe('sortPincodes', () => {
-    it('should sort pincodes by field in ascending order', async () => {
-      jest.spyOn(window.localStorage.__proto__, 'getItem').mockReturnValue(JSON.stringify(mockPincodes));
+    it('should sort pincodes by field in ascending order', () => {
       service.sortPincodes('pincode', 'asc');
-      await new Promise(resolve => setTimeout(resolve, 0));
-      expect(service.filteredPincodes()).toEqual([mockPincodes[0], mockPincodes[1]]);
-      expect(service.currentPage()).toEqual(1);
+      expect(pincodeStore.sortPincodes).toHaveBeenCalledWith('pincode', 'asc');
     });
 
-    it('should sort pincodes by field in descending order', async () => {
-      jest.spyOn(window.localStorage.__proto__, 'getItem').mockReturnValue(JSON.stringify(mockPincodes));
+    it('should sort pincodes by field in descending order', () => {
       service.sortPincodes('pincode', 'desc');
-      await new Promise(resolve => setTimeout(resolve, 0));
-      expect(service.filteredPincodes()).toEqual([mockPincodes[1], mockPincodes[0]]);
-      expect(service.currentPage()).toEqual(1);
+      expect(pincodeStore.sortPincodes).toHaveBeenCalledWith('pincode', 'desc');
     });
   });
 });

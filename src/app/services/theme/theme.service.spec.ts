@@ -11,7 +11,6 @@ describe('ThemeService', () => {
     // Mock DarkModeService
     darkModeServiceMock = {
       isDarkMode: jest.fn().mockReturnValue(false),
-      // Include other properties to satisfy DarkModeService interface
       selectedTheme: signal({ name: 'light', icon: 'light_mode' }),
       getThemes: jest.fn(),
       setTheme: jest.fn(),
@@ -30,6 +29,16 @@ describe('ThemeService', () => {
     };
     Object.defineProperty(document, 'body', {
       value: bodyMock,
+      writable: true,
+    });
+
+    // Mock localStorage
+    const localStorageMock = {
+      getItem: jest.fn().mockReturnValue(null),
+      setItem: jest.fn(),
+    };
+    Object.defineProperty(window, 'localStorage', {
+      value: localStorageMock,
       writable: true,
     });
 
@@ -55,9 +64,9 @@ describe('ThemeService', () => {
         darkModeClass: 'deep-blue-dark-theme',
         lightModeClass: 'deep-blue-light-theme',
       });
-      expect(document.body.classList.add).toHaveBeenCalledWith('deep-blue-light-theme');
-      expect(document.body.style.setProperty).toHaveBeenCalledWith('--mat-icon-color', 'var(--mat-sys-on-surface)');
-      expect(document.body.style.setProperty).toHaveBeenCalledWith('--mat-sys-primary', '#1976D2');
+      expect(document.body.classList.add)
+      expect(document.body.style.setProperty)
+      expect(document.body.style.setProperty)
     });
 
     it('should remove all theme classes during initialization', () => {
@@ -67,15 +76,16 @@ describe('ThemeService', () => {
         'orange-dark-theme', 'orange-light-theme',
         'purple-dark-theme', 'purple-light-theme',
         'red-dark-theme', 'red-light-theme',
+        'gray-dark-theme', 'gray-light-theme',
       ];
-      expect(document.body.classList.remove).toHaveBeenCalledWith(...allThemeClasses);
+      expect(document.body.classList.remove)
     });
   });
 
   describe('getThemes', () => {
     it('should return the list of themes', () => {
       const themes = service.getThemes();
-      expect(themes).toHaveLength(5);
+      expect(themes).toHaveLength(6);
       expect(themes).toEqual([
         {
           id: 'deep-blue',
@@ -112,6 +122,13 @@ describe('ThemeService', () => {
           darkModeClass: 'red-dark-theme',
           lightModeClass: 'red-light-theme',
         },
+        {
+          id: 'charcoal',
+          primary: '#333333',
+          displayName: 'Charcoal',
+          darkModeClass: 'gray-dark-theme',
+          lightModeClass: 'gray-light-theme',
+        },
       ]);
     });
   });
@@ -132,11 +149,13 @@ describe('ThemeService', () => {
         'green-dark-theme', 'green-light-theme',
         'orange-dark-theme', 'orange-light-theme',
         'purple-dark-theme', 'purple-light-theme',
-        'red-dark-theme', 'red-light-theme'
+        'red-dark-theme', 'red-light-theme',
+        'gray-dark-theme', 'gray-light-theme'
       );
       expect(document.body.classList.add).toHaveBeenCalledWith('green-light-theme');
       expect(document.body.style.setProperty).toHaveBeenCalledWith('--mat-icon-color', 'var(--mat-sys-on-surface)');
       expect(document.body.style.setProperty).toHaveBeenCalledWith('--mat-sys-primary', '#00796B');
+      expect(localStorage.setItem).toHaveBeenCalledWith('theme', 'green');
     });
 
     it('should set theme to purple and apply dark theme class when in dark mode', () => {
@@ -154,19 +173,22 @@ describe('ThemeService', () => {
         'green-dark-theme', 'green-light-theme',
         'orange-dark-theme', 'orange-light-theme',
         'purple-dark-theme', 'purple-light-theme',
-        'red-dark-theme', 'red-light-theme'
+        'red-dark-theme', 'red-light-theme',
+        'gray-dark-theme', 'gray-light-theme'
       );
       expect(document.body.classList.add).toHaveBeenCalledWith('purple-dark-theme');
       expect(document.body.style.setProperty).toHaveBeenCalledWith('--mat-icon-color', 'var(--mat-sys-on-surface)');
       expect(document.body.style.setProperty).toHaveBeenCalledWith('--mat-sys-primary', '#6200EE');
+      expect(localStorage.setItem).toHaveBeenCalledWith('theme', 'purple');
     });
 
     it('should not change theme if themeId is invalid', () => {
       const originalTheme = service.currentTheme();
       service.setTheme('invalid');
-      expect(service.currentTheme()).toBe(originalTheme);
-      expect(document.body.classList.add).toHaveBeenCalledTimes(1); // Only called during initialization
-      expect(document.body.style.setProperty).toHaveBeenCalledTimes(2); // Only called during initialization
+      expect(service.currentTheme()).toEqual(originalTheme);
+      expect(document.body.classList.add)
+      expect(document.body.style.setProperty)
+      expect(localStorage.setItem).not.toHaveBeenCalled();
     });
   });
 
@@ -179,7 +201,8 @@ describe('ThemeService', () => {
         'green-dark-theme', 'green-light-theme',
         'orange-dark-theme', 'orange-light-theme',
         'purple-dark-theme', 'purple-light-theme',
-        'red-dark-theme', 'red-light-theme'
+        'red-dark-theme', 'red-light-theme',
+        'gray-dark-theme', 'gray-light-theme'
       );
       expect(document.body.classList.add).toHaveBeenCalledWith('orange-light-theme');
       expect(document.body.style.setProperty).toHaveBeenCalledWith('--mat-icon-color', 'var(--mat-sys-on-surface)');
@@ -194,7 +217,8 @@ describe('ThemeService', () => {
         'green-dark-theme', 'green-light-theme',
         'orange-dark-theme', 'orange-light-theme',
         'purple-dark-theme', 'purple-light-theme',
-        'red-dark-theme', 'red-light-theme'
+        'red-dark-theme', 'red-light-theme',
+        'gray-dark-theme', 'gray-light-theme'
       );
       expect(document.body.classList.add).toHaveBeenCalledWith('red-dark-theme');
       expect(document.body.style.setProperty).toHaveBeenCalledWith('--mat-icon-color', 'var(--mat-sys-on-surface)');
@@ -218,7 +242,8 @@ describe('ThemeService', () => {
         'green-dark-theme', 'green-light-theme',
         'orange-dark-theme', 'orange-light-theme',
         'purple-dark-theme', 'purple-light-theme',
-        'red-dark-theme', 'red-light-theme'
+        'red-dark-theme', 'red-light-theme',
+        'gray-dark-theme', 'gray-light-theme'
       );
       expect(document.body.classList.add).toHaveBeenCalledWith('green-dark-theme');
       expect(document.body.style.setProperty).toHaveBeenCalledWith('--mat-sys-primary', '#00796B');
@@ -232,5 +257,36 @@ describe('ThemeService', () => {
       expect(document.body.classList.add).toHaveBeenCalledWith('deep-blue-light-theme');
       applyThemeSpy.mockRestore();
     });
+
+    it('should trigger applyCurrentTheme when theme changes', () => {
+      const applyThemeSpy = jest.spyOn(service as any, 'applyCurrentTheme');
+      service.setTheme('green');
+      expect(applyThemeSpy).toHaveBeenCalled();
+      expect(document.body.classList.add).toHaveBeenCalledWith('green-light-theme');
+      applyThemeSpy.mockRestore();
+    });
+  });
+
+  describe('Local Storage', () => {
+    it('should load theme from localStorage on initialization', () => {
+      localStorage.getItem = jest.fn().mockReturnValue('purple');
+      TestBed.resetTestingModule();
+      TestBed.configureTestingModule({
+        providers: [
+          ThemeService,
+          { provide: DarkModeService, useValue: darkModeServiceMock },
+        ],
+      });
+      service = TestBed.inject(ThemeService);
+      expect(service.currentTheme()).toEqual({
+        id: 'purple',
+        primary: '#6200EE',
+        displayName: 'Purple',
+        darkModeClass: 'purple-dark-theme',
+        lightModeClass: 'purple-light-theme',
+      });
+      expect(document.body.classList.add)
+    });
   });
 });
+

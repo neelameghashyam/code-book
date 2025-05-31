@@ -1,5 +1,5 @@
 import { Component, Inject } from '@angular/core';
-import { FormsModule, NgForm } from '@angular/forms';
+import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -37,14 +37,14 @@ export class AddSubcategoriesComponent {
 
   constructor(
     public dialogRef: MatDialogRef<AddSubcategoriesComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: { subcategory?: Subcategory, categoryId?: number, CategoryName?: string } = {}
+    @Inject(MAT_DIALOG_DATA) public data: { subcategory?: Subcategory; categoryId?: number; CategoryName?: string } = {}
   ) {
     if (data?.subcategory) {
       this.formSubcategory = { ...data.subcategory };
     }
   }
 
-  saveSubcategory(form: NgForm) {
+  saveSubcategory(form: any) {
     if (form.invalid || this.isFormInvalid()) {
       return;
     }

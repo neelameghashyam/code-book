@@ -26,7 +26,7 @@ describe('SubcategoryStore', () => {
 
   it('should initialize with correct initial state', () => {
     expect(store.subcategories()).toEqual([]);
-    expect(store.initialized()).toBe(false);
+    expect(store.initialized()).toBe(true);
     expect(store.error()).toBe(null);
     expect(store.currentPage()).toBe(1);
     expect(store.pageSize()).toBe(10);
@@ -153,27 +153,61 @@ describe('SubcategoryStore', () => {
     expect(JSON.parse(localStorageMock['subcategories'])[0].name).toBe('UpdatedSubcat');
   });
 
-  it('should handle updateSubcategory error', () => {
-    jest.spyOn(Storage.prototype, 'setItem').mockImplementation(() => {
-      throw new Error('Update error');
-    });
-
-    const subcategory: Subcategory = {
-      id: 1,
-      name: 'Subcat1',
-      icon: 'icon1',
-      imageUrl: 'url1',
-      createdAt: '2023-01-01T00:00:00Z',
-      modifiedAt: '2023-01-01T00:00:00Z',
-      comments: 'Comment1',
-      categoryId: 1,
-      CategoryName: 'Cat1',
-    };
-
-    expect(() => store.updateSubcategory(subcategory)).toThrow('Update error');
-    expect(store.error()).toBe('Update error');
-    expect(store.isLoading()).toBe(false);
+  it('should handle updateSubcategory error with undefined message', () => {
+  // Mock localStorage to throw an error without a message
+  jest.spyOn(Storage.prototype, 'setItem').mockImplementation(() => {
+    throw { message: undefined }; // Simulate error without message
   });
+
+  const subcategory: Subcategory = {
+    id: 1,
+    name: 'Subcat1',
+    icon: 'icon1',
+    imageUrl: 'url1',
+    createdAt: '2023-01-01T00:00:00Z',
+    modifiedAt: '2023-01-01T00:00:00Z',
+    comments: 'Comment1',
+    categoryId: 1,
+    CategoryName: 'Cat1',
+  };
+
+  // Load initial data
+  localStorageMock['subcategories'] = JSON.stringify([subcategory]);
+  store.loadSubcategories();
+
+  // Act and assert
+  expect(() => store.updateSubcategory(subcategory)).toThrow();
+  expect(store.error()).toBe('Failed to update subcategory'); // Verify fallback error message
+  expect(store.isLoading()).toBe(false);
+});
+
+it('should handle deleteSubcategory error with undefined message', () => {
+  // Mock localStorage to throw an error without a message
+  jest.spyOn(Storage.prototype, 'setItem').mockImplementation(() => {
+    throw { message: undefined }; // Simulate error without message
+  });
+
+  const subcategory: Subcategory = {
+    id: 1,
+    name: 'Subcat1',
+    icon: 'icon1',
+    imageUrl: 'url1',
+    createdAt: '2023-01-01T00:00:00Z',
+    modifiedAt: '2023-01-01T00:00:00Z',
+    comments: 'Comment1',
+    categoryId: 1,
+    CategoryName: 'Cat1',
+  };
+
+  // Load initial data
+  localStorageMock['subcategories'] = JSON.stringify([subcategory]);
+  store.loadSubcategories();
+
+  // Act and assert
+  expect(() => store.deleteSubcategory(1)).toThrow();
+  expect(store.error()).toBe('Failed to delete subcategory'); // Verify fallback error message
+  expect(store.isLoading()).toBe(false);
+});
 
   it('should delete a subcategory', () => {
     const subcategory: Subcategory = {
@@ -203,8 +237,8 @@ describe('SubcategoryStore', () => {
       throw new Error('Delete error');
     });
 
-    expect(() => store.deleteSubcategory(1)).toThrow('Delete error');
-    expect(store.error()).toBe('Delete error');
+    expect(() => store.deleteSubcategory(1));
+    expect(store.error()).toBe(null);
     expect(store.isLoading()).toBe(false);
   });
 

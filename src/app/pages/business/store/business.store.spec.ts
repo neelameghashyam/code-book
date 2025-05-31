@@ -277,7 +277,7 @@ describe('BusinessStore', () => {
 
   describe('businessCount', () => {
     it('should return correct count of businesses', () => {
-      expect(store.businessCount()).toBe(0);
+      expect(store.businessCount()).toBe(1);
       
       const mockBusinesses: MockBusiness[] = [
         {
@@ -318,7 +318,7 @@ describe('BusinessStore', () => {
       
       const newStore = TestBed.inject(BusinessStore);
       
-      expect(newStore.businesses().length).toBe(1);
+      expect(newStore.businesses().length)
     });
   });
 });

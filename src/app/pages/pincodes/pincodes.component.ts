@@ -66,7 +66,6 @@ export class PincodesComponent implements OnInit, OnDestroy {
       this.updateDisplayedColumns();
     });
     this.darkModeService.applyTheme();
-    
   }
 
   ngOnDestroy() {
@@ -84,57 +83,37 @@ export class PincodesComponent implements OnInit, OnDestroy {
   }
 
   refreshTable() {
-    // Reset sort state
     this.sortField = null;
     this.sortDirection = 'asc';
     this.service.sortPincodes(null, 'asc');
-    // Reset pagination
     this.service.setPage(1);
-    // Clear search query
     this.service.setSearchQuery('');
-    // Clear selected pincodes
     this.selectedPincodes = [];
-    // Clear search input value
     const searchInput = document.getElementById('searchPincodes') as HTMLInputElement;
     if (searchInput) {
       searchInput.value = '';
     }
-    // Reload data
     this.service.getPincodes();
     console.log('Table refreshed: sort, pagination, search reset, and data reloaded');
   }
 
-  openAddPincodeDialog() {
-    const dialogWidth = this.isMobile ? '90vw' : this.isTablet ? '80vw' : '800px';
-    const dialogRef = this.dialog.open(AddPincodesComponent, {
-      width: dialogWidth,
-      maxWidth: '100vw',
-      data: {},
-    });
+  private openPincodeDialog(data: any, onResult: (result: Pincode) => void) {
+  this.dialog.open(AddPincodesComponent, {
+    width: this.isMobile ? '90vw' : this.isTablet ? '80vw' : '800px',
+    maxWidth: '100vw',
+    data
+  }).afterClosed().subscribe(result => result && onResult(result));
+}
 
-    // dialogRef.afterClosed().subscribe(result => {
-    //   if (result) {
-    //     this.service.addPincode(result);
-    //   }
-    // });
-  }
+openAddPincodeDialog = () => this.openPincodeDialog({}, result => this.service.addPincode(result));
 
-  startEdit(pincode: Pincode) {
-    this.editingPincode = { ...pincode };
-    const dialogWidth = this.isMobile ? '90vw' : this.isTablet ? '80vw' : '800px';
-    const dialogRef = this.dialog.open(AddPincodesComponent, {
-      width: dialogWidth,
-      maxWidth: '100vw',
-      data: { pincode: this.editingPincode },
-    });
-
-    // dialogRef.afterClosed().subscribe(result => {
-    //   if (result) {
-    //     this.service.updatePincode(result as Pincode);
-    //   }
-    //   this.editingPincode = null;
-    // });
-  }
+startEdit = (pincode: Pincode) => {
+  this.editingPincode = { ...pincode };
+  this.openPincodeDialog({ pincode: this.editingPincode }, result => {
+    this.service.updatePincode(result);
+    this.editingPincode = null;
+  });
+}
 
   onSearchQueryChange(event: Event) {
     const inputElement = event.target as HTMLInputElement;

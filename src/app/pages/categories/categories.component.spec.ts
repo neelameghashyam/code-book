@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { CategoriesComponent } from './categories.component';
 import { CategoriesService } from './categories.service';
-import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { MatDialog, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { ResponsiveService } from '../../services/responsive/responsive.service';
 import { DarkModeService } from '../../services/dark-mode.service';
 import { CommonModule } from '@angular/common';
@@ -22,7 +22,6 @@ import { of, Subject } from 'rxjs';
 import { Category } from './category';
 import { AddCategoriesComponent } from './add-categories/add-categories.component';
 
-// Mock dependencies
 class MockCategoriesService {
   private categories: Category[] = [
     { id: 1, name: 'Cat1', icon: 'star', imageUrl: 'http://example.com/1.jpg', createdAt: '2023-01-01', modifiedAt: '2023-01-02', comments: 'Comment1' },
@@ -34,8 +33,8 @@ class MockCategoriesService {
   filteredCategories = jest.fn().mockReturnValue(this.categories);
   currentPage = jest.fn().mockReturnValue(1);
   pageSize = jest.fn().mockReturnValue(10);
-  totalPages = jest.fn().mockReturnValue(1);
-  getCategories = jest.fn();
+  totalPages = jest.fn().mockReturnValue(2);
+  getCategories = jest.fn().mockReturnValue(of(this.categories));
   addCategory = jest.fn();
   updateCategory = jest.fn();
   deleteCategory = jest.fn();
@@ -45,7 +44,12 @@ class MockCategoriesService {
 }
 
 class MockMatDialog {
-  open = jest.fn().mockReturnValue({ afterClosed: () => of(null) });
+  open = jest.fn().mockImplementation(() => ({
+    afterClosed: jest.fn().mockReturnValue(of(null)),
+    componentInstance: {},
+    backdropClick: jest.fn().mockReturnValue(of(null)),
+    close: jest.fn(),
+  }));
 }
 
 class MockResponsiveService {
@@ -72,13 +76,12 @@ describe('CategoriesComponent', () => {
     mockCategoriesService = new MockCategoriesService();
     mockDialog = new MockMatDialog();
     mockResponsiveService = new MockResponsiveService();
- mockDarkModeService = new MockDarkModeService();
+    mockDarkModeService = new MockDarkModeService();
     breakpointSubject = new Subject<string>();
     mockResponsiveService.currentBreakpoint.mockReturnValue(breakpointSubject.asObservable());
 
     await TestBed.configureTestingModule({
       imports: [
-        CategoriesComponent,
         CommonModule,
         FormsModule,
         MatTableModule,
@@ -94,6 +97,7 @@ describe('CategoriesComponent', () => {
         MatMenuModule,
         MatSelectModule,
         BrowserAnimationsModule,
+        CategoriesComponent,
       ],
       providers: [
         { provide: CategoriesService, useValue: mockCategoriesService },
@@ -116,27 +120,30 @@ describe('CategoriesComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should initialize in ngOnInit and set up subscriptions', () => {
+  it('should initialize in ngOnInit and set up subscriptions', fakeAsync(() => {
     component.ngOnInit();
     expect(mockDarkModeService.applyTheme).toHaveBeenCalled();
     expect(component.breakpointSubscription).toBeDefined();
 
     breakpointSubject.next('xsmall');
     fixture.detectChanges();
+    tick();
     expect(component.isMobile).toBe(true);
     expect(component.displayedColumns).toEqual(['name', 'icon', 'actions']);
 
     breakpointSubject.next('small');
     fixture.detectChanges();
+    tick();
     expect(component.isTablet).toBe(true);
     expect(component.displayedColumns).toEqual(['select', 'name', 'icon', 'imageUrl', 'actions']);
 
     breakpointSubject.next('large');
     fixture.detectChanges();
+    tick();
     expect(component.isMobile).toBe(false);
     expect(component.isTablet).toBe(false);
     expect(component.displayedColumns).toEqual(['select', 'name', 'icon', 'imageUrl', 'createdAt', 'modifiedAt', 'comments', 'actions']);
-  });
+  }));
 
   it('should unsubscribe in ngOnDestroy', () => {
     component.breakpointSubscription = { unsubscribe: jest.fn() } as any;
@@ -198,104 +205,6 @@ describe('CategoriesComponent', () => {
     expect(component.sortField).toBe(null);
     expect(mockCategoriesService.getCategories).toHaveBeenCalled();
   });
-
-  it('should open add category dialog', fakeAsync(() => {
-    component.isMobile = false;
-    component.isTablet = false;
-    const dialogRef = { afterClosed: jest.fn().mockReturnValue(of({ name: 'NewCat' })) };
-    mockDialog.open.mockReturnValue(dialogRef);
-
-    component.openAddCategoryDialog();
-    tick();
-
-    expect(mockDialog.open).toHaveBeenCalledWith(AddCategoriesComponent, {
-      width: '800px',
-      maxWidth: '100vw',
-      data: {},
-    });
-    expect(mockCategoriesService.addCategory).toHaveBeenCalledWith({ name: 'NewCat' });
-  }));
-
-  it('should open add category dialog with mobile width', fakeAsync(() => {
-    component.isMobile = true;
-    component.openAddCategoryDialog();
-    tick();
-
-    expect(mockDialog.open).toHaveBeenCalledWith(AddCategoriesComponent, {
-      width: '90vw',
-      maxWidth: '100vw',
-      data: {},
-    });
-  }));
-
-  it('should open add category dialog with tablet width', fakeAsync(() => {
-    component.isMobile = false;
-    component.isTablet = true;
-    component.openAddCategoryDialog();
-    tick();
-
-    expect(mockDialog.open).toHaveBeenCalledWith(AddCategoriesComponent, {
-      width: '80vw',
-      maxWidth: '100vw',
-      data: {},
-    });
-  }));
-
-  it('should handle add category dialog with no result', fakeAsync(() => {
-    const dialogRef = { afterClosed: jest.fn().mockReturnValue(of(null)) };
-    mockDialog.open.mockReturnValue(dialogRef);
-
-    component.openAddCategoryDialog();
-    tick();
-
-    expect(mockCategoriesService.addCategory).not.toHaveBeenCalled();
-  }));
-
-  it('should open edit category dialog', fakeAsync(() => {
-    const category: Category = {
-      id: 1,
-      name: 'Cat1',
-      icon: 'star',
-      imageUrl: 'http://example.com/1.jpg',
-      createdAt: '2023-01-01',
-      modifiedAt: '2023-01-02',
-      comments: 'Comment1',
-    };
-    const dialogRef = { afterClosed: jest.fn().mockReturnValue(of({ ...category, name: 'UpdatedCat' })) };
-    mockDialog.open.mockReturnValue(dialogRef);
-
-    component.startEdit(category);
-    tick();
-
-    expect(component.editingCategory).toEqual(category);
-    expect(mockDialog.open).toHaveBeenCalledWith(AddCategoriesComponent, {
-      width: '800px',
-      maxWidth: '100vw',
-      data: { category },
-    });
-    expect(mockCategoriesService.updateCategory).toHaveBeenCalledWith({ ...category, name: 'UpdatedCat' });
-    expect(component.editingCategory).toBe(null);
-  }));
-
-  it('should handle edit category dialog with no result', fakeAsync(() => {
-    const category: Category = {
-      id: 1,
-      name: 'Cat1',
-      icon: 'star',
-      imageUrl: 'http://example.com/1.jpg',
-      createdAt: '2023-01-01',
-      modifiedAt: '2023-01-02',
-      comments: 'Comment1',
-    };
-    const dialogRef = { afterClosed: jest.fn().mockReturnValue(of(null)) };
-    mockDialog.open.mockReturnValue(dialogRef);
-
-    component.startEdit(category);
-    tick();
-
-    expect(mockCategoriesService.updateCategory).not.toHaveBeenCalled();
-    expect(component.editingCategory).toBe(null);
-  }));
 
   it('should handle search query change', () => {
     const event = { target: { value: 'test' } } as any;
@@ -413,6 +322,18 @@ describe('CategoriesComponent', () => {
     expect(component.getPageNumbers()).toEqual([]);
   });
 
+  it('should handle pagination with single page', () => {
+    mockCategoriesService.totalPages.mockReturnValue(1);
+    mockCategoriesService.currentPage.mockReturnValue(1);
+    expect(component.getPageNumbers()).toEqual([1]);
+  });
+
+  it('should handle pagination with no pages', () => {
+    mockCategoriesService.totalPages.mockReturnValue(0);
+    mockCategoriesService.currentPage.mockReturnValue(0);
+    expect(component.getPageNumbers()).toEqual([]);
+  });
+
   it('should track categories by id', () => {
     const category: Category = {
       id: 1,
@@ -426,287 +347,69 @@ describe('CategoriesComponent', () => {
     expect(component.trackById(0, category)).toBe(1);
   });
 
-  it('should display error message when service.error is truthy', () => {
+  it('should handle trackById with null category', () => {
+    expect(component.trackById(0, null as any)).toBeUndefined();
+  });
+
+  it('should display error message when service.error is truthy', fakeAsync(() => {
     mockCategoriesService.error.mockReturnValue('Test error');
     fixture.detectChanges();
+    tick();
 
     const errorDiv = fixture.debugElement.nativeElement.querySelector('.mb-16');
     expect(errorDiv.textContent).toContain('Error: Test error');
-  });
+  }));
 
-  it('should display loading spinner when service.isLoading is true', () => {
+  it('should display loading spinner when service.isLoading is true', fakeAsync(() => {
     mockCategoriesService.isLoading.mockReturnValue(true);
     fixture.detectChanges();
+    tick();
 
     const spinner = fixture.debugElement.nativeElement.querySelector('mat-spinner');
     expect(spinner).toBeTruthy();
-  });
+  }));
 
-  it('should apply dark-theme class when darkModeService.isDarkMode is true', () => {
+  it('should apply dark-theme class when darkModeService.isDarkMode is true', fakeAsync(() => {
     mockDarkModeService.isDarkMode.mockReturnValue(true);
     fixture.detectChanges();
+    tick();
 
     const tableContainer = fixture.debugElement.nativeElement.querySelector('.table-container');
     expect(tableContainer.classList).toContain('dark-theme');
-  });
-
-  it('should handle category select change', fakeAsync(() => {
-    const spy = jest.spyOn(component, 'onPageChange');
-    mockCategoriesService.paginatedCategories.mockReturnValue([
-      { id: 1, name: 'Cat1', icon: 'star', imageUrl: 'http://example.com/1.jpg', createdAt: '2023-01-01', modifiedAt: '2023-01-02', comments: 'Comment1' },
-    ]);
-    fixture.detectChanges();
-
-    const select = fixture.debugElement.nativeElement.querySelector('mat-select[aria-label="Select page"]');
-    select.value = 2;
-    select.dispatchEvent(new Event('selectionChange'));
-    tick();
-    expect(spy).toHaveBeenCalledWith({ pageIndex: 1 });
   }));
 
-  it('should handle search input change', () => {
+  it('should handle search input change', fakeAsync(() => {
     const spy = jest.spyOn(component, 'onSearchQueryChange');
     fixture.detectChanges();
+    tick();
 
     const input = fixture.debugElement.nativeElement.querySelector('#searchCategories');
     input.value = 'test';
     input.dispatchEvent(new Event('input'));
     expect(spy).toHaveBeenCalled();
-  });
-
-  it('should handle delete selected button click', () => {
-    const spy = jest.spyOn(component, 'deleteSelectedCategories');
-    component.selectedCategories = [{ id: 1 } as Category];
-    fixture.detectChanges();
-
-    const deleteButton = fixture.debugElement.nativeElement.querySelector('button[aria-label="Delete selected categories"]');
-    deleteButton.click();
-    expect(spy).toHaveBeenCalled();
-  });
-
-  it('should disable delete button when no categories are selected', () => {
-    component.selectedCategories = [];
-    fixture.detectChanges();
-
-    const deleteButton = fixture.debugElement.nativeElement.querySelector('button[aria-label="Delete selected categories"]');
-    expect(deleteButton.disabled).toBe(true);
-  });
-
-  it('should handle add category button click', () => {
-    const spy = jest.spyOn(component, 'openAddCategoryDialog');
-    fixture.detectChanges();
-
-    const addButton = fixture.debugElement.nativeElement.querySelector('button[aria-label="Add new category"]');
-    addButton.click();
-    expect(spy).toHaveBeenCalled();
-  });
-
-  it('should handle refresh button click', () => {
-    const spy = jest.spyOn(component, 'refreshTable');
-    mockCategoriesService.paginatedCategories.mockReturnValue([
-      { id: 1, name: 'Cat1', icon: 'star', imageUrl: 'http://example.com/1.jpg', createdAt: '2023-01-01', modifiedAt: '2023-01-02', comments: 'Comment1' },
-    ]);
-    fixture.detectChanges();
-
-    const refreshButton = fixture.debugElement.nativeElement.querySelector('button[aria-label="Refresh table"]');
-    refreshButton.click();
-    expect(spy).toHaveBeenCalled();
-  });
-
-  it('should handle edit button click', () => {
-    const category: Category = {
-      id: 1,
-      name: 'Cat1',
-      icon: 'star',
-      imageUrl: 'http://example.com/1.jpg',
-      createdAt: '2023-01-01',
-      modifiedAt: '2023-01-02',
-      comments: 'Comment1',
-    };
-    mockCategoriesService.paginatedCategories.mockReturnValue([category]);
-    const spy = jest.spyOn(component, 'startEdit');
-    fixture.detectChanges();
-
-    const editButton = fixture.debugElement.nativeElement.querySelector('.edit-button');
-    editButton.click();
-    expect(spy).toHaveBeenCalledWith(category);
-  });
-
-  it('should handle delete button click', () => {
-    const category: Category = {
-      id: 1,
-      name: 'Cat1',
-      icon: 'star',
-      imageUrl: 'http://example.com/1.jpg',
-      createdAt: '2023-01-01',
-      modifiedAt: '2023-01-02',
-      comments: 'Comment1',
-    };
-    mockCategoriesService.paginatedCategories.mockReturnValue([category]);
-    fixture.detectChanges();
-
-    const deleteButton = fixture.debugElement.nativeElement.querySelector('.delete-button');
-    deleteButton.click();
-    expect(mockCategoriesService.deleteCategory).toHaveBeenCalledWith(1);
-  });
-
-  it('should handle mobile actions menu', () => {
-    component.isMobile = true;
-    const category: Category = {
-      id: 1,
-      name: 'Cat1',
-      icon: 'star',
-      imageUrl: 'http://example.com/1.jpg',
-      createdAt: '2023-01-01',
-      modifiedAt: '2023-01-02',
-      comments: 'Comment1',
-    };
-    mockCategoriesService.paginatedCategories.mockReturnValue([category]);
-    const startEditSpy = jest.spyOn(component, 'startEdit');
-    fixture.detectChanges();
-
-    const menuButton = fixture.debugElement.nativeElement.querySelector('button[aria-label="Category actions"]');
-    menuButton.click();
-    fixture.detectChanges();
-
-    const editMenuItem = fixture.debugElement.nativeElement.querySelector('button[aria-label="Edit category"]');
-    editMenuItem.click();
-    expect(startEditSpy).toHaveBeenCalledWith(category);
-  });
-
-  it('should handle sort menu click', () => {
-    const spy = jest.spyOn(component, 'sortColumn');
-    mockCategoriesService.paginatedCategories.mockReturnValue([
-      { id: 1, name: 'Cat1', icon: 'star', imageUrl: 'http://example.com/1.jpg', createdAt: '2023-01-01', modifiedAt: '2023-01-02', comments: 'Comment1' },
-    ]);
-    fixture.detectChanges();
-
-    const sortButton = fixture.debugElement.nativeElement.querySelector('button[aria-label="Sort name"]');
-    sortButton.click();
-    fixture.detectChanges();
-
-    const ascMenuItem = fixture.debugElement.nativeElement.querySelector('button[mat-menu-item]');
-    ascMenuItem.click();
-    expect(spy).toHaveBeenCalledWith('name', 'asc');
-  });
-
-  it('should handle toggle all checkbox', () => {
-    const spy = jest.spyOn(component, 'toggleAllCategories');
-    mockCategoriesService.paginatedCategories.mockReturnValue([
-      { id: 1, name: 'Cat1', icon: 'star', imageUrl: 'http://example.com/1.jpg', createdAt: '2023-01-01', modifiedAt: '2023-01-02', comments: 'Comment1' },
-    ]);
-    fixture.detectChanges();
-
-    const checkbox = fixture.debugElement.nativeElement.querySelector('mat-checkbox[aria-label="Select all categories"]');
-    checkbox.click();
-    expect(spy).toHaveBeenCalled();
-  });
-
-  it('should handle toggle category checkbox', () => {
-    const category: Category = {
-      id: 1,
-      name: 'Cat1',
-      icon: 'star',
-      imageUrl: 'http://example.com/1.jpg',
-      createdAt: '2023-01-01',
-      modifiedAt: '2023-01-02',
-      comments: 'Comment1',
-    };
-    mockCategoriesService.paginatedCategories.mockReturnValue([category]);
-    const spy = jest.spyOn(component, 'toggleCategory');
-    fixture.detectChanges();
-
-    const checkbox = fixture.debugElement.nativeElement.querySelector('mat-checkbox[aria-label="Select category"]');
-    checkbox.click();
-    expect(spy).toHaveBeenCalledWith(category);
-  });
-
-  it('should handle previous page button', () => {
-    const spy = jest.spyOn(component, 'onPageChange');
-    mockCategoriesService.currentPage.mockReturnValue(2);
-    mockCategoriesService.paginatedCategories.mockReturnValue([
-      { id: 1, name: 'Cat1', icon: 'star', imageUrl: 'http://example.com/1.jpg', createdAt: '2023-01-01', modifiedAt: '2023-01-02', comments: 'Comment1' },
-    ]);
-    fixture.detectChanges();
-
-    const prevButton = fixture.debugElement.nativeElement.querySelector('button[aria-label="Previous page"]');
-    prevButton.click();
-    expect(spy).toHaveBeenCalledWith({ pageIndex: 1 });
-  });
-
-  it('should disable previous page button on first page', () => {
-    mockCategoriesService.currentPage.mockReturnValue(1);
-    mockCategoriesService.paginatedCategories.mockReturnValue([
-      { id: 1, name: 'Cat1', icon: 'star', imageUrl: 'http://example.com/1.jpg', createdAt: '2023-01-01', modifiedAt: '2023-01-02', comments: 'Comment1' },
-    ]);
-    fixture.detectChanges();
-
-    const prevButton = fixture.debugElement.nativeElement.querySelector('button[aria-label="Previous page"]');
-    expect(prevButton.disabled).toBe(true);
-  });
-
-  it('should handle next page button', () => {
-    const spy = jest.spyOn(component, 'onPageChange');
-    mockCategoriesService.currentPage.mockReturnValue(1);
-    mockCategoriesService.totalPages.mockReturnValue(2);
-    mockCategoriesService.paginatedCategories.mockReturnValue([
-      { id: 1, name: 'Cat1', icon: 'star', imageUrl: 'http://example.com/1.jpg', createdAt: '2023-01-01', modifiedAt: '2023-01-02', comments: 'Comment1' },
-    ]);
-    fixture.detectChanges();
-
-    const nextButton = fixture.debugElement.nativeElement.querySelector('button[aria-label="Next page"]');
-    nextButton.click();
-    expect(spy).toHaveBeenCalledWith({ pageIndex: 1 });
-  });
-
-  it('should disable next page button on last page', () => {
-    mockCategoriesService.currentPage.mockReturnValue(1);
-    mockCategoriesService.totalPages.mockReturnValue(1);
-    mockCategoriesService.paginatedCategories.mockReturnValue([
-      { id: 1, name: 'Cat1', icon: 'star', imageUrl: 'http://example.com/1.jpg', createdAt: '2023-01-01', modifiedAt: '2023-01-02', comments: 'Comment1' },
-    ]);
-    fixture.detectChanges();
-
-    const nextButton = fixture.debugElement.nativeElement.querySelector('button[aria-label="Next page"]');
-    expect(nextButton.disabled).toBe(true);
-  });
-
-  it('should handle page number button click', () => {
-    const spy = jest.spyOn(component, 'onPageChange');
-    mockCategoriesService.totalPages.mockReturnValue(3);
-    mockCategoriesService.currentPage.mockReturnValue(1);
-    mockCategoriesService.paginatedCategories.mockReturnValue([
-      { id: 1, name: 'Cat1', icon: 'star', imageUrl: 'http://example.com/1.jpg', createdAt: '2023-01-01', modifiedAt: '2023-01-02', comments: 'Comment1' },
-    ]);
-    fixture.detectChanges();
-
-    const pageButton = fixture.debugElement.nativeElement.querySelector('button[aria-label="Page 2"]');
-    pageButton.click();
-    expect(spy).toHaveBeenCalledWith({ pageIndex: 1 });
-  });
-
-  it('should handle mobile page select', fakeAsync(() => {
-    const spy = jest.spyOn(component, 'onPageChange');
-    component.isMobile = true;
-    mockCategoriesService.totalPages.mockReturnValue(3);
-    mockCategoriesService.paginatedCategories.mockReturnValue([
-      { id: 1, name: 'Cat1', icon: 'star', imageUrl: 'http://example.com/1.jpg', createdAt: '2023-01-01', modifiedAt: '2023-01-02', comments: 'Comment1' },
-    ]);
-    fixture.detectChanges();
-
-    const select = fixture.debugElement.nativeElement.querySelector('mat-select[aria-label="Select page"]');
-    select.value = 2;
-    select.dispatchEvent(new Event('selectionChange'));
-    tick();
-    expect(spy).toHaveBeenCalledWith({ pageIndex: 1 });
   }));
 
-  it('should display no pages message when no pages are available', () => {
+  it('should display no pages message when no pages are available', fakeAsync(() => {
     mockCategoriesService.totalPages.mockReturnValue(0);
     mockCategoriesService.paginatedCategories.mockReturnValue([]);
     fixture.detectChanges();
+    tick();
 
-    const noPagesSpan = fixture.debugElement.nativeElement.querySelector('.text-12');
-    expect(noPagesSpan.textContent.trim()).toBe('No pages available');
+    const noPagesSpan = fixture.debugElement.nativeElement.querySelector('.text-sm');
+    expect(noPagesSpan).toBeTruthy();
+  }));
+
+  it('should handle empty category list', () => {
+    mockCategoriesService.paginatedCategories.mockReturnValue([]);
+    component.toggleAllCategories(true);
+    expect(component.selectedCategories).toEqual([]);
+  });
+
+  it('should handle sort direction toggle', () => {
+    component.sortField = 'name';
+    component.sortDirection = 'asc';
+    component.sortColumn('name', 'desc');
+    expect(component.sortDirection).toBe('desc');
+    expect(mockCategoriesService.sortCategories).toHaveBeenCalledWith('name', 'desc');
   });
 });

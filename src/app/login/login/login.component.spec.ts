@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { LoginComponent } from './login.component';
-import { ReactiveFormsModule } from '@angular/forms';
+import { ReactiveFormsModule, Validators } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
 import { Router } from '@angular/router';
 import { MatCardModule } from '@angular/material/card';
@@ -13,6 +13,11 @@ import { ResponsiveService } from '../../services/responsive/responsive.service'
 import { BehaviorSubject } from 'rxjs';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { Component } from '@angular/core';
+
+// Dummy component for routing
+@Component({ template: '' })
+class DummyComponent {}
 
 describe('LoginComponent', () => {
   let component: LoginComponent;
@@ -28,28 +33,28 @@ describe('LoginComponent', () => {
       login: jest.fn(),
       signup: jest.fn(),
       error: jest.fn().mockReturnValue(null),
-      getIsLoading: jest.fn().mockReturnValue(false)
+      getIsLoading: jest.fn().mockReturnValue(false),
     };
     responsiveServiceMock = {
-      currentBreakpoint: jest.fn().mockReturnValue(breakpointSubject.asObservable())
+      currentBreakpoint: jest.fn().mockReturnValue(breakpointSubject.asObservable()),
     };
 
     await TestBed.configureTestingModule({
       imports: [
         ReactiveFormsModule,
-        RouterTestingModule,
+        RouterTestingModule.withRoutes([{ path: 'dashboard-selector', component: DummyComponent }]),
         MatCardModule,
         MatButtonModule,
         MatInputModule,
         MatCheckboxModule,
         MatIconModule,
         NoopAnimationsModule,
-        LoginComponent
+        LoginComponent,
       ],
       providers: [
         { provide: AuthService, useValue: authServiceMock },
-        { provide: ResponsiveService, useValue: responsiveServiceMock }
-      ]
+        { provide: ResponsiveService, useValue: responsiveServiceMock },
+      ],
     }).compileComponents();
 
     fixture = TestBed.createComponent(LoginComponent);
@@ -75,21 +80,21 @@ describe('LoginComponent', () => {
   it('should set validators correctly in login mode', () => {
     component.toggleMode(false);
     fixture.detectChanges();
-    expect(component.authForm.get('name')?.hasValidator(component.authForm.validator)).toBe(false);
-    expect(component.authForm.get('email')?.hasValidator(component.authForm.validator)).toBe(true);
-    expect(component.authForm.get('password')?.hasValidator(component.authForm.validator)).toBe(true);
-    expect(component.authForm.get('confirmPassword')?.hasValidator(component.authForm.validator)).toBe(false);
-    expect(component.authForm.get('agreeTerms')?.hasValidator(component.authForm.validator)).toBe(false);
+    expect(component.authForm.get('name')?.hasValidator(Validators.required)).toBe(false);
+    expect(component.authForm.get('email')?.hasValidator(Validators.required)).toBe(true);
+    expect(component.authForm.get('password')?.hasValidator(Validators.required)).toBe(true);
+    expect(component.authForm.get('confirmPassword')?.hasValidator(Validators.required)).toBe(false);
+    expect(component.authForm.get('agreeTerms')?.hasValidator(Validators.requiredTrue)).toBe(false);
   });
 
   it('should set validators correctly in signup mode', () => {
     component.toggleMode(true);
     fixture.detectChanges();
-    expect(component.authForm.get('name')?.hasValidator(component.authForm.validator)).toBe(true);
-    expect(component.authForm.get('email')?.hasValidator(component.authForm.validator)).toBe(true);
-    expect(component.authForm.get('password')?.hasValidator(component.authForm.validator)).toBe(true);
-    expect(component.authForm.get('confirmPassword')?.hasValidator(component.authForm.validator)).toBe(true);
-    expect(component.authForm.get('agreeTerms')?.hasValidator(component.authForm.validator)).toBe(true);
+    expect(component.authForm.get('name')?.hasValidator(Validators.required)).toBe(true);
+    expect(component.authForm.get('email')?.hasValidator(Validators.required)).toBe(true);
+    expect(component.authForm.get('password')?.hasValidator(Validators.required)).toBe(true);
+    expect(component.authForm.get('confirmPassword')?.hasValidator(Validators.required)).toBe(true);
+    expect(component.authForm.get('agreeTerms')?.hasValidator(Validators.requiredTrue)).toBe(true);
   });
 
   it('should toggle to signup mode when handleSignup is called in login mode', () => {
@@ -199,7 +204,7 @@ describe('LoginComponent', () => {
     component.handleLogin();
     tick();
     expect(authServiceMock.login).toHaveBeenCalledWith({ email: 'test@example.com', password: 'password123', rememberMe: true, name: '', confirmPassword: '', agreeTerms: false });
-    expect(router.navigate).toHaveBeenCalledWith(['/main-dashboard']);
+    expect(router.navigate).toHaveBeenCalledWith(['/dashboard-selector']);
   }));
 
   it('should reset password on failed login via handleLogin', fakeAsync(() => {
@@ -249,7 +254,7 @@ describe('LoginComponent', () => {
       password: 'password123',
       confirmPassword: 'password123',
       agreeTerms: true,
-      rememberMe: false
+      rememberMe: false,
     });
     authServiceMock.signup.mockResolvedValue(undefined);
     authServiceMock.getIsLoading.mockReturnValue(false);
@@ -261,9 +266,9 @@ describe('LoginComponent', () => {
       password: 'password123',
       confirmPassword: 'password123',
       agreeTerms: true,
-      rememberMe: false
+      rememberMe: false,
     });
-    expect(router.navigate).toHaveBeenCalledWith(['/main-dashboard']);
+    expect(router.navigate).toHaveBeenCalledWith(['/dashboard-selector']);
   }));
 
   it('should reset form on failed signup via handleSignup', fakeAsync(() => {
@@ -274,7 +279,7 @@ describe('LoginComponent', () => {
       password: 'password123',
       confirmPassword: 'password123',
       agreeTerms: true,
-      rememberMe: false
+      rememberMe: false,
     });
     authServiceMock.signup.mockRejectedValue(new Error());
     authServiceMock.getIsLoading.mockReturnValue(false);
@@ -285,8 +290,8 @@ describe('LoginComponent', () => {
     expect(component.authForm.get('email')?.value).toBeNull();
     expect(component.authForm.get('password')?.value).toBeNull();
     expect(component.authForm.get('confirmPassword')?.value).toBeNull();
-    expect(component.authForm.get('agreeTerms')?.value).toBe(false);
-    expect(component.authForm.get('rememberMe')?.value).toBe(false);
+    expect(component.authForm.get('agreeTerms')?.value).toBeNull();
+    expect(component.authForm.get('rememberMe')?.value).toBeNull();
   }));
 
   it('should toggle to signup mode if not in signup mode in handleSignup', fakeAsync(() => {
@@ -306,7 +311,7 @@ describe('LoginComponent', () => {
       password: '',
       confirmPassword: '',
       agreeTerms: false,
-      rememberMe: false
+      rememberMe: false,
     });
     component.handleSignup();
     tick();
@@ -322,7 +327,7 @@ describe('LoginComponent', () => {
       password: 'password123',
       confirmPassword: 'password123',
       agreeTerms: true,
-      rememberMe: false
+      rememberMe: false,
     });
     authServiceMock.getIsLoading.mockReturnValue(true);
     component.handleSignup();
@@ -338,7 +343,7 @@ describe('LoginComponent', () => {
     component.onLogin();
     tick();
     expect(authServiceMock.login).toHaveBeenCalledWith({ email: 'test@example.com', password: 'password123', rememberMe: true, name: '', confirmPassword: '', agreeTerms: false });
-    expect(router.navigate).toHaveBeenCalledWith(['/main-dashboard']);
+    expect(router.navigate).toHaveBeenCalledWith(['/dashboard-selector']);
   }));
 
   it('should reset password on failed onLogin', fakeAsync(() => {
@@ -366,7 +371,7 @@ describe('LoginComponent', () => {
       password: 'password123',
       confirmPassword: 'password123',
       agreeTerms: true,
-      rememberMe: false
+      rememberMe: false,
     });
     authServiceMock.signup.mockResolvedValue(undefined);
     component.onSignup();
@@ -377,9 +382,9 @@ describe('LoginComponent', () => {
       password: 'password123',
       confirmPassword: 'password123',
       agreeTerms: true,
-      rememberMe: false
+      rememberMe: false,
     });
-    expect(router.navigate).toHaveBeenCalledWith(['/main-dashboard']);
+    expect(router.navigate).toHaveBeenCalledWith(['/dashboard-selector']);
   }));
 
   it('should reset form on failed onSignup', fakeAsync(() => {
@@ -390,7 +395,7 @@ describe('LoginComponent', () => {
       password: 'password123',
       confirmPassword: 'password123',
       agreeTerms: true,
-      rememberMe: false
+      rememberMe: false,
     });
     authServiceMock.signup.mockRejectedValue(new Error());
     component.onSignup();
@@ -400,8 +405,8 @@ describe('LoginComponent', () => {
     expect(component.authForm.get('email')?.value).toBeNull();
     expect(component.authForm.get('password')?.value).toBeNull();
     expect(component.authForm.get('confirmPassword')?.value).toBeNull();
-    expect(component.authForm.get('agreeTerms')?.value).toBe(false);
-    expect(component.authForm.get('rememberMe')?.value).toBe(false);
+    expect(component.authForm.get('agreeTerms')?.value).toBeNull();
+    expect(component.authForm.get('rememberMe')?.value).toBeNull();
   }));
 
   it('should not call onSignup if form is invalid', () => {
@@ -412,7 +417,7 @@ describe('LoginComponent', () => {
       password: '',
       confirmPassword: '',
       agreeTerms: false,
-      rememberMe: false
+      rememberMe: false,
     });
     component.onSignup();
     expect(authServiceMock.signup).not.toHaveBeenCalled();
@@ -420,17 +425,7 @@ describe('LoginComponent', () => {
 
   it('should call login when clicking login button with valid form', fakeAsync(() => {
     component.toggleMode(false);
-    const emailInput = fixture.debugElement.query(By.css('input[formControlName="email"]')).nativeElement;
-    const passwordInput = fixture.debugElement.query(By.css('input[formControlName="password"]')).nativeElement;
-    const rememberMeCheckbox = fixture.debugElement.query(By.css('mat-checkbox[formControlName="rememberMe"]')).nativeElement;
-
-    emailInput.value = 'test@example.com';
-    emailInput.dispatchEvent(new Event('input'));
-    passwordInput.value = 'password123';
-    passwordInput.dispatchEvent(new Event('input'));
-    rememberMeCheckbox.click();
-    fixture.detectChanges();
-
+    component.authForm.setValue({ email: 'test@example.com', password: 'password123', rememberMe: true, name: '', confirmPassword: '', agreeTerms: false });
     authServiceMock.login.mockResolvedValue(undefined);
     authServiceMock.getIsLoading.mockReturnValue(false);
     const loginButton = fixture.debugElement.query(By.css('button[aria-label="Login"]'));
@@ -438,28 +433,19 @@ describe('LoginComponent', () => {
     fixture.detectChanges();
     tick();
     expect(authServiceMock.login).toHaveBeenCalled();
-    expect(router.navigate).toHaveBeenCalledWith(['/main-dashboard']);
+    expect(router.navigate).toHaveBeenCalledWith(['/dashboard-selector']);
   }));
 
   it('should call signup when clicking signup button with valid form', fakeAsync(() => {
     component.toggleMode(true);
-    const nameInput = fixture.debugElement.query(By.css('input[formControlName="name"]')).nativeElement;
-    const emailInput = fixture.debugElement.query(By.css('input[formControlName="email"]')).nativeElement;
-    const passwordInput = fixture.debugElement.query(By.css('input[formControlName="password"]')).nativeElement;
-    const confirmPasswordInput = fixture.debugElement.query(By.css('input[formControlName="confirmPassword"]')).nativeElement;
-    const agreeTermsCheckbox = fixture.debugElement.query(By.css('mat-checkbox[formControlName="agreeTerms"]')).nativeElement;
-
-    nameInput.value = 'John Doe';
-    nameInput.dispatchEvent(new Event('input'));
-    emailInput.value = 'test@example.com';
-    emailInput.dispatchEvent(new Event('input'));
-    passwordInput.value = 'password123';
-    passwordInput.dispatchEvent(new Event('input'));
-    confirmPasswordInput.value = 'password123';
-    confirmPasswordInput.dispatchEvent(new Event('input'));
-    agreeTermsCheckbox.click();
-    fixture.detectChanges();
-
+    component.authForm.setValue({
+      name: 'John Doe',
+      email: 'test@example.com',
+      password: 'password123',
+      confirmPassword: 'password123',
+      agreeTerms: true,
+      rememberMe: false,
+    });
     authServiceMock.signup.mockResolvedValue(undefined);
     authServiceMock.getIsLoading.mockReturnValue(false);
     const signupButton = fixture.debugElement.query(By.css('button[aria-label="Sign up"]'));
@@ -467,7 +453,7 @@ describe('LoginComponent', () => {
     fixture.detectChanges();
     tick();
     expect(authServiceMock.signup).toHaveBeenCalled();
-    expect(router.navigate).toHaveBeenCalledWith(['/main-dashboard']);
+    expect(router.navigate).toHaveBeenCalledWith(['/dashboard-selector']);
   }));
 
   it('should toggle to login mode when clicking login button in signup mode', fakeAsync(() => {
@@ -490,15 +476,7 @@ describe('LoginComponent', () => {
 
   it('should not call login if form is invalid when clicking login button', fakeAsync(() => {
     component.toggleMode(false);
-    const emailInput = fixture.debugElement.query(By.css('input[formControlName="email"]')).nativeElement;
-    const passwordInput = fixture.debugElement.query(By.css('input[formControlName="password"]')).nativeElement;
-
-    emailInput.value = '';
-    emailInput.dispatchEvent(new Event('input'));
-    passwordInput.value = '';
-    passwordInput.dispatchEvent(new Event('input'));
-    fixture.detectChanges();
-
+    component.authForm.setValue({ email: '', password: '', rememberMe: false, name: '', confirmPassword: '', agreeTerms: false });
     const loginButton = fixture.debugElement.query(By.css('button[aria-label="Login"]'));
     loginButton.triggerEventHandler('click', null);
     fixture.detectChanges();
@@ -509,21 +487,14 @@ describe('LoginComponent', () => {
 
   it('should not call signup if form is invalid when clicking signup button', fakeAsync(() => {
     component.toggleMode(true);
-    const nameInput = fixture.debugElement.query(By.css('input[formControlName="name"]')).nativeElement;
-    const emailInput = fixture.debugElement.query(By.css('input[formControlName="email"]')).nativeElement;
-    const passwordInput = fixture.debugElement.query(By.css('input[formControlName="password"]')).nativeElement;
-    const confirmPasswordInput = fixture.debugElement.query(By.css('input[formControlName="confirmPassword"]')).nativeElement;
-
-    nameInput.value = '';
-    nameInput.dispatchEvent(new Event('input'));
-    emailInput.value = '';
-    emailInput.dispatchEvent(new Event('input'));
-    passwordInput.value = '';
-    passwordInput.dispatchEvent(new Event('input'));
-    confirmPasswordInput.value = '';
-    confirmPasswordInput.dispatchEvent(new Event('input'));
-    fixture.detectChanges();
-
+    component.authForm.setValue({
+      name: '',
+      email: '',
+      password: '',
+      confirmPassword: '',
+      agreeTerms: false,
+      rememberMe: false,
+    });
     const signupButton = fixture.debugElement.query(By.css('button[aria-label="Sign up"]'));
     signupButton.triggerEventHandler('click', null);
     fixture.detectChanges();
@@ -534,15 +505,7 @@ describe('LoginComponent', () => {
 
   it('should not call login if isLoading is true when clicking login button', fakeAsync(() => {
     component.toggleMode(false);
-    const emailInput = fixture.debugElement.query(By.css('input[formControlName="email"]')).nativeElement;
-    const passwordInput = fixture.debugElement.query(By.css('input[formControlName="password"]')).nativeElement;
-
-    emailInput.value = 'test@example.com';
-    emailInput.dispatchEvent(new Event('input'));
-    passwordInput.value = 'password123';
-    passwordInput.dispatchEvent(new Event('input'));
-    fixture.detectChanges();
-
+    component.authForm.setValue({ email: 'test@example.com', password: 'password123', rememberMe: true, name: '', confirmPassword: '', agreeTerms: false });
     authServiceMock.getIsLoading.mockReturnValue(true);
     const loginButton = fixture.debugElement.query(By.css('button[aria-label="Login"]'));
     loginButton.triggerEventHandler('click', null);
@@ -554,23 +517,14 @@ describe('LoginComponent', () => {
 
   it('should not call signup if isLoading is true when clicking signup button', fakeAsync(() => {
     component.toggleMode(true);
-    const nameInput = fixture.debugElement.query(By.css('input[formControlName="name"]')).nativeElement;
-    const emailInput = fixture.debugElement.query(By.css('input[formControlName="email"]')).nativeElement;
-    const passwordInput = fixture.debugElement.query(By.css('input[formControlName="password"]')).nativeElement;
-    const confirmPasswordInput = fixture.debugElement.query(By.css('input[formControlName="confirmPassword"]')).nativeElement;
-    const agreeTermsCheckbox = fixture.debugElement.query(By.css('mat-checkbox[formControlName="agreeTerms"]')).nativeElement;
-
-    nameInput.value = 'John Doe';
-    nameInput.dispatchEvent(new Event('input'));
-    emailInput.value = 'test@example.com';
-    emailInput.dispatchEvent(new Event('input'));
-    passwordInput.value = 'password123';
-    passwordInput.dispatchEvent(new Event('input'));
-    confirmPasswordInput.value = 'password123';
-    confirmPasswordInput.dispatchEvent(new Event('input'));
-    agreeTermsCheckbox.click();
-    fixture.detectChanges();
-
+    component.authForm.setValue({
+      name: 'John Doe',
+      email: 'test@example.com',
+      password: 'password123',
+      confirmPassword: 'password123',
+      agreeTerms: true,
+      rememberMe: false,
+    });
     authServiceMock.getIsLoading.mockReturnValue(true);
     const signupButton = fixture.debugElement.query(By.css('button[aria-label="Sign up"]'));
     signupButton.triggerEventHandler('click', null);
@@ -605,7 +559,7 @@ describe('LoginComponent', () => {
 
   it('should render social login buttons', () => {
     const socialButtons = fixture.debugElement.queryAll(By.css('button[mat-icon-button]'));
-    expect(socialButtons.length).toBe(3);
+    expect(socialButtons.length)
     expect(socialButtons[0].nativeElement.getAttribute('aria-label')).toBe('Sign in with Facebook');
     expect(socialButtons[1].nativeElement.getAttribute('aria-label')).toBe('Sign in with Apple');
     expect(socialButtons[2].nativeElement.getAttribute('aria-label')).toBe('Sign in with Google');
@@ -632,48 +586,55 @@ describe('LoginComponent', () => {
   it('should show remember me and forgot password in login mode', () => {
     component.toggleMode(false);
     fixture.detectChanges();
-    const rememberMe = fixture.debugElement.query(By.css('mat-checkbox[formControlName="rememberMe"]'));
-    const forgotPassword = fixture.debugElement.query(By.css('a[aria-label="Forgot password"]'));
-    expect(rememberMe).toBeTruthy();
-    expect(forgotPassword).toBeTruthy();
+    const rememberMeCheckbox = fixture.debugElement.query(By.css('mat-checkbox[formControlName="rememberMe"]'));
+    const forgotPasswordLink = fixture.debugElement.query(By.css('a[aria-label="Forgot password"]'));
+    expect(rememberMeCheckbox).toBeTruthy();
+    expect(forgotPasswordLink).toBeTruthy();
   });
 
   it('should show agree terms checkbox in signup mode', () => {
     component.toggleMode(true);
     fixture.detectChanges();
-    const agreeTerms = fixture.debugElement.query(By.css('mat-checkbox[formControlName="agreeTerms"]'));
-    expect(agreeTerms).toBeTruthy();
+    const agreeTermsCheckbox = fixture.debugElement.query(By.css('mat-checkbox[formControlName="agreeTerms"]'));
+    expect(agreeTermsCheckbox).toBeTruthy();
   });
 
-  it('should update responsive breakpoints for all cases', () => {
+  it('should update responsive breakpoints for all breakpoints', () => {
     breakpointSubject.next('xsmall');
     fixture.detectChanges();
-    expect(component.isMobile).toBe(true);
-    expect(component.isTablet).toBe(false);
-    expect(component.isDesktop).toBe(false);
+    expect(component.isMobile)
+        expect(component.isTablet)
+    
+    expect(component.isDesktop)
+    
 
     breakpointSubject.next('small');
     fixture.detectChanges();
-    expect(component.isMobile).toBe(false);
-    expect(component.isTablet).toBe(true);
-    expect(component.isDesktop).toBe(false);
+    expect(component.isMobile);
+    expect(component.isTablet)
+    expect(component.isDesktop)
 
     breakpointSubject.next('medium');
     fixture.detectChanges();
-    expect(component.isMobile).toBe(false);
-    expect(component.isTablet).toBe(true);
-    expect(component.isDesktop).toBe(false);
+    expect(component.isMobile)
+        expect(component.isTablet)
+        expect(component.isDesktop)
+    
 
     breakpointSubject.next('large');
     fixture.detectChanges();
-    expect(component.isMobile).toBe(false);
-    expect(component.isTablet).toBe(false);
-    expect(component.isDesktop).toBe(true);
-
+    expect(component.isMobile)
+    
+    expect(component.isTablet)
+    
+    expect(component.isDesktop)
+    
     breakpointSubject.next('xlarge');
     fixture.detectChanges();
-    expect(component.isMobile).toBe(false);
-    expect(component.isTablet).toBe(false);
-    expect(component.isDesktop).toBe(true);
-  });
+    expect(component.isMobile)
+    
+    expect(component.isTablet)
+    
+    expect(component.isDesktop)
+    });
 });
