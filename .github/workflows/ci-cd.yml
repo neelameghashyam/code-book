@@ -59,6 +59,7 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: coverage-report
+          path: coverage/
 
       - name: Setup Node.js
         uses: actions/setup-node@v3
@@ -69,17 +70,24 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Create sonar-project.properties
+        run: |
+          cat << EOF > sonar-project.properties
+          sonar.projectKey=code-book
+          sonar.organization=neelameghashyam
+          sonar.sources=src
+          sonar.tests=src
+          sonar.javascript.lcov.reportPaths=coverage/lcov.info
+          sonar.host.url=https://sonarcloud.io
+          EOF
+
       - name: Run SonarQube scan
         uses: SonarSource/sonarqube-scan-action@v2.3.0
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
         with:
-          args: >
-            -Dsonar.projectKey=code-book
-            -Dsonar.sources=src
-            -Dsonar.tests=src
-            -Dsonar.javascript.lcov.reportPaths=coverage/lcov.info
-            -Dsonar.host.url=${{ secrets.SONAR_HOST_URL }}
+          args: -X # Enable debug logging
 
   deploy:
     needs: [build-test, sonar]
