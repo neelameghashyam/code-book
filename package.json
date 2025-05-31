@@ -8,6 +8,9 @@
   "contributors": [
     ""
   ],
+  "resolutions": {
+  "@compodoc/compodoc/@angular-devkit/core/chokidar": "^4.0.3"
+},
   "keywords": [
     "angular",
     "angular 19",
@@ -127,7 +130,8 @@
     "source-map-explorer": "^2.5.3",
     "storybook": "^8.6.3",
     "ts-node": "~10.9.2",
-    "typescript": "5.5.4"
+    "typescript": "5.5.4",
+    "yaml": "^2.8.0"
   },
   "lint-staged": {
     "*.{js,json,css,scss,less,md,ts,html,component.html}": [
