@@ -5,18 +5,24 @@
     "outDir": "./dist/out-tsc",
     "sourceMap": true,
     "declaration": false,
-    "downlevelIteration": true,
     "experimentalDecorators": true,
     "module": "ES2022",
     "target": "ES2022",
-    "moduleResolution": "node",
+    "moduleResolution": "bundler",
     "importHelpers": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
-    "typeRoots": ["node_modules/@types"],
-    "lib": ["dom", "es2022"],
+    "typeRoots": [
+      "node_modules/@types"
+    ],
+    "lib": [
+      "dom",
+      "es2022"
+    ],
     "paths": {
-      "@services/*": ["app/services/*"]
+      "@services/*": [
+        "app/services/*"
+      ]
     }
   },
   "angularCompilerOptions": {

@@ -9,8 +9,8 @@
     ""
   ],
   "resolutions": {
-  "@compodoc/compodoc/@angular-devkit/core/chokidar": "^4.0.3"
-},
+    "@compodoc/compodoc/@angular-devkit/core/chokidar": "^4.0.3"
+  },
   "keywords": [
     "angular",
     "angular 19",
@@ -61,16 +61,16 @@
   },
   "private": false,
   "dependencies": {
-    "@angular/animations": "^19.2.9",
+    "@angular/animations": "^20.0.0",
     "@angular/cdk": "^19.2.1",
-    "@angular/common": "^19.2.0",
-    "@angular/compiler": "^19.2.0",
-    "@angular/core": "^19.2.0",
-    "@angular/forms": "^19.2.0",
+    "@angular/common": "^20.0.0",
+    "@angular/compiler": "^20.0.0",
+    "@angular/core": "^20.0.0",
+    "@angular/forms": "^20.0.0",
     "@angular/material": "^19.2.1",
-    "@angular/platform-browser": "^19.2.0",
-    "@angular/platform-browser-dynamic": "^19.2.0",
-    "@angular/router": "^19.2.0",
+    "@angular/platform-browser": "^20.0.0",
+    "@angular/platform-browser-dynamic": "^20.0.0",
+    "@angular/router": "^20.0.0",
     "@jsverse/transloco": "^7.5.1",
     "@ngrx/signals": "^19.1.0",
     "@ngx-translate/core": "^16.0.4",
@@ -84,15 +84,14 @@
     "zone.js": "^0.15.0"
   },
   "devDependencies": {
-    "@angular-devkit/build-angular": "^19.2.0",
     "@angular-eslint/builder": "^19.1.0",
     "@angular-eslint/eslint-plugin": "^19.1.0",
     "@angular-eslint/eslint-plugin-template": "^19.1.0",
     "@angular-eslint/schematics": "^19.1.0",
     "@angular-eslint/template-parser": "^19.1.0",
-    "@angular/build": "^19.2.0",
-    "@angular/cli": "19.2.0",
-    "@angular/compiler-cli": "^19.2.0",
+    "@angular/build": "^20.0.0",
+    "@angular/cli": "20.0.0",
+    "@angular/compiler-cli": "^20.0.0",
     "@babel/core": "^7.26.9",
     "@chromatic-com/storybook": "^3.2.5",
     "@commitlint/cli": "^19.7.1",
@@ -125,12 +124,13 @@
     "jest-preset-angular": "^14.5.3",
     "jest-sonar-reporter": "^2.0.0",
     "playwright-ng-schematics": "^2.0.2",
+    "postcss": "^8.5.3",
     "prettier": "^3.4.2",
     "sonarqube-scanner": "^4.3.0",
     "source-map-explorer": "^2.5.3",
     "storybook": "^8.6.3",
     "ts-node": "~10.9.2",
-    "typescript": "5.5.4",
+    "typescript": "5.8.3",
     "yaml": "^2.8.0"
   },
   "lint-staged": {
