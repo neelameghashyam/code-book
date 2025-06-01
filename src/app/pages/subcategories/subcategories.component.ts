@@ -1,29 +1,30 @@
-import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
+import { Component, inject, ViewChild, OnInit, OnDestroy } from '@angular/core';
 import { SubcategoriesService } from './subcategories.service';
-import { CategoriesService } from '../categories/categories.service';
-import { MatDialog, MatDialogModule } from '@angular/material/dialog';
-import { ResponsiveService } from '../../services/responsive/responsive.service';
-import { DarkModeService } from '../../services/dark-mode.service';
 import { Subcategory } from './subcategories';
+import { CategoriesService } from '../categories/categories.service';
 import { Category } from '../categories/category';
+import { FormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
+import { MatTableModule } from '@angular/material/table';
+import { MatButtonModule } from '@angular/material/button';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
-import { Subscription } from 'rxjs';
-import { AddSubcategoriesComponent } from './add-subcategories/add-subcategories.component';
-import { MatSelectModule } from '@angular/material/select';
+import { MatIcon } from '@angular/material/icon';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatCardModule } from '@angular/material/card';
-import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
-import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatIcon } from '@angular/material/icon';
-import { MatInputModule } from '@angular/material/input';
 import { MatMenuModule } from '@angular/material/menu';
-import { MatTableModule } from '@angular/material/table';
+import { MatSelectModule } from '@angular/material/select';
+import { AddSubcategoriesComponent } from './add-subcategories/add-subcategories.component';
+import { DarkModeService } from '../../services/dark-mode.service';
+import { ResponsiveService } from '../../services/responsive/responsive.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-subcategories',
+  standalone: true,
   imports: [
     CommonModule,
     FormsModule,
@@ -42,50 +43,44 @@ import { MatTableModule } from '@angular/material/table';
   ],
   templateUrl: './subcategories.component.html',
   styleUrls: ['./subcategories.component.scss'],
-  standalone: true
 })
 export class SubcategoriesComponent implements OnInit, OnDestroy {
-  subcategories: Subcategory[] = [];
-  categories: Category[] = [];
-  selectedCategoryId: number | null = null;
-  displayedColumns: string[] = [];
-  selectedSubcategories: Subcategory[] = [];
+  service = inject(SubcategoriesService);
+  categoryService = inject(CategoriesService);
+  dialog = inject(MatDialog);
+  responsive = inject(ResponsiveService);
+  darkModeService = inject(DarkModeService);
+
   editingSubcategory: Subcategory | null = null;
+  selectedSubcategories: Subcategory[] = [];
+  displayedColumns: string[] = [];
   sortField: string | null = null;
   sortDirection: 'asc' | 'desc' = 'asc';
-  isMobile = false;
-  isTablet = false;
+  isMobile: boolean = false;
+  isTablet: boolean = false;
   breakpointSubscription: Subscription | undefined;
+  categories: Category[] = [];
+  selectedCategoryId: number | null = null;
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
-  constructor(
-    public subcategoriesService: SubcategoriesService,
-    private categoriesService: CategoriesService,
-    private dialog: MatDialog,
-    private responsiveService: ResponsiveService,
-    public darkModeService: DarkModeService
-  ) {}
-
-  ngOnInit(): void {
-    this.darkModeService.applyTheme();
-    this.categoriesService.getCategories();
-    this.categories = this.categoriesService.categories();
-    this.subcategoriesService.getSubcategories();
-    this.breakpointSubscription = this.responsiveService.currentBreakpoint().subscribe(breakpoint => {
+  ngOnInit() {
+    this.breakpointSubscription = this.responsive.currentBreakpoint().subscribe(breakpoint => {
       this.isMobile = breakpoint === 'xsmall';
-      this.isTablet = breakpoint === 'small';
+      this.isTablet = breakpoint === 'small' || breakpoint === 'medium';
       this.updateDisplayedColumns();
     });
+    this.darkModeService.applyTheme();
+    this.categoryService.getCategories();
+    this.categories = this.categoryService.categories();
+    this.service.getSubcategories();
   }
 
-  ngOnDestroy(): void {
-    if (this.breakpointSubscription) {
-      this.breakpointSubscription.unsubscribe();
-    }
+  ngOnDestroy() {
+    this.breakpointSubscription?.unsubscribe();
   }
 
-  updateDisplayedColumns(): void {
+  updateDisplayedColumns() {
     if (this.isMobile) {
       this.displayedColumns = ['name', 'icon', 'actions'];
     } else if (this.isTablet) {
@@ -95,78 +90,70 @@ export class SubcategoriesComponent implements OnInit, OnDestroy {
     }
   }
 
-  onCategoryChange(categoryId: number | null): void {
+  onCategoryChange(categoryId: number | null) {
     this.selectedCategoryId = categoryId;
-    this.subcategoriesService.setSelectedCategoryId(categoryId);
+    this.service.setSelectedCategoryId(categoryId);
     this.selectedSubcategories = [];
   }
 
-  refreshTable(): void {
+  refreshTable() {
     this.sortField = null;
     this.sortDirection = 'asc';
-    this.subcategoriesService.sortSubcategories(null, 'asc');
-    this.subcategoriesService.setPage(1);
-    this.subcategoriesService.setSearchQuery('');
+    this.service.sortSubcategories(null, 'asc');
+    this.service.setPage(1);
+    this.service.setSearchQuery('');
     this.selectedSubcategories = [];
-    const searchInput = document.getElementById('searchSubcategories') as HTMLInputElement | null;
+    const searchInput = document.getElementById('searchSubcategories') as HTMLInputElement;
     if (searchInput) {
       searchInput.value = '';
     }
-    this.subcategoriesService.getSubcategories();
+    this.service.getSubcategories();
   }
 
-  openAddSubcategoryDialog(): void {
-  if (!this.selectedCategoryId) {
-    console.warn('Please select a category first.');
+ openAddSubcategoryDialog() {
+  if (!this.selectedCategoryId || !this.categories.find(c => c.id === this.selectedCategoryId)) {
+    console.warn('Please select a valid category.');
     return;
   }
   const dialogWidth = this.isMobile ? '90vw' : this.isTablet ? '80vw' : '800px';
-  const category = this.categories.find(c => c.id === this.selectedCategoryId);
-  if (!category) {
-    console.warn('Selected category not found.');
-    return;
-  }
-  const dialogRef = this.dialog.open(AddSubcategoriesComponent, {
+  const category = this.categories.find(c => c.id === this.selectedCategoryId)!;
+  this.dialog.open(AddSubcategoriesComponent, {
     width: dialogWidth,
     maxWidth: '100vw',
     data: { categoryId: this.selectedCategoryId, CategoryName: category.name }
-  });
-
-  dialogRef.afterClosed().subscribe(result => result && this.subcategoriesService.addSubcategory(result));
+  }).afterClosed().subscribe(result => result && this.service.addSubcategory(result));
 }
 
-startEdit(subcategory: Subcategory): void {
+startEdit(subcategory: Subcategory) {
   this.editingSubcategory = { ...subcategory };
   const dialogWidth = this.isMobile ? '90vw' : this.isTablet ? '80vw' : '800px';
-  const dialogRef = this.dialog.open(AddSubcategoriesComponent, {
+  this.dialog.open(AddSubcategoriesComponent, {
     width: dialogWidth,
     maxWidth: '100vw',
     data: { subcategory: this.editingSubcategory, categoryId: subcategory.categoryId, CategoryName: subcategory.CategoryName }
-  });
-
-  dialogRef.afterClosed().subscribe(result => {
-    result && this.subcategoriesService.updateSubcategory(result);
+  }).afterClosed().subscribe(result => {
+    if (result) this.service.updateSubcategory(result as Subcategory);
     this.editingSubcategory = null;
   });
 }
 
-  onSearchQueryChange(event: Event): void {
-    const query = (event.target as HTMLInputElement).value;
-    this.subcategoriesService.setSearchQuery(query);
+  onSearchQueryChange(event: Event) {
+    const inputElement = event.target as HTMLInputElement;
+    this.service.setSearchQuery(inputElement.value);
   }
 
-  onPageChange(event: { page: number }): void {
-    this.subcategoriesService.setPage(event.page);
+  onPageChange(event: any) {
+    this.service.setPage(event.page + 1);
     this.selectedSubcategories = [];
   }
 
-  sortColumn(field: string, direction: 'asc' | 'desc'): void {
+  sortColumn(field: string, direction: 'asc' | 'desc') {
     this.sortField = field;
     this.sortDirection = direction;
-    this.subcategoriesService.sortSubcategories(field, direction);
+    this.service.sortSubcategories(this.sortField, this.sortDirection);
   }
 
-  toggleSubcategory(subcategory: Subcategory): void {
+  toggleSubcategory(subcategory: Subcategory) {
     const index = this.selectedSubcategories.findIndex(s => s.id === subcategory.id);
     if (index === -1) {
       this.selectedSubcategories.push(subcategory);
@@ -179,39 +166,49 @@ startEdit(subcategory: Subcategory): void {
     return this.selectedSubcategories.some(s => s.id === subcategory.id);
   }
 
-  toggleAllSubcategories(checked: boolean): void {
-    this.selectedSubcategories = checked ? [...this.subcategoriesService.paginatedSubcategories()] : [];
+  toggleAllSubcategories(checked: boolean) {
+    if (checked) {
+      this.selectedSubcategories = [...this.service.paginatedSubcategories()];
+    } else {
+      this.selectedSubcategories = [];
+    }
   }
 
   isAllSelected(): boolean {
-    const paginated = this.subcategoriesService.paginatedSubcategories();
-    return paginated.length > 0 && this.selectedSubcategories.length === paginated.length;
+    return this.service.paginatedSubcategories().length > 0 &&
+           this.service.paginatedSubcategories().every(subcategory => this.isSelected(subcategory));
   }
 
-  deleteSelectedSubcategories(): void {
-    this.selectedSubcategories.forEach(subcategory => {
-      this.subcategoriesService.deleteSubcategory(subcategory.id);
-    });
+  deleteSelectedSubcategories() {
+    this.selectedSubcategories.forEach(subcategory => this.deleteSubcategory(subcategory.id));
     this.selectedSubcategories = [];
   }
 
-  deleteSubcategory(id: number): void {
-    this.subcategoriesService.deleteSubcategory(id);
+  deleteSubcategory(subcategoryId: number) {
+    this.service.deleteSubcategory(subcategoryId);
   }
 
   getPageNumbers(): number[] {
-    const totalPages = this.subcategoriesService.totalPages();
-    const currentPage = this.subcategoriesService.currentPage();
-    if (totalPages === 0) return [];
-    if (this.isMobile) {
-      const start = Math.max(1, currentPage - 1);
-      const end = Math.min(totalPages, currentPage + 1);
-      return Array.from({ length: end - start + 1 }, (_, i) => start + i);
+    const totalPages = this.service.totalPages();
+    const currentPage = this.service.currentPage();
+    const maxPagesToShow = this.isMobile ? 3 : this.isTablet ? 4 : 5;
+    let startPage = Math.max(1, currentPage - Math.floor(maxPagesToShow / 2));
+    let endPage = Math.min(totalPages, startPage + maxPagesToShow - 1);
+
+    if (endPage - startPage + 1 < maxPagesToShow) {
+      startPage = Math.max(1, endPage - maxPagesToShow + 1);
     }
-    return Array.from({ length: totalPages }, (_, i) => i + 1);
+
+    const pages: number[] = [];
+    if (totalPages > 0) {
+      for (let i = startPage; i <= endPage; i++) {
+        pages.push(i);
+      }
+    }
+    return pages;
   }
 
-  trackById(index: number, item: Subcategory): number {
-    return item.id;
+  trackById(index: number, subcategory: Subcategory): number {
+    return subcategory.id;
   }
 }

@@ -77,8 +77,8 @@ jobs:
             -Dsonar.sources=src
             -Dsonar.tests=src
             -Dsonar.javascript.lcov.reportPaths=coverage/lcov.info
-            -Dsonar.host.url=${{ secrets.SONAR_HOST_URL }}
-            -Dsonar.login=${{ secrets.SONAR_TOKEN }}
+            -Dsonar.host.url=
+            -Dsonar.login=
 
   deploy:
     needs: [build-test, sonar]
@@ -102,5 +102,5 @@ jobs:
       - name: Deploy to Netlify
         run: npx netlify deploy --dir=dist/angular-starter --prod
         env:
-          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
-          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
+          NETLIFY_AUTH_TOKEN: 
+          NETLIFY_SITE_ID: 

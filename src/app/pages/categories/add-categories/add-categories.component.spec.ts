@@ -1,58 +1,45 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { AddCategoriesComponent } from './add-categories.component';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { FormsModule, NgForm } from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatCardModule } from '@angular/material/card';
-import { MatDialogModule } from '@angular/material/dialog';
-import { CommonModule } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
+import { MatDialogModule, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { CommonModule } from '@angular/common';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { Category } from '../category';
 
-// Define Category interface
-interface Category {
-  id?: number;
-  name: string;
-  icon: string;
-  imageUrl: string;
-  comments: string;
-  createdAt?: Date;
-  modifiedAt?: Date;
+// Mock dependencies
+class MockMatDialogRef {
+  close = jest.fn();
 }
 
 describe('AddCategoriesComponent', () => {
   let component: AddCategoriesComponent;
   let fixture: ComponentFixture<AddCategoriesComponent>;
-  let dialogRefMock: jest.Mocked<MatDialogRef<AddCategoriesComponent>>;
-  let dialogData: { category?: Category | null };
+  let mockDialogRef: MockMatDialogRef;
 
   beforeEach(async () => {
-    // Mock MatDialogRef
-    dialogRefMock = {
-      close: jest.fn(),
-    } as unknown as jest.Mocked<MatDialogRef<AddCategoriesComponent>>;
-
-    // Default dialog data (no category)
-    dialogData = {};
+    mockDialogRef = new MockMatDialogRef();
 
     await TestBed.configureTestingModule({
       imports: [
+        AddCategoriesComponent,
         CommonModule,
-        FormsModule,
+        ReactiveFormsModule,
         MatButtonModule,
         MatFormFieldModule,
         MatInputModule,
         MatCardModule,
+        MatIconModule,
         MatDialogModule,
-        MatIconModule, // Assuming MatIcon is MatIconModule
-        BrowserAnimationsModule, // Required for Material animations
-        AddCategoriesComponent,
+        BrowserAnimationsModule,
       ],
       providers: [
-        { provide: MatDialogRef, useValue: dialogRefMock },
-        { provide: MAT_DIALOG_DATA, useValue: dialogData },
+        { provide: MatDialogRef, useValue: mockDialogRef },
+        { provide: MAT_DIALOG_DATA, useValue: {} },
       ],
     }).compileComponents();
 
@@ -61,12 +48,20 @@ describe('AddCategoriesComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  it('should create the component', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should initialize formCategory with empty values when no category is provided', () => {
-    expect(component.formCategory).toEqual({
+  it('should initialize the form with required fields', () => {
+    expect(component.categoryForm).toBeTruthy();
+    expect(component.categoryForm.get('name')).toBeTruthy();
+    expect(component.categoryForm.get('icon')).toBeTruthy();
+    expect(component.categoryForm.get('imageUrl')).toBeTruthy();
+    expect(component.categoryForm.get('comments')).toBeTruthy();
+  });
+
+  it('should initialize categoryForm with empty values when no category is provided', () => {
+    expect(component.categoryForm.value).toEqual({
       name: '',
       icon: '',
       imageUrl: '',
@@ -74,110 +69,127 @@ describe('AddCategoriesComponent', () => {
     });
   });
 
-  it('should initialize formCategory with provided category data', () => {
-    // Reset component with category data
-    dialogData.category = {
+  it('should initialize categoryForm with provided category data', () => {
+    const category: Category = {
       id: 1,
       name: 'Test Category',
       icon: 'test-icon',
       imageUrl: 'http://test.com/image.jpg',
       comments: 'Test comment',
-      createdAt: new Date(),
-      modifiedAt: new Date(),
+      createdAt: '2023-01-01', // Changed to string
+      modifiedAt: '2023-01-02', // Changed to string
     };
-    TestBed.resetTestingModule();
-    TestBed.configureTestingModule({
-      imports: [
-        CommonModule,
-        FormsModule,
-        MatButtonModule,
-        MatFormFieldModule,
-        MatInputModule,
-        MatCardModule,
-        MatDialogModule,
-        MatIconModule,
-        BrowserAnimationsModule,
-        AddCategoriesComponent,
-      ],
-      providers: [
-        { provide: MatDialogRef, useValue: dialogRefMock },
-        { provide: MAT_DIALOG_DATA, useValue: dialogData },
-      ],
-    }).compileComponents();
     fixture = TestBed.createComponent(AddCategoriesComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
 
-    expect(component.formCategory).toEqual(dialogData.category);
+    expect(component.categoryForm.value)
   });
 
-  it('should not save and not close dialog if form is invalid', () => {
-    const form = { invalid: true } as NgForm;
-    component.saveCategory(form);
-    expect(dialogRefMock.close).not.toHaveBeenCalled();
+  it('should not close dialog when form is invalid in saveCategory', () => {
+    component.categoryForm.setValue({
+      name: '',
+      icon: '',
+      imageUrl: '',
+      comments: '',
+    });
+    component.saveCategory();
+
+    expect(mockDialogRef.close).not.toHaveBeenCalled();
   });
 
-  it('should not save and not close dialog if formCategory is invalid', () => {
-    const form = { invalid: false } as NgForm;
-    component.formCategory = { name: '', icon: '', imageUrl: '', comments: '' };
-    component.saveCategory(form);
-    expect(dialogRefMock.close).not.toHaveBeenCalled();
-  });
-
-  it('should save category and close dialog if form is valid', () => {
-    const form = { invalid: false } as NgForm;
-    component.formCategory = {
+  it('should close dialog with form value when form is valid', () => {
+    const validFormValue = {
       name: 'Test Category',
       icon: 'test-icon',
       imageUrl: 'http://test.com/image.jpg',
       comments: 'Test comment',
     };
-    component.saveCategory(form);
-    expect(dialogRefMock.close).toHaveBeenCalledWith(component.formCategory);
+    component.categoryForm.setValue(validFormValue);
+    component.saveCategory();
+
+    expect(mockDialogRef.close).toHaveBeenCalledWith(validFormValue);
   });
 
-  it('should return true for isFormInvalid if name is empty', () => {
-    component.formCategory = {
+  it('should mark all controls as touched when form is invalid', () => {
+    component.categoryForm.setValue({
       name: '',
-      icon: 'test-icon',
-      imageUrl: 'http://test.com/image.jpg',
-      comments: '',
-    };
-    expect(component.isFormInvalid()).toBe(true);
-  });
-
-  it('should return true for isFormInvalid if icon is empty', () => {
-    component.formCategory = {
-      name: 'Test Category',
       icon: '',
-      imageUrl: 'http://test.com/image.jpg',
-      comments: '',
-    };
-    expect(component.isFormInvalid()).toBe(true);
-  });
-
-  it('should return true for isFormInvalid if imageUrl is empty', () => {
-    component.formCategory = {
-      name: 'Test Category',
-      icon: 'test-icon',
       imageUrl: '',
       comments: '',
-    };
-    expect(component.isFormInvalid()).toBe(true);
+    });
+    component.saveCategory();
+
+    expect(component.categoryForm.get('name')?.touched).toBe(true);
+    expect(component.categoryForm.get('icon')?.touched).toBe(true);
+    expect(component.categoryForm.get('imageUrl')?.touched).toBe(true);
   });
 
-  it('should return false for isFormInvalid if all required fields are filled', () => {
-    component.formCategory = {
-      name: 'Test Category',
-      icon: 'test-icon',
+  it('should close dialog when cancel is called', () => {
+    component.cancel();
+
+    expect(mockDialogRef.close).toHaveBeenCalled();
+  });
+
+  it('should trigger saveCategory on form submission', () => {
+    const saveCategorySpy = jest.spyOn(component, 'saveCategory');
+    component.categoryForm.setValue({
+      name: 'Test',
+      icon: 'star',
       imageUrl: 'http://test.com/image.jpg',
       comments: '',
-    };
-    expect(component.isFormInvalid()).toBe(false);
+    });
+    fixture.detectChanges();
+
+    const form = fixture.debugElement.nativeElement.querySelector('form');
+    form.dispatchEvent(new Event('submit'));
+    fixture.detectChanges();
+
+    expect(saveCategorySpy).toHaveBeenCalled();
   });
 
-  it('should close dialog without data on cancel', () => {
-    component.cancel();
-    expect(dialogRefMock.close).toHaveBeenCalledWith();
+  it('should disable save button when form is invalid', () => {
+    component.categoryForm.setValue({
+      name: '',
+      icon: '',
+      imageUrl: '',
+      comments: '',
+    });
+    fixture.detectChanges();
+
+    const saveButton = fixture.debugElement.nativeElement.querySelector('button[type="submit"]');
+    expect(saveButton.disabled).toBe(true);
+  });
+
+  it('should enable save button when form is valid', () => {
+    component.categoryForm.setValue({
+      name: 'Test',
+      icon: 'star',
+      imageUrl: 'http://test.com/image.jpg',
+      comments: '',
+    });
+    fixture.detectChanges();
+
+    const saveButton = fixture.debugElement.nativeElement.querySelector('button[type="submit"]');
+    expect(saveButton.disabled).toBe(false);
+  });
+
+
+  it('should show validation errors for required fields when form is submitted', () => {
+    component.categoryForm.setValue({
+      name: '',
+      icon: '',
+      imageUrl: '',
+      comments: '',
+    });
+    fixture.detectChanges();
+
+    const form = fixture.debugElement.nativeElement.querySelector('form');
+    form.dispatchEvent(new Event('submit'));
+    fixture.detectChanges();
+
+    const nameError = fixture.debugElement.nativeElement.querySelector('mat-error');
+    expect(nameError).toBeTruthy();
+    expect(nameError.textContent).toContain('Category Name is required');
   });
 });

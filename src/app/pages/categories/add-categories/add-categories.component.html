@@ -10,112 +10,40 @@
     </mat-card-title>
   </mat-card-header>
   <mat-card-content>
-    <form #categoryForm="ngForm" (ngSubmit)="saveCategory(categoryForm)">
+    <form [formGroup]="categoryForm" (ngSubmit)="saveCategory()">
       <div class="grid grid-cols-2 gap-4">
         <div class="flex flex-col min-h-[6rem]">
-          <label for="name" class="text-sm font-bold text-gray-700 dark:text-gray-200">Name</label>
-          <input
-            id="name"
-            type="text"
-            [(ngModel)]="formCategory.name"
-            name="name"
-            required
-            placeholder="Category Name"
-            class="p-2 border rounded text-sm w-full focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-800 dark:border-gray-600 dark:text-gray-100 dark:placeholder-gray-400 h-10"
-            [ngClass]="{
-              'border-[#D7373C] dark:border-[#F87171]': categoryForm.controls['name']?.hasError('required') && categoryForm.submitted,
-              'bg-gray-100 dark:bg-gray-700': false
-            }"
-            aria-required="true"
-            [attr.aria-invalid]="categoryForm.controls['name']?.hasError('required') && categoryForm.submitted"
-            aria-describedby="nameError"
-          />
-          <small
-            id="nameError"
-            class="text-xs text-[#D7373C] dark:text-[#F87171] mt-1 error-message"
-            [ngClass]="{
-              'visible opacity-100': categoryForm.controls['name']?.hasError('required') && categoryForm.submitted,
-              'invisible opacity-0': !(categoryForm.controls['name']?.hasError('required') && categoryForm.submitted)
-            }"
-          >
-            Category Name is required
-          </small>
+          <mat-form-field>
+            <mat-label>Name</mat-label>
+            <input matInput formControlName="name" required placeholder="Category Name">
+            <mat-error *ngIf="categoryForm.get('name')?.hasError('required') && categoryForm.get('name')?.touched">
+              Category Name is required
+            </mat-error>
+          </mat-form-field>
         </div>
-
         <div class="flex flex-col min-h-[6rem]">
-          <label for="icon" class="text-sm font-bold text-gray-700 dark:text-gray-200">Icon</label>
-          <input
-            id="icon"
-            type="text"
-            [(ngModel)]="formCategory.icon"
-            name="icon"
-            required
-            placeholder="Material Icon Name (e.g., star)"
-            class="p-2 border rounded text-sm w-full focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-800 dark:border-gray-600 dark:text-gray-100 dark:placeholder-gray-400 h-10"
-            [ngClass]="{
-              'border-[#D7373C] dark:border-[#F87171]': categoryForm.controls['icon']?.hasError('required') && categoryForm.submitted,
-              'bg-gray-100 dark:bg-gray-700': false
-            }"
-            aria-required="true"
-            [attr.aria-invalid]="categoryForm.controls['icon']?.hasError('required') && categoryForm.submitted"
-            aria-describedby="iconError"
-          />
-          <small
-            id="iconError"
-            class="text-xs text-[#D7373C] dark:text-[#F87171] mt-1 error-message"
-            [ngClass]="{
-              'visible opacity-100': categoryForm.controls['icon']?.hasError('required') && categoryForm.submitted,
-              'invisible opacity-0': !(categoryForm.controls['icon']?.hasError('required') && categoryForm.submitted)
-            }"
-          >
-            Icon is required
-          </small>
+          <mat-form-field>
+            <mat-label>Icon</mat-label>
+            <input matInput formControlName="icon" required placeholder="Material Icon Name (e.g., star)">
+            <mat-error *ngIf="categoryForm.get('icon')?.hasError('required') && categoryForm.get('icon')?.touched">
+              Icon is required
+            </mat-error>
+          </mat-form-field>
         </div>
-
         <div class="flex flex-col min-h-[6rem]">
-          <label for="imageUrl" class="text-sm font-bold text-gray-700 dark:text-gray-200">Image URL</label>
-          <input
-            id="imageUrl"
-            type="url"
-            [(ngModel)]="formCategory.imageUrl"
-            name="imageUrl"
-            required
-            placeholder="Image URL"
-            class="p-2 border rounded text-sm w-full focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-800 dark:border-gray-600 dark:text-gray-100 dark:placeholder-gray-400 h-10"
-            [ngClass]="{
-              'border-[#D7373C] dark:border-[#F87171]': categoryForm.controls['imageUrl']?.hasError('required') && categoryForm.submitted,
-              'bg-gray-100 dark:bg-gray-700': false
-            }"
-            aria-required="true"
-            [attr.aria-invalid]="categoryForm.controls['imageUrl']?.hasError('required') && categoryForm.submitted"
-            aria-describedby="imageUrlError"
-          />
-          <small
-            id="imageUrlError"
-            class="text-xs text-[#D7373C] dark:text-[#F87171] mt-1 error-message"
-            [ngClass]="{
-              'visible opacity-100': categoryForm.controls['imageUrl']?.hasError('required') && categoryForm.submitted,
-              'invisible opacity-0': !(categoryForm.controls['imageUrl']?.hasError('required') && categoryForm.submitted)
-            }"
-          >
-            Image URL is required
-          </small>
+          <mat-form-field>
+            <mat-label>Image URL</mat-label>
+            <input matInput formControlName="imageUrl" required placeholder="Image URL">
+            <mat-error *ngIf="categoryForm.get('imageUrl')?.hasError('required') && categoryForm.get('imageUrl')?.touched">
+              Image URL is required
+            </mat-error>
+          </mat-form-field>
         </div>
-
         <div class="flex flex-col min-h-[6rem]">
-          <label for="comments" class="text-sm font-bold text-gray-700 dark:text-gray-200">Comments</label>
-          <input
-            id="comments"
-            type="text"
-            [(ngModel)]="formCategory.comments"
-            name="comments"
-            placeholder="Comments"
-            class="p-2 border rounded text-sm w-full focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-800 dark:border-gray-600 dark:text-gray-100 dark:placeholder-gray-400 h-10"
-            [ngClass]="{
-              'bg-gray-100 dark:bg-gray-700': false
-            }"
-            aria-describedby="commentsError"
-          />
+          <mat-form-field>
+            <mat-label>Comments</mat-label>
+            <input matInput formControlName="comments" placeholder="Comments">
+          </mat-form-field>
         </div>
       </div>
       <div class="mt-4 flex justify-end gap-2">
@@ -133,7 +61,7 @@
           mat-raised-button
           color="primary"
           type="submit"
-          [disabled]="isFormInvalid()"
+          [disabled]="categoryForm.invalid"
           class="hover:bg-blue-700 transition"
           style="font-family: 'Roboto, sans-serif';"
           [attr.aria-label]="data?.category ? 'Update category' : 'Save category'"
