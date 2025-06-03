@@ -20,8 +20,7 @@ jobs:
           cache: 'npm'
 
       - name: Install dependencies
-        run: npm ci --legacy-peer-deps
-        
+        run: npm ci
 
       - name: Install jq
         run: sudo apt-get update && sudo apt-get install -y jq
@@ -32,8 +31,109 @@ jobs:
             jq '.compilerOptions.esModuleInterop = true' tsconfig.json > tmp.json && mv tmp.json tsconfig.json
           fi
 
-      - name: Install jest-silent-reporter
-        run: npm install --save-dev jest-silent-reporter
+      - name: Run unit tests with coverage
+        run: npm run test:coverage -- --watch=false --silent --reporters=jest-silent-reporter
+        env:
+          JEST_SILENT_REPORTER_SHOW_SUMMARY: false
+          JEST_SILENT_REPORTER_SHOW_COVERAGE: true
+
+      - name: Upload coverage report
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-report
+          path: coverage/
+
+      - name: Build Angular app
+        run: npm run build -- --configuration=production
+
+  sonar:
+    needs: build-test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Download coverage report
+        uses: actions/download-artifact@v4
+        with:
+          name: coverage-report
+          path: coverage/
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run SonarQube scan
+        uses: SonarSource/sonarqube-scan-action@v3
+        with:
+          args: >
+            -Dsonar.projectKey=code-book
+            -Dsonar.sources=src
+            -Dsonar.tests=src
+            -Dsonar.javascript.lcov.reportPaths=coverage/lcov.info
+            -Dsonar.host.url=${{ secrets.SONAR_HOST_URL }}
+            -Dsonar.login=${{ secrets.SONAR_TOKEN }}
+
+  deploy:
+    needs: [build-test, sonar]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build Angular app
+        run: npm run build -- --configuration=production
+
+      - name: Deploy to Netlify
+        run: npx netlify deploy --dir=dist/code-book --prod
+        env:
+          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}name: CI/CD Pipeline
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install jq
+        run: sudo apt-get update && sudo apt-get install -y jq
+
+      - name: Check and update tsconfig.json
+        run: |
+          if ! jq '.compilerOptions.esModuleInterop' tsconfig.json | grep -q true; then
+            jq '.compilerOptions.esModuleInterop = true' tsconfig.json > tmp.json && mv tmp.json tsconfig.json
+          fi
 
       - name: Run unit tests with coverage
         run: npm run test:coverage -- --watch=false --silent --reporters=jest-silent-reporter
