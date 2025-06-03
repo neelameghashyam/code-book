@@ -35,7 +35,7 @@ jobs:
         run: npm install --save-dev jest-silent-reporter --legacy-peer-deps
 
       - name: Run unit tests with coverage
-        run: npm run test:coverage -- --watch=false --verbose
+        run: npm run test:coverage -- --watch=false --verbose # Use --verbose for debugging
         env:
           JEST_SILENT_REPORTER_SHOW_SUMMARY: false
           JEST_SILENT_REPORTER_SHOW_COVERAGE: true
