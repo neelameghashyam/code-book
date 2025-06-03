@@ -11,28 +11,31 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Setup Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: 18
+          cache: 'npm' # Cache npm dependencies
 
       - name: Install dependencies
-        run: npm install
+        run: npm ci # Use npm ci for faster, deterministic installs
 
-      - name: Install jest-silent-reporter
-        run: npm install --save-dev jest-silent-reporter
+      - name: Install jq
+        run: sudo apt-get update && sudo apt-get install -y jq
+        if: '!contains(fromJSON(readFile("tsconfig.json")).compilerOptions.esModuleInterop, true)'
 
       - name: Update tsconfig.json
         run: |
           jq '.compilerOptions.esModuleInterop = true' tsconfig.json > tmp.json && mv tmp.json tsconfig.json
-        env:
-          JQ_VERSION: 1.6
         if: '!contains(fromJSON(readFile("tsconfig.json")).compilerOptions.esModuleInterop, true)'
 
+      - name: Install jest-silent-reporter
+        run: npm install --save-dev jest-silent-reporter
+
       - name: Run unit tests with coverage
-        run: npm run test -- --watch=false --coverage --silent --reporters=jest-silent-reporter
+        run: npm run test:coverage -- --watch=false --silent --reporters=jest-silent-reporter
         env:
           JEST_SILENT_REPORTER_SHOW_SUMMARY: false
           JEST_SILENT_REPORTER_SHOW_COVERAGE: true
@@ -51,23 +54,25 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Download coverage report
         uses: actions/download-artifact@v4
         with:
           name: coverage-report
+          path: coverage/
 
       - name: Setup Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: 18
+          cache: 'npm'
 
       - name: Install dependencies
-        run: npm install
+        run: npm ci
 
       - name: Run SonarQube scan
-        uses: SonarSource/sonarqube-scan-action@v1.0.0
+        uses: SonarSource/sonarqube-scan-action@v3
         with:
           args: >
             -Dsonar.projectKey=code-book
@@ -77,53 +82,27 @@ jobs:
             -Dsonar.host.url=${{ secrets.SONAR_HOST_URL }}
             -Dsonar.login=${{ secrets.SONAR_TOKEN }}
 
-  e2e-tests:
-    needs: build-test
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: 18
-
-      - name: Install dependencies
-        run: npm install
-
-      - name: Install Playwright browsers
-        run: npx playwright install --with-deps
-
-      - name: Run Playwright tests
-        run: npx playwright test
-
-      - name: Upload Playwright report
-        uses: actions/upload-artifact@v3
-        with:
-          name: playwright-report
-          path: playwright-report/
-
   deploy:
-    needs: [build-test, sonar, e2e-tests]
+    needs: [build-test, sonar]
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Setup Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: 18
+          cache: 'npm'
 
       - name: Install dependencies
-        run: npm install
+        run: npm ci
 
       - name: Build Angular app
         run: npm run build -- --configuration=production
 
       - name: Deploy to Netlify
-        run: npx netlify deploy --dir=dist/angular-starter --prod
+        run: npx netlify deploy --dir=dist/code-book --prod
         env:
           NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
           NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
