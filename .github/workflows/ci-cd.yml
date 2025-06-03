@@ -17,19 +17,19 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 18
-          cache: 'npm' # Cache npm dependencies
+          cache: 'npm'
 
       - name: Install dependencies
-        run: npm ci # Use npm ci for faster, deterministic installs
+        run: npm ci
 
       - name: Install jq
         run: sudo apt-get update && sudo apt-get install -y jq
-        if: '!contains(fromJSON(readFile("tsconfig.json")).compilerOptions.esModuleInterop, true)'
 
-      - name: Update tsconfig.json
+      - name: Check and update tsconfig.json
         run: |
-          jq '.compilerOptions.esModuleInterop = true' tsconfig.json > tmp.json && mv tmp.json tsconfig.json
-        if: '!contains(fromJSON(readFile("tsconfig.json")).compilerOptions.esModuleInterop, true)'
+          if ! jq '.compilerOptions.esModuleInterop' tsconfig.json | grep -q true; then
+            jq '.compilerOptions.esModuleInterop = true' tsconfig.json > tmp.json && mv tmp.json tsconfig.json
+          fi
 
       - name: Install jest-silent-reporter
         run: npm install --save-dev jest-silent-reporter
