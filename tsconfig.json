@@ -13,7 +13,13 @@
     "esModuleInterop": true,
     "skipLibCheck": true,
     "typeRoots": [
-      "node_modules/@types"
+      "node_modules/@types",
+      "node_modules/@types/aria-query",
+      "node_modules/@types/estree",
+      "node_modules/@types/json-schema",
+      "node_modules/@types/mdx",
+      "node_modules/@types/uuid",
+      "node_modules/@types/webpack-env"
     ],
     "lib": [
       "dom",

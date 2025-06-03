@@ -1,17 +1,9 @@
 import { Routes } from '@angular/router';
-import { DashboardComponent } from './pages/dashboard/dashboard.component';
-import { UsersComponent } from './pages/users/users.component';
-import { BusinessComponent } from './pages/business/business.component';
-import { ListBusinessesComponent } from './pages/business/list-businesses/list-businesses.component';
-import { LoginComponent } from './login/login/login.component';
-import { MainDashboardComponent } from './main-dashboard/main-dashboard.component';
-import { AuthGuard } from './auth.guard';
-import { PincodesComponent } from './pages/pincodes/pincodes.component';
-import { Dashboard1Component } from './pages/dashboard-1/dashboard-1.component';
-import { MainDashboard2Component } from './main-dashboard-2/main-dashboard-2.component';
 import { DashboardSelectorComponent } from './dashboard-selector/dashboard-selector.component';
-import { CategoriesComponent } from './pages/categories/categories.component';
-import { SubcategoriesComponent } from './pages/subcategories/subcategories.component';
+import { MainDashboardComponent } from './main-dashboard/main-dashboard.component';
+import { LoginComponent } from './login/login/login.component';
+import { AuthGuard } from './auth.guard';
+import { MainDashboard2Component } from './main-dashboard-2/main-dashboard-2.component';
 
 export const routes: Routes = [
   {
@@ -24,14 +16,38 @@ export const routes: Routes = [
     component: MainDashboardComponent,
     canActivate: [AuthGuard],
     children: [
-      { path: 'dashboard', component: DashboardComponent },
-      { path: 'dashboard-1', component: Dashboard1Component },
-      { path: 'categories', component: CategoriesComponent },
-      { path: 'sub-categories', component: SubcategoriesComponent},
-      { path: 'pincode', component: PincodesComponent },
-      { path: 'users', component: UsersComponent },
-      { path: 'business', component: BusinessComponent },
-      { path: 'business-list', component: ListBusinessesComponent },
+      {
+        path: 'dashboard',
+        loadComponent: () => import('./pages/dashboard/dashboard.component').then(m => m.DashboardComponent),
+      },
+      {
+        path: 'dashboard-1',
+        loadComponent: () => import('./pages/dashboard-1/dashboard-1.component').then(m => m.Dashboard1Component),
+      },
+      {
+        path: 'categories',
+        loadComponent: () => import('./pages/categories/categories.component').then(m => m.CategoriesComponent),
+      },
+      {
+        path: 'sub-categories',
+        loadComponent: () => import('./pages/subcategories/subcategories.component').then(m => m.SubcategoriesComponent),
+      },
+      {
+        path: 'pincode',
+        loadComponent: () => import('./pages/pincodes/pincodes.component').then(m => m.PincodesComponent),
+      },
+      {
+        path: 'users',
+        loadComponent: () => import('./pages/users/users.component').then(m => m.UsersComponent),
+      },
+      {
+        path: 'business',
+        loadComponent: () => import('./pages/business/business.component').then(m => m.BusinessComponent),
+      },
+      {
+        path: 'business-list',
+        loadComponent: () => import('./pages/business/list-businesses/list-businesses.component').then(m => m.ListBusinessesComponent),
+      },
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
     ],
   },
@@ -40,17 +56,38 @@ export const routes: Routes = [
     component: MainDashboard2Component,
     canActivate: [AuthGuard],
     children: [
-      { path: 'dashboard', component: DashboardComponent },
-      { path: 'pincode', component: PincodesComponent },
-      { path: 'categories', component: CategoriesComponent },
-      { path: 'sub-categories', component: SubcategoriesComponent},
-      { path: 'users', component: UsersComponent },
-      { path: 'business', component: BusinessComponent },
-      { path: 'business-list', component: ListBusinessesComponent },
+      {
+        path: 'dashboard',
+        loadComponent: () => import('./pages/dashboard/dashboard.component').then(m => m.DashboardComponent),
+      },
+      {
+        path: 'pincode',
+        loadComponent: () => import('./pages/pincodes/pincodes.component').then(m => m.PincodesComponent),
+      },
+      {
+        path: 'categories',
+        loadComponent: () => import('./pages/categories/categories.component').then(m => m.CategoriesComponent),
+      },
+      {
+        path: 'sub-categories',
+        loadComponent: () => import('./pages/subcategories/subcategories.component').then(m => m.SubcategoriesComponent),
+      },
+      {
+        path: 'users',
+        loadComponent: () => import('./pages/users/users.component').then(m => m.UsersComponent),
+      },
+      {
+        path: 'business',
+        loadComponent: () => import('./pages/business/business.component').then(m => m.BusinessComponent),
+      },
+      {
+        path: 'business-list',
+        loadComponent: () => import('./pages/business/list-businesses/list-businesses.component').then(m => m.ListBusinessesComponent),
+      },
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
     ],
   },
   { path: 'login', component: LoginComponent },
-  { path: '', redirectTo: 'dashboard-selector', pathMatch: 'full' }, // Updated redirect
-  { path: '**', redirectTo: 'dashboard-selector' }, // Updated wildcard redirect
+  { path: '', redirectTo: 'dashboard-selector', pathMatch: 'full' },
+  { path: '**', redirectTo: 'dashboard-selector' },
 ];

@@ -33,7 +33,7 @@ const apiUrl = 'https://dbapiservice.onrender.com/dbapis/v1/pincodes';
 export const PincodeStore = signalStore(
   { providedIn: 'root' },
   withState(initialState),
-  withComputed(({ pincodes, searchQuery, currentPage, pageSize, isLoading, error, sortField, sortDirection }) => {
+  withComputed(({ pincodes, searchQuery, currentPage, pageSize, sortField, sortDirection }) => {
     const filteredPincodes = computed(() => {
       let filtered = pincodes().filter(p =>
         (String(p.officeName || '').toLowerCase().includes(searchQuery().toLowerCase())) ||
@@ -49,11 +49,7 @@ export const PincodeStore = signalStore(
           const field = sortField() as keyof Pincode;
           const valueA = String(a[field] || '').toLowerCase();
           const valueB = String(b[field] || '').toLowerCase();
-          if (sortDirection() === 'asc') {
-            return valueA.localeCompare(valueB);
-          } else {
-            return valueB.localeCompare(valueA);
-          }
+          return sortDirection() === 'asc' ? valueA.localeCompare(valueB) : valueB.localeCompare(valueA);
         });
       }
 
@@ -61,17 +57,12 @@ export const PincodeStore = signalStore(
     });
 
     return {
-      pincodes: computed(() => pincodes()),
       filteredPincodes,
       paginatedPincodes: computed(() => {
         const start = (currentPage() - 1) * pageSize();
         return filteredPincodes().slice(start, start + pageSize());
       }),
       totalPages: computed(() => Math.ceil(filteredPincodes().length / pageSize())),
-      currentPage: computed(() => currentPage()),
-      pageSize: computed(() => pageSize()),
-      isLoading: computed(() => isLoading()),
-      error: computed(() => error()),
     };
   }),
   withMethods((store, http = inject(HttpClient)) => ({
@@ -105,8 +96,7 @@ export const PincodeStore = signalStore(
         }
         patchState(store, { pincodes, initialized: true, isLoading: false, error: null });
       } catch (error: any) {
-        const errorMessage = error.message || 'Failed to load pincodes';
-        patchState(store, { error: errorMessage, isLoading: false });
+        patchState(store, { error: error.message || 'Failed to load pincodes', isLoading: false });
         throw error;
       }
     },
@@ -127,15 +117,10 @@ export const PincodeStore = signalStore(
         const pincodes = localData ? JSON.parse(localData) : [];
         pincodes.push(newPincode);
         localStorage.setItem('pincodes', JSON.stringify(pincodes));
-        patchState(store, {
-          pincodes: [...store.pincodes(), newPincode],
-          isLoading: false,
-          error: null,
-        });
+        patchState(store, { pincodes: [...store.pincodes(), newPincode], isLoading: false, error: null });
         return newPincode;
       } catch (error: any) {
-        const errorMessage = error.message || 'Failed to add pincode';
-        patchState(store, { error: errorMessage, isLoading: false });
+        patchState(store, { error: error.message || 'Failed to add pincode', isLoading: false });
         throw error;
       }
     },
@@ -168,7 +153,7 @@ export const PincodeStore = signalStore(
                     officeName: String(pincode.officeName || ''),
                     districtName: String(pincode.districtName || ''),
                     taluk: String(pincode.taluk || ''),
-                    stateName: String(p.stateName || ''),
+                    stateName: String(pincode.stateName || ''),
                     city: String(pincode.city || ''),
                   }
                 : p
@@ -176,11 +161,12 @@ export const PincodeStore = signalStore(
             isLoading: false,
             error: null,
           });
+        } else {
+          patchState(store, { isLoading: false, error: null });
         }
       } catch (error: any) {
-        // const errorMessage = error.message || 'Failed to update pincode';
-        // patchState(store, { error: errorMessage, isLoading: false });
-        // throw error;
+        patchState(store, { error: error.message || 'Failed to update pincode', isLoading: false });
+        throw error;
       }
     },
     async deletePincode(id: number) {
@@ -191,16 +177,13 @@ export const PincodeStore = signalStore(
           const pincodes = JSON.parse(localData);
           const updatedPincodes = pincodes.filter((p: Pincode) => p.id !== id);
           localStorage.setItem('pincodes', JSON.stringify(updatedPincodes));
-          patchState(store, {
-            pincodes: store.pincodes().filter(p => p.id !== id),
-            isLoading: false,
-            error: null,
-          });
+          patchState(store, { pincodes: store.pincodes().filter(p => p.id !== id), isLoading: false, error: null });
+        } else {
+          patchState(store, { isLoading: false, error: null });
         }
       } catch (error: any) {
-        // const errorMessage = error.message || 'Failed to delete pincode';
-        // patchState(store, { error: errorMessage, isLoading: false });
-        // throw error;
+        patchState(store, { error: error.message || 'Failed to delete pincode', isLoading: false });
+        throw error;
       }
     },
     setPage(page: number) {

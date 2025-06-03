@@ -1,725 +1,726 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <testExecutions version="1">
-  <file path="C:\Angular project-2\codebook\src\app\app.config.spec.ts">
-    <testCase name="AppConfig HttpLoaderFactory should return a TranslateHttpLoader instance" duration="61"/>
-  </file>
-  <file path="C:\Angular project-2\codebook\src\app\pages\users\users.component.spec.ts">
-    <testCase name="UsersComponent should create the component" duration="2257"/>
-    <testCase name="UsersComponent should initialize dataSource and set up effect in constructor" duration="978"/>
-    <testCase name="UsersComponent should handle error in effect when store.error is set" duration="679"/>
-    <testCase name="UsersComponent should log warning when paginator is not initialized in effect" duration="697"/>
-    <testCase name="UsersComponent should set paginator when initialized in effect" duration="548"/>
-    <testCase name="UsersComponent should call loadUsers and set filterPredicate in ngOnInit" duration="233"/>
-    <testCase name="UsersComponent should log message in ngOnDestroy" duration="272"/>
-    <testCase name="UsersComponent should call deleteUser in store when deleteUser is called" duration="250"/>
-    <testCase name="UsersComponent should open dialog with correct config in openPopup" duration="228"/>
-    <testCase name="UsersComponent should apply filter and reset paginator when applyFilter is called" duration="644"/>
-    <testCase name="UsersComponent should not call firstPage when paginator is not set in applyFilter" duration="427"/>
+  <file path="C:\Angular project-2\codebook\src\app\pages\dashboard\dashboard.component.spec.ts">
+    <testCase name="DashboardComponent should create" duration="1119"/>
+    <testCase name="DashboardComponent should initialize form and countries" duration="447"/>
+    <testCase name="DashboardComponent should set language from localStorage on init" duration="189"/>
+    <testCase name="DashboardComponent should set default language to en if no lang in localStorage" duration="252"/>
+    <testCase name="DashboardComponent should update responsiveClass based on breakpoint" duration="218"/>
+    <testCase name="DashboardComponent should load service providers from localStorage" duration="245"/>
+    <testCase name="DashboardComponent should handle null service providers in localStorage" duration="209"/>
+    <testCase name="DashboardComponent should handle localStorage error in loadFromLocalStorage" duration="251"/>
+    <testCase name="DashboardComponent should create service provider form group" duration="203"/>
+    <testCase name="DashboardComponent should delete service provider" duration="253"/>
+    <testCase name="DashboardComponent should handle error in deleteServiceProvider" duration="150"/>
+    <testCase name="DashboardComponent should submit valid form" duration="241"/>
+    <testCase name="DashboardComponent should handle invalid form submission" duration="239"/>
+    <testCase name="DashboardComponent should handle specific form validation errors" duration="199"/>
+    <testCase name="DashboardComponent should handle localStorage error in onSubmit" duration="232"/>
+    <testCase name="DashboardComponent should enable edit mode" duration="215"/>
+    <testCase name="DashboardComponent should cancel form" duration="297"/>
+    <testCase name="DashboardComponent should save to localStorage" duration="182"/>
+    <testCase name="DashboardComponent should handle error in saveToLocalStorage" duration="184"/>
+    <testCase name="DashboardComponent should track by provider id" duration="129"/>
+    <testCase name="DashboardComponent should get serviceProvidersArray" duration="146"/>
+    <testCase name="DashboardComponent should handle empty service providers in loadFromLocalStorage" duration="203"/>
+    <testCase name="DashboardComponent should handle duplicate service providers in loadFromLocalStorage" duration="169"/>
+    <testCase name="DashboardComponent should handle invalid JSON in loadFromLocalStorage" duration="149"/>
+    <testCase name="DashboardComponent should handle null provider in createServiceProviderFormGroup" duration="273"/>
+    <testCase name="DashboardComponent should handle missing businessForm in loadFromLocalStorage" duration="174"/>
   </file>
   <file path="C:\Angular project-2\codebook\src\app\pages\categories\categories.component.spec.ts">
-    <testCase name="CategoriesComponent should create the component" duration="2224"/>
-    <testCase name="CategoriesComponent should initialize in ngOnInit and set up subscriptions" duration="2061"/>
-    <testCase name="CategoriesComponent should unsubscribe in ngOnDestroy" duration="348"/>
-    <testCase name="CategoriesComponent should not throw error if breakpointSubscription is undefined in ngOnDestroy" duration="368"/>
-    <testCase name="CategoriesComponent should update displayed columns for mobile" duration="449"/>
-    <testCase name="CategoriesComponent should update displayed columns for tablet" duration="302"/>
-    <testCase name="CategoriesComponent should update displayed columns for desktop" duration="348"/>
-    <testCase name="CategoriesComponent should refresh table" duration="361"/>
-    <testCase name="CategoriesComponent should handle refresh table when search input is not found" duration="369"/>
-    <testCase name="CategoriesComponent should handle search query change" duration="396"/>
-    <testCase name="CategoriesComponent should handle page change" duration="305"/>
-    <testCase name="CategoriesComponent should sort column" duration="387"/>
-    <testCase name="CategoriesComponent should toggle category selection" duration="517"/>
-    <testCase name="CategoriesComponent should check if category is selected" duration="355"/>
-    <testCase name="CategoriesComponent should toggle all categories" duration="254"/>
-    <testCase name="CategoriesComponent should check if all categories are selected" duration="356"/>
-    <testCase name="CategoriesComponent should delete selected categories" duration="339"/>
-    <testCase name="CategoriesComponent should get page numbers for pagination" duration="432"/>
-    <testCase name="CategoriesComponent should handle pagination with single page" duration="435"/>
-    <testCase name="CategoriesComponent should handle pagination with no pages" duration="225"/>
-    <testCase name="CategoriesComponent should track categories by id" duration="199"/>
-    <testCase name="CategoriesComponent should handle trackById with null category" duration="235"/>
-    <testCase name="CategoriesComponent should display error message when service.error is truthy" duration="282"/>
-    <testCase name="CategoriesComponent should display loading spinner when service.isLoading is true" duration="380"/>
-    <testCase name="CategoriesComponent should apply dark-theme class when darkModeService.isDarkMode is true" duration="271"/>
-    <testCase name="CategoriesComponent should handle search input change" duration="381"/>
-    <testCase name="CategoriesComponent should display no pages message when no pages are available" duration="371"/>
-    <testCase name="CategoriesComponent should handle empty category list" duration="229"/>
-    <testCase name="CategoriesComponent should handle sort direction toggle" duration="448"/>
+    <testCase name="CategoriesComponent should create the component" duration="1237"/>
+    <testCase name="CategoriesComponent should initialize in ngOnInit and set up subscriptions" duration="1406"/>
+    <testCase name="CategoriesComponent should unsubscribe in ngOnDestroy" duration="373"/>
+    <testCase name="CategoriesComponent should not throw error if breakpointSubscription is undefined in ngOnDestroy" duration="295"/>
+    <testCase name="CategoriesComponent should update displayed columns for mobile" duration="202"/>
+    <testCase name="CategoriesComponent should update displayed columns for tablet" duration="276"/>
+    <testCase name="CategoriesComponent should update displayed columns for desktop" duration="274"/>
+    <testCase name="CategoriesComponent should refresh table" duration="269"/>
+    <testCase name="CategoriesComponent should handle refresh table when search input is not found" duration="321"/>
+    <testCase name="CategoriesComponent should handle search query change" duration="295"/>
+    <testCase name="CategoriesComponent should handle page change" duration="197"/>
+    <testCase name="CategoriesComponent should sort column" duration="269"/>
+    <testCase name="CategoriesComponent should toggle category selection" duration="323"/>
+    <testCase name="CategoriesComponent should check if category is selected" duration="256"/>
+    <testCase name="CategoriesComponent should toggle all categories" duration="223"/>
+    <testCase name="CategoriesComponent should check if all categories are selected" duration="193"/>
+    <testCase name="CategoriesComponent should delete selected categories" duration="264"/>
+    <testCase name="CategoriesComponent should get page numbers for pagination" duration="333"/>
+    <testCase name="CategoriesComponent should handle pagination with single page" duration="331"/>
+    <testCase name="CategoriesComponent should handle pagination with no pages" duration="485"/>
+    <testCase name="CategoriesComponent should track categories by id" duration="338"/>
+    <testCase name="CategoriesComponent should handle trackById with null category" duration="281"/>
+    <testCase name="CategoriesComponent should display error message when service.error is truthy" duration="411"/>
+    <testCase name="CategoriesComponent should display loading spinner when service.isLoading is true" duration="294"/>
+    <testCase name="CategoriesComponent should apply dark-theme class when darkModeService.isDarkMode is true" duration="221"/>
+    <testCase name="CategoriesComponent should handle search input change" duration="297"/>
+    <testCase name="CategoriesComponent should display no pages message when no pages are available" duration="248"/>
+    <testCase name="CategoriesComponent should handle empty category list" duration="199"/>
+    <testCase name="CategoriesComponent should handle sort direction toggle" duration="425"/>
   </file>
   <file path="C:\Angular project-2\codebook\src\app\login\login\login.component.spec.ts">
-    <testCase name="LoginComponent should create the component" duration="1644"/>
-    <testCase name="LoginComponent should initialize the form with correct controls" duration="275"/>
-    <testCase name="LoginComponent should set validators correctly in login mode" duration="348"/>
-    <testCase name="LoginComponent should set validators correctly in signup mode" duration="322"/>
-    <testCase name="LoginComponent should toggle to signup mode when handleSignup is called in login mode" duration="502"/>
-    <testCase name="LoginComponent should toggle to login mode when handleLogin is called in signup mode" duration="410"/>
-    <testCase name="LoginComponent should validate email field as required and valid email" duration="557"/>
-    <testCase name="LoginComponent should validate password field as required and minimum length" duration="503"/>
-    <testCase name="LoginComponent should validate password match in signup mode" duration="573"/>
-    <testCase name="LoginComponent should validate name field as required in signup mode" duration="759"/>
-    <testCase name="LoginComponent should validate agreeTerms as required in signup mode" duration="285"/>
-    <testCase name="LoginComponent should toggle password visibility" duration="277"/>
-    <testCase name="LoginComponent should toggle confirm password visibility" duration="378"/>
-    <testCase name="LoginComponent should call authService.login and navigate on successful login via handleLogin" duration="520"/>
-    <testCase name="LoginComponent should reset password on failed login via handleLogin" duration="310"/>
-    <testCase name="LoginComponent should toggle to login mode if isSignupMode is true in handleLogin" duration="282"/>
-    <testCase name="LoginComponent should toggle to login mode if form is invalid in handleLogin" duration="321"/>
-    <testCase name="LoginComponent should toggle to login mode if isLoading is true in handleLogin" duration="173"/>
-    <testCase name="LoginComponent should call authService.signup and navigate on successful signup via handleSignup" duration="255"/>
-    <testCase name="LoginComponent should reset form on failed signup via handleSignup" duration="283"/>
-    <testCase name="LoginComponent should toggle to signup mode if not in signup mode in handleSignup" duration="327"/>
-    <testCase name="LoginComponent should toggle to signup mode if form is invalid in handleSignup" duration="250"/>
-    <testCase name="LoginComponent should toggle to signup mode if isLoading is true in handleSignup" duration="273"/>
-    <testCase name="LoginComponent should call onLogin and navigate on successful login" duration="376"/>
-    <testCase name="LoginComponent should reset password on failed onLogin" duration="268"/>
-    <testCase name="LoginComponent should not call onLogin if form is invalid" duration="250"/>
-    <testCase name="LoginComponent should call onSignup and navigate on successful signup" duration="330"/>
-    <testCase name="LoginComponent should reset form on failed onSignup" duration="312"/>
-    <testCase name="LoginComponent should not call onSignup if form is invalid" duration="452"/>
-    <testCase name="LoginComponent should call login when clicking login button with valid form" duration="355"/>
-    <testCase name="LoginComponent should call signup when clicking signup button with valid form" duration="461"/>
-    <testCase name="LoginComponent should toggle to login mode when clicking login button in signup mode" duration="265"/>
-    <testCase name="LoginComponent should toggle to signup mode when clicking signup button in login mode" duration="332"/>
-    <testCase name="LoginComponent should not call login if form is invalid when clicking login button" duration="241"/>
-    <testCase name="LoginComponent should not call signup if form is invalid when clicking signup button" duration="468"/>
-    <testCase name="LoginComponent should not call login if isLoading is true when clicking login button" duration="354"/>
-    <testCase name="LoginComponent should not call signup if isLoading is true when clicking signup button" duration="272"/>
-    <testCase name="LoginComponent should display error message when error exists" duration="265"/>
-    <testCase name="LoginComponent should show loading state on login button when isLoading is true" duration="467"/>
-    <testCase name="LoginComponent should show loading state on signup button when isLoading is true" duration="445"/>
-    <testCase name="LoginComponent should render social login buttons" duration="384"/>
-    <testCase name="LoginComponent should show name and confirm password fields in signup mode" duration="290"/>
-    <testCase name="LoginComponent should not show name and confirm password fields in login mode" duration="330"/>
-    <testCase name="LoginComponent should show remember me and forgot password in login mode" duration="397"/>
-    <testCase name="LoginComponent should show agree terms checkbox in signup mode" duration="612"/>
-    <testCase name="LoginComponent should update responsive breakpoints for all breakpoints" duration="236"/>
+    <testCase name="LoginComponent should create the component" duration="1097"/>
+    <testCase name="LoginComponent should initialize the form with correct controls" duration="280"/>
+    <testCase name="LoginComponent should set validators correctly in login mode" duration="197"/>
+    <testCase name="LoginComponent should set validators correctly in signup mode" duration="352"/>
+    <testCase name="LoginComponent should toggle to signup mode when handleSignup is called in login mode" duration="294"/>
+    <testCase name="LoginComponent should toggle to login mode when handleLogin is called in signup mode" duration="211"/>
+    <testCase name="LoginComponent should validate email field as required and valid email" duration="281"/>
+    <testCase name="LoginComponent should validate password field as required and minimum length" duration="271"/>
+    <testCase name="LoginComponent should validate password match in signup mode" duration="301"/>
+    <testCase name="LoginComponent should validate name field as required in signup mode" duration="314"/>
+    <testCase name="LoginComponent should validate agreeTerms as required in signup mode" duration="334"/>
+    <testCase name="LoginComponent should toggle password visibility" duration="216"/>
+    <testCase name="LoginComponent should toggle confirm password visibility" duration="219"/>
+    <testCase name="LoginComponent should call authService.login and navigate on successful login via handleLogin" duration="202"/>
+    <testCase name="LoginComponent should toggle to login mode if isSignupMode is true in handleLogin" duration="298"/>
+    <testCase name="LoginComponent should toggle to login mode if form is invalid in handleLogin" duration="272"/>
+    <testCase name="LoginComponent should toggle to login mode if isLoading is true in handleLogin" duration="245"/>
+    <testCase name="LoginComponent should call authService.signup and navigate on successful signup via handleSignup" duration="239"/>
+    <testCase name="LoginComponent should reset form on failed signup via handleSignup" duration="211"/>
+    <testCase name="LoginComponent should toggle to signup mode if not in signup mode in handleSignup" duration="252"/>
+    <testCase name="LoginComponent should toggle to signup mode if form is invalid in handleSignup" duration="180"/>
+    <testCase name="LoginComponent should toggle to signup mode if isLoading is true in handleSignup" duration="191"/>
+    <testCase name="LoginComponent should call onLogin and navigate on successful login" duration="183"/>
+    <testCase name="LoginComponent should not call onLogin if form is invalid" duration="264"/>
+    <testCase name="LoginComponent should call onSignup and navigate on successful signup" duration="176"/>
+    <testCase name="LoginComponent should not call onSignup if form is invalid" duration="162"/>
+    <testCase name="LoginComponent should call login when clicking login button with valid form" duration="255"/>
+    <testCase name="LoginComponent should call signup when clicking signup button with valid form" duration="308"/>
+    <testCase name="LoginComponent should toggle to login mode when clicking login button in signup mode" duration="261"/>
+    <testCase name="LoginComponent should toggle to signup mode when clicking signup button in login mode" duration="344"/>
+    <testCase name="LoginComponent should not call login if form is invalid when clicking login button" duration="230"/>
+    <testCase name="LoginComponent should not call signup if form is invalid when clicking signup button" duration="273"/>
+    <testCase name="LoginComponent should not call login if isLoading is true when clicking login button" duration="197"/>
+    <testCase name="LoginComponent should not call signup if isLoading is true when clicking signup button" duration="325"/>
+    <testCase name="LoginComponent should display error message when error exists" duration="266"/>
+    <testCase name="LoginComponent should show loading state on login button when isLoading is true" duration="270"/>
+    <testCase name="LoginComponent should show loading state on signup button when isLoading is true" duration="413"/>
+    <testCase name="LoginComponent should render social login buttons" duration="214"/>
+    <testCase name="LoginComponent should show name and confirm password fields in signup mode" duration="284"/>
+    <testCase name="LoginComponent should not show name and confirm password fields in login mode" duration="218"/>
+    <testCase name="LoginComponent should show remember me and forgot password in login mode" duration="147"/>
+    <testCase name="LoginComponent should show agree terms checkbox in signup mode" duration="505"/>
+    <testCase name="LoginComponent should update responsive breakpoints for all breakpoints" duration="655"/>
   </file>
   <file path="C:\Angular project-2\codebook\src\app\main-dashboard-2\main-dashboard-2.component.spec.ts">
-    <testCase name="MainDashboard2Component should create" duration="2752"/>
-    <testCase name="MainDashboard2Component should initialize with correct title" duration="1071"/>
-    <testCase name="MainDashboard2Component should initialize collapsed signal as false" duration="1061"/>
-    <testCase name="MainDashboard2Component should initialize currentLanguage signal as English" duration="557"/>
-    <testCase name="MainDashboard2Component should add languages in constructor" duration="767"/>
-    <testCase name="MainDashboard2Component should set up language in ngOnInit with stored language (en)" duration="581"/>
-    <testCase name="MainDashboard2Component should set up language in ngOnInit with stored language (fr)" duration="633"/>
-    <testCase name="MainDashboard2Component should set up language in ngOnInit with no stored language" duration="635"/>
-    <testCase name="MainDashboard2Component should change language to French" duration="711"/>
-    <testCase name="MainDashboard2Component should change language to English" duration="824"/>
-    <testCase name="MainDashboard2Component should return correct theme aria label" duration="604"/>
-    <testCase name="MainDashboard2Component should return correct color theme aria label" duration="631"/>
+    <testCase name="MainDashboard2Component should create" duration="1534"/>
+    <testCase name="MainDashboard2Component should initialize with correct title" duration="701"/>
+    <testCase name="MainDashboard2Component should initialize collapsed signal as false" duration="606"/>
+    <testCase name="MainDashboard2Component should initialize currentLanguage signal as English" duration="626"/>
+    <testCase name="MainDashboard2Component should add languages in constructor" duration="478"/>
+    <testCase name="MainDashboard2Component should set up language in ngOnInit with stored language (en)" duration="513"/>
+    <testCase name="MainDashboard2Component should set up language in ngOnInit with stored language (fr)" duration="665"/>
+    <testCase name="MainDashboard2Component should set up language in ngOnInit with no stored language" duration="507"/>
+    <testCase name="MainDashboard2Component should change language to French" duration="413"/>
+    <testCase name="MainDashboard2Component should change language to English" duration="477"/>
+    <testCase name="MainDashboard2Component should return correct theme aria label" duration="561"/>
+    <testCase name="MainDashboard2Component should return correct color theme aria label" duration="645"/>
     <testCase name="MainDashboard2Component should toggle fullscreen when not in fullscreen" duration="516"/>
-    <testCase name="MainDashboard2Component should exit fullscreen when in fullscreen" duration="471"/>
-    <testCase name="MainDashboard2Component should handle fullscreen error" duration="526"/>
-    <testCase name="MainDashboard2Component should compute sidenavWidth for mobile" duration="523"/>
-    <testCase name="MainDashboard2Component should compute sidenavWidth for non-mobile collapsed" duration="667"/>
-    <testCase name="MainDashboard2Component should compute sidenavWidth for non-mobile non-collapsed" duration="455"/>
-    <testCase name="MainDashboard2Component should compute sidenavMode for mobile" duration="523"/>
-    <testCase name="MainDashboard2Component should compute sidenavMode for non-mobile" duration="522"/>
-    <testCase name="MainDashboard2Component should compute sidenavOpened for mobile and collapsed" duration="572"/>
-    <testCase name="MainDashboard2Component should compute sidenavOpened for mobile and non-collapsed" duration="540"/>
-    <testCase name="MainDashboard2Component should compute sidenavOpened for non-mobile" duration="877"/>
-    <testCase name="MainDashboard2Component should toggle sidenav collapsed state" duration="298"/>
-  </file>
-  <file path="C:\Angular project-2\codebook\src\app\main-dashboard\main-dashboard.component.spec.ts">
-    <testCase name="MainDashboardComponent should create" duration="1758"/>
-    <testCase name="MainDashboardComponent should initialize with correct title" duration="431"/>
-    <testCase name="MainDashboardComponent should initialize with default language from localStorage (en)" duration="1838"/>
-    <testCase name="MainDashboardComponent should initialize with French language from localStorage" duration="1191"/>
-    <testCase name="MainDashboardComponent should initialize with default language when localStorage is empty" duration="882"/>
-    <testCase name="MainDashboardComponent should change language to French" duration="626"/>
-    <testCase name="MainDashboardComponent should change language to English" duration="679"/>
-    <testCase name="MainDashboardComponent should toggle sidenav" duration="611"/>
-    <testCase name="MainDashboardComponent should close sidenav" duration="589"/>
-    <testCase name="MainDashboardComponent should compute sidenav width for desktop when not collapsed" duration="636"/>
-    <testCase name="MainDashboardComponent should compute sidenav width for desktop when collapsed" duration="720"/>
-    <testCase name="MainDashboardComponent should compute sidenav width for mobile" duration="662"/>
-    <testCase name="MainDashboardComponent should compute sidenav mode for mobile" duration="676"/>
-    <testCase name="MainDashboardComponent should compute sidenav mode for desktop" duration="381"/>
-    <testCase name="MainDashboardComponent should compute sidenav opened state for mobile when not collapsed" duration="487"/>
-    <testCase name="MainDashboardComponent should compute sidenav opened state for mobile when collapsed" duration="455"/>
-    <testCase name="MainDashboardComponent should compute sidenav opened state for desktop when collapsed" duration="528"/>
-    <testCase name="MainDashboardComponent should compute sidenav opened state for desktop when not collapsed" duration="558"/>
-    <testCase name="MainDashboardComponent should return correct theme aria label for light theme" duration="255"/>
-    <testCase name="MainDashboardComponent should return correct theme aria label for dark theme" duration="236"/>
-    <testCase name="MainDashboardComponent should return correct theme aria label for system theme" duration="280"/>
-    <testCase name="MainDashboardComponent should return correct theme aria label for unknown theme" duration="232"/>
-    <testCase name="MainDashboardComponent should return correct color theme aria label for Deep-Blue" duration="246"/>
-    <testCase name="MainDashboardComponent should return correct color theme aria label for Green" duration="205"/>
-    <testCase name="MainDashboardComponent should toggle fullscreen mode when not in fullscreen" duration="519"/>
-    <testCase name="MainDashboardComponent should exit fullscreen mode when in fullscreen" duration="344"/>
-    <testCase name="MainDashboardComponent should handle fullscreen error" duration="1083"/>
-    <testCase name="MainDashboardComponent should not attempt to exit fullscreen if exitFullscreen is not available" duration="592"/>
-    <testCase name="MainDashboardComponent should handle invalid language code" duration="432"/>
-    <testCase name="MainDashboardComponent should initialize services in constructor" duration="356"/>
-    <testCase name="MainDashboardComponent should handle null responsiveService in error cases" duration="686"/>
-    <testCase name="MainDashboardComponent should initialize sidenav" duration="503"/>
-  </file>
-  <file path="C:\Angular project-2\codebook\src\app\user\user.component.spec.ts">
-    <testCase name="UserComponent should create the component" duration="363"/>
-    <testCase name="UserComponent should initialize with correct default properties" duration="108"/>
-    <testCase name="UserComponent should have correct constructor injections" duration="234"/>
-    <testCase name="UserComponent should render avatar when showAvatar is true and avatar is set" duration="310"/>
-    <testCase name="UserComponent should render icon when showAvatar is false" duration="167"/>
-    <testCase name="UserComponent should render icon when user.avatar is falsy" duration="184"/>
-    <testCase name="UserComponent should apply correct status class for online" duration="207"/>
-    <testCase name="UserComponent should apply correct status class for away" duration="185"/>
-    <testCase name="UserComponent should apply correct status class for busy" duration="216"/>
-    <testCase name="UserComponent should apply correct status class for not-visible" duration="139"/>
-    <testCase name="UserComponent should update user status to online" duration="176"/>
-    <testCase name="UserComponent should update user status to away" duration="236"/>
-    <testCase name="UserComponent should update user status to busy" duration="301"/>
-    <testCase name="UserComponent should update user status to not-visible" duration="165"/>
-    <testCase name="UserComponent should trigger updateUserStatus when status menu item is clicked" duration="240"/>
-    <testCase name="UserComponent should call signOut and navigate to login via direct method call" duration="146"/>
-    <testCase name="UserComponent should call signOut and navigate to login via menu click" duration="284"/>
-    <testCase name="UserComponent should render divider" duration="260"/>
-  </file>
-  <file path="C:\Angular project-2\codebook\src\app\app.routes.spec.ts">
-    <testCase name="App Routes should define routes with correct configurations" duration="72"/>
-  </file>
-  <file path="C:\Angular project-2\codebook\src\app\pages\dashboard\service-provider\service-provider.component.spec.ts">
-    <testCase name="ServiceProviderComponent should create" duration="1061"/>
-    <testCase name="ServiceProviderComponent should initialize form and countries" duration="283"/>
-    <testCase name="ServiceProviderComponent should patch form with provider data" duration="975"/>
-    <testCase name="ServiceProviderComponent should set language from localStorage on init" duration="247"/>
-    <testCase name="ServiceProviderComponent should set default language to en if no lang in localStorage" duration="234"/>
-    <testCase name="ServiceProviderComponent should update responsiveClass based on breakpoint" duration="313"/>
-    <testCase name="ServiceProviderComponent should save valid new provider" duration="394"/>
-    <testCase name="ServiceProviderComponent should save valid new provider with generated ID" duration="475"/>
-    <testCase name="ServiceProviderComponent should handle invalid form in saveProvider" duration="445"/>
-    <testCase name="ServiceProviderComponent should handle localStorage error in saveProvider" duration="489"/>
-    <testCase name="ServiceProviderComponent should handle invalid localStorage data in saveProvider" duration="263"/>
-    <testCase name="ServiceProviderComponent should update existing provider" duration="462"/>
-    <testCase name="ServiceProviderComponent should handle provider ID not found" duration="255"/>
-    <testCase name="ServiceProviderComponent should close popup" duration="256"/>
-    <testCase name="ServiceProviderComponent should cancel form and close popup" duration="202"/>
-    <testCase name="ServiceProviderComponent should cancel form without closing popup" duration="207"/>
-    <testCase name="ServiceProviderComponent should initialize without provider data" duration="204"/>
-  </file>
-  <file path="C:\Angular project-2\codebook\src\app\pages\dashboard\dashboard.component.spec.ts">
-    <testCase name="DashboardComponent should create" duration="1195"/>
-    <testCase name="DashboardComponent should initialize form and countries" duration="558"/>
-    <testCase name="DashboardComponent should set language from localStorage on init" duration="334"/>
-    <testCase name="DashboardComponent should set default language to en if no lang in localStorage" duration="239"/>
-    <testCase name="DashboardComponent should update responsiveClass based on breakpoint" duration="217"/>
-    <testCase name="DashboardComponent should load service providers from localStorage" duration="405"/>
-    <testCase name="DashboardComponent should handle null service providers in localStorage" duration="496"/>
-    <testCase name="DashboardComponent should handle localStorage error in loadFromLocalStorage" duration="240"/>
-    <testCase name="DashboardComponent should create service provider form group" duration="196"/>
-    <testCase name="DashboardComponent should delete service provider" duration="298"/>
-    <testCase name="DashboardComponent should handle error in deleteServiceProvider" duration="314"/>
-    <testCase name="DashboardComponent should submit valid form" duration="349"/>
-    <testCase name="DashboardComponent should handle invalid form submission" duration="332"/>
-    <testCase name="DashboardComponent should handle specific form validation errors" duration="359"/>
-    <testCase name="DashboardComponent should handle localStorage error in onSubmit" duration="344"/>
-    <testCase name="DashboardComponent should enable edit mode" duration="213"/>
-    <testCase name="DashboardComponent should cancel form" duration="378"/>
-    <testCase name="DashboardComponent should save to localStorage" duration="254"/>
-    <testCase name="DashboardComponent should handle error in saveToLocalStorage" duration="177"/>
-    <testCase name="DashboardComponent should track by provider id" duration="158"/>
-    <testCase name="DashboardComponent should get serviceProvidersArray" duration="130"/>
-    <testCase name="DashboardComponent should handle empty service providers in loadFromLocalStorage" duration="144"/>
-    <testCase name="DashboardComponent should handle duplicate service providers in loadFromLocalStorage" duration="286"/>
-    <testCase name="DashboardComponent should handle invalid JSON in loadFromLocalStorage" duration="168"/>
-    <testCase name="DashboardComponent should handle null provider in createServiceProviderFormGroup" duration="164"/>
-    <testCase name="DashboardComponent should handle missing businessForm in loadFromLocalStorage" duration="217"/>
-  </file>
-  <file path="C:\Angular project-2\codebook\src\app\custom-sidenav\custom-sidenav.component.spec.ts">
-    <testCase name="CustomSidenavComponent should create the component" duration="628"/>
-    <testCase name="CustomSidenavComponent should initialize with correct menu items" duration="154"/>
-    <testCase name="CustomSidenavComponent should set collapsed input correctly" duration="279"/>
-    <testCase name="CustomSidenavComponent should emit toggleSidenav event when toggle button is clicked" duration="188"/>
-    <testCase name="CustomSidenavComponent should emit closeSidenav event when close button is clicked" duration="319"/>
-    <testCase name="CustomSidenavComponent should toggle submenu and collapse others" duration="887"/>
-    <testCase name="CustomSidenavComponent should render menu items without sub-items correctly" duration="412"/>
-    <testCase name="CustomSidenavComponent should render menu items with sub-items and toggle them" duration="441"/>
-    <testCase name="CustomSidenavComponent should apply dark mode styles when isDarkMode is true" duration="385"/>
-    <testCase name="CustomSidenavComponent should apply light mode styles when isDarkMode is false" duration="258"/>
-    <testCase name="CustomSidenavComponent should hide labels when collapsed and not mobile" duration="271"/>
-    <testCase name="CustomSidenavComponent should show labels when collapsed and mobile" duration="138"/>
-    <testCase name="CustomSidenavComponent should apply active styles when route is active" duration="216"/>
-    <testCase name="CustomSidenavComponent should not show sub-items when collapsed and not mobile" duration="286"/>
-    <testCase name="CustomSidenavComponent should show sub-items when collapsed and mobile" duration="331"/>
-    <testCase name="CustomSidenavComponent should apply logo styles based on dark mode" duration="245"/>
-    <testCase name="CustomSidenavComponent should show CODE BOOK label when not collapsed" duration="117"/>
-    <testCase name="CustomSidenavComponent should stop propagation on expand/collapse icon click and toggle submenu" duration="255"/>
-  </file>
-  <file path="C:\Angular project-2\codebook\src\app\pages\business\business.component.spec.ts">
-    <testCase name="BusinessComponent should create the component" duration="1898"/>
-    <testCase name="BusinessComponent Initial State should initialize business signal with empty values" duration="461"/>
-    <testCase name="BusinessComponent Initial State should initialize categories and subCategories" duration="339"/>
-    <testCase name="BusinessComponent Initial State should initialize isPublished as false" duration="377"/>
-    <testCase name="BusinessComponent Initial State should initialize isEditing with all steps as false" duration="241"/>
-    <testCase name="BusinessComponent Template Rendering should render the header with title and Create New Business button" duration="496"/>
-    <testCase name="BusinessComponent Template Rendering should render the stepper with three steps" duration="311"/>
-    <testCase name="BusinessComponent Template Rendering should render step 1 form when not published" duration="290"/>
-    <testCase name="BusinessComponent Template Rendering should render published view when isPublished is true" duration="501"/>
-    <testCase name="BusinessComponent Template Rendering should show success message when published" duration="311"/>
-    <testCase name="BusinessComponent Form Validation should validate step 1 as invalid when name or country is empty" duration="257"/>
-    <testCase name="BusinessComponent Form Validation should validate step 2 as invalid when category or subCategory is empty" duration="268"/>
-    <testCase name="BusinessComponent Form Validation should validate step 3 as invalid when phone is empty" duration="370"/>
-    <testCase name="BusinessComponent Form Validation should show validation errors for step 1 when fields are touched and invalid" duration="445"/>
-    <testCase name="BusinessComponent Stepper Navigation should disable Next button in step 1 when form is invalid" duration="418"/>
-    <testCase name="BusinessComponent Stepper Navigation should enable Next button in step 1 when form is valid" duration="492"/>
-    <testCase name="BusinessComponent Stepper Navigation should navigate to step 2 when Next is clicked" duration="450"/>
-    <testCase name="BusinessComponent Stepper Navigation should navigate back to step 1 from step 2" duration="495"/>
-    <testCase name="BusinessComponent Publishing Business should call addBusiness and set isPublished to true on publish" duration="373"/>
-    <testCase name="BusinessComponent Publishing Business should not publish if confirm is cancelled" duration="276"/>
-    <testCase name="BusinessComponent Editing Business should toggle edit mode for step 1" duration="351"/>
-    <testCase name="BusinessComponent Editing Business should render edit form for step 1" duration="416"/>
-    <testCase name="BusinessComponent Editing Business should call updateBusiness on save" duration="362"/>
-    <testCase name="BusinessComponent Editing Business should cancel edit mode without saving" duration="350"/>
-    <testCase name="BusinessComponent Reset Form should reset the form and signals" duration="275"/>
-    <testCase name="BusinessComponent Responsive Behavior should set stepper orientation to vertical on mobile" duration="366"/>
-    <testCase name="BusinessComponent Responsive Behavior should set stepper orientation to horizontal on desktop" duration="426"/>
-    <testCase name="BusinessComponent Dark Mode should apply dark-theme class when dark mode is enabled" duration="476"/>
-    <testCase name="BusinessComponent Dark Mode should not apply dark-theme class when dark mode is disabled" duration="300"/>
-  </file>
-  <file path="C:\Angular project-2\codebook\src\app\pages\users\store\user-store.spec.ts">
-    <testCase name="UserStore Initial State should initialize with default state" duration="971"/>
-    <testCase name="UserStore Computed Properties should compute users correctly" duration="29"/>
-    <testCase name="UserStore Computed Properties should compute isLoading correctly" duration="49"/>
-    <testCase name="UserStore loadUsers should load users from local storage if available" duration="33"/>
-    <testCase name="UserStore loadUsers should load users from API if local storage is empty" duration="20"/>
-    <testCase name="UserStore loadUsers should handle API error" duration="185"/>
-    <testCase name="UserStore addUser should add a new user" duration="12"/>
-    <testCase name="UserStore addUser should handle error when adding user" duration="74"/>
-    <testCase name="UserStore updateUser should update an existing user" duration="13"/>
-    <testCase name="UserStore updateUser should handle error when updating user" duration="23"/>
-    <testCase name="UserStore deleteUser should delete a user" duration="18"/>
-    <testCase name="UserStore deleteUser should handle error when deleting user" duration="17"/>
-    <testCase name="UserStore getUser should return a user by ID" duration="20"/>
-    <testCase name="UserStore getUser should return undefined if user is not found" duration="15"/>
-    <testCase name="UserStore getUser should handle error when fetching user" duration="13"/>
-    <testCase name="UserStore onInit Hook should call loadUsers on initialization" duration="51"/>
-  </file>
-  <file path="C:\Angular project-2\codebook\src\app\pages\pincodes\add-pincodes\add-pincodes.component.spec.ts">
-    <testCase name="AddPincodesComponent should create the component" duration="745"/>
-    <testCase name="AddPincodesComponent should initialize formPincode with data.pincode if provided" duration="167"/>
-    <testCase name="AddPincodesComponent should not close dialog if form is invalid in savePincode" duration="247"/>
-    <testCase name="AddPincodesComponent should not close dialog if isFormInvalid returns true in savePincode" duration="149"/>
-    <testCase name="AddPincodesComponent should close dialog with formPincode data if form is valid" duration="140"/>
-    <testCase name="AddPincodesComponent should return true for isFormInvalid if any field is missing or invalid" duration="113"/>
-    <testCase name="AddPincodesComponent should close dialog without data when cancel is called" duration="234"/>
+    <testCase name="MainDashboard2Component should exit fullscreen when in fullscreen" duration="431"/>
+    <testCase name="MainDashboard2Component should handle fullscreen error" duration="711"/>
+    <testCase name="MainDashboard2Component should compute sidenavWidth for mobile" duration="476"/>
+    <testCase name="MainDashboard2Component should compute sidenavWidth for non-mobile collapsed" duration="493"/>
+    <testCase name="MainDashboard2Component should compute sidenavWidth for non-mobile non-collapsed" duration="720"/>
+    <testCase name="MainDashboard2Component should compute sidenavMode for mobile" duration="452"/>
+    <testCase name="MainDashboard2Component should compute sidenavMode for non-mobile" duration="448"/>
+    <testCase name="MainDashboard2Component should compute sidenavOpened for mobile and collapsed" duration="504"/>
+    <testCase name="MainDashboard2Component should compute sidenavOpened for mobile and non-collapsed" duration="492"/>
+    <testCase name="MainDashboard2Component should compute sidenavOpened for non-mobile" duration="434"/>
+    <testCase name="MainDashboard2Component should toggle sidenav collapsed state" duration="446"/>
   </file>
   <file path="C:\Angular project-2\codebook\src\app\pages\subcategories\subcategories.component.spec.ts">
-    <testCase name="SubcategoriesComponent should create the component" duration="2672"/>
-    <testCase name="SubcategoriesComponent should initialize in ngOnInit and set up subscriptions" duration="539"/>
-    <testCase name="SubcategoriesComponent should unsubscribe in ngOnDestroy" duration="757"/>
-    <testCase name="SubcategoriesComponent should not unsubscribe in ngOnDestroy if subscription is undefined" duration="852"/>
-    <testCase name="SubcategoriesComponent should update displayed columns for mobile" duration="835"/>
-    <testCase name="SubcategoriesComponent should update displayed columns for tablet" duration="584"/>
-    <testCase name="SubcategoriesComponent should update displayed columns for desktop" duration="517"/>
-    <testCase name="SubcategoriesComponent should handle category change" duration="328"/>
-    <testCase name="SubcategoriesComponent should handle null category change" duration="624"/>
-    <testCase name="SubcategoriesComponent should refresh table" duration="460"/>
-    <testCase name="SubcategoriesComponent should warn when opening add dialog with no category selected" duration="799"/>
-    <testCase name="SubcategoriesComponent should warn when selected category is not found" duration="400"/>
-    <testCase name="SubcategoriesComponent should handle search query change" duration="566"/>
-    <testCase name="SubcategoriesComponent should delete a subcategory by id" duration="627"/>
-    <testCase name="SubcategoriesComponent should handle page change" duration="674"/>
-    <testCase name="SubcategoriesComponent should sort column" duration="601"/>
-    <testCase name="SubcategoriesComponent should toggle subcategory selection" duration="804"/>
-    <testCase name="SubcategoriesComponent should check if subcategory is selected" duration="405"/>
-    <testCase name="SubcategoriesComponent should toggle all subcategories" duration="442"/>
-    <testCase name="SubcategoriesComponent should check if all subcategories are selected" duration="384"/>
-    <testCase name="SubcategoriesComponent should delete selected subcategories" duration="415"/>
-    <testCase name="SubcategoriesComponent should get page numbers for pagination" duration="334"/>
-    <testCase name="SubcategoriesComponent should track subcategories by id" duration="517"/>
-    <testCase name="SubcategoriesComponent should display loading spinner when service.isLoading is true" duration="878"/>
-    <testCase name="SubcategoriesComponent should apply dark-theme class when darkModeService.isDarkMode is true" duration="537"/>
-    <testCase name="SubcategoriesComponent should handle search input change" duration="428"/>
-    <testCase name="SubcategoriesComponent should handle delete selected button click" duration="448"/>
-    <testCase name="SubcategoriesComponent should disable delete button when no subcategories are selected" duration="445"/>
-    <testCase name="SubcategoriesComponent should handle previous page button" duration="346"/>
-    <testCase name="SubcategoriesComponent should disable previous page button on first page" duration="333"/>
-    <testCase name="SubcategoriesComponent should handle next page button" duration="349"/>
-    <testCase name="SubcategoriesComponent should disable next page button on last page" duration="340"/>
-    <testCase name="SubcategoriesComponent should handle page number button click" duration="422"/>
-    <testCase name="SubcategoriesComponent should handle mobile page select" duration="968"/>
+    <testCase name="SubcategoriesComponent should create the component" duration="1445"/>
+    <testCase name="SubcategoriesComponent should initialize in ngOnInit and set up subscriptions" duration="481"/>
+    <testCase name="SubcategoriesComponent should unsubscribe in ngOnDestroy" duration="484"/>
+    <testCase name="SubcategoriesComponent should not unsubscribe in ngOnDestroy if subscription is undefined" duration="412"/>
+    <testCase name="SubcategoriesComponent should update displayed columns for mobile" duration="376"/>
+    <testCase name="SubcategoriesComponent should update displayed columns for tablet" duration="418"/>
+    <testCase name="SubcategoriesComponent should update displayed columns for desktop" duration="380"/>
+    <testCase name="SubcategoriesComponent should handle category change" duration="521"/>
+    <testCase name="SubcategoriesComponent should handle null category change" duration="425"/>
+    <testCase name="SubcategoriesComponent should refresh table" duration="366"/>
+    <testCase name="SubcategoriesComponent should warn when opening add dialog with no category selected" duration="390"/>
+    <testCase name="SubcategoriesComponent should warn when selected category is not found" duration="331"/>
+    <testCase name="SubcategoriesComponent should handle search query change" duration="417"/>
+    <testCase name="SubcategoriesComponent should delete a subcategory by id" duration="376"/>
+    <testCase name="SubcategoriesComponent should handle page change" duration="427"/>
+    <testCase name="SubcategoriesComponent should sort column" duration="339"/>
+    <testCase name="SubcategoriesComponent should toggle subcategory selection" duration="414"/>
+    <testCase name="SubcategoriesComponent should check if subcategory is selected" duration="414"/>
+    <testCase name="SubcategoriesComponent should toggle all subcategories" duration="434"/>
+    <testCase name="SubcategoriesComponent should check if all subcategories are selected" duration="347"/>
+    <testCase name="SubcategoriesComponent should delete selected subcategories" duration="330"/>
+    <testCase name="SubcategoriesComponent should get page numbers for pagination" duration="304"/>
+    <testCase name="SubcategoriesComponent should track subcategories by id" duration="380"/>
+    <testCase name="SubcategoriesComponent should display loading spinner when service.isLoading is true" duration="337"/>
+    <testCase name="SubcategoriesComponent should apply dark-theme class when darkModeService.isDarkMode is true" duration="397"/>
+    <testCase name="SubcategoriesComponent should handle search input change" duration="513"/>
+    <testCase name="SubcategoriesComponent should handle delete selected button click" duration="384"/>
+    <testCase name="SubcategoriesComponent should disable delete button when no subcategories are selected" duration="329"/>
+    <testCase name="SubcategoriesComponent should handle previous page button" duration="550"/>
+    <testCase name="SubcategoriesComponent should disable previous page button on first page" duration="340"/>
+    <testCase name="SubcategoriesComponent should handle next page button" duration="312"/>
+    <testCase name="SubcategoriesComponent should disable next page button on last page" duration="337"/>
+    <testCase name="SubcategoriesComponent should handle page number button click" duration="340"/>
+    <testCase name="SubcategoriesComponent should handle mobile page select" duration="606"/>
   </file>
-  <file path="C:\Angular project-2\codebook\src\app\pages\users\add-user\add-user.component.spec.ts">
-    <testCase name="AddUserComponent should create the component" duration="434"/>
-    <testCase name="AddUserComponent should initialize form and set title to &quot;Add User&quot; when userId is 0" duration="96"/>
-    <testCase name="AddUserComponent should initialize form and set title to &quot;Add User&quot; when data is undefined" duration="156"/>
-    <testCase name="AddUserComponent should initialize form and set title to &quot;Add User&quot; when userId is undefined" duration="118"/>
-    <testCase name="AddUserComponent should set edit mode and populate form when userId is provided and user exists" duration="84"/>
-    <testCase name="AddUserComponent should show error and close dialog when userId is provided but user is not found" duration="73"/>
-    <testCase name="AddUserComponent should show error when form is invalid in saveUser" duration="116"/>
-    <testCase name="AddUserComponent should add user and show success toast when form is valid in add mode" duration="162"/>
-    <testCase name="AddUserComponent should update user and show success toast when form is valid in edit mode" duration="346"/>
-    <testCase name="AddUserComponent should show error toast and close dialog when addUser throws an error" duration="184"/>
-    <testCase name="AddUserComponent should show error toast and close dialog when updateUser throws an error" duration="164"/>
-    <testCase name="AddUserComponent should close dialog when closePopup is called" duration="176"/>
-    <testCase name="AddUserComponent should trigger saveUser on form submission" duration="471"/>
-    <testCase name="AddUserComponent should trigger closePopup on close button click" duration="231"/>
-    <testCase name="AddUserComponent should apply dark-theme class when darkModeService.isDarkMode returns true" duration="126"/>
-    <testCase name="AddUserComponent should not apply dark-theme class when darkModeService.isDarkMode returns false" duration="129"/>
-  </file>
-  <file path="C:\Angular project-2\codebook\src\app\pages\pincodes\pincodes.component.spec.ts">
-    <testCase name="PincodesComponent should create the component" duration="3075"/>
-    <testCase name="PincodesComponent ngOnInit should subscribe to responsive service and update displayed columns" duration="887"/>
-    <testCase name="PincodesComponent ngOnInit should set displayed columns for desktop" duration="1271"/>
-    <testCase name="PincodesComponent ngOnInit should set displayed columns for tablet" duration="531"/>
-    <testCase name="PincodesComponent ngOnInit should set displayed columns for mobile" duration="589"/>
-    <testCase name="PincodesComponent ngOnDestroy should unsubscribe from breakpoint subscription" duration="810"/>
-    <testCase name="PincodesComponent ngOnDestroy should handle undefined subscription" duration="765"/>
-    <testCase name="PincodesComponent updateDisplayedColumns should set columns for mobile" duration="697"/>
-    <testCase name="PincodesComponent updateDisplayedColumns should set columns for tablet" duration="694"/>
-    <testCase name="PincodesComponent updateDisplayedColumns should set columns for desktop" duration="606"/>
-    <testCase name="PincodesComponent refreshTable should reset table state and reload data" duration="1122"/>
-    <testCase name="PincodesComponent openAddPincodeDialog should open dialog with correct width for mobile" duration="1016"/>
-    <testCase name="PincodesComponent openAddPincodeDialog should open dialog with correct width for tablet" duration="822"/>
-    <testCase name="PincodesComponent openAddPincodeDialog should open dialog with correct width for desktop" duration="701"/>
-    <testCase name="PincodesComponent openAddPincodeDialog should add pincode after dialog closes with result" duration="1008"/>
-    <testCase name="PincodesComponent openAddPincodeDialog should not add pincode if dialog closes without result" duration="564"/>
-    <testCase name="PincodesComponent startEdit should open edit dialog with correct pincode and width" duration="497"/>
-    <testCase name="PincodesComponent startEdit should update pincode after dialog closes with result" duration="521"/>
-    <testCase name="PincodesComponent startEdit should not update pincode if dialog closes without result" duration="671"/>
-    <testCase name="PincodesComponent onSearchQueryChange should update search query" duration="682"/>
-    <testCase name="PincodesComponent onPageChange should change page and clear selected pincodes" duration="965"/>
-    <testCase name="PincodesComponent sortColumn should sort by field and direction" duration="656"/>
-    <testCase name="PincodesComponent togglePincode should add pincode to selectedPincodes if not selected" duration="589"/>
-    <testCase name="PincodesComponent togglePincode should remove pincode from selectedPincodes if selected" duration="481"/>
-    <testCase name="PincodesComponent isSelected should return true if pincode is selected" duration="698"/>
-    <testCase name="PincodesComponent isSelected should return false if pincode is not selected" duration="587"/>
-    <testCase name="PincodesComponent toggleAllPincodes should select all pincodes if checked" duration="657"/>
-    <testCase name="PincodesComponent toggleAllPincodes should clear selected pincodes if unchecked" duration="568"/>
-    <testCase name="PincodesComponent isAllSelected should return true if all pincodes are selected" duration="902"/>
-    <testCase name="PincodesComponent isAllSelected should return false if not all pincodes are selected" duration="934"/>
-    <testCase name="PincodesComponent isAllSelected should return false if no pincodes are available" duration="777"/>
-    <testCase name="PincodesComponent deleteSelectedPincodes should delete selected pincodes and clear selection" duration="620"/>
-    <testCase name="PincodesComponent getPageNumbers should return page numbers for desktop" duration="459"/>
-    <testCase name="PincodesComponent getPageNumbers should return page numbers for tablet" duration="555"/>
-    <testCase name="PincodesComponent getPageNumbers should return page numbers for mobile" duration="565"/>
-    <testCase name="PincodesComponent getPageNumbers should adjust start page when near end" duration="529"/>
-    <testCase name="PincodesComponent getPageNumbers should return empty array if no pages" duration="682"/>
-    <testCase name="PincodesComponent trackById should return pincode id" duration="470"/>
-    <testCase name="PincodesComponent template coverage should render loading spinner when isLoading is true" duration="567"/>
-    <testCase name="PincodesComponent template coverage should render error message when error exists" duration="575"/>
-    <testCase name="PincodesComponent template coverage should disable delete button when no pincodes are selected" duration="601"/>
-    <testCase name="PincodesComponent template coverage should enable delete button when pincodes are selected" duration="519"/>
-    <testCase name="PincodesComponent template coverage should show indeterminate checkbox state" duration="607"/>
-    <testCase name="PincodesComponent template coverage should show no pages message when no pages available" duration="1396"/>
-  </file>
-  <file path="C:\Angular project-2\codebook\src\app\auth.guard.spec.ts">
-    <testCase name="AuthGuard should be created" duration="18"/>
-    <testCase name="AuthGuard should allow navigation when user is authenticated" duration="17"/>
-    <testCase name="AuthGuard should redirect to login when user is not authenticated" duration="17"/>
-  </file>
-  <file path="C:\Angular project-2\codebook\src\app\pages\categories\add-categories\add-categories.component.spec.ts">
-    <testCase name="AddCategoriesComponent should create the component" duration="893"/>
-    <testCase name="AddCategoriesComponent should initialize the form with required fields" duration="434"/>
-    <testCase name="AddCategoriesComponent should initialize categoryForm with empty values when no category is provided" duration="367"/>
-    <testCase name="AddCategoriesComponent should initialize categoryForm with provided category data" duration="1519"/>
-    <testCase name="AddCategoriesComponent should not close dialog when form is invalid in saveCategory" duration="566"/>
-    <testCase name="AddCategoriesComponent should close dialog with form value when form is valid" duration="302"/>
-    <testCase name="AddCategoriesComponent should mark all controls as touched when form is invalid" duration="451"/>
-    <testCase name="AddCategoriesComponent should close dialog when cancel is called" duration="285"/>
-    <testCase name="AddCategoriesComponent should trigger saveCategory on form submission" duration="634"/>
-    <testCase name="AddCategoriesComponent should disable save button when form is invalid" duration="424"/>
-    <testCase name="AddCategoriesComponent should enable save button when form is valid" duration="530"/>
-    <testCase name="AddCategoriesComponent should show validation errors for required fields when form is submitted" duration="306"/>
+  <file path="C:\Angular project-2\codebook\src\app\main-dashboard\main-dashboard.component.spec.ts">
+    <testCase name="MainDashboardComponent should create" duration="1078"/>
+    <testCase name="MainDashboardComponent should initialize with correct title" duration="387"/>
+    <testCase name="MainDashboardComponent should initialize with default language from localStorage (en)" duration="809"/>
+    <testCase name="MainDashboardComponent should initialize with French language from localStorage" duration="764"/>
+    <testCase name="MainDashboardComponent should initialize with default language when localStorage is empty" duration="737"/>
+    <testCase name="MainDashboardComponent should change language to French" duration="596"/>
+    <testCase name="MainDashboardComponent should change language to English" duration="607"/>
+    <testCase name="MainDashboardComponent should toggle sidenav" duration="495"/>
+    <testCase name="MainDashboardComponent should close sidenav" duration="564"/>
+    <testCase name="MainDashboardComponent should compute sidenav width for desktop when not collapsed" duration="544"/>
+    <testCase name="MainDashboardComponent should compute sidenav width for desktop when collapsed" duration="554"/>
+    <testCase name="MainDashboardComponent should compute sidenav width for mobile" duration="773"/>
+    <testCase name="MainDashboardComponent should compute sidenav mode for mobile" duration="578"/>
+    <testCase name="MainDashboardComponent should compute sidenav mode for desktop" duration="458"/>
+    <testCase name="MainDashboardComponent should compute sidenav opened state for mobile when not collapsed" duration="466"/>
+    <testCase name="MainDashboardComponent should compute sidenav opened state for mobile when collapsed" duration="501"/>
+    <testCase name="MainDashboardComponent should compute sidenav opened state for desktop when collapsed" duration="441"/>
+    <testCase name="MainDashboardComponent should compute sidenav opened state for desktop when not collapsed" duration="502"/>
+    <testCase name="MainDashboardComponent should return correct theme aria label for light theme" duration="256"/>
+    <testCase name="MainDashboardComponent should return correct theme aria label for dark theme" duration="696"/>
+    <testCase name="MainDashboardComponent should return correct theme aria label for system theme" duration="227"/>
+    <testCase name="MainDashboardComponent should return correct theme aria label for unknown theme" duration="313"/>
+    <testCase name="MainDashboardComponent should return correct color theme aria label for Deep-Blue" duration="242"/>
+    <testCase name="MainDashboardComponent should return correct color theme aria label for Green" duration="203"/>
+    <testCase name="MainDashboardComponent should toggle fullscreen mode when not in fullscreen" duration="413"/>
+    <testCase name="MainDashboardComponent should exit fullscreen mode when in fullscreen" duration="397"/>
+    <testCase name="MainDashboardComponent should handle fullscreen error" duration="528"/>
+    <testCase name="MainDashboardComponent should not attempt to exit fullscreen if exitFullscreen is not available" duration="598"/>
+    <testCase name="MainDashboardComponent should handle invalid language code" duration="605"/>
+    <testCase name="MainDashboardComponent should initialize services in constructor" duration="203"/>
+    <testCase name="MainDashboardComponent should handle null responsiveService in error cases" duration="343"/>
+    <testCase name="MainDashboardComponent should initialize sidenav" duration="601"/>
   </file>
   <file path="C:\Angular project-2\codebook\src\app\custom-sidenav-2\custom-sidenav-2.component.spec.ts">
-    <testCase name="CustomSidenav2Component should create" duration="395"/>
-    <testCase name="CustomSidenav2Component collapsed input setter should update sideNavCollapsed signal with true value" duration="78"/>
-    <testCase name="CustomSidenav2Component collapsed input setter should update sideNavCollapsed signal with false value" duration="51"/>
-    <testCase name="CustomSidenav2Component toggleSubMenu should update menuItems when item has subItems" duration="38"/>
-    <testCase name="CustomSidenav2Component toggleSubMenu should not update menuItems when item has no subItems" duration="26"/>
-    <testCase name="CustomSidenav2Component toggleSubMenu should collapse other items when toggling one" duration="37"/>
-    <testCase name="CustomSidenav2Component toggleSubMenu should handle empty subItems array" duration="49"/>
-    <testCase name="CustomSidenav2Component toggleSubMenu should handle undefined subItems" duration="32"/>
-    <testCase name="CustomSidenav2Component should initialize with correct menu items" duration="142"/>
-    <testCase name="CustomSidenav2Component should hide labels when collapsed and not mobile" duration="73"/>
-    <testCase name="CustomSidenav2Component should show labels when collapsed and mobile" duration="59"/>
-    <testCase name="CustomSidenav2Component should not show sub-items when collapsed and not mobile" duration="166"/>
+    <testCase name="CustomSidenav2Component should create" duration="530"/>
+    <testCase name="CustomSidenav2Component collapsed input setter should update sideNavCollapsed signal with true value" duration="219"/>
+    <testCase name="CustomSidenav2Component collapsed input setter should update sideNavCollapsed signal with false value" duration="162"/>
+    <testCase name="CustomSidenav2Component toggleSubMenu should update menuItems when item has subItems" duration="221"/>
+    <testCase name="CustomSidenav2Component toggleSubMenu should not update menuItems when item has no subItems" duration="207"/>
+    <testCase name="CustomSidenav2Component toggleSubMenu should collapse other items when toggling one" duration="175"/>
+    <testCase name="CustomSidenav2Component toggleSubMenu should handle empty subItems array" duration="184"/>
+    <testCase name="CustomSidenav2Component toggleSubMenu should handle undefined subItems" duration="191"/>
+    <testCase name="CustomSidenav2Component should initialize with correct menu items" duration="150"/>
+    <testCase name="CustomSidenav2Component should hide labels when collapsed and not mobile" duration="218"/>
+    <testCase name="CustomSidenav2Component should show labels when collapsed and mobile" duration="186"/>
+    <testCase name="CustomSidenav2Component should not show sub-items when collapsed and not mobile" duration="256"/>
   </file>
-  <file path="C:\Angular project-2\codebook\src\app\dashboard-selector\dashboard-selector.component.spec.ts">
-    <testCase name="DashboardSelectorComponent should create" duration="270"/>
-    <testCase name="DashboardSelectorComponent should navigate to main-dashboard when navigateToDashboard1 is called" duration="85"/>
-    <testCase name="DashboardSelectorComponent should navigate to main-dashboard-2 when navigateToDashboard2 is called" duration="115"/>
-    <testCase name="DashboardSelectorComponent should render the title correctly" duration="419"/>
-    <testCase name="DashboardSelectorComponent should render two mat-card elements" duration="122"/>
-    <testCase name="DashboardSelectorComponent should render Dashboard 1 card with correct content" duration="64"/>
-    <testCase name="DashboardSelectorComponent should render Dashboard 2 card with correct content" duration="93"/>
-    <testCase name="DashboardSelectorComponent should call navigateToDashboard1 when Dashboard 1 button is clicked" duration="101"/>
-    <testCase name="DashboardSelectorComponent should call navigateToDashboard2 when Dashboard 2 button is clicked" duration="32"/>
-    <testCase name="DashboardSelectorComponent should have correct classes on the container div" duration="58"/>
-    <testCase name="DashboardSelectorComponent should have correct classes on the grid div" duration="44"/>
+  <file path="C:\Angular project-2\codebook\src\app\pages\business\business.component.spec.ts">
+    <testCase name="BusinessComponent should create the component" duration="1167"/>
+    <testCase name="BusinessComponent Initial State should initialize business signal with empty values" duration="384"/>
+    <testCase name="BusinessComponent Initial State should initialize categories and subCategories" duration="288"/>
+    <testCase name="BusinessComponent Initial State should initialize isPublished as false" duration="262"/>
+    <testCase name="BusinessComponent Initial State should initialize isEditing with all steps as false" duration="251"/>
+    <testCase name="BusinessComponent Template Rendering should render the header with title and Create New Business button" duration="292"/>
+    <testCase name="BusinessComponent Template Rendering should render the stepper with three steps" duration="280"/>
+    <testCase name="BusinessComponent Template Rendering should render step 1 form when not published" duration="311"/>
+    <testCase name="BusinessComponent Template Rendering should render published view when isPublished is true" duration="366"/>
+    <testCase name="BusinessComponent Template Rendering should show success message when published" duration="251"/>
+    <testCase name="BusinessComponent Form Validation should validate step 1 as invalid when name or country is empty" duration="214"/>
+    <testCase name="BusinessComponent Form Validation should validate step 2 as invalid when category or subCategory is empty" duration="289"/>
+    <testCase name="BusinessComponent Form Validation should validate step 3 as invalid when phone is empty" duration="320"/>
+    <testCase name="BusinessComponent Form Validation should show validation errors for step 1 when fields are touched and invalid" duration="314"/>
+    <testCase name="BusinessComponent Stepper Navigation should disable Next button in step 1 when form is invalid" duration="414"/>
+    <testCase name="BusinessComponent Stepper Navigation should enable Next button in step 1 when form is valid" duration="501"/>
+    <testCase name="BusinessComponent Stepper Navigation should navigate to step 2 when Next is clicked" duration="288"/>
+    <testCase name="BusinessComponent Stepper Navigation should navigate back to step 1 from step 2" duration="254"/>
+    <testCase name="BusinessComponent Publishing Business should call addBusiness and set isPublished to true on publish" duration="249"/>
+    <testCase name="BusinessComponent Publishing Business should not publish if confirm is cancelled" duration="256"/>
+    <testCase name="BusinessComponent Editing Business should toggle edit mode for step 1" duration="315"/>
+    <testCase name="BusinessComponent Editing Business should render edit form for step 1" duration="550"/>
+    <testCase name="BusinessComponent Editing Business should call updateBusiness on save" duration="300"/>
+    <testCase name="BusinessComponent Editing Business should cancel edit mode without saving" duration="242"/>
+    <testCase name="BusinessComponent Reset Form should reset the form and signals" duration="171"/>
+    <testCase name="BusinessComponent Responsive Behavior should set stepper orientation to vertical on mobile" duration="395"/>
+    <testCase name="BusinessComponent Responsive Behavior should set stepper orientation to horizontal on desktop" duration="250"/>
+    <testCase name="BusinessComponent Dark Mode should apply dark-theme class when dark mode is enabled" duration="191"/>
+    <testCase name="BusinessComponent Dark Mode should not apply dark-theme class when dark mode is disabled" duration="202"/>
   </file>
-  <file path="C:\Angular project-2\codebook\src\app\login\auth.store.spec.ts">
-    <testCase name="AuthStore Initial State and Signals should initialize with default state" duration="36"/>
-    <testCase name="AuthStore onInit Hook should load auth data from localStorage on init" duration="13"/>
-    <testCase name="AuthStore onInit Hook should not update state if no auth data in localStorage" duration="12"/>
-    <testCase name="AuthStore login Method should login successfully and update state" duration="9"/>
-    <testCase name="AuthStore login Method should handle 401 error during login" duration="7"/>
-    <testCase name="AuthStore login Method should handle error with error.error.message during login" duration="5"/>
-    <testCase name="AuthStore login Method should handle generic error during login" duration="12"/>
-    <testCase name="AuthStore login Method should handle error with no message during login" duration="12"/>
-    <testCase name="AuthStore login Method should set isLoading to true before HTTP request" duration="8"/>
-    <testCase name="AuthStore signup Method should signup successfully and update state" duration="13"/>
-    <testCase name="AuthStore signup Method should handle error with error.error.message during signup" duration="15"/>
-    <testCase name="AuthStore signup Method should handle error with error.message during signup" duration="30"/>
-    <testCase name="AuthStore signup Method should handle default error during signup" duration="9"/>
-    <testCase name="AuthStore signup Method should set isLoading to true before HTTP request" duration="34"/>
-    <testCase name="AuthStore signout Method should sign out successfully and clear state" duration="8"/>
-    <testCase name="AuthStore signout Method should handle error during signout" duration="1807"/>
+  <file path="C:\Angular project-2\codebook\src\app\pages\users\users.component.spec.ts">
+    <testCase name="UsersComponent should create the component" duration="1036"/>
+    <testCase name="UsersComponent should initialize dataSource and set up effect in constructor" duration="842"/>
+    <testCase name="UsersComponent should handle error in effect when store.error is set" duration="577"/>
+    <testCase name="UsersComponent should log warning when paginator is not initialized in effect" duration="368"/>
+    <testCase name="UsersComponent should set paginator when initialized in effect" duration="325"/>
+    <testCase name="UsersComponent should call loadUsers and set filterPredicate in ngOnInit" duration="132"/>
+    <testCase name="UsersComponent should log message in ngOnDestroy" duration="157"/>
+    <testCase name="UsersComponent should call deleteUser in store when deleteUser is called" duration="255"/>
+    <testCase name="UsersComponent should open dialog with correct config in openPopup" duration="189"/>
+    <testCase name="UsersComponent should apply filter and reset paginator when applyFilter is called" duration="467"/>
+    <testCase name="UsersComponent should not call firstPage when paginator is not set in applyFilter" duration="381"/>
   </file>
-  <file path="C:\Angular project-2\codebook\src\app\pages\business\list-businesses\list-businesses.component.spec.ts">
-    <testCase name="ListBusinessesComponent should create the component" duration="320"/>
-    <testCase name="ListBusinessesComponent Initial State should initialize with businesses from BusinessStore" duration="78"/>
-    <testCase name="ListBusinessesComponent Desktop and Tablet View should render table layout when isDesktop is true" duration="43"/>
-    <testCase name="ListBusinessesComponent Desktop and Tablet View should render table layout when isTablet is true" duration="46"/>
-    <testCase name="ListBusinessesComponent Desktop and Tablet View should display business data in table rows" duration="48"/>
-    <testCase name="ListBusinessesComponent Desktop and Tablet View should render delete button for each business" duration="53"/>
-    <testCase name="ListBusinessesComponent Mobile View should render card layout when isMobile is true" duration="103"/>
-    <testCase name="ListBusinessesComponent Mobile View should display business data in cards" duration="77"/>
-    <testCase name="ListBusinessesComponent Mobile View should render delete button for each card" duration="63"/>
-    <testCase name="ListBusinessesComponent deleteBusiness should call deleteBusiness on BusinessStore when confirmed" duration="1462"/>
-    <testCase name="ListBusinessesComponent deleteBusiness should not call deleteBusiness if confirmation is cancelled" duration="237"/>
-    <testCase name="ListBusinessesComponent Dark Mode Integration should inject DarkModeService" duration="91"/>
-    <testCase name="ListBusinessesComponent Dark Mode Integration should apply dark mode if enabled" duration="127"/>
-    <testCase name="ListBusinessesComponent Responsive Behavior should not render table or cards when businesses is empty" duration="89"/>
-    <testCase name="ListBusinessesComponent Responsive Behavior should render table when both isDesktop and isTablet are false but isMobile is false" duration="97"/>
+  <file path="C:\Angular project-2\codebook\src\app\pages\categories\add-categories\add-categories.component.spec.ts">
+    <testCase name="AddCategoriesComponent should create the component" duration="871"/>
+    <testCase name="AddCategoriesComponent should initialize the form with required fields" duration="345"/>
+    <testCase name="AddCategoriesComponent should initialize categoryForm with empty values when no category is provided" duration="376"/>
+    <testCase name="AddCategoriesComponent should initialize categoryForm with provided category data" duration="579"/>
+    <testCase name="AddCategoriesComponent should not close dialog when form is invalid in saveCategory" duration="249"/>
+    <testCase name="AddCategoriesComponent should close dialog with form value when form is valid" duration="340"/>
+    <testCase name="AddCategoriesComponent should mark all controls as touched when form is invalid" duration="393"/>
+    <testCase name="AddCategoriesComponent should close dialog when cancel is called" duration="327"/>
+    <testCase name="AddCategoriesComponent should trigger saveCategory on form submission" duration="300"/>
+    <testCase name="AddCategoriesComponent should disable save button when form is invalid" duration="294"/>
+    <testCase name="AddCategoriesComponent should enable save button when form is valid" duration="425"/>
+    <testCase name="AddCategoriesComponent should show validation errors for required fields when form is submitted" duration="368"/>
   </file>
-  <file path="C:\Angular project-2\codebook\src\app\pages\subcategories\subcategories.store.spec.ts">
-    <testCase name="SubcategoryStore should initialize with correct initial state" duration="62"/>
-    <testCase name="SubcategoryStore should load subcategories from localStorage on init" duration="17"/>
-    <testCase name="SubcategoryStore should handle loadSubcategories error" duration="98"/>
-    <testCase name="SubcategoryStore should add a new subcategory" duration="36"/>
-    <testCase name="SubcategoryStore should handle addSubcategory error" duration="53"/>
-    <testCase name="SubcategoryStore should update an existing subcategory" duration="28"/>
-    <testCase name="SubcategoryStore should handle updateSubcategory error with undefined message" duration="22"/>
-    <testCase name="SubcategoryStore should handle deleteSubcategory error with undefined message" duration="14"/>
-    <testCase name="SubcategoryStore should delete a subcategory" duration="32"/>
-    <testCase name="SubcategoryStore should handle deleteSubcategory error" duration="27"/>
-    <testCase name="SubcategoryStore should set page" duration="21"/>
-    <testCase name="SubcategoryStore should set page size and reset current page" duration="12"/>
-    <testCase name="SubcategoryStore should set search query and reset current page" duration="11"/>
-    <testCase name="SubcategoryStore should sort subcategories and reset current page" duration="12"/>
-    <testCase name="SubcategoryStore should set selected category ID and reset current page" duration="33"/>
-    <testCase name="SubcategoryStore should filter subcategories by search query" duration="48"/>
-    <testCase name="SubcategoryStore should filter subcategories by category ID" duration="82"/>
-    <testCase name="SubcategoryStore should sort subcategories by name" duration="171"/>
-    <testCase name="SubcategoryStore should sort subcategories by createdAt" duration="25"/>
-    <testCase name="SubcategoryStore should paginate subcategories" duration="24"/>
-    <testCase name="SubcategoryStore should return empty paginated subcategories when no data" duration="12"/>
-  </file>
-  <file path="C:\Angular project-2\codebook\src\app\services\responsive\responsive.service.spec.ts">
-    <testCase name="ResponsiveService currentBreakpoint should return &quot;xsmall&quot; when XSmall breakpoint is matched" duration="33"/>
-    <testCase name="ResponsiveService currentBreakpoint should return &quot;small&quot; when Small breakpoint is matched" duration="14"/>
-    <testCase name="ResponsiveService currentBreakpoint should return &quot;medium&quot; when Medium breakpoint is matched" duration="21"/>
-    <testCase name="ResponsiveService currentBreakpoint should return &quot;large&quot; when Large breakpoint is matched" duration="12"/>
-    <testCase name="ResponsiveService currentBreakpoint should return &quot;xlarge&quot; when XLarge breakpoint is matched" duration="11"/>
-    <testCase name="ResponsiveService currentBreakpoint should return &quot;xlarge&quot; when no breakpoints are matched" duration="26"/>
-    <testCase name="ResponsiveService isMobile should return true when XSmall breakpoint is matched" duration="13"/>
-    <testCase name="ResponsiveService isMobile should return false when XSmall breakpoint is not matched" duration="14"/>
-    <testCase name="ResponsiveService isTablet should return true when Small breakpoint is matched" duration="13"/>
-    <testCase name="ResponsiveService isTablet should return true when Medium breakpoint is matched" duration="8"/>
-    <testCase name="ResponsiveService isTablet should return false when neither Small nor Medium breakpoints are matched" duration="14"/>
-    <testCase name="ResponsiveService isDesktop should return true when Large breakpoint is matched" duration="12"/>
-    <testCase name="ResponsiveService isDesktop should return true when XLarge breakpoint is matched" duration="9"/>
-    <testCase name="ResponsiveService isDesktop should return false when neither Large nor XLarge breakpoints are matched" duration="9"/>
-  </file>
-  <file path="C:\Angular project-2\codebook\src\app\services\theme\theme.service.spec.ts">
-    <testCase name="ThemeService Initialization should initialize with deep-blue theme" duration="33"/>
-    <testCase name="ThemeService Initialization should remove all theme classes during initialization" duration="12"/>
-    <testCase name="ThemeService getThemes should return the list of themes" duration="43"/>
-    <testCase name="ThemeService setTheme should set theme to green and apply light theme class when not in dark mode" duration="17"/>
-    <testCase name="ThemeService setTheme should set theme to purple and apply dark theme class when in dark mode" duration="40"/>
-    <testCase name="ThemeService setTheme should not change theme if themeId is invalid" duration="9"/>
-    <testCase name="ThemeService applyCurrentTheme should apply light theme class when not in dark mode" duration="49"/>
-    <testCase name="ThemeService applyCurrentTheme should apply dark theme class when in dark mode" duration="15"/>
-    <testCase name="ThemeService Effect should reapply theme when dark mode changes" duration="13"/>
-    <testCase name="ThemeService Effect should call applyCurrentTheme when effect is triggered" duration="11"/>
-    <testCase name="ThemeService Effect should trigger applyCurrentTheme when theme changes" duration="41"/>
-    <testCase name="ThemeService Local Storage should load theme from localStorage on initialization" duration="16"/>
-  </file>
-  <file path="C:\Angular project-2\codebook\src\app\pages\categories\categories.store.spec.ts">
-    <testCase name="CategoryStore should initialize with correct initial state" duration="757"/>
-    <testCase name="CategoryStore should load categories from localStorage on init" duration="40"/>
-    <testCase name="CategoryStore should handle loadCategories error" duration="192"/>
-    <testCase name="CategoryStore should handle loadCategories with empty localStorage" duration="32"/>
-    <testCase name="CategoryStore should add a new category" duration="228"/>
-    <testCase name="CategoryStore should handle addCategory error" duration="18"/>
-    <testCase name="CategoryStore should update an existing category" duration="18"/>
-    <testCase name="CategoryStore should handle updateCategory with no localStorage data" duration="12"/>
-    <testCase name="CategoryStore should delete a category" duration="13"/>
-    <testCase name="CategoryStore should handle deleteCategory with no localStorage data" duration="11"/>
-    <testCase name="CategoryStore should set page" duration="24"/>
-    <testCase name="CategoryStore should set page size and reset current page" duration="27"/>
-    <testCase name="CategoryStore should set search query and reset current page" duration="13"/>
-    <testCase name="CategoryStore should sort categories and reset current page" duration="20"/>
-    <testCase name="CategoryStore should filter categories by search query" duration="15"/>
-    <testCase name="CategoryStore should sort categories by name" duration="85"/>
-    <testCase name="CategoryStore should sort categories by createdAt" duration="37"/>
-    <testCase name="CategoryStore should sort categories by modifiedAt in descending order" duration="83"/>
-    <testCase name="CategoryStore should paginate categories" duration="160"/>
-    <testCase name="CategoryStore should return empty paginated categories when no data" duration="45"/>
-    <testCase name="CategoryStore should filter categories by icon" duration="45"/>
-    <testCase name="CategoryStore should filter categories by comments" duration="13"/>
-  </file>
-  <file path="C:\Angular project-2\codebook\src\app\pages\pincodes\pincodes.store.spec.ts">
-    <testCase name="PincodeStore should initialize with correct initial state" duration="8374"/>
-    <testCase name="PincodeStore should load pincodes from localStorage on init" duration="118"/>
-    <testCase name="PincodeStore should load pincodes from API when localStorage is empty" duration="39"/>
-    <testCase name="PincodeStore should handle loadPincodes error" duration="43"/>
-    <testCase name="PincodeStore should add a new pincode" duration="59"/>
-    <testCase name="PincodeStore should handle addPincode error" duration="51"/>
-    <testCase name="PincodeStore should update an existing pincode" duration="39"/>
-    <testCase name="PincodeStore should update pincode when localStorage is empty" duration="24"/>
-    <testCase name="PincodeStore should delete a pincode" duration="48"/>
-    <testCase name="PincodeStore should delete pincode when localStorage is empty" duration="60"/>
-    <testCase name="PincodeStore should set page" duration="53"/>
-    <testCase name="PincodeStore should set page size and reset current page" duration="124"/>
-    <testCase name="PincodeStore should set search query and reset current page" duration="19"/>
-    <testCase name="PincodeStore should sort pincodes and reset current page" duration="23"/>
-    <testCase name="PincodeStore should filter pincodes by search query" duration="51"/>
-    <testCase name="PincodeStore should filter pincodes by pincode" duration="76"/>
-    <testCase name="PincodeStore should sort pincodes by officeName ascending" duration="119"/>
-    <testCase name="PincodeStore should sort pincodes by officeName descending" duration="27"/>
-    <testCase name="PincodeStore should paginate pincodes" duration="25"/>
-    <testCase name="PincodeStore should return empty paginated pincodes when no data" duration="19"/>
-    <testCase name="PincodeStore should handle null or undefined fields in pincode during filtering" duration="50"/>
-  </file>
-  <file path="C:\Angular project-2\codebook\src\app\pages\business\store\business.store.spec.ts">
-    <testCase name="BusinessStore should be created" duration="36"/>
-    <testCase name="BusinessStore initial state should have initial state" duration="22"/>
-    <testCase name="BusinessStore loadBusinesses should load businesses from localStorage" duration="35"/>
-    <testCase name="BusinessStore loadBusinesses should handle empty localStorage" duration="50"/>
-    <testCase name="BusinessStore loadBusinesses should handle parsing error" duration="24"/>
-    <testCase name="BusinessStore addBusiness should add a new business" duration="60"/>
-    <testCase name="BusinessStore addBusiness should handle error when adding business" duration="18"/>
-    <testCase name="BusinessStore updateBusiness should update an existing business" duration="45"/>
-    <testCase name="BusinessStore updateBusiness should handle business not found" duration="21"/>
-    <testCase name="BusinessStore updateBusiness should handle storage error" duration="33"/>
-    <testCase name="BusinessStore deleteBusiness should delete a business" duration="26"/>
-    <testCase name="BusinessStore deleteBusiness should handle storage error" duration="12"/>
-    <testCase name="BusinessStore deleteBusiness should not fail when deleting non-existent business" duration="28"/>
-    <testCase name="BusinessStore getBusiness should get a business by id" duration="41"/>
-    <testCase name="BusinessStore getBusiness should return undefined for non-existent id" duration="13"/>
-    <testCase name="BusinessStore getBusiness should set error if something goes wrong" duration="28"/>
-    <testCase name="BusinessStore businessCount should return correct count of businesses" duration="14"/>
-    <testCase name="BusinessStore onInit should load businesses on initialization" duration="14"/>
-  </file>
-  <file path="C:\Angular project-2\codebook\src\app\pages\pincodes\pincodes.service.spec.ts">
-    <testCase name="PincodesService should be created" duration="86"/>
-    <testCase name="PincodesService signals should expose pincodes signal" duration="26"/>
-    <testCase name="PincodesService signals should expose filteredPincodes signal" duration="16"/>
-    <testCase name="PincodesService signals should expose paginatedPincodes signal" duration="44"/>
-    <testCase name="PincodesService signals should expose totalPages signal" duration="47"/>
-    <testCase name="PincodesService signals should expose currentPage signal" duration="18"/>
-    <testCase name="PincodesService signals should expose pageSize signal" duration="36"/>
-    <testCase name="PincodesService signals should expose isLoading signal" duration="28"/>
-    <testCase name="PincodesService signals should expose error signal" duration="32"/>
-    <testCase name="PincodesService getPincodes should call loadPincodes and update pincodes" duration="27"/>
-    <testCase name="PincodesService getPincodes should load pincodes from localStorage if available" duration="25"/>
-    <testCase name="PincodesService addPincode should add a pincode and return it" duration="14"/>
-    <testCase name="PincodesService updatePincode should update a pincode" duration="10"/>
-    <testCase name="PincodesService deletePincode should delete a pincode" duration="16"/>
-    <testCase name="PincodesService setPage should set the current page" duration="32"/>
-    <testCase name="PincodesService setPageSize should set page size" duration="116"/>
-    <testCase name="PincodesService setSearchQuery should set search query" duration="21"/>
-    <testCase name="PincodesService sortPincodes should sort pincodes by field in ascending order" duration="31"/>
-    <testCase name="PincodesService sortPincodes should sort pincodes by field in descending order" duration="20"/>
-  </file>
-  <file path="C:\Angular project-2\codebook\src\app\app.component.spec.ts">
-    <testCase name="AppComponent should create the app" duration="75"/>
-    <testCase name="AppComponent should have router-outlet in the template" duration="82"/>
+  <file path="C:\Angular project-2\codebook\src\app\user\user.component.spec.ts">
+    <testCase name="UserComponent should create the component" duration="498"/>
+    <testCase name="UserComponent should initialize with correct default properties" duration="128"/>
+    <testCase name="UserComponent should have correct constructor injections" duration="172"/>
+    <testCase name="UserComponent should render avatar when showAvatar is true and avatar is set" duration="245"/>
+    <testCase name="UserComponent should render icon when showAvatar is false" duration="157"/>
+    <testCase name="UserComponent should render icon when user.avatar is falsy" duration="184"/>
+    <testCase name="UserComponent should apply correct status class for online" duration="195"/>
+    <testCase name="UserComponent should apply correct status class for away" duration="200"/>
+    <testCase name="UserComponent should apply correct status class for busy" duration="225"/>
+    <testCase name="UserComponent should apply correct status class for not-visible" duration="159"/>
+    <testCase name="UserComponent should update user status to online" duration="189"/>
+    <testCase name="UserComponent should update user status to away" duration="259"/>
+    <testCase name="UserComponent should update user status to busy" duration="227"/>
+    <testCase name="UserComponent should update user status to not-visible" duration="197"/>
+    <testCase name="UserComponent should trigger updateUserStatus when status menu item is clicked" duration="233"/>
+    <testCase name="UserComponent should call signOut and navigate to login via direct method call" duration="199"/>
+    <testCase name="UserComponent should call signOut and navigate to login via menu click" duration="208"/>
+    <testCase name="UserComponent should render divider" duration="155"/>
   </file>
   <file path="C:\Angular project-2\codebook\src\app\pages\subcategories\add-subcategories\add-subcategories.component.spec.ts">
-    <testCase name="AddSubcategoriesComponent should create the component" duration="624"/>
-    <testCase name="AddSubcategoriesComponent should initialize the form with required fields" duration="542"/>
-    <testCase name="AddSubcategoriesComponent should not close dialog when form is invalid in saveSubcategory" duration="616"/>
-    <testCase name="AddSubcategoriesComponent should close dialog with form value when form is valid" duration="391"/>
-    <testCase name="AddSubcategoriesComponent should mark all controls as touched when form is invalid" duration="404"/>
-    <testCase name="AddSubcategoriesComponent should close dialog when cancel is called" duration="603"/>
-    <testCase name="AddSubcategoriesComponent should trigger saveSubcategory on form submission" duration="857"/>
-    <testCase name="AddSubcategoriesComponent should disable save button when form is invalid" duration="398"/>
-    <testCase name="AddSubcategoriesComponent should enable save button when form is valid" duration="460"/>
-    <testCase name="AddSubcategoriesComponent should show validation errors for required fields when form is submitted" duration="698"/>
+    <testCase name="AddSubcategoriesComponent should create the component" duration="637"/>
+    <testCase name="AddSubcategoriesComponent should initialize the form with required fields" duration="448"/>
+    <testCase name="AddSubcategoriesComponent should not close dialog when form is invalid in saveSubcategory" duration="415"/>
+    <testCase name="AddSubcategoriesComponent should close dialog with form value when form is valid" duration="393"/>
+    <testCase name="AddSubcategoriesComponent should mark all controls as touched when form is invalid" duration="315"/>
+    <testCase name="AddSubcategoriesComponent should close dialog when cancel is called" duration="375"/>
+    <testCase name="AddSubcategoriesComponent should trigger saveSubcategory on form submission" duration="502"/>
+    <testCase name="AddSubcategoriesComponent should disable save button when form is invalid" duration="402"/>
+    <testCase name="AddSubcategoriesComponent should enable save button when form is valid" duration="478"/>
+    <testCase name="AddSubcategoriesComponent should show validation errors for required fields when form is submitted" duration="477"/>
   </file>
-  <file path="C:\Angular project-2\codebook\src\app\pages\categories\categories.service.spec.ts">
-    <testCase name="CategoriesService should be created" duration="98"/>
-    <testCase name="CategoriesService should return categories from store" duration="32"/>
-    <testCase name="CategoriesService should return filteredCategories from store" duration="22"/>
-    <testCase name="CategoriesService should return paginatedCategories from store" duration="20"/>
-    <testCase name="CategoriesService should return totalPages from store" duration="31"/>
-    <testCase name="CategoriesService should return currentPage from store" duration="32"/>
-    <testCase name="CategoriesService should return pageSize from store" duration="29"/>
-    <testCase name="CategoriesService should return isLoading from store" duration="39"/>
-    <testCase name="CategoriesService should return error from store" duration="28"/>
-    <testCase name="CategoriesService should call loadCategories on store" duration="31"/>
-    <testCase name="CategoriesService should call addCategory on store and return result" duration="18"/>
-    <testCase name="CategoriesService should handle addCategory error" duration="80"/>
-    <testCase name="CategoriesService should call updateCategory on store" duration="40"/>
-    <testCase name="CategoriesService should handle updateCategory error" duration="46"/>
-    <testCase name="CategoriesService should call deleteCategory on store" duration="23"/>
-    <testCase name="CategoriesService should handle deleteCategory error" duration="63"/>
-    <testCase name="CategoriesService should call setPage on store" duration="20"/>
-    <testCase name="CategoriesService should call setPageSize on store" duration="18"/>
-    <testCase name="CategoriesService should call setSearchQuery on store" duration="76"/>
-    <testCase name="CategoriesService should call sortCategories on store" duration="21"/>
+  <file path="C:\Angular project-2\codebook\src\app\dashboard-selector\dashboard-selector.component.spec.ts">
+    <testCase name="DashboardSelectorComponent should create" duration="269"/>
+    <testCase name="DashboardSelectorComponent should navigate to main-dashboard when navigateToDashboard1 is called" duration="111"/>
+    <testCase name="DashboardSelectorComponent should navigate to main-dashboard-2 when navigateToDashboard2 is called" duration="103"/>
+    <testCase name="DashboardSelectorComponent should render the title correctly" duration="147"/>
+    <testCase name="DashboardSelectorComponent should render two mat-card elements" duration="110"/>
+    <testCase name="DashboardSelectorComponent should render Dashboard 1 card with correct content" duration="169"/>
+    <testCase name="DashboardSelectorComponent should render Dashboard 2 card with correct content" duration="151"/>
+    <testCase name="DashboardSelectorComponent should call navigateToDashboard1 when Dashboard 1 button is clicked" duration="248"/>
+    <testCase name="DashboardSelectorComponent should call navigateToDashboard2 when Dashboard 2 button is clicked" duration="150"/>
+    <testCase name="DashboardSelectorComponent should have correct classes on the container div" duration="118"/>
+    <testCase name="DashboardSelectorComponent should have correct classes on the grid div" duration="162"/>
   </file>
-  <file path="C:\Angular project-2\codebook\src\app\pages\dashboard-1\dashboard-1.component.spec.ts">
-    <testCase name="Dashboard1Component should create" duration="47"/>
+  <file path="C:\Angular project-2\codebook\src\app\pages\dashboard\service-provider\service-provider.component.spec.ts">
+    <testCase name="ServiceProviderComponent should create" duration="714"/>
+    <testCase name="ServiceProviderComponent should initialize form and countries" duration="297"/>
+    <testCase name="ServiceProviderComponent should patch form with provider data" duration="460"/>
+    <testCase name="ServiceProviderComponent should set language from localStorage on init" duration="283"/>
+    <testCase name="ServiceProviderComponent should set default language to en if no lang in localStorage" duration="344"/>
+    <testCase name="ServiceProviderComponent should update responsiveClass based on breakpoint" duration="333"/>
+    <testCase name="ServiceProviderComponent should save valid new provider" duration="333"/>
+    <testCase name="ServiceProviderComponent should save valid new provider with generated ID" duration="297"/>
+    <testCase name="ServiceProviderComponent should handle invalid form in saveProvider" duration="239"/>
+    <testCase name="ServiceProviderComponent should handle localStorage error in saveProvider" duration="351"/>
+    <testCase name="ServiceProviderComponent should handle invalid localStorage data in saveProvider" duration="266"/>
+    <testCase name="ServiceProviderComponent should update existing provider" duration="262"/>
+    <testCase name="ServiceProviderComponent should handle provider ID not found" duration="204"/>
+    <testCase name="ServiceProviderComponent should close popup" duration="282"/>
+    <testCase name="ServiceProviderComponent should cancel form and close popup" duration="218"/>
+    <testCase name="ServiceProviderComponent should cancel form without closing popup" duration="195"/>
+    <testCase name="ServiceProviderComponent should initialize without provider data" duration="152"/>
   </file>
-  <file path="C:\Angular project-2\codebook\src\app\login\auth.service.spec.ts">
-    <testCase name="AuthService should be created" duration="29"/>
-    <testCase name="AuthService login should call authStore.login with credentials" duration="32"/>
-    <testCase name="AuthService login should handle different credentials" duration="10"/>
-    <testCase name="AuthService signup should call authStore.signup with user data" duration="15"/>
-    <testCase name="AuthService signup should handle different user data" duration="15"/>
-    <testCase name="AuthService signout should call authStore.signout" duration="11"/>
-    <testCase name="AuthService getUser should return authStore.user signal" duration="37"/>
-    <testCase name="AuthService getIsAuthenticated should return authStore.isAuthenticated signal" duration="70"/>
-    <testCase name="AuthService getIsLoading should return authStore.isLoading signal" duration="46"/>
-    <testCase name="AuthService error should return authStore.error signal" duration="59"/>
-    <testCase name="AuthService error should handle non-null error" duration="95"/>
+  <file path="C:\Angular project-2\codebook\src\app\pages\users\add-user\add-user.component.spec.ts">
+    <testCase name="AddUserComponent should create the component" duration="267"/>
+    <testCase name="AddUserComponent should initialize form and set title to &quot;Add User&quot; when userId is 0" duration="88"/>
+    <testCase name="AddUserComponent should initialize form and set title to &quot;Add User&quot; when data is undefined" duration="39"/>
+    <testCase name="AddUserComponent should initialize form and set title to &quot;Add User&quot; when userId is undefined" duration="51"/>
+    <testCase name="AddUserComponent should set edit mode and populate form when userId is provided and user exists" duration="36"/>
+    <testCase name="AddUserComponent should show error and close dialog when userId is provided but user is not found" duration="39"/>
+    <testCase name="AddUserComponent should show error when form is invalid in saveUser" duration="34"/>
+    <testCase name="AddUserComponent should add user and show success toast when form is valid in add mode" duration="58"/>
+    <testCase name="AddUserComponent should update user and show success toast when form is valid in edit mode" duration="83"/>
+    <testCase name="AddUserComponent should show error toast and close dialog when addUser throws an error" duration="102"/>
+    <testCase name="AddUserComponent should show error toast and close dialog when updateUser throws an error" duration="69"/>
+    <testCase name="AddUserComponent should close dialog when closePopup is called" duration="47"/>
+    <testCase name="AddUserComponent should trigger saveUser on form submission" duration="62"/>
+    <testCase name="AddUserComponent should trigger closePopup on close button click" duration="46"/>
+    <testCase name="AddUserComponent should apply dark-theme class when darkModeService.isDarkMode returns true" duration="37"/>
+    <testCase name="AddUserComponent should not apply dark-theme class when darkModeService.isDarkMode returns false" duration="42"/>
+  </file>
+  <file path="C:\Angular project-2\codebook\src\app\custom-sidenav\custom-sidenav.component.spec.ts">
+    <testCase name="CustomSidenavComponent should create the component" duration="315"/>
+    <testCase name="CustomSidenavComponent should initialize with correct menu items" duration="58"/>
+    <testCase name="CustomSidenavComponent should set collapsed input correctly" duration="66"/>
+    <testCase name="CustomSidenavComponent should emit toggleSidenav event when toggle button is clicked" duration="46"/>
+    <testCase name="CustomSidenavComponent should emit closeSidenav event when close button is clicked" duration="154"/>
+    <testCase name="CustomSidenavComponent should toggle submenu and collapse others" duration="174"/>
+    <testCase name="CustomSidenavComponent should render menu items without sub-items correctly" duration="49"/>
+    <testCase name="CustomSidenavComponent should render menu items with sub-items and toggle them" duration="65"/>
+    <testCase name="CustomSidenavComponent should apply dark mode styles when isDarkMode is true" duration="46"/>
+    <testCase name="CustomSidenavComponent should apply light mode styles when isDarkMode is false" duration="52"/>
+    <testCase name="CustomSidenavComponent should hide labels when collapsed and not mobile" duration="42"/>
+    <testCase name="CustomSidenavComponent should show labels when collapsed and mobile" duration="56"/>
+    <testCase name="CustomSidenavComponent should apply active styles when route is active" duration="117"/>
+    <testCase name="CustomSidenavComponent should not show sub-items when collapsed and not mobile" duration="91"/>
+    <testCase name="CustomSidenavComponent should show sub-items when collapsed and mobile" duration="107"/>
+    <testCase name="CustomSidenavComponent should apply logo styles based on dark mode" duration="66"/>
+    <testCase name="CustomSidenavComponent should show CODE BOOK label when not collapsed" duration="57"/>
+    <testCase name="CustomSidenavComponent should stop propagation on expand/collapse icon click and toggle submenu" duration="107"/>
+  </file>
+  <file path="C:\Angular project-2\codebook\src\app\pages\pincodes\add-pincodes\add-pincodes.component.spec.ts">
+    <testCase name="AddPincodesComponent should create the component" duration="215"/>
+    <testCase name="AddPincodesComponent should initialize formPincode with data.pincode if provided" duration="72"/>
+    <testCase name="AddPincodesComponent should not close dialog if form is invalid in savePincode" duration="42"/>
+    <testCase name="AddPincodesComponent should not close dialog if isFormInvalid returns true in savePincode" duration="38"/>
+    <testCase name="AddPincodesComponent should close dialog with formPincode data if form is valid" duration="54"/>
+    <testCase name="AddPincodesComponent should return true for isFormInvalid if any field is missing or invalid" duration="48"/>
+    <testCase name="AddPincodesComponent should close dialog without data when cancel is called" duration="61"/>
+  </file>
+  <file path="C:\Angular project-2\codebook\src\app\pages\pincodes\pincodes.component.spec.ts">
+    <testCase name="PincodesComponent should create the component" duration="2028"/>
+    <testCase name="PincodesComponent ngOnInit should subscribe to responsive service and update displayed columns" duration="669"/>
+    <testCase name="PincodesComponent ngOnInit should set displayed columns for desktop" duration="749"/>
+    <testCase name="PincodesComponent ngOnInit should set displayed columns for tablet" duration="1010"/>
+    <testCase name="PincodesComponent ngOnInit should set displayed columns for mobile" duration="725"/>
+    <testCase name="PincodesComponent ngOnDestroy should unsubscribe from breakpoint subscription" duration="608"/>
+    <testCase name="PincodesComponent ngOnDestroy should handle undefined subscription" duration="655"/>
+    <testCase name="PincodesComponent updateDisplayedColumns should set columns for mobile" duration="1234"/>
+    <testCase name="PincodesComponent updateDisplayedColumns should set columns for tablet" duration="690"/>
+    <testCase name="PincodesComponent updateDisplayedColumns should set columns for desktop" duration="678"/>
+    <testCase name="PincodesComponent refreshTable should reset table state and reload data" duration="834"/>
+    <testCase name="PincodesComponent openAddPincodeDialog should open dialog with correct width for mobile" duration="555"/>
+    <testCase name="PincodesComponent openAddPincodeDialog should open dialog with correct width for tablet" duration="502"/>
+    <testCase name="PincodesComponent openAddPincodeDialog should open dialog with correct width for desktop" duration="607"/>
+    <testCase name="PincodesComponent openAddPincodeDialog should add pincode after dialog closes with result" duration="628"/>
+    <testCase name="PincodesComponent openAddPincodeDialog should not add pincode if dialog closes without result" duration="754"/>
+    <testCase name="PincodesComponent startEdit should open edit dialog with correct pincode and width" duration="467"/>
+    <testCase name="PincodesComponent startEdit should update pincode after dialog closes with result" duration="547"/>
+    <testCase name="PincodesComponent startEdit should not update pincode if dialog closes without result" duration="830"/>
+    <testCase name="PincodesComponent onSearchQueryChange should update search query" duration="481"/>
+    <testCase name="PincodesComponent onPageChange should change page and clear selected pincodes" duration="475"/>
+    <testCase name="PincodesComponent sortColumn should sort by field and direction" duration="425"/>
+    <testCase name="PincodesComponent togglePincode should add pincode to selectedPincodes if not selected" duration="601"/>
+    <testCase name="PincodesComponent togglePincode should remove pincode from selectedPincodes if selected" duration="588"/>
+    <testCase name="PincodesComponent isSelected should return true if pincode is selected" duration="474"/>
+    <testCase name="PincodesComponent isSelected should return false if pincode is not selected" duration="606"/>
+    <testCase name="PincodesComponent toggleAllPincodes should select all pincodes if checked" duration="590"/>
+    <testCase name="PincodesComponent toggleAllPincodes should clear selected pincodes if unchecked" duration="549"/>
+    <testCase name="PincodesComponent isAllSelected should return true if all pincodes are selected" duration="874"/>
+    <testCase name="PincodesComponent isAllSelected should return false if not all pincodes are selected" duration="549"/>
+    <testCase name="PincodesComponent isAllSelected should return false if no pincodes are available" duration="358"/>
+    <testCase name="PincodesComponent deleteSelectedPincodes should delete selected pincodes and clear selection" duration="172"/>
+    <testCase name="PincodesComponent getPageNumbers should return page numbers for desktop" duration="392"/>
+    <testCase name="PincodesComponent getPageNumbers should return page numbers for tablet" duration="152"/>
+    <testCase name="PincodesComponent getPageNumbers should return page numbers for mobile" duration="243"/>
+    <testCase name="PincodesComponent getPageNumbers should adjust start page when near end" duration="178"/>
+    <testCase name="PincodesComponent getPageNumbers should return empty array if no pages" duration="98"/>
+    <testCase name="PincodesComponent trackById should return pincode id" duration="129"/>
+    <testCase name="PincodesComponent template coverage should render loading spinner when isLoading is true" duration="223"/>
+    <testCase name="PincodesComponent template coverage should render error message when error exists" duration="187"/>
+    <testCase name="PincodesComponent template coverage should disable delete button when no pincodes are selected" duration="180"/>
+    <testCase name="PincodesComponent template coverage should enable delete button when pincodes are selected" duration="109"/>
+    <testCase name="PincodesComponent template coverage should show indeterminate checkbox state" duration="93"/>
+    <testCase name="PincodesComponent template coverage should show no pages message when no pages available" duration="382"/>
+  </file>
+  <file path="C:\Angular project-2\codebook\src\app\pages\pincodes\pincodes.store.spec.ts">
+    <testCase name="PincodeStore should initialize with correct initial state" duration="77"/>
+    <testCase name="PincodeStore should load pincodes from localStorage on init" duration="39"/>
+    <testCase name="PincodeStore should load pincodes from API when localStorage is empty" duration="22"/>
+    <testCase name="PincodeStore should handle loadPincodes error" duration="116"/>
+    <testCase name="PincodeStore should add a new pincode" duration="24"/>
+    <testCase name="PincodeStore should handle addPincode error" duration="70"/>
+    <testCase name="PincodeStore should update an existing pincode" duration="20"/>
+    <testCase name="PincodeStore should handle updatePincode error" duration="84"/>
+    <testCase name="PincodeStore should handle updatePincode error with default message" duration="25"/>
+    <testCase name="PincodeStore should update pincode when localStorage is empty" duration="44"/>
+    <testCase name="PincodeStore should delete a pincode" duration="63"/>
+    <testCase name="PincodeStore should handle deletePincode error" duration="8"/>
+    <testCase name="PincodeStore should handle deletePincode error with default message" duration="13"/>
+    <testCase name="PincodeStore should delete pincode when localStorage is empty" duration="57"/>
+    <testCase name="PincodeStore should set page" duration="14"/>
+    <testCase name="PincodeStore should set page size and reset current page" duration="16"/>
+    <testCase name="PincodeStore should set search query and reset current page" duration="9"/>
+    <testCase name="PincodeStore should sort pincodes and reset current page" duration="30"/>
+    <testCase name="PincodeStore should filter pincodes by search query" duration="19"/>
+    <testCase name="PincodeStore should filter pincodes by pincode" duration="8"/>
+    <testCase name="PincodeStore should sort pincodes by officeName ascending" duration="80"/>
+    <testCase name="PincodeStore should sort pincodes by officeName descending" duration="9"/>
+    <testCase name="PincodeStore should paginate pincodes" duration="12"/>
+    <testCase name="PincodeStore should return empty paginated pincodes when no data" duration="52"/>
+    <testCase name="PincodeStore should handle null or undefined fields in pincode during filtering" duration="41"/>
+  </file>
+  <file path="C:\Angular project-2\codebook\src\app\pages\categories\categories.store.spec.ts">
+    <testCase name="CategoryStore should initialize with correct initial state" duration="237"/>
+    <testCase name="CategoryStore should load categories from localStorage on init" duration="18"/>
+    <testCase name="CategoryStore should handle loadCategories error" duration="95"/>
+    <testCase name="CategoryStore should handle loadCategories with empty localStorage" duration="86"/>
+    <testCase name="CategoryStore should add a new category" duration="48"/>
+    <testCase name="CategoryStore should handle addCategory error" duration="113"/>
+    <testCase name="CategoryStore should update an existing category" duration="60"/>
+    <testCase name="CategoryStore should handle updateCategory with no localStorage data" duration="19"/>
+    <testCase name="CategoryStore should delete a category" duration="29"/>
+    <testCase name="CategoryStore should handle deleteCategory with no localStorage data" duration="13"/>
+    <testCase name="CategoryStore should set page" duration="12"/>
+    <testCase name="CategoryStore should set page size and reset current page" duration="17"/>
+    <testCase name="CategoryStore should set search query and reset current page" duration="23"/>
+    <testCase name="CategoryStore should sort categories and reset current page" duration="11"/>
+    <testCase name="CategoryStore should filter categories by search query" duration="14"/>
+    <testCase name="CategoryStore should sort categories by name" duration="56"/>
+    <testCase name="CategoryStore should sort categories by createdAt" duration="28"/>
+    <testCase name="CategoryStore should sort categories by modifiedAt in descending order" duration="14"/>
+    <testCase name="CategoryStore should paginate categories" duration="15"/>
+    <testCase name="CategoryStore should return empty paginated categories when no data" duration="31"/>
+    <testCase name="CategoryStore should filter categories by icon" duration="14"/>
+    <testCase name="CategoryStore should filter categories by comments" duration="56"/>
+  </file>
+  <file path="C:\Angular project-2\codebook\src\app\pages\users\store\user-store.spec.ts">
+    <testCase name="UserStore Initial State should initialize with default state" duration="235"/>
+    <testCase name="UserStore Computed Properties should compute users correctly" duration="31"/>
+    <testCase name="UserStore Computed Properties should compute isLoading correctly" duration="12"/>
+    <testCase name="UserStore loadUsers should load users from local storage if available" duration="25"/>
+    <testCase name="UserStore loadUsers should load users from API if local storage is empty" duration="28"/>
+    <testCase name="UserStore loadUsers should handle API error" duration="119"/>
+    <testCase name="UserStore addUser should add a new user" duration="32"/>
+    <testCase name="UserStore addUser should handle error when adding user" duration="83"/>
+    <testCase name="UserStore updateUser should update an existing user" duration="33"/>
+    <testCase name="UserStore updateUser should handle error when updating user" duration="20"/>
+    <testCase name="UserStore deleteUser should delete a user" duration="20"/>
+    <testCase name="UserStore deleteUser should handle error when deleting user" duration="24"/>
+    <testCase name="UserStore getUser should return a user by ID" duration="21"/>
+    <testCase name="UserStore getUser should return undefined if user is not found" duration="18"/>
+    <testCase name="UserStore getUser should handle error when fetching user" duration="38"/>
+    <testCase name="UserStore onInit Hook should call loadUsers on initialization" duration="14"/>
+  </file>
+  <file path="C:\Angular project-2\codebook\src\app\pages\subcategories\subcategories.store.spec.ts">
+    <testCase name="SubcategoryStore should initialize with correct initial state" duration="259"/>
+    <testCase name="SubcategoryStore should load subcategories from localStorage on init" duration="65"/>
+    <testCase name="SubcategoryStore should handle loadSubcategories error" duration="124"/>
+    <testCase name="SubcategoryStore should add a new subcategory" duration="41"/>
+    <testCase name="SubcategoryStore should handle addSubcategory error" duration="28"/>
+    <testCase name="SubcategoryStore should update an existing subcategory" duration="70"/>
+    <testCase name="SubcategoryStore should handle updateSubcategory error with undefined message" duration="25"/>
+    <testCase name="SubcategoryStore should handle deleteSubcategory error with undefined message" duration="34"/>
+    <testCase name="SubcategoryStore should delete a subcategory" duration="27"/>
+    <testCase name="SubcategoryStore should handle deleteSubcategory error" duration="36"/>
+    <testCase name="SubcategoryStore should set page" duration="14"/>
+    <testCase name="SubcategoryStore should set page size and reset current page" duration="29"/>
+    <testCase name="SubcategoryStore should set search query and reset current page" duration="11"/>
+    <testCase name="SubcategoryStore should sort subcategories and reset current page" duration="12"/>
+    <testCase name="SubcategoryStore should set selected category ID and reset current page" duration="11"/>
+    <testCase name="SubcategoryStore should filter subcategories by search query" duration="13"/>
+    <testCase name="SubcategoryStore should filter subcategories by category ID" duration="16"/>
+    <testCase name="SubcategoryStore should sort subcategories by name" duration="56"/>
+    <testCase name="SubcategoryStore should sort subcategories by createdAt" duration="29"/>
+    <testCase name="SubcategoryStore should paginate subcategories" duration="50"/>
+    <testCase name="SubcategoryStore should return empty paginated subcategories when no data" duration="17"/>
+  </file>
+  <file path="C:\Angular project-2\codebook\src\app\pages\pincodes\pincodes.service.spec.ts">
+    <testCase name="PincodesService should be created" duration="57"/>
+    <testCase name="PincodesService signals should expose pincodes signal" duration="14"/>
+    <testCase name="PincodesService signals should expose filteredPincodes signal" duration="10"/>
+    <testCase name="PincodesService signals should expose paginatedPincodes signal" duration="18"/>
+    <testCase name="PincodesService signals should expose totalPages signal" duration="13"/>
+    <testCase name="PincodesService signals should expose currentPage signal" duration="10"/>
+    <testCase name="PincodesService signals should expose pageSize signal" duration="17"/>
+    <testCase name="PincodesService signals should expose isLoading signal" duration="11"/>
+    <testCase name="PincodesService signals should expose error signal" duration="13"/>
+    <testCase name="PincodesService getPincodes should call loadPincodes and update pincodes" duration="10"/>
+    <testCase name="PincodesService getPincodes should load pincodes from localStorage if available" duration="15"/>
+    <testCase name="PincodesService addPincode should add a pincode and return it" duration="12"/>
+    <testCase name="PincodesService updatePincode should update a pincode" duration="20"/>
+    <testCase name="PincodesService deletePincode should delete a pincode" duration="19"/>
+    <testCase name="PincodesService setPage should set the current page" duration="17"/>
+    <testCase name="PincodesService setPageSize should set page size" duration="26"/>
+    <testCase name="PincodesService setSearchQuery should set search query" duration="34"/>
+    <testCase name="PincodesService sortPincodes should sort pincodes by field in ascending order" duration="41"/>
+    <testCase name="PincodesService sortPincodes should sort pincodes by field in descending order" duration="27"/>
+  </file>
+  <file path="C:\Angular project-2\codebook\src\app\pages\business\list-businesses\list-businesses.component.spec.ts">
+    <testCase name="ListBusinessesComponent should create the component" duration="387"/>
+    <testCase name="ListBusinessesComponent Initial State should initialize with businesses from BusinessStore" duration="108"/>
+    <testCase name="ListBusinessesComponent Desktop and Tablet View should render table layout when isDesktop is true" duration="115"/>
+    <testCase name="ListBusinessesComponent Desktop and Tablet View should render table layout when isTablet is true" duration="161"/>
+    <testCase name="ListBusinessesComponent Desktop and Tablet View should display business data in table rows" duration="155"/>
+    <testCase name="ListBusinessesComponent Desktop and Tablet View should render delete button for each business" duration="128"/>
+    <testCase name="ListBusinessesComponent Mobile View should render card layout when isMobile is true" duration="292"/>
+    <testCase name="ListBusinessesComponent Mobile View should display business data in cards" duration="200"/>
+    <testCase name="ListBusinessesComponent Mobile View should render delete button for each card" duration="121"/>
+    <testCase name="ListBusinessesComponent deleteBusiness should call deleteBusiness on BusinessStore when confirmed" duration="169"/>
+    <testCase name="ListBusinessesComponent deleteBusiness should not call deleteBusiness if confirmation is cancelled" duration="85"/>
+    <testCase name="ListBusinessesComponent Dark Mode Integration should inject DarkModeService" duration="190"/>
+    <testCase name="ListBusinessesComponent Dark Mode Integration should apply dark mode if enabled" duration="94"/>
+    <testCase name="ListBusinessesComponent Responsive Behavior should not render table or cards when businesses is empty" duration="86"/>
+    <testCase name="ListBusinessesComponent Responsive Behavior should render table when both isDesktop and isTablet are false but isMobile is false" duration="90"/>
   </file>
   <file path="C:\Angular project-2\codebook\src\app\nav.component.spec.ts">
-    <testCase name="NavComponent should create the component" duration="119"/>
-    <testCase name="NavComponent should bind isAuthenticated to authService.getIsAuthenticated" duration="19"/>
-    <testCase name="NavComponent should call authService.signout when signout is called" duration="13"/>
+    <testCase name="NavComponent should create the component" duration="216"/>
+    <testCase name="NavComponent should bind isAuthenticated to authService.getIsAuthenticated" duration="22"/>
+    <testCase name="NavComponent should call authService.signout when signout is called" duration="17"/>
   </file>
-  <file path="C:\Angular project-2\codebook\src\app\services\dark-mode.service.spec.ts">
-    <testCase name="DarkModeService Initialization should initialize with system theme by default" duration="184"/>
-    <testCase name="DarkModeService Initialization should initialize with saved theme from localStorage" duration="164"/>
-    <testCase name="DarkModeService Initialization should set up event listener for system theme changes" duration="79"/>
-    <testCase name="DarkModeService selectedTheme should return the correct theme object for light theme" duration="133"/>
-    <testCase name="DarkModeService selectedTheme should return the correct theme object for dark theme" duration="530"/>
-    <testCase name="DarkModeService selectedTheme should return the correct theme object for system theme" duration="335"/>
-    <testCase name="DarkModeService isDarkMode should return false for light theme" duration="1355"/>
-    <testCase name="DarkModeService isDarkMode should return true for dark theme" duration="78"/>
-    <testCase name="DarkModeService isDarkMode should return system preference for system theme (dark)" duration="112"/>
-    <testCase name="DarkModeService isDarkMode should return system preference for system theme (light)" duration="66"/>
-    <testCase name="DarkModeService isDarkMode should handle missing window.matchMedia for system theme" duration="280"/>
-    <testCase name="DarkModeService setTheme should set light theme and update DOM" duration="155"/>
-    <testCase name="DarkModeService setTheme should set dark theme and update DOM" duration="103"/>
-    <testCase name="DarkModeService setTheme should set system theme and update DOM based on system preference (dark)" duration="263"/>
-    <testCase name="DarkModeService setTheme should set system theme and update DOM based on system preference (light)" duration="27"/>
-    <testCase name="DarkModeService getThemes should return the list of themes" duration="14"/>
-    <testCase name="DarkModeService System Theme Change Listener should apply theme when system preference changes in system mode" duration="15"/>
-    <testCase name="DarkModeService System Theme Change Listener should not apply theme when system preference changes in non-system mode" duration="6"/>
-    <testCase name="DarkModeService applyTheme should apply dark theme classes and attributes" duration="21"/>
-    <testCase name="DarkModeService applyTheme should apply light theme classes and attributes" duration="12"/>
-    <testCase name="DarkModeService applyTheme should apply system theme based on dark preference" duration="11"/>
-    <testCase name="DarkModeService applyTheme should apply system theme based on light preference" duration="8"/>
-    <testCase name="DarkModeService isVisible should return true indicating theme toggle is visible" duration="15"/>
+  <file path="C:\Angular project-2\codebook\src\app\app.config.spec.ts">
+    <testCase name="AppConfig HttpLoaderFactory should return a TranslateHttpLoader instance" duration="4"/>
   </file>
   <file path="C:\Angular project-2\codebook\src\app\pages\subcategories\subcategories.service.spec.ts">
-    <testCase name="SubcategoriesService should be created" duration="12"/>
-    <testCase name="SubcategoriesService should initialize properties from subcategoryStore" duration="7"/>
-    <testCase name="SubcategoriesService should call loadSubcategories on getSubcategories" duration="14"/>
-    <testCase name="SubcategoriesService should call addSubcategory with subcategory data" duration="6"/>
-    <testCase name="SubcategoriesService should call updateSubcategory with subcategory data" duration="5"/>
-    <testCase name="SubcategoriesService should call deleteSubcategory with id" duration="6"/>
-    <testCase name="SubcategoriesService should call setPage with page number" duration="7"/>
-    <testCase name="SubcategoriesService should call setPageSize with page size" duration="6"/>
-    <testCase name="SubcategoriesService should call setSearchQuery with query" duration="9"/>
-    <testCase name="SubcategoriesService should call sortSubcategories with field and direction" duration="8"/>
-    <testCase name="SubcategoriesService should call setSelectedCategoryId with categoryId" duration="7"/>
+    <testCase name="SubcategoriesService should be created" duration="62"/>
+    <testCase name="SubcategoriesService should initialize properties from subcategoryStore" duration="14"/>
+    <testCase name="SubcategoriesService should call loadSubcategories on getSubcategories" duration="16"/>
+    <testCase name="SubcategoriesService should call addSubcategory with subcategory data" duration="14"/>
+    <testCase name="SubcategoriesService should call updateSubcategory with subcategory data" duration="16"/>
+    <testCase name="SubcategoriesService should call deleteSubcategory with id" duration="27"/>
+    <testCase name="SubcategoriesService should call setPage with page number" duration="18"/>
+    <testCase name="SubcategoriesService should call setPageSize with page size" duration="14"/>
+    <testCase name="SubcategoriesService should call setSearchQuery with query" duration="10"/>
+    <testCase name="SubcategoriesService should call sortSubcategories with field and direction" duration="15"/>
+    <testCase name="SubcategoriesService should call setSelectedCategoryId with categoryId" duration="17"/>
+  </file>
+  <file path="C:\Angular project-2\codebook\src\app\pages\business\store\business.store.spec.ts">
+    <testCase name="BusinessStore should be created" duration="38"/>
+    <testCase name="BusinessStore initial state should have initial state" duration="22"/>
+    <testCase name="BusinessStore loadBusinesses should load businesses from localStorage" duration="45"/>
+    <testCase name="BusinessStore loadBusinesses should handle empty localStorage" duration="33"/>
+    <testCase name="BusinessStore loadBusinesses should handle parsing error" duration="40"/>
+    <testCase name="BusinessStore addBusiness should add a new business" duration="42"/>
+    <testCase name="BusinessStore addBusiness should handle error when adding business" duration="15"/>
+    <testCase name="BusinessStore updateBusiness should update an existing business" duration="21"/>
+    <testCase name="BusinessStore updateBusiness should handle business not found" duration="34"/>
+    <testCase name="BusinessStore updateBusiness should handle storage error" duration="15"/>
+    <testCase name="BusinessStore deleteBusiness should delete a business" duration="11"/>
+    <testCase name="BusinessStore deleteBusiness should handle storage error" duration="17"/>
+    <testCase name="BusinessStore deleteBusiness should not fail when deleting non-existent business" duration="8"/>
+    <testCase name="BusinessStore getBusiness should get a business by id" duration="10"/>
+    <testCase name="BusinessStore getBusiness should return undefined for non-existent id" duration="24"/>
+    <testCase name="BusinessStore getBusiness should set error if something goes wrong" duration="23"/>
+    <testCase name="BusinessStore businessCount should return correct count of businesses" duration="9"/>
+    <testCase name="BusinessStore onInit should load businesses on initialization" duration="43"/>
+  </file>
+  <file path="C:\Angular project-2\codebook\src\app\login\auth.service.spec.ts">
+    <testCase name="AuthService should be created" duration="41"/>
+    <testCase name="AuthService login should call authStore.login with credentials" duration="65"/>
+    <testCase name="AuthService login should handle different credentials" duration="35"/>
+    <testCase name="AuthService signup should call authStore.signup with user data" duration="67"/>
+    <testCase name="AuthService signup should handle different user data" duration="13"/>
+    <testCase name="AuthService signout should call authStore.signout" duration="15"/>
+    <testCase name="AuthService getUser should return authStore.user signal" duration="77"/>
+    <testCase name="AuthService getIsAuthenticated should return authStore.isAuthenticated signal" duration="38"/>
+    <testCase name="AuthService getIsLoading should return authStore.isLoading signal" duration="80"/>
+    <testCase name="AuthService error should return authStore.error signal" duration="23"/>
+    <testCase name="AuthService error should handle non-null error" duration="24"/>
+  </file>
+  <file path="C:\Angular project-2\codebook\src\app\login\auth.store.spec.ts">
+    <testCase name="AuthStore Initial State and Signals should initialize with default state" duration="48"/>
+    <testCase name="AuthStore onInit Hook should load auth data from localStorage on init" duration="19"/>
+    <testCase name="AuthStore onInit Hook should not update state if no auth data in localStorage" duration="32"/>
+    <testCase name="AuthStore login Method should login successfully and update state" duration="11"/>
+    <testCase name="AuthStore login Method should handle 401 error during login" duration="13"/>
+    <testCase name="AuthStore login Method should handle error with error.error.message during login" duration="19"/>
+    <testCase name="AuthStore login Method should handle generic error during login" duration="16"/>
+    <testCase name="AuthStore login Method should handle error with no message during login" duration="11"/>
+    <testCase name="AuthStore login Method should set isLoading to true before HTTP request" duration="20"/>
+    <testCase name="AuthStore signup Method should signup successfully and update state" duration="11"/>
+    <testCase name="AuthStore signup Method should handle error with error.error.message during signup" duration="23"/>
+    <testCase name="AuthStore signup Method should handle error with error.message during signup" duration="19"/>
+    <testCase name="AuthStore signup Method should handle default error during signup" duration="12"/>
+    <testCase name="AuthStore signup Method should set isLoading to true before HTTP request" duration="16"/>
+    <testCase name="AuthStore signout Method should sign out successfully and clear state" duration="10"/>
+    <testCase name="AuthStore signout Method should handle error during signout" duration="101"/>
+  </file>
+  <file path="C:\Angular project-2\codebook\src\app\app.component.spec.ts">
+    <testCase name="AppComponent should create the app" duration="79"/>
+    <testCase name="AppComponent should have router-outlet in the template" duration="26"/>
+  </file>
+  <file path="C:\Angular project-2\codebook\src\app\auth.guard.spec.ts">
+    <testCase name="AuthGuard should be created" duration="23"/>
+    <testCase name="AuthGuard should allow navigation when user is authenticated" duration="37"/>
+    <testCase name="AuthGuard should redirect to login when user is not authenticated" duration="87"/>
+  </file>
+  <file path="C:\Angular project-2\codebook\src\app\services\responsive\responsive.service.spec.ts">
+    <testCase name="ResponsiveService currentBreakpoint should return &quot;xsmall&quot; when XSmall breakpoint is matched" duration="65"/>
+    <testCase name="ResponsiveService currentBreakpoint should return &quot;small&quot; when Small breakpoint is matched" duration="10"/>
+    <testCase name="ResponsiveService currentBreakpoint should return &quot;medium&quot; when Medium breakpoint is matched" duration="8"/>
+    <testCase name="ResponsiveService currentBreakpoint should return &quot;large&quot; when Large breakpoint is matched" duration="12"/>
+    <testCase name="ResponsiveService currentBreakpoint should return &quot;xlarge&quot; when XLarge breakpoint is matched" duration="8"/>
+    <testCase name="ResponsiveService currentBreakpoint should return &quot;xlarge&quot; when no breakpoints are matched" duration="8"/>
+    <testCase name="ResponsiveService isMobile should return true when XSmall breakpoint is matched" duration="10"/>
+    <testCase name="ResponsiveService isMobile should return false when XSmall breakpoint is not matched" duration="8"/>
+    <testCase name="ResponsiveService isTablet should return true when Small breakpoint is matched" duration="25"/>
+    <testCase name="ResponsiveService isTablet should return true when Medium breakpoint is matched" duration="16"/>
+    <testCase name="ResponsiveService isTablet should return false when neither Small nor Medium breakpoints are matched" duration="9"/>
+    <testCase name="ResponsiveService isDesktop should return true when Large breakpoint is matched" duration="9"/>
+    <testCase name="ResponsiveService isDesktop should return true when XLarge breakpoint is matched" duration="9"/>
+    <testCase name="ResponsiveService isDesktop should return false when neither Large nor XLarge breakpoints are matched" duration="13"/>
+  </file>
+  <file path="C:\Angular project-2\codebook\src\app\services\dark-mode.service.spec.ts">
+    <testCase name="DarkModeService Initialization should initialize with system theme by default" duration="32"/>
+    <testCase name="DarkModeService Initialization should initialize with saved theme from localStorage" duration="20"/>
+    <testCase name="DarkModeService Initialization should set up event listener for system theme changes" duration="15"/>
+    <testCase name="DarkModeService selectedTheme should return the correct theme object for light theme" duration="13"/>
+    <testCase name="DarkModeService selectedTheme should return the correct theme object for dark theme" duration="11"/>
+    <testCase name="DarkModeService selectedTheme should return the correct theme object for system theme" duration="17"/>
+    <testCase name="DarkModeService isDarkMode should return false for light theme" duration="11"/>
+    <testCase name="DarkModeService isDarkMode should return true for dark theme" duration="8"/>
+    <testCase name="DarkModeService isDarkMode should return system preference for system theme (dark)" duration="11"/>
+    <testCase name="DarkModeService isDarkMode should return system preference for system theme (light)" duration="9"/>
+    <testCase name="DarkModeService isDarkMode should handle missing window.matchMedia for system theme" duration="9"/>
+    <testCase name="DarkModeService setTheme should set light theme and update DOM" duration="14"/>
+    <testCase name="DarkModeService setTheme should set dark theme and update DOM" duration="15"/>
+    <testCase name="DarkModeService setTheme should set system theme and update DOM based on system preference (dark)" duration="22"/>
+    <testCase name="DarkModeService setTheme should set system theme and update DOM based on system preference (light)" duration="9"/>
+    <testCase name="DarkModeService getThemes should return the list of themes" duration="9"/>
+    <testCase name="DarkModeService System Theme Change Listener should apply theme when system preference changes in system mode" duration="8"/>
+    <testCase name="DarkModeService System Theme Change Listener should not apply theme when system preference changes in non-system mode" duration="9"/>
+    <testCase name="DarkModeService applyTheme should apply dark theme classes and attributes" duration="12"/>
+    <testCase name="DarkModeService applyTheme should apply light theme classes and attributes" duration="9"/>
+    <testCase name="DarkModeService applyTheme should apply system theme based on dark preference" duration="9"/>
+    <testCase name="DarkModeService applyTheme should apply system theme based on light preference" duration="14"/>
+    <testCase name="DarkModeService isVisible should return true indicating theme toggle is visible" duration="8"/>
+  </file>
+  <file path="C:\Angular project-2\codebook\src\app\pages\categories\categories.service.spec.ts">
+    <testCase name="CategoriesService should be created" duration="25"/>
+    <testCase name="CategoriesService should return categories from store" duration="9"/>
+    <testCase name="CategoriesService should return filteredCategories from store" duration="7"/>
+    <testCase name="CategoriesService should return paginatedCategories from store" duration="9"/>
+    <testCase name="CategoriesService should return totalPages from store" duration="8"/>
+    <testCase name="CategoriesService should return currentPage from store" duration="8"/>
+    <testCase name="CategoriesService should return pageSize from store" duration="10"/>
+    <testCase name="CategoriesService should return isLoading from store" duration="13"/>
+    <testCase name="CategoriesService should return error from store" duration="14"/>
+    <testCase name="CategoriesService should call loadCategories on store" duration="13"/>
+    <testCase name="CategoriesService should call addCategory on store and return result" duration="10"/>
+    <testCase name="CategoriesService should handle addCategory error" duration="35"/>
+    <testCase name="CategoriesService should call updateCategory on store" duration="14"/>
+    <testCase name="CategoriesService should handle updateCategory error" duration="12"/>
+    <testCase name="CategoriesService should call deleteCategory on store" duration="14"/>
+    <testCase name="CategoriesService should handle deleteCategory error" duration="12"/>
+    <testCase name="CategoriesService should call setPage on store" duration="17"/>
+    <testCase name="CategoriesService should call setPageSize on store" duration="9"/>
+    <testCase name="CategoriesService should call setSearchQuery on store" duration="11"/>
+    <testCase name="CategoriesService should call sortCategories on store" duration="15"/>
+  </file>
+  <file path="C:\Angular project-2\codebook\src\app\pages\dashboard-1\dashboard-1.component.spec.ts">
+    <testCase name="Dashboard1Component should create" duration="48"/>
+  </file>
+  <file path="C:\Angular project-2\codebook\src\app\services\theme\theme.service.spec.ts">
+    <testCase name="ThemeService Initialization should initialize with deep-blue theme" duration="23"/>
+    <testCase name="ThemeService Initialization should remove all theme classes during initialization" duration="8"/>
+    <testCase name="ThemeService getThemes should return the list of themes" duration="8"/>
+    <testCase name="ThemeService setTheme should set theme to green and apply light theme class when not in dark mode" duration="21"/>
+    <testCase name="ThemeService setTheme should set theme to purple and apply dark theme class when in dark mode" duration="9"/>
+    <testCase name="ThemeService setTheme should not change theme if themeId is invalid" duration="11"/>
+    <testCase name="ThemeService applyCurrentTheme should apply light theme class when not in dark mode" duration="17"/>
+    <testCase name="ThemeService applyCurrentTheme should apply dark theme class when in dark mode" duration="12"/>
+    <testCase name="ThemeService Effect should reapply theme when dark mode changes" duration="13"/>
+    <testCase name="ThemeService Effect should call applyCurrentTheme when effect is triggered" duration="9"/>
+    <testCase name="ThemeService Effect should trigger applyCurrentTheme when theme changes" duration="11"/>
+    <testCase name="ThemeService Local Storage should load theme from localStorage on initialization" duration="9"/>
+  </file>
+  <file path="C:\Angular project-2\codebook\src\app\app.routes.spec.ts">
+    <testCase name="App Routes should define routes with correct configurations" duration="8"/>
   </file>
 </testExecutions>

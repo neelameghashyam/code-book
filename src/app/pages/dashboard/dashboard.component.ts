@@ -11,7 +11,6 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { ToastrService } from 'ngx-toastr';
 import { ResponsiveService } from '../../services/responsive/responsive.service';
-import { ServiceProviderComponent } from './service-provider/service-provider.component';
 import { BusinessForm, ServiceProvider } from './interfaces';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
@@ -84,7 +83,8 @@ export class DashboardComponent implements OnInit {
     });
   }
 
-  openPopup(provider?: ServiceProvider, index?: number): void {
+  async openPopup(provider?: ServiceProvider, index?: number): Promise<void> {
+    const { ServiceProviderComponent } = await import('./service-provider/service-provider.component');
     const dialogRef = this.dialog.open(ServiceProviderComponent, {
       width: '90%',
       maxWidth: '1200px',
@@ -97,8 +97,6 @@ export class DashboardComponent implements OnInit {
       restoreFocus: true,
       panelClass: 'custom-service-provider-dialog-large',
     });
-
-    
   }
 
   public createServiceProviderFormGroup(provider: ServiceProvider): FormGroup {
@@ -123,24 +121,24 @@ export class DashboardComponent implements OnInit {
   }
 
   deleteServiceProvider(index: number): void {
+    if (index < 0 || index >= this.serviceProviders.length) {
+      this.toastr.error('Invalid provider index');
+      return;
+    }
+
     try {
-      if (index >= 0 && index < this.serviceProviders.length) {
-        const deletedProvider = this.serviceProviders.splice(index, 1)[0];
-        this.serviceProvidersArray.removeAt(index);
+      const deletedProvider = this.serviceProviders.splice(index, 1)[0];
+      this.serviceProvidersArray.removeAt(index);
 
-        const existingProviders: ServiceProvider[] = JSON.parse(localStorage.getItem('serviceProviders') || '[]');
-        const updatedProviders = existingProviders.filter((provider) => provider.id !== deletedProvider.id);
-        localStorage.setItem('serviceProviders', JSON.stringify(updatedProviders));
+      const existingProviders: ServiceProvider[] = JSON.parse(localStorage.getItem('serviceProviders') || '[]');
+      const updatedProviders = existingProviders.filter((provider) => provider.id !== deletedProvider.id);
+      localStorage.setItem('serviceProviders', JSON.stringify(updatedProviders));
 
-        this.saveToLocalStorage();
-        this.toastr.success('Service provider deleted successfully');
-      } else {
-        this.toastr.error('Invalid provider index');
-      }
-      this.cdr.markForCheck();
+      this.toastr.success('Service provider deleted successfully');
     } catch (error) {
       this.toastr.error('Error deleting service provider');
       console.error('LocalStorage error:', error);
+    } finally {
       this.cdr.markForCheck();
     }
   }
@@ -156,17 +154,15 @@ export class DashboardComponent implements OnInit {
         this.toastr.success('Business form submitted successfully');
         this.readOnly = true;
         this.providerForm.disable();
-        this.cdr.markForCheck();
       } catch (error) {
         this.toastr.error('Error saving business form');
         console.error('LocalStorage error:', error);
-        this.cdr.markForCheck();
       }
     } else {
       this.toastr.error('Please fill all required fields');
       this.providerForm.markAllAsTouched();
-      this.cdr.markForCheck();
     }
+    this.cdr.markForCheck();
   }
 
   enableEditMode(): void {
@@ -195,24 +191,11 @@ export class DashboardComponent implements OnInit {
 
   loadFromLocalStorage(): void {
     try {
-      let businessProviders: ServiceProvider[] = [];
       const providerData = localStorage.getItem('serviceProviders');
-      let standaloneProviders: ServiceProvider[] = [];
-      if (providerData) {
-        try {
-          standaloneProviders = JSON.parse(providerData) || [];
-        } catch (parseError) {
-          console.error('Error parsing serviceProviders:', parseError);
-          standaloneProviders = [];
-        }
-      }
-
-      const allProviders = [...businessProviders, ...standaloneProviders];
-      const uniqueProviders = Array.from(
-        new Map(allProviders.map((provider) => [provider.id, provider])).values()
+      let standaloneProviders: ServiceProvider[] = providerData ? JSON.parse(providerData) : [];
+      this.serviceProviders = Array.from(
+        new Map(standaloneProviders.map((provider) => [provider.id, provider])).values()
       );
-
-      this.serviceProviders = uniqueProviders;
       this.serviceProvidersArray.clear();
       this.serviceProviders.forEach((provider) => {
         this.serviceProvidersArray.push(this.createServiceProviderFormGroup(provider));
@@ -233,8 +216,8 @@ export class DashboardComponent implements OnInit {
       };
       localStorage.setItem('businessForm', JSON.stringify(formData));
     } catch (error) {
-      console.error('Error saving to localStorage:', error);
       this.toastr.error('Error saving data');
+      console.error('LocalStorage error:', error);
     }
   }
 

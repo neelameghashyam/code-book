@@ -15,32 +15,33 @@ import { DashboardSelectorComponent } from './dashboard-selector/dashboard-selec
 import { CategoriesComponent } from './pages/categories/categories.component';
 import { SubcategoriesComponent } from './pages/subcategories/subcategories.component';
 
-// Mock all components and AuthGuard to avoid importing actual implementations
-jest.mock('./pages/dashboard/dashboard.component', () => ({ DashboardComponent: {} }));
-jest.mock('./pages/users/users.component', () => ({ UsersComponent: {} }));
-jest.mock('./pages/business/business.component', () => ({ BusinessComponent: {} }));
+// Mock all components and AuthGuard
+jest.mock('./pages/dashboard/dashboard.component', () => ({ DashboardComponent: class {} }));
+jest.mock('./pages/users/users.component', () => ({ UsersComponent: class {} }));
+jest.mock('./pages/business/business.component', () => ({ BusinessComponent: class {} }));
 jest.mock('./pages/business/list-businesses/list-businesses.component', () => ({
-  ListBusinessesComponent: {},
+  ListBusinessesComponent: class {},
 }));
-jest.mock('./login/login/login.component', () => ({ LoginComponent: {} }));
-jest.mock('./main-dashboard/main-dashboard.component', () => ({ MainDashboardComponent: {} }));
-jest.mock('./auth.guard', () => ({ AuthGuard: {} }));
-jest.mock('./pages/pincodes/pincodes.component', () => ({ PincodesComponent: {} }));
-jest.mock('./pages/dashboard-1/dashboard-1.component', () => ({ Dashboard1Component: {} }));
-jest.mock('./main-dashboard-2/main-dashboard-2.component', () => ({ MainDashboard2Component: {} }));
+jest.mock('./login/login/login.component', () => ({ LoginComponent: class {} }));
+jest.mock('./main-dashboard/main-dashboard.component', () => ({ MainDashboardComponent: class {} }));
+jest.mock('./auth.guard', () => ({ AuthGuard: class {} }));
+jest.mock('./pages/pincodes/pincodes.component', () => ({ PincodesComponent: class {} }));
+jest.mock('./pages/dashboard-1/dashboard-1.component', () => ({ Dashboard1Component: class {} }));
+jest.mock('./main-dashboard-2/main-dashboard-2.component', () => ({ MainDashboard2Component: class {} }));
 jest.mock('./dashboard-selector/dashboard-selector.component', () => ({
-  DashboardSelectorComponent: {},
+  DashboardSelectorComponent: class {},
 }));
-jest.mock('./pages/categories/categories.component', () => ({ CategoriesComponent: {} }));
+jest.mock('./pages/categories/categories.component', () => ({ CategoriesComponent: class {} }));
 jest.mock('./pages/subcategories/subcategories.component', () => ({
-  SubcategoriesComponent: {},
+  SubcategoriesComponent: class {},
 }));
 
 describe('App Routes', () => {
-  it('should define routes with correct configurations', () => {
+  it('should define routes with correct configurations', async () => {
+    // Verify routes array
     expect(routes).toBeDefined();
     expect(Array.isArray(routes)).toBe(true);
-    expect(routes.length).toBe(6); // 3 main routes + login + wildcard
+    expect(routes.length).toBe(6); // dashboard-selector, main-dashboard, main-dashboard-2, login, default, wildcard
 
     // Test dashboard-selector route
     const dashboardSelectorRoute = routes.find((route) => route.path === 'dashboard-selector');
@@ -61,15 +62,53 @@ describe('App Routes', () => {
     });
     expect(mainDashboardRoute?.children).toBeDefined();
     expect(mainDashboardRoute?.children?.length).toBe(9); // 8 components + 1 redirect
-    expect(mainDashboardRoute?.children).toContainEqual({ path: 'dashboard', component: DashboardComponent });
-    expect(mainDashboardRoute?.children).toContainEqual({ path: 'dashboard-1', component: Dashboard1Component });
-    expect(mainDashboardRoute?.children).toContainEqual({ path: 'categories', component: CategoriesComponent });
-    expect(mainDashboardRoute?.children).toContainEqual({ path: 'sub-categories', component: SubcategoriesComponent });
-    expect(mainDashboardRoute?.children).toContainEqual({ path: 'pincode', component: PincodesComponent });
-    expect(mainDashboardRoute?.children).toContainEqual({ path: 'users', component: UsersComponent });
-    expect(mainDashboardRoute?.children).toContainEqual({ path: 'business', component: BusinessComponent });
-    expect(mainDashboardRoute?.children).toContainEqual({ path: 'business-list', component: ListBusinessesComponent });
-    expect(mainDashboardRoute?.children).toContainEqual({
+
+    // Test lazy-loaded components in main-dashboard
+    const mainDashboardChildren = mainDashboardRoute?.children || [];
+    const dashboardRoute = mainDashboardChildren.find((route) => route.path === 'dashboard');
+    expect(dashboardRoute).toBeDefined();
+    expect(dashboardRoute?.loadComponent).toBeDefined();
+    const DashboardComponentResult = await dashboardRoute!.loadComponent!();
+    expect(DashboardComponentResult).toBe(DashboardComponent);
+
+    const dashboard1Route = mainDashboardChildren.find((route) => route.path === 'dashboard-1');
+    expect(dashboard1Route).toBeDefined();
+    const Dashboard1ComponentResult = await dashboard1Route!.loadComponent!();
+    expect(Dashboard1ComponentResult).toBe(Dashboard1Component);
+
+    const categoriesRoute = mainDashboardChildren.find((route) => route.path === 'categories');
+    expect(categoriesRoute).toBeDefined();
+    const CategoriesComponentResult = await categoriesRoute!.loadComponent!();
+    expect(CategoriesComponentResult).toBe(CategoriesComponent);
+
+    const subcategoriesRoute = mainDashboardChildren.find((route) => route.path === 'sub-categories');
+    expect(subcategoriesRoute).toBeDefined();
+    const SubcategoriesComponentResult = await subcategoriesRoute!.loadComponent!();
+    expect(SubcategoriesComponentResult).toBe(SubcategoriesComponent);
+
+    const pincodeRoute = mainDashboardChildren.find((route) => route.path === 'pincode');
+    expect(pincodeRoute).toBeDefined();
+    const PincodesComponentResult = await pincodeRoute!.loadComponent!();
+    expect(PincodesComponentResult).toBe(PincodesComponent);
+
+    const usersRoute = mainDashboardChildren.find((route) => route.path === 'users');
+    expect(usersRoute).toBeDefined();
+    const UsersComponentResult = await usersRoute!.loadComponent!();
+    expect(UsersComponentResult).toBe(UsersComponent);
+
+    const businessRoute = mainDashboardChildren.find((route) => route.path === 'business');
+    expect(businessRoute).toBeDefined();
+    const BusinessComponentResult = await businessRoute!.loadComponent!();
+    expect(BusinessComponentResult).toBe(BusinessComponent);
+
+    const businessListRoute = mainDashboardChildren.find((route) => route.path === 'business-list');
+    expect(businessListRoute).toBeDefined();
+    const ListBusinessesComponentResult = await businessListRoute!.loadComponent!();
+    expect(ListBusinessesComponentResult).toBe(ListBusinessesComponent);
+
+    const mainDashboardRedirect = mainDashboardChildren.find((route) => route.path === '' && route.redirectTo === 'dashboard');
+    expect(mainDashboardRedirect).toBeDefined();
+    expect(mainDashboardRedirect).toMatchObject({
       path: '',
       redirectTo: 'dashboard',
       pathMatch: 'full',
@@ -85,14 +124,47 @@ describe('App Routes', () => {
     });
     expect(mainDashboard2Route?.children).toBeDefined();
     expect(mainDashboard2Route?.children?.length).toBe(8); // 7 components + 1 redirect
-    expect(mainDashboard2Route?.children).toContainEqual({ path: 'dashboard', component: DashboardComponent });
-    expect(mainDashboard2Route?.children).toContainEqual({ path: 'pincode', component: PincodesComponent });
-    expect(mainDashboard2Route?.children).toContainEqual({ path: 'categories', component: CategoriesComponent });
-    expect(mainDashboard2Route?.children).toContainEqual({ path: 'sub-categories', component: SubcategoriesComponent });
-    expect(mainDashboard2Route?.children).toContainEqual({ path: 'users', component: UsersComponent });
-    expect(mainDashboard2Route?.children).toContainEqual({ path: 'business', component: BusinessComponent });
-    expect(mainDashboard2Route?.children).toContainEqual({ path: 'business-list', component: ListBusinessesComponent });
-    expect(mainDashboard2Route?.children).toContainEqual({
+
+    // Test lazy-loaded components in main-dashboard-2
+    const mainDashboard2Children = mainDashboard2Route?.children || [];
+    const dashboard2Route = mainDashboard2Children.find((route) => route.path === 'dashboard');
+    expect(dashboard2Route).toBeDefined();
+    const Dashboard2ComponentResult = await dashboard2Route!.loadComponent!();
+    expect(Dashboard2ComponentResult).toBe(DashboardComponent);
+
+    const pincode2Route = mainDashboard2Children.find((route) => route.path === 'pincode');
+    expect(pincode2Route).toBeDefined();
+    const Pincodes2ComponentResult = await pincode2Route!.loadComponent!();
+    expect(Pincodes2ComponentResult).toBe(PincodesComponent);
+
+    const categories2Route = mainDashboard2Children.find((route) => route.path === 'categories');
+    expect(categories2Route).toBeDefined();
+    const Categories2ComponentResult = await categories2Route!.loadComponent!();
+    expect(Categories2ComponentResult).toBe(CategoriesComponent);
+
+    const subcategories2Route = mainDashboard2Children.find((route) => route.path === 'sub-categories');
+    expect(subcategories2Route).toBeDefined();
+    const Subcategories2ComponentResult = await subcategories2Route!.loadComponent!();
+    expect(Subcategories2ComponentResult).toBe(SubcategoriesComponent);
+
+    const users2Route = mainDashboard2Children.find((route) => route.path === 'users');
+    expect(users2Route).toBeDefined();
+    const Users2ComponentResult = await users2Route!.loadComponent!();
+    expect(Users2ComponentResult).toBe(UsersComponent);
+
+    const business2Route = mainDashboard2Children.find((route) => route.path === 'business');
+    expect(business2Route).toBeDefined();
+    const Business2ComponentResult = await business2Route!.loadComponent!();
+    expect(Business2ComponentResult).toBe(BusinessComponent);
+
+    const businessList2Route = mainDashboard2Children.find((route) => route.path === 'business-list');
+    expect(businessList2Route).toBeDefined();
+    const ListBusinesses2ComponentResult = await businessList2Route!.loadComponent!();
+    expect(ListBusinesses2ComponentResult).toBe(ListBusinessesComponent);
+
+    const mainDashboard2Redirect = mainDashboard2Children.find((route) => route.path === '' && route.redirectTo === 'dashboard');
+    expect(mainDashboard2Redirect).toBeDefined();
+    expect(mainDashboard2Redirect).toMatchObject({
       path: '',
       redirectTo: 'dashboard',
       pathMatch: 'full',
